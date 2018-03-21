@@ -1,0 +1,20 @@
+
+set(src_files src/sort.c)
+set(test_files test/main.cpp)
+
+enable_testing()
+
+add_library(main ${src_files})
+add_executable(unit_tests ${test_files})
+
+target_link_libraries(unit_tests /usr/local/lib/libgmock.a /usr/local/lib/libgtest.a)
+
+#include_directories(src ${Boost_INCLUDE_DIRS}/boost)
+
+#find_package(Boost 1.66.0 COMPONENTS filesystem REQUIRED)
+#if (Boost_FOUND)
+#    include_directories(${Boost_INCLUDE_DIRS}/boost)
+#
+#    target_link_libraries(main ${Boost_LIBRARIES})
+#    target_link_libraries(unit_tests ${Boost_LIBRARIES})
+#endif ()

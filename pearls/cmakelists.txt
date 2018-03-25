@@ -4,10 +4,10 @@ set(test_files test/main.cpp)
 
 enable_testing()
 
-add_library(main ${src_files})
-add_executable(unit_tests ${test_files})
+add_library(pearls_main ${src_files})
+add_executable(pearls_unit_tests ${test_files})
 
-target_link_libraries(unit_tests /usr/local/lib/libgmock.a /usr/local/lib/libgtest.a)
+target_link_libraries(pearls_unit_tests /usr/local/lib/libgmock.a /usr/local/lib/libgtest.a)
 
 #include_directories(src ${Boost_INCLUDE_DIRS}/boost)
 

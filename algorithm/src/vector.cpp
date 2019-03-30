@@ -5,6 +5,18 @@
 
 #define NEW_CAP_SIZE(oc) ((unsigned int)(oc + (unsigned int)((oc + 1) * 0.5)))
 
+
+void _debug_show(I_VECTOR *pv) {
+    printf("[");
+    for (unsigned int i = 0; i < pv->size; ++i) {
+        if (i > 0) {
+            printf(" ");
+        }
+        printf("%d", pv->array[i]);
+    }
+    printf("] (size=%u, cap=%u)\n", pv->size, pv->capacity);
+}
+
 void _iv_rebuild(I_VECTOR *pv, unsigned int newCap) {
     int *newArray = (int *) malloc(sizeof(int) * newCap);
     memcpy(newArray, pv->array, pv->size * sizeof(int));
@@ -50,17 +62,6 @@ unsigned int iv_add(I_VECTOR *pv, int value) {
     }
     pv->array[pv->size++] = value;
     return pv->size;
-}
-
-void _debug_show(I_VECTOR *pv) {
-    printf("[");
-    for (unsigned int i = 0; i < pv->size; ++i) {
-        if (i > 0) {
-            printf(" ");
-        }
-        printf("%d", pv->array[i]);
-    }
-    printf("] (size=%u, cap=%u)\n", pv->size, pv->capacity);
 }
 
 unsigned int iv_append(I_VECTOR *pv, const int *value, unsigned int len) {

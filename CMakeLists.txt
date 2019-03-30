@@ -1,12 +1,10 @@
-cmake_minimum_required(VERSION 3.9)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
+PROJECT(study-cpp CXX C)
 
-project(study-cpp CXX C)
+SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+INCLUDE_DIRECTORIES("/usr/local/include")
 
-include_directories("/usr/local/include")
-
-add_subdirectory(hello)
-add_subdirectory(pearls)
+ADD_SUBDIRECTORY(algorithm)

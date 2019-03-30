@@ -6,6 +6,8 @@ SET(ALGORITHM_TEST_FILES
         test/test_main.cpp
         test/test_vector.cpp)
 
+ENABLE_TESTING()
+
 INCLUDE_DIRECTORIES("src")
 
 ADD_EXECUTABLE(ALGORITHM_TEST

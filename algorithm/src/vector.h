@@ -1,27 +1,29 @@
 #ifndef __VECTOR_H
 #define __VECTOR_H
 
+#include "common.h"
+
 #define VECTOR_INIT_CAP 5
 
 typedef struct _I_VECTOR {
-    int *array;
-    unsigned int size;
-    unsigned int capacity;
+    Int *array;
+    UInt size;
+    UInt capacity;
 } I_VECTOR;
 
 extern "C" {
 
-void iv_init(I_VECTOR *pv);
+void IV_Init(I_VECTOR *pv);
 
-void iv_free(I_VECTOR *pv);
+void IV_Free(I_VECTOR *pv);
 
-void iv_set(I_VECTOR *pv, const int *values, unsigned int len);
+void IV_Set(I_VECTOR *pv, const Int *values, UInt len);
 
-unsigned int iv_add(I_VECTOR *pv, int value);
+unsigned int IV_Add(I_VECTOR *pv, Int value);
 
-unsigned int iv_append(I_VECTOR *pv, const int *value, unsigned int len);
+unsigned int IV_Append(I_VECTOR *pv, const Int *value, UInt len);
 
 }
 
 
-#endif
+#endif  // #__VECTOR_H

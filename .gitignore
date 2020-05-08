@@ -36,3 +36,8 @@
 build
 cmake-build-debug/
 .vscode
+
+CMakeCache.txt
+*.cmake
+CMakeFiles
+Makefile

@@ -1,20 +1,22 @@
 
-SET(ALGORITHM_SRC_FILES
-        src/sort.cpp
-        src/vector.cpp)
+set(ALGORITHM_SRC_FILES
+    src/sort.cpp
+    src/vector.cpp)
 
-SET(ALGORITHM_TEST_FILES
-        test/test_main.cpp
-        test/test_vector.cpp
-        test/test_sort.cpp)
+set(ALGORITHM_TEST_FILES
+    test/test_main.cpp
+    test/test_vector.cpp
+    test/test_sort.cpp)
 
-ENABLE_TESTING()
+enable_testing()
 
-INCLUDE_DIRECTORIES("src")
+include_directories(src)
 
-ADD_EXECUTABLE(ALGORITHM_TEST
-        ${ALGORITHM_SRC_FILES}
-        ${ALGORITHM_TEST_FILES})
+add_executable(ALGORITHM_TEST
+    ${ALGORITHM_SRC_FILES}
+    ${ALGORITHM_TEST_FILES})
 
-TARGET_LINK_LIBRARIES(ALGORITHM_TEST
-        /usr/local/lib/libgtest.a)
+target_link_libraries(ALGORITHM_TEST
+    ${PROJECT_SOURCE_DIR}/googletest/lib/libgtest.a)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp")

@@ -1,10 +1,10 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
-PROJECT(study-cpp CXX C)
+cmake_minimum_required(VERSION 3.10)
+project(study-cpp CXX C)
 
-SET(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-SET(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-INCLUDE_DIRECTORIES("/usr/local/include")
+include_directories(${PROJECT_SOURCE_DIR}/googletest/include)
 
-ADD_SUBDIRECTORY(algorithm)
+add_subdirectory(algorithm)

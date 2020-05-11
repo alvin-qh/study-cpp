@@ -23,7 +23,7 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
+# *.a
 *.lib
 
 # Executables
@@ -36,8 +36,3 @@
 build
 cmake-build-debug/
 .vscode
-
-CMakeCache.txt
-*.cmake
-CMakeFiles
-Makefile

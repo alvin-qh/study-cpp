@@ -28,7 +28,7 @@ void _shuffle(T *array, unsigned int size, unsigned int times = 100)
     srandom((unsigned int)time(nullptr));
 
     // 循环若干次
-    for (int n = 0; n < times; ++n)
+    for (unsigned int n = 0; n < times; ++n)
     {
         // 计算两个随机位置
         unsigned int i = (unsigned int)(random() % size);

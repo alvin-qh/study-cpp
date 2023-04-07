@@ -5,165 +5,184 @@
 #include <stdlib.h>
 #include "vector.h"
 
-#define ARRAY_SIZE(x) ((UInt)(sizeof(x) / sizeof(x[0])))
+#define ARRAY_SIZE(x) ((unsigned int)(sizeof(x) / sizeof(x[0])))
 
-TEST (VectorTest, IV_Init) {
-    I_VECTOR iv;
+TEST(test_vector, vector_init)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    EXPECT_EQ(iv.size, 0);
-    EXPECT_EQ(iv.capacity, VECTOR_INIT_CAP);
-    EXPECT_NE(iv.array, null);
+    EXPECT_EQ(v.size, 0);
+    EXPECT_EQ(v.capacity, VECTOR_INIT_CAP);
+    EXPECT_NE(v.array, nullptr);
 
-    IV_Free(&iv);
-    EXPECT_EQ(iv.size, 0);
-    EXPECT_EQ(iv.capacity, 0);
-    EXPECT_EQ(iv.array, null);
+    vector_free(v);
+
+    EXPECT_EQ(v.size, 0);
+    EXPECT_EQ(v.capacity, 0);
+    EXPECT_EQ(v.array, nullptr);
 }
 
-TEST(VectorTest, IV_Set_Rebuild) {
-    I_VECTOR iv;
-    const Int values[] = {1, 2, 3, 4, 5, 6};
+TEST(test_vector, vector_set_with_rebuild)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    const Void *p = iv.array;
+    const int *src_array = v.array;
 
-    IV_Set(&iv, values, ARRAY_SIZE(values));
-    EXPECT_EQ(iv.capacity, ARRAY_SIZE(values));
-    EXPECT_EQ(iv.size, ARRAY_SIZE(values));
+    int data[] = {1, 2, 3, 4, 5, 6};
+    vector_set(v, data, ARRAY_SIZE(data));
 
-    for (Int i = 0; i < iv.size; ++i) {
-        EXPECT_EQ(iv.array[i], values[i]);
+    EXPECT_EQ(v.capacity, ARRAY_SIZE(data));
+    EXPECT_EQ(v.size, ARRAY_SIZE(data));
+
+    for (unsigned int i = 0; i < v.size; i++)
+    {
+        EXPECT_EQ(v.array[i], data[i]);
     }
 
-    EXPECT_NE(iv.array, p);
+    EXPECT_NE(v.array, src_array);
 
-    IV_Free(&iv);
+    vector_free(v);
 }
 
-TEST(VectorTest, IV_Set_No_Rebuild) {
-    I_VECTOR iv;
-    const Int values[] = {1, 2, 3, 4};
+TEST(test_vector, vector_set_without_rebuild)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    const Void *p = iv.array;
+    const int *src_array = v.array;
 
-    IV_Set(&iv, values, ARRAY_SIZE(values));
-    EXPECT_EQ(iv.capacity, VECTOR_INIT_CAP);
-    EXPECT_EQ(iv.size, ARRAY_SIZE(values));
+    const int data[] = {1, 2, 3, 4};
+    vector_set(v, data, ARRAY_SIZE(data));
 
-    for (Int i = 0; i < iv.size; ++i) {
-        EXPECT_EQ(iv.array[i], values[i]);
+    EXPECT_EQ(v.capacity, VECTOR_INIT_CAP);
+    EXPECT_EQ(v.size, ARRAY_SIZE(data));
+
+    for (unsigned int i = 0; i < v.size; i++)
+    {
+        EXPECT_EQ(v.array[i], data[i]);
     }
 
-    EXPECT_EQ(iv.array, p);
+    EXPECT_EQ(v.array, src_array);
 
-    IV_Free(&iv);
+    vector_free(v);
 }
 
-TEST (VectorTest, IV_Add_Rebuild) {
-    I_VECTOR iv;
-    const Int values[] = {1, 2, 3, 4, 5, 6};
+TEST(test_vector, vector_add_with_rebuild)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    const Void *p = iv.array;
+    const int *src_array = v.array;
 
-    IV_Set(&iv, values, ARRAY_SIZE(values));
+    const int data[] = {1, 2, 3, 4, 5, 6};
+    vector_set(v, data, ARRAY_SIZE(data));
 
-    EXPECT_EQ(IV_Add(&iv, 7), ARRAY_SIZE(values) + 1);
+    EXPECT_EQ(vector_add(v, 7), ARRAY_SIZE(data) + 1);
 
-    EXPECT_EQ(iv.capacity, ARRAY_SIZE(values) + (UInt) ((ARRAY_SIZE(values) + 1) * 0.5));
-    EXPECT_EQ(iv.size, ARRAY_SIZE(values) + 1);
+    EXPECT_EQ(v.capacity, ARRAY_SIZE(data) + ((ARRAY_SIZE(data) + 1) / 2));
+    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
 
-    for (Int i = 0; i < iv.size; ++i) {
-        if (i < ARRAY_SIZE(values)) {
-            EXPECT_EQ(iv.array[i], values[i]);
-        } else {
-            EXPECT_EQ(iv.array[i], 7);
+    for (unsigned int i = 0; i < v.size; i++)
+    {
+        if (i < ARRAY_SIZE(data))
+        {
+            EXPECT_EQ(v.array[i], data[i]);
+        }
+        else
+        {
+            EXPECT_EQ(v.array[i], 7);
         }
     }
 
-    EXPECT_NE(iv.array, p);
+    EXPECT_NE(v.array, src_array);
 
-    IV_Free(&iv);
+    vector_free(v);
 }
 
-TEST (VectorTest, IV_Add_No_Rebuild) {
-    I_VECTOR iv;
+TEST(test_vector, vector_add_without_rebuild)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    const Void *p = iv.array;
+    const int *src_array = v.array;
 
-    EXPECT_EQ(IV_Add(&iv, 1), 1);
-    EXPECT_EQ(IV_Add(&iv, 2), 2);
+    EXPECT_EQ(vector_add(v, 1), 1);
+    EXPECT_EQ(vector_add(v, 2), 2);
 
-    EXPECT_EQ(iv.capacity, VECTOR_INIT_CAP);
-    EXPECT_EQ(iv.size, 2);
-    EXPECT_EQ(iv.array[0], 1);
-    EXPECT_EQ(iv.array[1], 2);
+    EXPECT_EQ(v.capacity, VECTOR_INIT_CAP);
+    EXPECT_EQ(v.size, 2);
+    EXPECT_EQ(v.array[0], 1);
+    EXPECT_EQ(v.array[1], 2);
 
-    EXPECT_EQ(iv.array, p);
+    EXPECT_EQ(v.array, src_array);
 
-    IV_Free(&iv);
+    vector_free(v);
 }
 
-TEST (VectorTest, IV_Append_Rebuild) {
-    I_VECTOR iv;
-    const Int values[] = {2, 3, 4, 5, 6, 7};
+TEST(test_vector, vector_append_with_rebuild)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    const Void *p = iv.array;
+    const int *src_array = v.array;
 
-    IV_Add(&iv, 1);
-    IV_Append(&iv, values, ARRAY_SIZE(values));
+    int data[] = {2, 3, 4, 5, 6, 7};
 
-    EXPECT_EQ(iv.size, ARRAY_SIZE(values) + 1);
-    EXPECT_EQ(iv.capacity, ARRAY_SIZE(values) + 1);
-    for (Int i = 0; i < iv.size; ++i) {
-        if (i == 0) {
-            EXPECT_EQ(iv.array[i], 1);
-        } else {
-            EXPECT_EQ(iv.array[i], values[i - 1]);
+    vector_add(v, 1);
+    vector_append(v, data, ARRAY_SIZE(data));
+
+    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
+    EXPECT_EQ(v.capacity, ARRAY_SIZE(data) + 1);
+
+    for (unsigned int i = 0; i < v.size; i++)
+    {
+        if (i == 0)
+        {
+            EXPECT_EQ(v.array[i], 1);
+        }
+        else
+        {
+            EXPECT_EQ(v.array[i], data[i - 1]);
         }
     }
 
-    EXPECT_NE(iv.array, p);
+    EXPECT_NE(v.array, src_array);
 
-    IV_Free(&iv);
+    vector_free(v);
 }
 
-TEST (VectorTest, IV_Append_No_Rebuild) {
-    I_VECTOR iv;
-    const Int values[] = {2, 3, 4, 5};
+TEST(test_vector, vector_append_without_rebuild)
+{
+    vector<int> v;
+    vector_init(v);
 
-    IV_Init(&iv);
-    const Void *p = iv.array;
+    const int *src_array = v.array;
 
-    IV_Add(&iv, 1);
-    IV_Append(&iv, values, ARRAY_SIZE(values));
+    int data[] = {2, 3, 4, 5};
 
-    EXPECT_EQ(iv.size, ARRAY_SIZE(values) + 1);
-    EXPECT_EQ(iv.capacity, ARRAY_SIZE(values) + 1);
-    for (Int i = 0; i < iv.size; ++i) {
-        if (i == 0) {
-            EXPECT_EQ(iv.array[i], 1);
-        } else {
-            EXPECT_EQ(iv.array[i], values[i - 1]);
+    vector_add(v, 1);
+    vector_append(v, data, ARRAY_SIZE(data));
+
+    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
+    EXPECT_EQ(v.capacity, ARRAY_SIZE(data) + 1);
+
+    for (unsigned int i = 0; i < v.size; i++)
+    {
+        if (i == 0)
+        {
+            EXPECT_EQ(v.array[i], 1);
+        }
+        else
+        {
+            EXPECT_EQ(v.array[i], data[i - 1]);
         }
     }
 
-    EXPECT_EQ(iv.array, p);
+    EXPECT_EQ(v.array, src_array);
 
-    IV_Free(&iv);
-}
-
-TEST (VectorTest, AA) {
-    int a = 1, b = 2;
-
-    a ^= b;
-    b ^= a;
-    a ^= b;
-    printf("%d, %d\n", a, b);
+    vector_free(v);
 }
 
 #pragma clang diagnostic pop

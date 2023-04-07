@@ -1,22 +1,25 @@
+cmake_minimum_required(VERSION 3.10)
 
-set(ALGORITHM_SRC_FILES
-    src/sort.cpp
-    src/vector.cpp)
+project(algorithm)
 
-set(ALGORITHM_TEST_FILES
+set(algorithm_src )
+
+set(algorithm_test_src
     test/test_main.cpp
     test/test_vector.cpp
     test/test_sort.cpp)
 
-enable_testing()
-
+include_directories(../vendor/googletest/googletest/include)
 include_directories(src)
 
-add_executable(ALGORITHM_TEST
-    ${ALGORITHM_SRC_FILES}
-    ${ALGORITHM_TEST_FILES})
+add_executable(algorithm_test
+    ${algorithm_src}
+    ${algorithm_test_src})
 
-target_link_libraries(ALGORITHM_TEST
-    ${PROJECT_SOURCE_DIR}/googletest/lib/libgtest.a)
+target_link_libraries(algorithm_test
+    PUBLIC gtest
+)
+
+enable_testing()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp")

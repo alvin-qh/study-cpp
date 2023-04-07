@@ -2,39 +2,52 @@
 #pragma ide diagnostic ignored "cert-err58-cpp"
 
 #include <gtest/gtest.h>
+
 #include <stdlib.h>
+#include <time.h>
+
 #include "sort.h"
 
-Void _I_Debug_Show(Int* array, UInt n) {
-    printf("[");
-    for (int i = 0; i < n; ++i) {
-        if (i > 0) {
-            printf(", ");
-        }
-        printf("%d", array[i]);
-    }
-    printf("]\n");
-}
-
-Void _I_FillNum(Int *array, UInt n) {
-    for (UInt i = 0; i < n; ++i) {
+void _fill(int *array, unsigned int n)
+{
+    for (unsigned int i = 0; i < n; ++i)
+    {
         array[i] = i + 1;
     }
 }
 
-Int _I_Comp(Int a, Int b) {
+int _compare(const int &a, const int &b)
+{
     return a - b;
 }
 
-TEST (SortTest, I_QuickSort) {
-    Int array[10];
-    _I_FillNum(array, 10);
+template <typename T>
+void _shuffle(T *array, unsigned int size, unsigned int times = 100)
+{
+    srandom((unsigned int)time(nullptr));
 
-    I_Shuffle(array, 10);
-    EXPECT_FALSE(I_IsSorted(array, 10, _I_Comp));
+    for (int n = 0; n < times; ++n)
+    {
+        unsigned int i = (unsigned int)(random() % size);
+        unsigned int j = (unsigned int)(random() % size);
 
-    I_QuickSort(array, 10, _I_Comp);
-    EXPECT_TRUE(I_IsSorted(array, 10, _I_Comp));
+        if (i != j)
+        {
+            _sort_swap(array, i, j);
+        }
+    }
+}
+
+TEST(test_sort, quick_sort)
+{
+    int array[10];
+    _fill(array, 10);
+
+    _shuffle(array, 10);
+    EXPECT_FALSE(is_sorted(array, 10, _compare));
+
+    quick_sort(array, 10, _compare);
+    EXPECT_TRUE(is_sorted(array, 10, _compare));
 }
 
 #pragma clang diagnostic pop

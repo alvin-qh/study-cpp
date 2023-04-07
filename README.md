@@ -6,7 +6,7 @@
 
 ### Install
 
-#### Download source code:
+#### Download source code
 
 [Download](https://github.com/google/googletest)
 
@@ -15,27 +15,27 @@
 In `googletest` folder:
 
 ```bash
-$ cp -a include/gtest /usr/local/include
+cp -a include/gtest /usr/local/include
 
-$ mkdir build
-$ cd build
+mkdir build
+cd build
 
-$ cmake ..
-$ make
-$ cp -a *.a /usr/local/lib 
+cmake ..
+make
+cp -a *.a /usr/local/lib 
 ```
 
 In `googlemock` folder:
 
 ```bash
-$ cp -a include/gmock /usr/local/include
+cp -a include/gmock /usr/local/include
 
-$ mkdir build
-$ cd build
+mkdir build
+cd build
 
-$ cmake ..
-$ make
-$ cp -a *.a /usr/local/lib 
+cmake ..
+make
+cp -a *.a /usr/local/lib 
 ```
 
 ### How to use

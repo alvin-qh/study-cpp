@@ -1,4 +1,4 @@
-# Study C and C++
+# C++
 
 ## CMakeList file
 

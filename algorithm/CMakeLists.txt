@@ -7,7 +7,11 @@ cmake_minimum_required(VERSION 3.10)
 project(algorithm)
 
 # 设置编译参数
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -W -O2")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -W -Wno-unknown-pragmas -O2")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -W -Wno-unknown-pragmas -O2")
+endif()
 
 # 设置项目源文件集变量
 # algorithm_src 是变量名, 可以任意

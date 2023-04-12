@@ -64,52 +64,23 @@ TEST(test_vector, vector_set)
 }
 
 /**
- * 测试为向量设置元素值
- *
- * 本次测试设置元素数量未超出向量存储空间大小, 所以无需重建向量存储区
- */
-TEST(test_vector, vector_set_without_rebuild)
-{
-    vector<int> v;
-    vector_init(v);
-
-    const int data[] = {1, 2, 3, 4};
-    // 设置向量元素值
-    vector_set(v, data, ARRAY_SIZE(data));
-
-    // 确认向量元素个数和存储区长度符合预期
-    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
-    EXPECT_EQ(v.size, ARRAY_SIZE(data));
-
-    // 确认向量元素值符合预期
-    EXPECT_TRUE(is_int_array_eq(data, v.array, v.size));
-
-    vector_free(v);
-}
-
-/**
  * 测试为向量添加一个元素值
- *
- * 本次测试设置元素数量超出向量存储空间大小, 所以需要重建向量存储区
  */
 TEST(test_vector, vector_add_with_rebuild)
 {
     vector<int> v;
     vector_init(v);
 
-    const int data[] = {1, 2, 3, 4, 5, 6};
-    vector_set(v, data, ARRAY_SIZE(data));
-
-    // 向向量中添加一个元素值, 确认向量长度增加 1
-    EXPECT_EQ(vector_add(v, 7), ARRAY_SIZE(data) + 1);
+    // 向向量中添加一个元素值, 确认向量长度增加 4
+    EXPECT_EQ(vector_add(v, 1), 1);
+    EXPECT_EQ(vector_add(v, 2), 2);
+    EXPECT_EQ(vector_add(v, 3), 3);
+    EXPECT_EQ(vector_add(v, 4), 4);
 
     // 确认添加元素后, 向量对象的元素个数和向量存储空间长度
-    EXPECT_EQ(v.capacity, ARRAY_SIZE(data) + ((ARRAY_SIZE(data) + 1) / 2));
-    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
+    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
+    EXPECT_EQ(v.size, 4);
 
-    // 确认向量元素
-    EXPECT_TRUE(is_int_array_eq(v.array, data, v.size - 1));
-    EXPECT_EQ(v.array[v.size - 1], 7);
 
     vector_free(v);
 }

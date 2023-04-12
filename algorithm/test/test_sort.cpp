@@ -8,8 +8,6 @@
 
 #include <gtest/gtest.h>
 
-#include <time.h>
-
 /**
  * 测试快速排序函数
  */

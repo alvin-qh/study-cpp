@@ -6,7 +6,7 @@
 #ifndef __ALGORITHM_TEST_H
 #define __ALGORITHM_TEST_H
 
-#include <stdlib.h>
+#include "common.h"
 
 /**
  * 对整数进行比较

@@ -34,8 +34,6 @@ TEST(test_vector, vector_init)
 
 /**
  * 测试为向量设置元素值
- *
- * 本次测试设置元素数量超出向量存储空间大小, 所以需要重建向量存储区
  */
 TEST(test_vector, vector_set)
 {
@@ -66,7 +64,7 @@ TEST(test_vector, vector_set)
 /**
  * 测试为向量添加一个元素值
  */
-TEST(test_vector, vector_add_with_rebuild)
+TEST(test_vector, vector_add)
 {
     vector<int> v;
     vector_init(v);
@@ -77,93 +75,60 @@ TEST(test_vector, vector_add_with_rebuild)
     EXPECT_EQ(vector_add(v, 3), 3);
     EXPECT_EQ(vector_add(v, 4), 4);
 
-    // 确认添加元素后, 向量对象的元素个数和向量存储空间长度
+    // 确认添加元素后, 向量对象的元素个数和向量存储空间长度, 未重建存储区
     EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
     EXPECT_EQ(v.size, 4);
 
+    // 继续向向量中添加一个元素值, 确认向量长度增加 4
+    EXPECT_EQ(vector_add(v, 5), 5);
+    EXPECT_EQ(vector_add(v, 6), 6);
+    EXPECT_EQ(vector_add(v, 7), 7);
+    EXPECT_EQ(vector_add(v, 8), 8);
 
-    vector_free(v);
-}
+    // 确认添加元素后, 向量对象的元素个数和向量存储空间长度, 已重建存储区
+    EXPECT_NE(v.capacity, DEFAULT_CAPACITY);
+    EXPECT_EQ(v.size, 8);
 
-/**
- * 测试为向量添加一个元素值
- *
- * 本次测试设置元素数量未超出向量存储空间大小, 所以无需重建向量存储区
- */
-TEST(test_vector, vector_add_without_rebuild)
-{
-    vector<int> v;
-    vector_init(v);
-
-    // 向向量中添加两个元素值, 确认向量长度增加 2
-    EXPECT_EQ(vector_add(v, 1), 1);
-    EXPECT_EQ(vector_add(v, 2), 2);
-
-    // 确认添加元素后, 向量的元素个数以及向量存储空间长度
-    EXPECT_EQ(v.size, 2);
-    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
-
-    // 确认向量中的元素值
+    // 确认向量中元素符合预期
     EXPECT_EQ(v.array[0], 1);
     EXPECT_EQ(v.array[1], 2);
+    EXPECT_EQ(v.array[2], 3);
+    EXPECT_EQ(v.array[3], 4);
+    EXPECT_EQ(v.array[4], 5);
+    EXPECT_EQ(v.array[5], 6);
+    EXPECT_EQ(v.array[6], 7);
+    EXPECT_EQ(v.array[7], 8);
 
     vector_free(v);
 }
 
 /**
  * 测试为向量追加一组元素值
- *
- * 本次测试设置元素数量超出了向量存储空间大小, 所以需要重建向量存储区
  */
-TEST(test_vector, vector_append_with_rebuild)
+TEST(test_vector, vector_append)
 {
     vector<int> v;
     vector_init(v);
 
-    int data[] = {2, 3, 4, 5, 6, 7};
+    int data[] = {1, 2, 3, 4};
 
-    // 向向量中添加一个元素
-    vector_add(v, 1);
-
-    // 向向量中追加一组元素值
+    // 向向量中追加一组元素值, 此次无须重建存储区
     vector_append(v, data, ARRAY_SIZE(data));
 
-    // 确认向量元素个数和向量存储空间长度
-    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
-    EXPECT_EQ(v.capacity, ARRAY_SIZE(data) + 1);
+    // 确认向量中包含的元素, 以及向量存储区未被重建
+    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
+    EXPECT_EQ(v.size, ARRAY_SIZE(data));
+    EXPECT_TRUE(is_int_array_eq(data, v.array, ARRAY_SIZE(data)));
 
-    // 确认向量的元素值
-    EXPECT_EQ(v.array[0], 1);
-    EXPECT_TRUE(is_int_array_eq(v.array + 1, data, v.size - 1));
+    int_array_fill(data, ARRAY_SIZE(data), 5);
 
-    vector_free(v);
-}
-
-/**
- * 测试为向量追加一组元素值
- *
- * 本次测试设置元素数量未超出向量存储空间大小, 所以无需重建向量存储区
- */
-TEST(test_vector, vector_append_without_rebuild)
-{
-    vector<int> v;
-    vector_init(v);
-
-    int data[] = {2, 3, 4, 5};
-
-    // 向向量中添加一个元素
-    vector_add(v, 1);
-
-    // 向向量中追加一组元素值
+    // 向向量中追加一组元素值, 此次需重建存储区
     vector_append(v, data, ARRAY_SIZE(data));
 
-    // 确认向量元素个数和向量存储空间长度
-    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
-    EXPECT_EQ(v.capacity, ARRAY_SIZE(data) + 1);
-
-    // 确认向量的元素值
-    EXPECT_EQ(v.array[0], 1);
-    EXPECT_TRUE(is_int_array_eq(v.array + 1, data, v.size - 1));
+    // 确认向量中包含的元素, 以及向量存储区被重建
+    EXPECT_NE(v.capacity, DEFAULT_CAPACITY);
+    EXPECT_EQ(v.size, ARRAY_SIZE(data) + 4);
+    EXPECT_TRUE(is_int_array_eq(data, v.array + 4, ARRAY_SIZE(data)));
 
     vector_free(v);
 }

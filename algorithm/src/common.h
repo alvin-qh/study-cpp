@@ -6,6 +6,7 @@
 #ifndef __ALGORITHM_COMMON_H
 #define __ALGORITHM_COMMON_H
 
+#include <sys/types.h>
 #include <stdlib.h>
 
 // 存储区初始大小常量

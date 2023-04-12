@@ -17,7 +17,7 @@
  *  - comp_ptr: 用于比较元素大小的函数指针
  */
 template <typename T>
-void quick_sort(T *array, unsigned int size, int (*comp_ptr)(const T &, const T &))
+void quick_sort(T *array, uint size, int (*comp_ptr)(const T &, const T &))
 {
     if (size <= 1)
         return;
@@ -26,7 +26,7 @@ void quick_sort(T *array, unsigned int size, int (*comp_ptr)(const T &, const T 
     _swap(&array[random() % size], &array[0]);
 
     // 以中间值为基准, 将数组元素分为两部分, 放在数组的前后
-    unsigned int i, j;
+    uint i, j;
     for (i = 1, j = 0; i < size; i++)
     {
         if (comp_ptr(array[0], array[i]) > 0)
@@ -55,14 +55,14 @@ void quick_sort(T *array, unsigned int size, int (*comp_ptr)(const T &, const T 
  *  数组是否有序
  */
 template <typename T>
-bool is_sorted(T *array, unsigned int size, int (*comp_ptr)(const T &, const T &))
+bool is_sorted(T *array, uint size, int (*comp_ptr)(const T &, const T &))
 {
     if (size <= 2)
         return true;
 
     // 计算数组前两个元素的顺序
     int r = 0;
-    for (unsigned int i = 1; r == 0 && i < size; i++)
+    for (uint i = 1; r == 0 && i < size; i++)
         r = comp_ptr(array[0], array[i]);
 
     // 如果数组元素都相等, 则返回有序
@@ -70,13 +70,12 @@ bool is_sorted(T *array, unsigned int size, int (*comp_ptr)(const T &, const T &
         return true;
 
     // 逐个检查数组中相邻元素, 且判断比较结果是否和前面的
-    for (unsigned int i = 1, j = 2; j < size; i++, j++)
+    for (uint i = 1, j = 2; j < size; i++, j++)
     {
         // 如果有两个元素的比较结果和之前不一致, 则认为数组无序
         if (comp_ptr(array[i], array[j]) != r)
             return false;
     }
-
     return true;
 }
 

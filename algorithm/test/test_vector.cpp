@@ -46,13 +46,19 @@ TEST(test_vector, vector_set)
     int data1[] = {1, 2, 3, 4};
     vector_set(v, data1, ARRAY_SIZE(data1));
 
-    // 确认向量元素个数和存储区长度符合预期
+    // 确认向量元素符合预期, 且未重建存储区
     EXPECT_EQ(v.size, ARRAY_SIZE(data1));
     EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
-    // 确认向量元素值符合预期
     EXPECT_TRUE(is_int_array_eq(data1, v.array, v.size));
 
-    // 
+    // 再次设置向量元素值
+    int data2[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    vector_set(v, data2, ARRAY_SIZE(data2));
+
+    // 确认向量元素符合预期, 且重建了存储区
+    EXPECT_EQ(v.size, ARRAY_SIZE(data2));
+    EXPECT_NE(v.capacity, DEFAULT_CAPACITY);
+    EXPECT_TRUE(is_int_array_eq(data2, v.array, v.size));
 
     vector_free(v);
 }

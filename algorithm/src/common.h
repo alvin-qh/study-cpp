@@ -12,10 +12,10 @@
 #define DEFAULT_CAPACITY 5
 
 // 计算存储区扩展长度
-#define NEW_CAPACITY(oc) ((unsigned int)((oc) + ((oc) + 1) / 2))
+#define NEW_CAPACITY(oc) ((uint)((oc) + ((oc) + 1) / 2))
 
 // 计算数组长度的宏
-#define ARRAY_SIZE(x) ((unsigned int)(sizeof(x) / sizeof((x)[0])))
+#define ARRAY_SIZE(x) ((uint)(sizeof(x) / sizeof((x)[0])))
 
 /**
  * 交换两个变量的值

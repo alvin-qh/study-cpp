@@ -3,33 +3,10 @@
 // 增加新的编译诊断指令, 对指定警告进行过滤
 #pragma clang diagnostic ignored "cert-err58-cpp"
 
-#include <gtest/gtest.h>
-
-#include <stdlib.h>
-
+#include "test.h"
 #include "vector.h"
 
-// 计算数组长度的宏
-#define ARRAY_SIZE(x) ((unsigned int)(sizeof(x) / sizeof((x)[0])))
-
-/**
- * 判断两个数组是否相等
- * 
- * Args:
- *  - left, right: 待比较的两个数组指针
- * 
- * Return:
- *  len: 要比较的数组长度
-*/
-bool is_array_eq(const int *left, const int *right, unsigned int len)
-{
-    while (len-- > 0)
-    {
-        if (*left++ != *right++)
-            return false;
-    }
-    return true;
-}
+#include <gtest/gtest.h>
 
 /**
  * 测试向量集合的初始化
@@ -43,7 +20,7 @@ TEST(test_vector, vector_init)
 
     // 确认初始化后向量集合的状态
     EXPECT_EQ(v.size, 0);
-    EXPECT_EQ(v.capacity, VECTOR_INIT_CAP);
+    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
     EXPECT_NE(v.array, nullptr);
 
     // 销毁向量集合对象
@@ -60,21 +37,22 @@ TEST(test_vector, vector_init)
  *
  * 本次测试设置元素数量超出向量存储空间大小, 所以需要重建向量存储区
  */
-TEST(test_vector, vector_set_with_rebuild)
+TEST(test_vector, vector_set)
 {
     vector<int> v;
     vector_init(v);
 
-    int data[] = {1, 2, 3, 4, 5, 6};
     // 设置向量元素值
-    vector_set(v, data, ARRAY_SIZE(data));
+    int data1[] = {1, 2, 3, 4};
+    vector_set(v, data1, ARRAY_SIZE(data1));
 
     // 确认向量元素个数和存储区长度符合预期
-    EXPECT_EQ(v.size, ARRAY_SIZE(data));
-    EXPECT_EQ(v.capacity, ARRAY_SIZE(data));
-
+    EXPECT_EQ(v.size, ARRAY_SIZE(data1));
+    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
     // 确认向量元素值符合预期
-    EXPECT_TRUE(is_array_eq(data, v.array, v.size));
+    EXPECT_TRUE(is_int_array_eq(data1, v.array, v.size));
+
+    // 
 
     vector_free(v);
 }
@@ -94,11 +72,11 @@ TEST(test_vector, vector_set_without_rebuild)
     vector_set(v, data, ARRAY_SIZE(data));
 
     // 确认向量元素个数和存储区长度符合预期
-    EXPECT_EQ(v.capacity, VECTOR_INIT_CAP);
+    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
     EXPECT_EQ(v.size, ARRAY_SIZE(data));
 
     // 确认向量元素值符合预期
-    EXPECT_TRUE(is_array_eq(data, v.array, v.size));
+    EXPECT_TRUE(is_int_array_eq(data, v.array, v.size));
 
     vector_free(v);
 }
@@ -124,7 +102,7 @@ TEST(test_vector, vector_add_with_rebuild)
     EXPECT_EQ(v.size, ARRAY_SIZE(data) + 1);
 
     // 确认向量元素
-    EXPECT_TRUE(is_array_eq(v.array, data, v.size - 1));
+    EXPECT_TRUE(is_int_array_eq(v.array, data, v.size - 1));
     EXPECT_EQ(v.array[v.size - 1], 7);
 
     vector_free(v);
@@ -146,7 +124,7 @@ TEST(test_vector, vector_add_without_rebuild)
 
     // 确认添加元素后, 向量的元素个数以及向量存储空间长度
     EXPECT_EQ(v.size, 2);
-    EXPECT_EQ(v.capacity, VECTOR_INIT_CAP);
+    EXPECT_EQ(v.capacity, DEFAULT_CAPACITY);
 
     // 确认向量中的元素值
     EXPECT_EQ(v.array[0], 1);
@@ -179,7 +157,7 @@ TEST(test_vector, vector_append_with_rebuild)
 
     // 确认向量的元素值
     EXPECT_EQ(v.array[0], 1);
-    EXPECT_TRUE(is_array_eq(v.array + 1, data, v.size - 1));
+    EXPECT_TRUE(is_int_array_eq(v.array + 1, data, v.size - 1));
 
     vector_free(v);
 }
@@ -208,7 +186,7 @@ TEST(test_vector, vector_append_without_rebuild)
 
     // 确认向量的元素值
     EXPECT_EQ(v.array[0], 1);
-    EXPECT_TRUE(is_array_eq(v.array + 1, data, v.size - 1));
+    EXPECT_TRUE(is_int_array_eq(v.array + 1, data, v.size - 1));
 
     vector_free(v);
 }

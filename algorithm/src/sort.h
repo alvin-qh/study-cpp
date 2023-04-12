@@ -9,25 +9,6 @@
 #include "common.h"
 
 /**
- * 交换数组中指定两个位置的元素值
- *
- * Args:
- *  - array: 要交换元素值的数组指针
- *  - i, j: 要交换元素所在数组中的索引
- */
-template <typename T>
-void _sort_swap(T *array, unsigned int i, unsigned int j)
-{
-    // 如果两个索引位置元素不相等, 则进行交换
-    if (array[i] != array[j])
-    {
-        T tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-    }
-}
-
-/**
  * 对指定数组进行快速排序
  *
  * Args:
@@ -42,18 +23,18 @@ void quick_sort(T *array, unsigned int size, int (*comp_ptr)(const T &, const T 
         return;
 
     // 将数组第一个元素和数组中任意一个元素交换, 作为快排的中间值
-    _sort_swap(array, random() % size, 0);
+    _swap(&array[random() % size], &array[0]);
 
     // 以中间值为基准, 将数组元素分为两部分, 放在数组的前后
     unsigned int i, j;
     for (i = 1, j = 0; i < size; i++)
     {
         if (comp_ptr(array[0], array[i]) > 0)
-            _sort_swap(array, ++j, i);
+            _swap(&array[++j], &array[i]);
     }
 
     // 将中间值放在其正确位置
-    _sort_swap(array, 0, j);
+    _swap(&array[0], &array[j]);
 
     // 对左半部分数组再次进行排序
     quick_sort(array, j, comp_ptr);

@@ -7,7 +7,7 @@ charset = utf-8
 trim_trailing_whitespace = false
 insert_final_newline = false
 
-[*.{c, cpp, cxx, h, hpp, hxx}]
+[*.{c,cpp,cxx,h,hpp,hxx}]
 indent_style = tab
 trim_trailing_whitespace = true
 insert_final_newline = true

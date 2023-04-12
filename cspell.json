@@ -8,7 +8,9 @@
     "googlemock",
     "googletest",
     "gtest",
-    "libgtest"
+    "libgtest",
+    "shiftdown",
+    "shiftup"
   ],
   "flagWords": [],
   "enabled": true

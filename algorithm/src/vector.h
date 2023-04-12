@@ -55,7 +55,7 @@ template <typename T>
 void vector_free(vector<T> &v)
 {
     // 释放存储区内存
-    _array_free(v.array, v.size);
+    _array_free(v.array, v.capacity);
 
     v.array = nullptr;
     v.size = v.capacity = 0;
@@ -79,7 +79,7 @@ void vector_set(vector<T> &v, const T *data, uint len)
     if (v.capacity < len)
     {
         // 释放数组
-        _array_free(v.array, v.size);
+        _array_free(v.array, v.capacity);
 
         // 重新分配数组
         v.array = _array_alloc(len, T());
@@ -89,6 +89,31 @@ void vector_set(vector<T> &v, const T *data, uint len)
     // 将 data 数组元素复制到向量存储区
     _array_copy(data, v.array, len);
     v.size = len;
+}
+
+/**
+ * 重建向量存储区
+ *
+ * Args:
+ *  - array: 数组指针
+ *  - size: 数组中有效元素个数
+ *  - new_size: 数组新长度
+ */
+template <typename T>
+void _vector_rebuild(vector<T> &v, uint new_capacity)
+{
+    // 为存储区分配内存空间
+    T *new_array = _array_alloc(new_capacity, T());
+
+    // 将向量原存储区内容复制到新内存空间中
+    _array_copy(v.array, new_array, v.size);
+
+    // 释放向量原存储空间
+    _array_free(v.array, v.capacity);
+
+    // 重设向量存储区
+    v.array = new_array;
+    v.capacity = new_capacity;
 }
 
 /**
@@ -106,10 +131,7 @@ uint vector_add(vector<T> &v, const T &value)
 {
     // 如果向量存储区长度不够, 则重建向量存储区
     if (v.size >= v.capacity)
-    {
-        v.capacity = NEW_CAPACITY(v.capacity);
-        v.array = _array_rebuild(v.array, v.size, v.capacity);
-    }
+        _vector_rebuild(v, NEW_CAPACITY(v.capacity));
 
     // 在存储区末尾添加新元素值
     v.array[v.size++] = value;
@@ -132,10 +154,7 @@ uint vector_append(vector<T> &v, const T *data, uint len)
 {
     // 判断空余空间是否足够存放, 如果不够则需重建存储空间
     if (v.capacity - v.size < len)
-    {
-        v.capacity = v.size + len;
-        v.array = _array_rebuild(v.array, v.size, v.capacity);
-    }
+        _vector_rebuild(v, v.size + len);
 
     // 将数组内容复制到向量存储区中
     _array_copy(data, v.array + v.size, len);

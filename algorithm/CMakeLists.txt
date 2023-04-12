@@ -25,6 +25,7 @@ set(algorithm_test_src
     test/test.cpp
     test/test_vector.cpp
     test/test_sort.cpp
+    test/test_heap.cpp
     test/test_main.cpp)
     
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置

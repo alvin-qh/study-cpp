@@ -97,27 +97,4 @@ T *_array_alloc(uint size, const T &default_value)
     return array;
 }
 
-/**
- * 重建向量存储区
- *
- * Args:
- *  - array: 数组指针
- *  - size: 数组中有效元素个数
- *  - new_capacity: 数组新长度
- */
-template <typename T>
-T *_array_rebuild(T *array, uint size, uint new_capacity)
-{
-    // 为存储区分配内存空间
-    T *new_array = _array_alloc(new_capacity, T());
-
-    // 将向量原存储区内容复制到新内存空间中
-    _array_copy(array, new_array, size);
-
-    // 释放向量原存储空间
-    _array_free(array, size);
-
-    return new_array;
-}
-
 #endif // __ALGORITHM_COMMON_H

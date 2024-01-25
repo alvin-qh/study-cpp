@@ -15,7 +15,7 @@ endif()
 
 # 设置项目源文件集变量
 # algorithm_src 是变量名, 可以任意
-set(algorithm_src 
+set(algorithm_src
     # no source file at present
 )
 
@@ -27,7 +27,7 @@ set(algorithm_test_src
     test/test_sort.cpp
     test/test_heap.cpp
     test/test_main.cpp)
-    
+
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 include_directories(src)
 include_directories(${PROJECT_SOURCE_DIR}/vendor/googletest/googletest/include)

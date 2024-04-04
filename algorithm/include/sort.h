@@ -12,25 +12,21 @@
  * 对指定数组进行快速排序
  *
  * Args:
- *  - array: 要排序的数组指针
- *  - size: 数组长度
- *  - comp_ptr: 用于比较元素大小的函数指针
+ *  - `array`: 要排序的数组指针
+ *  - `size`: 数组长度
+ *  - `comp_ptr`: 用于比较元素大小的函数指针
  */
 template <typename T>
-void quick_sort(T *array, uint size, int (*comp_ptr)(const T &, const T &))
-{
-    if (size <= 1)
-        return;
+void quick_sort(T *array, uint size, int (*comp_ptr)(const T &, const T &)) {
+    if (size <= 1) return;
 
     // 将数组第一个元素和数组中任意一个元素交换, 作为快排的中间值
     _swap(&array[random() % size], &array[0]);
 
     // 以中间值为基准, 将数组元素分为两部分, 放在数组的前后
     uint i, j;
-    for (i = 1, j = 0; i < size; i++)
-    {
-        if (comp_ptr(array[0], array[i]) > 0)
-            _swap(&array[++j], &array[i]);
+    for (i = 1, j = 0; i < size; i++) {
+        if (comp_ptr(array[0], array[i]) > 0) _swap(&array[++j], &array[i]);
     }
 
     // 将中间值放在其正确位置
@@ -47,34 +43,28 @@ void quick_sort(T *array, uint size, int (*comp_ptr)(const T &, const T &))
  * 检查数组是否有序
  *
  * Args:
- *  - array: 要检查的数组指针
- *  - size: 数组长度
- *  - comp_ptr: 用于比较元素大小的函数指针
+ *  - `array`: 要检查的数组指针
+ *  - `size`: 数组长度
+ *  - `comp_ptr`: 用于比较元素大小的函数指针
  *
  * Return:
- *  数组是否有序
+ *  - 数组是否有序
  */
 template <typename T>
-bool is_sorted(T *array, uint size, int (*comp_ptr)(const T &, const T &))
-{
-    if (size <= 2)
-        return true;
+bool is_sorted(T *array, uint size, int (*comp_ptr)(const T &, const T &)) {
+    if (size <= 2) return true;
 
     // 计算数组前两个元素的顺序
     int r = 0;
-    for (uint i = 1; r == 0 && i < size; i++)
-        r = comp_ptr(array[0], array[i]);
+    for (uint i = 1; r == 0 && i < size; i++) r = comp_ptr(array[0], array[i]);
 
     // 如果数组元素都相等, 则返回有序
-    if (r == 0)
-        return true;
+    if (r == 0) return true;
 
     // 逐个检查数组中相邻元素, 且判断比较结果是否和前面的
-    for (uint i = 1, j = 2; j < size; i++, j++)
-    {
+    for (uint i = 1, j = 2; j < size; i++, j++) {
         // 如果有两个元素的比较结果和之前不一致, 则认为数组无序
-        if (comp_ptr(array[i], array[j]) != r)
-            return false;
+        if (comp_ptr(array[i], array[j]) != r) return false;
     }
     return true;
 }

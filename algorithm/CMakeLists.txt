@@ -29,7 +29,7 @@ set(algorithm_test_src
     test/test_main.cpp)
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
-include_directories(src)
+include_directories(include)
 include_directories(${PROJECT_SOURCE_DIR}/vendor/googletest/googletest/include)
 
 # 设置生成的执行文件
@@ -52,3 +52,6 @@ add_test(
     NAME algorithm_test
     COMMAND $<TARGET_FILE:algorithm_test>
 )
+
+include(GoogleTest)
+gtest_discover_tests(algorithm_test)

@@ -9,8 +9,10 @@
     "googletest",
     "gtest",
     "libgtest",
+    "NUMSYS",
     "shiftdown",
-    "shiftup"
+    "shiftup",
+    "STREQ"
   ],
   "flagWords": [],
   "enabled": true

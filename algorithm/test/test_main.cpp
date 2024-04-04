@@ -3,8 +3,7 @@
 /**
  * 主函数, 执行 gtest 测试套件
  */
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // 初始化测试套件
     testing::InitGoogleTest(&argc, argv);
 

@@ -11,8 +11,7 @@
 /**
  * 测试向量集合的初始化
  */
-TEST(test_vector, vector_init)
-{
+TEST(test_vector, vector_init) {
     vector<int> v;
 
     // 初始化向量集合对象
@@ -35,8 +34,7 @@ TEST(test_vector, vector_init)
 /**
  * 测试为向量设置元素值
  */
-TEST(test_vector, vector_set)
-{
+TEST(test_vector, vector_set) {
     vector<int> v;
     vector_init(v);
 
@@ -64,8 +62,7 @@ TEST(test_vector, vector_set)
 /**
  * 测试为向量添加一个元素值
  */
-TEST(test_vector, vector_add)
-{
+TEST(test_vector, vector_add) {
     vector<int> v;
     vector_init(v);
 
@@ -105,8 +102,7 @@ TEST(test_vector, vector_add)
 /**
  * 测试为向量追加一组元素值
  */
-TEST(test_vector, vector_append)
-{
+TEST(test_vector, vector_append) {
     vector<int> v;
     vector_init(v);
 

@@ -1,17 +1,7 @@
 # 数据转换子目录
 
-# 设置支持的 CMake 最低版本
-cmake_minimum_required(VERSION 3.10)
-
 # 设置子项目名称
 project(convert)
-
-# 设置编译参数
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -W -Wno-unknown-pragmas -O2")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -W -Wno-unknown-pragmas -O2")
-endif()
 
 # 设置项目源文件集变量
 set(convert_src

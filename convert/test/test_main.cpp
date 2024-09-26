@@ -1,12 +1,21 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "cert-err58-cpp"
+
 #include <gtest/gtest.h>
 
 /**
  * 主函数, 执行 gtest 测试套件
  */
-int main(int argc, char *argv[]) {
-    // 初始化测试套件
-    testing::InitGoogleTest(&argc, argv);
+int main(int argc, char* argv[]) {
+	// 初始化测试套件
+	testing::InitGoogleTest(&argc, argv);
 
-    // 执行所有测试
-    return RUN_ALL_TESTS();
+	// 执行所有测试
+	return RUN_ALL_TESTS();
 }
+
+namespace conv {
+
+} // ! namespace conv
+
+#pragma clang diagnostic pop

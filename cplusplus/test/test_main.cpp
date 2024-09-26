@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "cert-err58-cpp"
+
 #include <gtest/gtest.h>
 #include <cmath>
 
@@ -6,18 +9,26 @@
 /**
  * 主函数, 执行 gtest 测试套件
  */
-int main(int argc, char *argv[]) {
-    // 初始化测试套件
-    testing::InitGoogleTest(&argc, argv);
+int main(int argc, char* argv[]) {
+	// 初始化测试套件
+	testing::InitGoogleTest(&argc, argv);
 
-    // 执行所有测试
-    return RUN_ALL_TESTS();
+	// 执行所有测试
+	return RUN_ALL_TESTS();
 }
 
-/**
- * 对浮点数进行四舍五入
- */
-int number_to_fixed(double n, uint fixed) {
-	double fn = pow(10, fixed);
-	return n * fn / fn;
+namespace cpp {
+	/**
+	 * 对浮点数进行四舍五入
+	*/
+	double number_to_fixed(double n, uint fixed) {
+		uint p = pow(10, fixed);
+		if (n > 0) {
+			return round(n * p) / p;
+		}
+		return -round(-n * p) / p;
+	}
+
 }
+
+#pragma clang diagnostic pop

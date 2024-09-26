@@ -8,6 +8,8 @@
 
 #include "common.h"
 
+namespace alg {
+
 /**
  * 对整数进行比较
  *
@@ -57,5 +59,7 @@ int *int_array_shuffle(int *array, uint size, int start = 1, uint times = 100);
  *  - 数组是否相等
  */
 bool is_int_array_eq(const int *left, const int *right, uint len);
+
+} // namespace alg
 
 #endif // __ALGORITHM_TEST_H

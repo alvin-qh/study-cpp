@@ -11,6 +11,8 @@
 #include <memory.h>
 #include <stdio.h>
 
+namespace alg {
+
 /**
  * 定义堆结构体
  */
@@ -203,5 +205,7 @@ T heap_poll(heap<T> &h) {
 
     return ret;
 }
+
+} // namespace alg
 
 #endif // __ALGORITHM_HEAP_H

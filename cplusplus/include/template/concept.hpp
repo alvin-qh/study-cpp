@@ -6,9 +6,11 @@
 #include <type_traits>
 
 namespace cpp {
+	using namespace std;
+
 	// 定义数值类型泛型参数
 	template<typename T>
-	concept NumberType = std::is_arithmetic<T>::value;
+	concept NumberType = is_arithmetic<T>::value;
 
 	/**
 	 * 使用 `NumberType` 定义泛型参数, 只接收数值类型参数

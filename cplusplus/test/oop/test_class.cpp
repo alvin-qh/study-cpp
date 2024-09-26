@@ -1,7 +1,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "cert-err58-cpp"
 
-#include "template/concept.hpp"
+#include "oop/class.hpp"
 
 #include <gtest/gtest.h>
 #include "../test.h"
@@ -14,12 +14,11 @@ using namespace cpp;
  * `template/concept.hpp` 中的 `add` 函数的泛型参数 `T` 只接收数值类型参数,
  * 非数值类型参数将会导致编译错误
  */
-TEST(test_cplusplus_template_func, add) {
-	EXPECT_EQ(3, add(1, 2));
-	EXPECT_EQ(3.3, number_to_fixed(add(1.1, 2.2), 2));
-
-	// `add` 函数不支持非数值类型参数
-	// EXPECT_EQ("Hello World", add(string("Hello "), string("World")));
+TEST(test_cplusplus_oop_class, create_instance) {
+	Vector3D v(0.1, 0.2, 0.3);
+	ASSERT_EQ(0.1, v.x());
+	ASSERT_EQ(0.2, v.y());
+	ASSERT_EQ(0.3, v.z());
 }
 
 #pragma clang diagnostic pop

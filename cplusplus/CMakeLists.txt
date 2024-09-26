@@ -6,13 +6,13 @@ project(cplusplus)
 # 设置项目源文件集变量
 # cplusplus_src 是变量名, 可以任意
 set(cplusplus_src
-    # no source file at present
-)
+    src/oop/class.cpp)
 
 # 设置测试源文件集变量
 # cplusplus_test_src 是变量名, 可以任意
 set(cplusplus_test_src
     test/test_main.cpp
+    test/oop/test_class.cpp
     test/template/test_func.cpp)
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置

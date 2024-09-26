@@ -6,6 +6,8 @@
 
 #include <gtest/gtest.h>
 
+using namespace alg;
+
 /**
  * 测试快速排序函数
  */
@@ -14,12 +16,12 @@ TEST(test_algorithm_sort, quick_sort) {
 	int array[10];
 
 	// 对数组进行乱序, 确认此时数组元素无序
-	alg::int_array_shuffle(array, 10);
-	EXPECT_FALSE(alg::is_sorted(array, ARRAY_SIZE(array), &alg::int_compare));
+	int_array_shuffle(array, 10);
+	EXPECT_FALSE(is_sorted(array, ARRAY_SIZE(array), &int_compare));
 
 	// 进行快速排序, 确认排序完成后数组有序
-	alg::quick_sort(array, 10, &alg::int_compare);
-	EXPECT_TRUE(alg::is_sorted(array, ARRAY_SIZE(array), &alg::int_compare));
+	quick_sort(array, 10, &int_compare);
+	EXPECT_TRUE(is_sorted(array, ARRAY_SIZE(array), &int_compare));
 	EXPECT_LE(array[0], array[ARRAY_SIZE(array) - 1]);
 }
 

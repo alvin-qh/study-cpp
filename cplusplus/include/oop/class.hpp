@@ -29,6 +29,11 @@ namespace cpp {
 		Vector2D(const Vector2D& o);
 
 		/// @brief 析构函数
+		///
+		/// 析构函数一般声明为 `virtual`,
+		/// 表示其为一个虚函数,
+		/// 这样当前类的子类的析构函数调用时,
+		/// 也会调用父类的析构函数
 		virtual ~Vector2D();
 
 		/// @brief 重载赋值运算符
@@ -36,6 +41,12 @@ namespace cpp {
 		/// @param o 另一个同类型对象
 		/// @return 当前对象的引用
 		Vector2D& operator=(const Vector2D& o);
+
+		/// @brief 重载判等运算符
+		///
+		/// @param o 另一个同类型对象
+		/// @return 两个对象是否相同
+		bool operator==(const Vector2D& o) const;
 
 		/// @brief 设置析构数量记录变量指针
 		///
@@ -66,7 +77,7 @@ namespace cpp {
 		/// @brief 计算向量长度
 		///
 		/// @return 向量长度
-		double length() const;
+		virtual double length() const;
 	};
 
 	/// @brief 定义 3D 向量类
@@ -97,6 +108,23 @@ namespace cpp {
 		/// @return 当前对象的引用
 		Vector3D& operator=(const Vector3D& o);
 
+		/// @brief 重载判等运算符
+		///
+		/// @param o 另一个同类型对象
+		/// @return 两个对象是否相同
+		bool operator==(const Vector3D& o) const;
+		inline bool operator==(const Vector2D& o) const { return false; }
+
+		/// @brief 重新设置成员变量的值
+		///
+		/// @param x `x` 坐标值
+		/// @param y `y` 坐标值
+		/// @param z `z` 坐标值
+		inline void set(double x, double y, double z) {
+			Vector2D::set(x, y);
+			_z = z;
+		}
+
 		/// @brief 获取 `_z` 字段值
 		///
 		/// @return `z` 坐标的值
@@ -105,7 +133,7 @@ namespace cpp {
 		/// @brief 计算向量长度
 		///
 		/// @return 向量长度
-		double length() const;
+		virtual double length() const override;
 	};
 } // ! namespace cpp
 

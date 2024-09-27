@@ -39,6 +39,13 @@ namespace cpp {
 		return *this;
 	}
 
+	bool Vector2D::operator==(const Vector2D& o) const {
+		if (this == &o) {
+			return true;
+		}
+		return _x == o._x && _y == o._y;
+	}
+
 	double Vector2D::length() const {
 		return sqrt(_x * _x + _y * _y);
 	}
@@ -54,16 +61,23 @@ namespace cpp {
 	Vector3D::Vector3D(const Vector3D& o)
 		: Vector2D(o), _z(o._z) {}
 
+	Vector3D::~Vector3D() {
+		if (__destroy_count) {
+			*__destroy_count += 1;
+		}
+	}
+
 	Vector3D& Vector3D::operator=(const Vector3D& o) {
 		Vector2D::operator=(o);
 		_z = o._z;
 		return *this;
 	}
 
-	Vector3D::~Vector3D() {
-		if (__destroy_count) {
-			*__destroy_count += 1;
+	bool Vector3D::operator==(const Vector3D& o) const {
+		if (!Vector2D::operator==(o)) {
+			return false;
 		}
+		return _z == o._z;
 	}
 
 	double Vector3D::length() const {

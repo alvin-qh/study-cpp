@@ -1,6 +1,4 @@
-/**
- * 排序算法演示
- */
+/// 排序算法演示
 #pragma once
 
 #ifndef __ALGORITHM_SORT_H
@@ -9,14 +7,12 @@
 #include "common.h"
 
 namespace alg {
-	/**
-	 * 对指定数组进行快速排序
-	 *
-	 * Args:
-	 *  - `array`: 要排序的数组指针
-	 *  - `size`: 数组长度
-	 *  - `comp_ptr`: 用于比较元素大小的函数指针
-	 */
+	/// @brief 对指定数组进行快速排序
+	///
+	/// @tparam T
+	/// @param array 要排序的数组指针
+	/// @param size 数组长度
+	/// @param comp_ptr 用于比较元素大小的函数指针
 	template <typename T>
 	void quick_sort(T* array, uint size, int (*comp_ptr)(const T&, const T&)) {
 		if (size <= 1) return;
@@ -40,17 +36,13 @@ namespace alg {
 		quick_sort(array + j + 1, size - j - 1, comp_ptr);
 	}
 
-	/**
-	 * 检查数组是否有序
-	 *
-	 * Args:
-	 *  - `array`: 要检查的数组指针
-	 *  - `size`: 数组长度
-	 *  - `comp_ptr`: 用于比较元素大小的函数指针
-	 *
-	 * Return:
-	 *  - 数组是否有序
-	 */
+	/// @brief 检查数组是否有序
+	///
+	/// @tparam T
+	/// @param array 要检查的数组指针
+	/// @param size 数组长度
+	/// @param comp_ptr 用于比较元素大小的函数指针
+	/// @return 数组是否有序
 	template <typename T>
 	bool is_sorted(T* array, uint size, int (*comp_ptr)(const T&, const T&)) {
 		if (size <= 2) return true;

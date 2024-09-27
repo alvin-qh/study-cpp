@@ -6,16 +6,13 @@
 #include <gtest/gtest.h>
 #include "../test.h"
 
+#define TEST_SUITE_NAME test_cplusplus_template_func
+
 using namespace std;
 using namespace cpp;
 
-/**
- * 测试泛型函数
- *
- * `template/func.hpp` 中的 `add` 函数的泛型参数 `T` 可为任意类型,
- * 该函数返回两个 `T` 类型参数的和
- */
-TEST(test_cplusplus_template_func, add) {
+/// @brief 测试泛型函数
+TEST(TEST_SUITE_NAME, add) {
 	// int 类型
 	EXPECT_EQ(3, add(1, 2));
 

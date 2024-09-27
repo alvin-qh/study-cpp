@@ -6,9 +6,7 @@
 
 #include "test.h"
 
-/**
- * 主函数, 执行 gtest 测试套件
- */
+/// @brief 主函数, 执行 gtest 测试套件
 int main(int argc, char* argv[]) {
 	// 初始化测试套件
 	testing::InitGoogleTest(&argc, argv);
@@ -18,9 +16,6 @@ int main(int argc, char* argv[]) {
 }
 
 namespace cpp {
-	/**
-	 * 对浮点数进行四舍五入
-	*/
 	double number_to_fixed(double n, uint fixed) {
 		uint p = pow(10, fixed);
 		if (n > 0) {
@@ -28,7 +23,6 @@ namespace cpp {
 		}
 		return -round(-n * p) / p;
 	}
-
-}
+} // ! namespace cpp
 
 #pragma clang diagnostic pop

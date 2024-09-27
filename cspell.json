@@ -12,7 +12,8 @@
     "NUMSYS",
     "shiftdown",
     "shiftup",
-    "STREQ"
+    "STREQ",
+    "tparam"
   ],
   "flagWords": [],
   "enabled": true

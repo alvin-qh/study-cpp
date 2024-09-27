@@ -1,28 +1,73 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "cert-err58-cpp"
 
+#include <cmath>
 #include "oop/class.hpp"
 
 namespace cpp {
-	Vector3D::Vector3D() {
+	/// Vector2D implement
+
+	Vector2D::Vector2D()
+		: _x(0), _y(0), __destroy_count(nullptr) {}
+
+	Vector2D::Vector2D(double x, double y)
+		: _x(x), _y(y), __destroy_count(nullptr) {
+		// 另一种形式的成员变量赋值
+		// _x = x;
+		// _y = y;
 	}
 
-	Vector3D::Vector3D(double x, double y, double z) {
-		this->_x = x;
-		this->_y = y;
-		this->_z = z;
+	// 在拷贝构造器中调用参数构造器
+	Vector2D::Vector2D(const Vector2D& o)
+		: Vector2D(o._x, o._y) {
+		if (__destroy_count) {
+			*__destroy_count += 1;
+		}
 	}
 
-	double Vector3D::x() const {
-		return this->_x;
+	Vector2D::~Vector2D() {
+		if (__destroy_count) {
+			*__destroy_count += 1;
+		}
 	}
 
-	double Vector3D::y() const {
-		return this->_y;
+	Vector2D& Vector2D::operator=(const Vector2D& o) {
+		if (this != &o) {
+			_x = o._x;
+			_y = o._y;
+		}
+		return *this;
 	}
 
-	double Vector3D::z() const {
-		return this->_z;
+	double Vector2D::length() const {
+		return sqrt(_x * _x + _y * _y);
+	}
+
+	/// Vector3D implement
+
+	Vector3D::Vector3D()
+		:Vector2D(), _z(0) {}
+
+	Vector3D::Vector3D(double x, double y, double z)
+		: Vector2D(x, y), _z(z) {}
+
+	Vector3D::Vector3D(const Vector3D& o)
+		: Vector2D(o), _z(o._z) {}
+
+	Vector3D& Vector3D::operator=(const Vector3D& o) {
+		Vector2D::operator=(o);
+		_z = o._z;
+		return *this;
+	}
+
+	Vector3D::~Vector3D() {
+		if (__destroy_count) {
+			*__destroy_count += 1;
+		}
+	}
+
+	double Vector3D::length() const {
+		return sqrt(_x * _x + _y * _y + _z * _z);
 	}
 } // ! namespace cpp
 

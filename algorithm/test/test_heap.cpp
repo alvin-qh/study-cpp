@@ -6,12 +6,12 @@
 
 #include <gtest/gtest.h>
 
+#define TEST_SUITE_NAME test_algorithm_heap
+
 using namespace alg;
 
-/**
- * 测试堆的初始化
- */
-TEST(test_heap, heap_init) {
+/// @brief 测试堆的初始化
+TEST(TEST_SUITE_NAME, heap_init) {
 	heap<int> h;
 
 	// 初始化堆对象
@@ -34,10 +34,8 @@ TEST(test_heap, heap_init) {
 	EXPECT_EQ(h.comp_ptr, nullptr);
 }
 
-/**
- * 测试堆元素的存入和取出
- */
-TEST(test_algorithm_heap, heap_offer) {
+/// @brief 测试堆元素的存入和取出
+TEST(TEST_SUITE_NAME, heap_offer) {
 	heap<int> h;
 	heap_init(h, &int_compare);
 

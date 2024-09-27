@@ -1,17 +1,17 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "cert-err58-cpp"
 
+#include <gtest/gtest.h>
+
 #include "test.h"
 #include "vector.h"
 
-#include <gtest/gtest.h>
+#define TEST_SUITE_NAME test_algorithm_vector
 
 using namespace alg;
 
-/**
- * 测试向量集合的初始化
- */
-TEST(test_algorithm_vector, vector_init) {
+/// @brief 测试向量集合的初始化
+TEST(TEST_SUITE_NAME, vector_init) {
 	vector<int> v;
 
 	// 初始化向量集合对象
@@ -31,10 +31,8 @@ TEST(test_algorithm_vector, vector_init) {
 	EXPECT_EQ(v.array, nullptr);
 }
 
-/**
- * 测试为向量设置元素值
- */
-TEST(test_algorithm_vector, vector_set) {
+/// @brief 测试为向量设置元素值
+TEST(TEST_SUITE_NAME, vector_set) {
 	vector<int> v;
 	vector_init(v);
 
@@ -59,10 +57,8 @@ TEST(test_algorithm_vector, vector_set) {
 	vector_free(v);
 }
 
-/**
- * 测试为向量添加一个元素值
- */
-TEST(test_algorithm_vector, vector_add) {
+/// @brief 测试为向量添加一个元素值
+TEST(TEST_SUITE_NAME, vector_add) {
 	vector<int> v;
 	vector_init(v);
 
@@ -99,10 +95,8 @@ TEST(test_algorithm_vector, vector_add) {
 	vector_free(v);
 }
 
-/**
- * 测试为向量追加一组元素值
- */
-TEST(test_algorithm_algorithm_vector, vector_append) {
+/// @brief 测试为向量追加一组元素值
+TEST(TEST_SUITE_NAME, vector_append) {
 	vector<int> v;
 	vector_init(v);
 

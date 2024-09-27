@@ -1,17 +1,17 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "cert-err58-cpp"
 
+#include <gtest/gtest.h>
+
 #include "sort.h"
 #include "test.h"
 
-#include <gtest/gtest.h>
+#define TEST_SUITE_NAME test_algorithm_sort
 
 using namespace alg;
 
-/**
- * 测试快速排序函数
- */
-TEST(test_algorithm_sort, quick_sort) {
+/// @brief 测试快速排序函数
+TEST(TEST_SUITE_NAME, quick_sort) {
 	// 生成 1~10 元素的数组
 	int array[10];
 

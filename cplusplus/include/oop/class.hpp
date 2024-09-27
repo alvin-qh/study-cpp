@@ -3,40 +3,109 @@
 #ifndef __CPLUSPLUS_OOP_CLASS_H
 #define __CPLUSPLUS_OOP_CLASS_H
 
-#include <type_traits>
+#include <stdint.h>
 
 namespace cpp {
-	class Vector3D {
-	private:
+	/// @brief 定义 2D 向量类
+	class Vector2D {
+	protected:
 		double _x;
 		double _y;
-		double _z;
+		uint32_t* __destroy_count;
 
 	public:
-		/**
-		 * 默认构造器
-		 */
+		/// @brief 默认构造器
+		Vector2D();
+
+		/// @brief 参数构造器
+		///
+		/// @param x `x` 坐标值
+		/// @param y `y` 坐标值
+		Vector2D(double x, double y);
+
+		/// @brief 拷贝构造器
+		///
+		/// @param o 另一个同类型对象
+		Vector2D(const Vector2D& o);
+
+		/// @brief 析构函数
+		virtual ~Vector2D();
+
+		/// @brief 重载赋值运算符
+		///
+		/// @param o 另一个同类型对象
+		/// @return 当前对象的引用
+		Vector2D& operator=(const Vector2D& o);
+
+		/// @brief 设置析构数量记录变量指针
+		///
+		/// @param destroy_count 整数变量指针
+		inline void __set_destroy_count_ref(uint32_t* destroy_count) {
+			this->__destroy_count = destroy_count;
+		}
+
+		/// @brief 获取 `_x` 字段值
+		///
+		/// @return `x` 坐标值
+		inline double x() const { return this->_x; };
+
+		/// @brief 获取 `_y` 字段值
+		///
+		/// @return `y` 坐标值
+		inline double y() const { return this->_y; };
+
+		/// @brief 重新设置成员变量的值
+		///
+		/// @param x `x` 坐标值
+		/// @param y `y` 坐标值
+		inline void set(double x, double y) {
+			_x = x;
+			_y = y;
+		}
+
+		/// @brief 计算向量长度
+		///
+		/// @return 向量长度
+		double length() const;
+	};
+
+	/// @brief 定义 3D 向量类
+	class Vector3D : public Vector2D {
+	private:
+		double _z;
+	public:
+		/// @brief 默认构造器
 		Vector3D();
 
-		/**
-		 * 参数构造器
-		 */
+		/// @brief 参数构造器
+		/// @param x `x` 坐标值
+		/// @param y `y` 坐标值
+		/// @param z `z` 坐标值
 		Vector3D(double x, double y, double z);
 
-		/**
-		 * 获取 `_x` 字段值
-		 */
-		double x() const;
+		/// @brief 拷贝构造器
+		///
+		/// @param o 另一个同类型对象
+		Vector3D(const Vector3D& o);
 
-		/**
-		 * 获取 `_y` 字段值
-		 */
-		double y() const;
+		/// @brief 析构函数
+		virtual ~Vector3D();
 
-		/**
-		 * 获取 `_z` 字段值
-		 */
-		double z() const;
+		/// @brief 重载赋值运算符
+		///
+		/// @param o 另一个同类型对象
+		/// @return 当前对象的引用
+		Vector3D& operator=(const Vector3D& o);
+
+		/// @brief 获取 `_z` 字段值
+		///
+		/// @return `z` 坐标的值
+		inline double z() const { return _z; };
+
+		/// @brief 计算向量长度
+		///
+		/// @return 向量长度
+		double length() const;
 	};
 } // ! namespace cpp
 

@@ -9,39 +9,32 @@
 #define ERR_NUM_CANNOT_NEGATIVE (-2)
 
 namespace conv {
-	/**
-	 * 将整数转为二进制字符串
-	 *
-	 * Args:
-	 *  - `num` 整数值
-	 *  - `buf` 保存结果字符串的缓冲区指针
-	 *  - `buflen` 保存结果字符串的缓冲区长度
-	 *
-	 * Returns:
-	 *  - `0` 表示成功, 非 `0` 表示缓冲区长度不足
-	 */
+	/// @brief 将整数转为二进制字符串
+	///
+	/// @param num 整数值
+	/// @param buf 保存结果字符串的缓冲区指针
+	/// @param buflen 保存结果字符串的缓冲区长度
+	/// @return `0` 表示成功, 非 `0` 表示缓冲区长度不足
 	int to_bin(int num, char* buf, size_t buflen);
 
-	/**
-	 * 将整数转为十六进制字符串
-	 *
-	 * Args:
-	 *  - `num` 整数值
-	 *  - `buf` 保存结果字符串的缓冲区指针
-	 *  - `buflen` 保存结果字符串的缓冲区长度
-	 *
-	 * Returns:
-	 *  - `0` 表示成功, 非 `0` 表示缓冲区长度不足
-	 */
+	/// @brief 将整数转为十六进制字符串
+	///
+	/// @param num 整数值
+	/// @param buf 保存结果字符串的缓冲区指针
+	/// @param buflen 保存结果字符串的缓冲区长度
+	/// @return `0` 表示成功, 非 `0` 表示缓冲区长度不足
 	int to_hex(int num, char* buf, size_t buflen);
 
-	/**
-	 * 将整数转为 Excel 列标识
-	 *
-	 * Excel 列标识规则为
-	 *  - 第 `0` 列标识为 `A`, 第 `1` 列为 `B`, ..., 以此类推, 直到第 `25` 列为 `Z`;
-	 *  - 第 `26` 列标识为 `AA`, 第 `27` 列为 `AB`, ..., 以此类推, 直到第 `` 列为 `ZZ`;
-	*/
+	/// @brief 将整数转为 Excel 列标识
+	///
+	/// Excel 列标识规则为:
+	/// - 第 `0` 列标识为 `A`, 第 `1` 列为 `B`, ..., 以此类推, 直到第 `25` 列为 `Z`;
+	/// - 第 `26` 列标识为 `AA`, 第 `27` 列为 `AB`, ..., 以此类推, 直到第 `` 列为 `ZZ`;
+	///
+	/// @param num 整数值
+	/// @param buf 保存结果字符串的缓冲区指针
+	/// @param buflen 保存结果字符串的缓冲区长度
+	/// @return `0` 表示成功, 非 `0` 表示缓冲区长度不足
 	int to_excel_column(int num, char* buf, size_t buflen);
 } // ! namespace conv
 

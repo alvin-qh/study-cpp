@@ -1,6 +1,4 @@
-/**
- * 向量集合演示
- */
+/// 向量集合演示
 #pragma once
 
 #ifndef __ALGORITHM_VECTOR_H
@@ -11,27 +9,25 @@
 #include <memory.h>
 
 namespace alg {
-	/**
-	 * 向量集合结构体
-	 */
+	/// @brief 向量集合结构体
+	///
+	/// @tparam T
 	template <class T>
 	struct vector {
-		// 存储元素的数组
+		/// @brief 存储元素的数组
 		T* array;
 
-		// 向量元素个数
+		/// @brief 向量元素个数
 		uint size;
 
-		// 向量元素存储区实际长度
+		/// @brief 向量元素存储区实际长度
 		uint capacity;
 	};
 
-	/**
-	 * 初始化向量结构体对象
-	 *
-	 * Args:
-	 *  - v: 向量结构体变量引用
-	 */
+	/// @brief 初始化向量结构体对象
+	///
+	/// @tparam T
+	/// @param v 向量结构体变量引用
 	template <typename T>
 	void vector_init(vector<T>& v) {
 		// 设置初始存储区长度
@@ -44,12 +40,10 @@ namespace alg {
 		v.array = _array_alloc(v.capacity, T());
 	}
 
-	/**
-	 * 销毁向量结构体对象
-	 *
-	 * Args:
-	 *  - `v`: 向量结构体变量引用
-	 */
+	/// @brief 销毁向量结构体对象
+	///
+	/// @tparam T
+	/// @param v 向量结构体引用
 	template <typename T>
 	void vector_free(vector<T>& v) {
 		// 释放存储区内存
@@ -59,14 +53,12 @@ namespace alg {
 		v.size = v.capacity = 0;
 	}
 
-	/**
-	 * 向向量集合中设置一组值
-	 *
-	 * Args:
-	 *  - `v`: 向量结构体变量
-	 *  - `data`: 存储要设置值的数组
-	 *  - `len`: data 数组长度
-	 */
+	/// @brief 向向量集合中设置一组值
+	///
+	/// @tparam T
+	/// @param v 向量结构体引用
+	/// @param data 存储要设置值的数组
+	/// @param len `data` 数组长度
 	template <typename T>
 	void vector_set(vector<T>& v, const T* data, uint len) {
 		if (!data || len == 0) return;
@@ -86,14 +78,11 @@ namespace alg {
 		v.size = len;
 	}
 
-	/**
-	 * 重建向量存储区
-	 *
-	 * Args:
-	 *  - `array`: 数组指针
-	 *  - `size`: 数组中有效元素个数
-	 *  - `new_size`: 数组新长度
-	 */
+	/// @brief 重建向量存储区
+	///
+	/// @tparam T
+	/// @param v 向量结构体引用
+	/// @param new_capacity 新设置向量的最大容量
 	template <typename T>
 	void _vector_rebuild(vector<T>& v, uint new_capacity) {
 		// 为存储区分配内存空间
@@ -110,16 +99,12 @@ namespace alg {
 		v.capacity = new_capacity;
 	}
 
-	/**
-	 * 向向量中添加一个值
-	 *
-	 * Args:
-	 *  - `v`: 向量结构体变量
-	 *  - `value`: 要添加的值
-	 *
-	 * Return:
-	 *  - 添加后向量长度
-	 */
+	/// @brief 向向量中添加一个值
+	///
+	/// @tparam T
+	/// @param v 向量结构体引用
+	/// @param value 要添加的值
+	/// @return 添加后向量长度
 	template <typename T>
 	uint vector_add(vector<T>& v, const T& value) {
 		// 如果向量存储区长度不够, 则重建向量存储区
@@ -130,17 +115,13 @@ namespace alg {
 		return v.size;
 	}
 
-	/**
-	 * 向向量中添加一组值
-	 *
-	 * Args:
-	 *  - `v`: 向量结构体变量
-	 *  - `data`: 要添加值的数组指针
-	 *  - `len`: data 数组的长度
-	 *
-	 * Return:
-	 *  - 添加后向量长度
-	 */
+	/// @brief 向向量中添加一组值
+	///
+	/// @tparam T
+	/// @param v 向量结构体引用
+	/// @param data 要添加值的数组指针
+	/// @param len 数组的长度
+	/// @return 添加后向量长度
 	template <typename T>
 	uint vector_append(vector<T>& v, const T* data, uint len) {
 		// 判断空余空间是否足够存放, 如果不够则需重建存储空间

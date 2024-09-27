@@ -1,16 +1,17 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "cert-err58-cpp"
 
-#include "numsys.h"
-
 #include <gtest/gtest.h>
+
+#include "numsys.h"
+#include "test.h"
+
+#define TEST_SUITE_NAME test_convert_numsys
 
 using namespace conv;
 
-/**
- * 测试数字转二进制字符串
- */
-TEST(test_convert_numsys, to_bin) {
+/// @brief 测试数字转二进制字符串
+TEST(TEST_SUITE_NAME, to_bin) {
 	char buf[32] = "";
 
 	int r = to_bin(0, buf, 32);
@@ -38,10 +39,8 @@ TEST(test_convert_numsys, to_bin) {
 	ASSERT_STREQ(buf, "-11");
 }
 
-/**
- * 测试数字转十六进制字符串
- */
-TEST(test_convert_numsys, to_hex) {
+/// @brief 测试数字转十六进制字符串
+TEST(TEST_SUITE_NAME, to_hex) {
 	char buf[32] = "";
 
 	int r = to_hex(0, buf, 32);
@@ -77,10 +76,8 @@ TEST(test_convert_numsys, to_hex) {
 	ASSERT_STREQ(buf, "-FFFF");
 }
 
-/**
- * 测试数字转 Excel 列编号
- */
-TEST(test_convert_numsys, to_excel_column) {
+/// @brief 测试数字转 Excel 列编号
+TEST(TEST_SUITE_NAME, to_excel_column) {
 	char buf[32] = "";
 
 	int r = to_excel_column(0, buf, 32);

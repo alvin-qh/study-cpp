@@ -6,15 +6,12 @@
 #include <gtest/gtest.h>
 #include "../test.h"
 
+#define TEST_SUITE_NAME test_cplusplus_template_concept
+
 using namespace cpp;
 
-/**
- * 测试泛型函数对泛型类型的约束
- *
- * `template/concept.hpp` 中的 `add` 函数的泛型参数 `T` 只接收数值类型参数,
- * 非数值类型参数将会导致编译错误
- */
-TEST(test_cplusplus_template_func, add) {
+/// @brief 测试泛型函数对泛型类型的约束
+TEST(TEST_SUITE_NAME, add) {
 	EXPECT_EQ(3, add(1, 2));
 	EXPECT_EQ(3.3, number_to_fixed(add(1.1, 2.2), 2));
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_AFFINE_FUNC_H
-#define __CPLUSPLUS_AFFINE_FUNC_H
+#ifndef __CPLUSPLUS_OOP_AFFINE_FUNC_H
+#define __CPLUSPLUS_OOP_AFFINE_FUNC_H
 
 #include <stdint.h>
 #include <type_traits>
@@ -24,21 +24,39 @@ namespace cpp {
 		T _x;
 
 	public:
+		/// @brief 构造函数
+		///
+		/// @param x 输入值
 		Addition(T x)
 			: _x(x) {}
 
+		Addition(const Addition& o)
+			: _x(o._x) {}
+
+		/// @brief 重载 `()` 运算符
+		///
+		/// @param y 输入值
+		/// @return 参数 `y` 和当前值相加的结果
 		T operator()(T y) const {
 			return _x + y;
 		}
 
+		/// @brief 重载 `()` 运算符
+		///
+		/// @param y 输入值 1
+		/// @param z 输入值 2
+		/// @return 参数 `y` 和 `z` 与当前值相加的结果
 		T operator()(T y, T z) const {
 			return _x + y + z;
 		}
 
+		/// @brief 获取当前值
+		///
+		/// @return 当前值
 		T value() const {
 			return _x;
 		}
 	};
 } // ! namespace cpp
 
-#endif // ! __CPLUSPLUS_AFFINE_FUNC_H
+#endif // ! __CPLUSPLUS_OOP_AFFINE_FUNC_H

@@ -14,6 +14,7 @@ set(cplusplus_test_src
     test/test_main.cpp
     test/oop/test_class.cpp
     test/oop/test_affine_func.cpp
+    test/oop/test_default.cpp
     test/template/test_func.cpp)
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置

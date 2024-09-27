@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include <gtest/gtest.h>
 
 #include "test.h"
@@ -122,5 +119,3 @@ TEST(TEST_SUITE_NAME, vector_append) {
 
 	vector_free(v);
 }
-
-#pragma clang diagnostic pop

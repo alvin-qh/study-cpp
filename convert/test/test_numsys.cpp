@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include <gtest/gtest.h>
 
 #include "numsys.h"
@@ -108,5 +105,3 @@ TEST(TEST_SUITE_NAME, to_excel_column) {
 	ASSERT_EQ(r, 0);
 	ASSERT_STREQ(buf, "ZZ");
 }
-
-#pragma clang diagnostic pop

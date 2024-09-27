@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include "oop/affine_func.hpp"
 
 #include <gtest/gtest.h>
@@ -17,5 +14,3 @@ TEST(TEST_SUITE_NAME, affine_func) {
 	ASSERT_EQ(300, add(200));
 	ASSERT_EQ(600, add(200, 300));
 }
-
-#pragma clang diagnostic pop

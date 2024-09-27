@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include "oop/class.hpp"
 
 #include <gtest/gtest.h>
@@ -116,5 +113,3 @@ TEST(TEST_SUITE_NAME, destructor) {
 	}
 	ASSERT_EQ(2, destroy_count);
 }
-
-#pragma clang diagnostic pop

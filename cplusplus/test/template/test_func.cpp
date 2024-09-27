@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include "template/func.hpp"
 
 #include <gtest/gtest.h>
@@ -22,5 +19,3 @@ TEST(TEST_SUITE_NAME, add) {
 	// string 类型
 	EXPECT_EQ("Hello World", add(string("Hello "), string("World")));
 }
-
-#pragma clang diagnostic pop

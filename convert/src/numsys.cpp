@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include "numsys.h"
 
 #include <cstddef>
@@ -71,9 +68,10 @@ namespace conv {
 
 	/// @brief 16 进制编码表
 	const char HEX_TAB[] = {
-		'0', '1', '2', '3', '4', '5',
-		'6', '7', '8', '9', 'A', 'B',
-		'C', 'D', 'E', 'F',
+		'0', '1', '2', '3', '4',
+		'5', '6', '7', '8', '9',
+		'A', 'B', 'C', 'D', 'E',
+		'F',
 	};
 
 	int to_hex(int num, char* buf, size_t buflen) {
@@ -138,5 +136,3 @@ namespace conv {
 		return 0;
 	}
 } // ! namespace conv
-
-#pragma clang diagnostic pop

@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include <gtest/gtest.h>
 #include <time.h>
 
@@ -57,6 +54,4 @@ namespace alg {
 		}
 		return true;
 	}
-} // ! namespace alg
-
-#pragma clang diagnostic pop
+} // namespace alg

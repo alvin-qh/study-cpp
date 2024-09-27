@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include <gtest/gtest.h>
 
 /// @brief 主函数, 执行 gtest 测试套件
@@ -15,5 +12,3 @@ int main(int argc, char* argv[]) {
 namespace conv {
 
 } // ! namespace conv
-
-#pragma clang diagnostic pop

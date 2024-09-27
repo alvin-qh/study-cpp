@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include "template/concept.hpp"
 
 #include <gtest/gtest.h>
@@ -18,5 +15,3 @@ TEST(TEST_SUITE_NAME, add) {
 	// `add` 函数不支持非数值类型参数
 	// EXPECT_EQ("Hello World", add(string("Hello "), string("World")));
 }
-
-#pragma clang diagnostic pop

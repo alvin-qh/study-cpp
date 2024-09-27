@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "cert-err58-cpp"
-
 #include <gtest/gtest.h>
 #include <cmath>
 
@@ -23,6 +20,4 @@ namespace cpp {
 		}
 		return -round(-n * p) / p;
 	}
-} // ! namespace cpp
-
-#pragma clang diagnostic pop
+} // namespace cpp

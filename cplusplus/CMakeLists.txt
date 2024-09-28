@@ -14,6 +14,7 @@ set(cplusplus_test_src
     test/test_main.cpp
     test/oop/test_class.cpp
     test/oop/test_affine_func.cpp
+    test/oop/test_affine_ptr.cpp
     test/oop/test_default.cpp
     test/template/test_func.cpp)
 

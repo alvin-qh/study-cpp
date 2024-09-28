@@ -3,7 +3,6 @@
 #ifndef __CPLUSPLUS_OOP_AFFINE_FUNC_H
 #define __CPLUSPLUS_OOP_AFFINE_FUNC_H
 
-#include <stdint.h>
 #include <type_traits>
 
 using namespace std;

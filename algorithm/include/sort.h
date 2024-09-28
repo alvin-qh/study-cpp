@@ -16,7 +16,7 @@ namespace alg {
 	template <typename T>
 	void quick_sort(T* array, uint size, int (*comp_ptr)(const T&, const T&)) {
 		if (size <= 1) {
-			return
+			return;
 		};
 
 		// 将数组第一个元素和数组中任意一个元素交换, 作为快排的中间值

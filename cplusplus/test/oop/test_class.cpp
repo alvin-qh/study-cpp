@@ -78,7 +78,7 @@ TEST(TEST_SUITE_NAME, inherit) {
 /// @brief 测试类型继承
 TEST(TEST_SUITE_NAME, virtual) {
 	// 当指针指向 `Vector2D` 实例时, 调用 `Vector2D::length` 方法
-	const Vector2D* pv = new Vector2D(3, 4);
+	const auto* pv = new Vector2D(3, 4);
 	ASSERT_EQ(5, pv->length());
 
 	delete pv;

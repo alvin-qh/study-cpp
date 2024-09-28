@@ -11,7 +11,7 @@ namespace cpp {
 	public:
 		/// @brief 默认构造器
 		Point()
-			:_x(0)
+			: _x(0)
 			, _y(0) {}
 
 		/// @brief 参数构造器

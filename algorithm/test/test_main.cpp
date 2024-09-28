@@ -27,7 +27,9 @@ namespace alg {
 
 	int* int_array_shuffle(
 		int* array, uint size, int start /* = 1*/, uint times /* = 100*/) {
-		if (size == 0) return array;
+		if (size == 0) {
+			return array;
+		}
 
 		// 填充数组内容
 		int_array_fill(array, size, start);
@@ -42,7 +44,9 @@ namespace alg {
 			uint j = (uint)(random() % size);
 
 			// 将两个随机位置的元素进行交换
-			if (i != j) { _swap(&array[i], &array[j]); }
+			if (i != j) {
+				_swap(&array[i], &array[j]);
+			}
 		}
 
 		return array;
@@ -50,7 +54,9 @@ namespace alg {
 
 	bool is_int_array_eq(const int* left, const int* right, uint len) {
 		while (len-- > 0) {
-			if (*left++ != *right++) return false;
+			if (*left++ != *right++) {
+				return false;
+			}
 		}
 		return true;
 	}

@@ -42,9 +42,10 @@ namespace alg {
 	/// @param len 要复制的长度
 	template <typename T>
 	void _array_copy(const T* src, T* dst, uint len) {
-		while (len-- > 0)
+		while (len-- > 0) {
 			// 使用 C++ operator::new 运算符, 对指定内存空间调用"拷贝构造器"
 			new (dst++) T(*src++);
+		}
 	}
 
 	/// @brief 销毁数组, 堆数组元素进行析构, 并释放内存
@@ -56,7 +57,9 @@ namespace alg {
 	void _array_free(T* array, uint size) {
 		if (array) {
 			// 调用析构函数
-			for (uint i = 0; i < size; i++) array[i].~T();
+			for (uint i = 0; i < size; i++) {
+				array[i].~T();
+			}
 
 			// 释放内存
 			free(array);
@@ -74,8 +77,10 @@ namespace alg {
 		// 分配内存
 		T* array = (T*)malloc(sizeof(T) * size);
 
-		// 调用默认构造器
-		for (uint i = 0; i < size; i++) new (&array[i]) T(default_value);
+		// 显式调用构造器
+		for (uint i = 0; i < size; i++) {
+			new (&array[i]) T(default_value);
+		}
 
 		return array;
 	}

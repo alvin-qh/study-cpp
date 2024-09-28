@@ -122,7 +122,9 @@ namespace alg {
 		uint index = h.size + 1;
 
 		// 如果堆存储区长度不够, 则重建堆存储区
-		if (index >= h.capacity) _heap_rebuild(h, NEW_CAPACITY(h.capacity));
+		if (index >= h.capacity) {
+			_heap_rebuild(h, NEW_CAPACITY(h.capacity));
+		}
 
 		// 在存储区末尾添加新元素值
 		h.array[index] = value;
@@ -144,13 +146,15 @@ namespace alg {
 		// 循环直到最后一个子节点被访问
 		while ((c = p * 2) <= h.size) {
 			// 如果右子节点小于左子节点, 则引用右子节点, 否则引用左子节点
-			if (c + 1 <= h.size && h.comp_ptr(h.array[c + 1], h.array[c]) < 0) c++;
+			if (c + 1 <= h.size && h.comp_ptr(h.array[c + 1], h.array[c]) < 0) {
+				c++;
+			}
 
 			// 比较两个节点元素大小
-			if (h.comp_ptr(h.array[p], h.array[c]) <= 0)
+			if (h.comp_ptr(h.array[p], h.array[c]) <= 0) {
 				// 如果头结点已然小于或等于子节点, 则堆建立完毕
 				break;
-
+			}
 			// 交换两个节点
 			_swap(&h.array[c], &h.array[p]);
 
@@ -165,7 +169,9 @@ namespace alg {
 	/// @return 堆中值最小的元素
 	template <typename T>
 	T heap_poll(heap<T>& h) {
-		if (h.size <= 0) return h.array[0];
+		if (h.size <= 0) {
+			return h.array[0];
+		}
 
 		// 交换元素, 将值最小的元素移动到数组末尾
 		_swap(&h.array[1], &h.array[h.size]);

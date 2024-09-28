@@ -61,7 +61,9 @@ namespace alg {
 	/// @param len `data` 数组长度
 	template <typename T>
 	void vector_set(vector<T>& v, const T* data, uint len) {
-		if (!data || len == 0) return;
+		if (!data || len == 0) {
+			return;
+		}
 
 		// 若向量存储区长度不足以存储 data 数组的值, 则重新分配存储区
 		if (v.capacity < len) {
@@ -108,7 +110,9 @@ namespace alg {
 	template <typename T>
 	uint vector_add(vector<T>& v, const T& value) {
 		// 如果向量存储区长度不够, 则重建向量存储区
-		if (v.size >= v.capacity) _vector_rebuild(v, NEW_CAPACITY(v.capacity));
+		if (v.size >= v.capacity) {
+			_vector_rebuild(v, NEW_CAPACITY(v.capacity));
+		}
 
 		// 在存储区末尾添加新元素值
 		v.array[v.size++] = value;
@@ -125,7 +129,9 @@ namespace alg {
 	template <typename T>
 	uint vector_append(vector<T>& v, const T* data, uint len) {
 		// 判断空余空间是否足够存放, 如果不够则需重建存储空间
-		if (v.capacity - v.size < len) _vector_rebuild(v, v.size + len);
+		if (v.capacity - v.size < len) {
+			_vector_rebuild(v, v.size + len);
+		}
 
 		// 将数组内容复制到向量存储区中
 		_array_copy(data, v.array + v.size, len);

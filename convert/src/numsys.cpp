@@ -33,7 +33,9 @@ namespace conv {
 	}
 
 	int to_bin(int num, char* buf, size_t buflen) {
-		if (--buflen < 1) { return ERR_BUF_NOT_ENOUGH; }
+		if (--buflen < 1) {
+			return ERR_BUF_NOT_ENOUGH;
+		}
 
 		bool ne = num >= 0;
 		num = abs(num);

@@ -3,13 +3,6 @@
 # 设置支持的 CMake 最低版本
 cmake_minimum_required(VERSION 3.10)
 
-# 设置编译参数
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -W -Wno-unknown-pragmas -O2")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -W -Wno-unknown-pragmas -O2")
-endif()
-
 # 定义项目名称
 project(study-cpp CXX C)
 
@@ -20,6 +13,19 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # 要求启动测试 (该指令必须在根配置中出现一次)
 enable_testing()
+
+# 设置编译参数
+add_compile_options(-pthread -fopenmp -W -Wno-unknown-pragmas)
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    # cmake .. -DCMAKE_BUILD_TYPE=Release
+    add_compile_options(-DNDEBUG -O2)
+    message(STATUS "Make release building ...")
+else()
+    # cmake .. -DCMAKE_BUILD_TYPE=Debug
+    add_compile_options(-DDEBUG -fsanitize=address)
+    message(STATUS "Make debug building ...")
+endif()
 
 # 添加子项目 (vendor 路径下是引入的三方项目)
 add_subdirectory(vendor/googletest)

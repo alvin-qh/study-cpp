@@ -3,9 +3,8 @@
 #ifndef __CPLUSPLUS_OOP_AFFINE_FUNC_H
 #define __CPLUSPLUS_OOP_AFFINE_FUNC_H
 
-#include <stdint.h>
-#include <type_traits>
 
+#include <type_traits>
 using namespace std;
 
 namespace cpp {
@@ -30,8 +29,16 @@ namespace cpp {
 		Addition(T x)
 			: _x(x) {}
 
-		Addition(const Addition& o)
-			: _x(o._x) {}
+		/// @brief 拷贝构造器
+		///
+		/// @param o 输入对象
+		Addition(const Addition& o) = default;
+
+		/// @brief 重载赋值运算符
+		///
+		/// @param o 输入对象
+		/// @return 当前对象引用
+		Addition& operator=(const Addition& o) = default;
 
 		/// @brief 重载 `()` 运算符
 		///

@@ -14,6 +14,7 @@ set(cplusplus_test_src
     test/test_main.cpp
     test/oop/test_class.cpp
     test/oop/test_affine_func.cpp
+    test/oop/test_affine_ptr.cpp
     test/oop/test_default.cpp
     test/template/test_func.cpp)
 
@@ -32,6 +33,12 @@ add_executable(cplusplus_test
 target_link_libraries(cplusplus_test
     PRIVATE gtest
 )
+
+# 在调试模式下, 增加 sanitize 库链接以检测内存泄漏
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    target_link_libraries(cplusplus_test
+    PRIVATE -fsanitize=address)
+endif()
 
 # 启用测试
 enable_testing()

@@ -113,7 +113,11 @@ namespace cpp {
 		/// @param o 另一个同类型对象
 		/// @return 两个对象是否相同
 		bool operator==(const Vector3D& o) const;
-		inline bool operator==(const Vector2D& o) const { return false; }
+
+		/// @brief 令 `Vector3D` 实例和 `Vector2D` 不相等
+		///
+		/// @return 不相等
+		inline bool operator==(const Vector2D&) const { return false; }
 
 		/// @brief 重新设置成员变量的值
 		///

@@ -10,6 +10,7 @@ project(study-cpp CXX C)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(DCMAKE_EXE_LINKER_FLAGS "-fsanitize=address")
 
 # 要求启动测试 (该指令必须在根配置中出现一次)
 enable_testing()
@@ -17,7 +18,7 @@ enable_testing()
 # 设置编译参数
 add_compile_options(-pthread -fopenmp -W -Wno-unknown-pragmas)
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     # cmake .. -DCMAKE_BUILD_TYPE=Release
     add_compile_options(-DNDEBUG -O2)
     message(STATUS "Make release building ...")

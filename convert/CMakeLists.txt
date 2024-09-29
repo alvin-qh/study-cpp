@@ -32,7 +32,7 @@ target_link_libraries(convert_test
 )
 
 # 在调试模式下, 增加 sanitize 库链接以检测内存泄漏
-if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     target_link_libraries(convert_test
     PRIVATE -fsanitize=address)
 endif()

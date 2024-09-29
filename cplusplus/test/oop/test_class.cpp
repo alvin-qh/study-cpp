@@ -9,16 +9,39 @@ using namespace cpp;
 
 /// @brief 测试默认构造器
 TEST(TEST_SUITE_NAME, default_constructor) {
-	Vector2D v;
-	ASSERT_EQ(0, v.x());
-	ASSERT_EQ(0, v.y());
+	Vector2D v1;
+	ASSERT_EQ(0, v1.x());
+	ASSERT_EQ(0, v1.y());
+
+	// 调用默认构造器的另一种形式
+	Vector2D v2 = Vector2D();
+	ASSERT_EQ(0, v2.x());
+	ASSERT_EQ(0, v2.y());
+
+	// 在"堆"上调用默认构造器
+	Vector2D* v3 = new Vector2D();
+	ASSERT_EQ(0, v3->x());
+	ASSERT_EQ(0, v3->y());
+
+	delete v3;
 }
 
 /// @brief 测试默认构造器
 TEST(TEST_SUITE_NAME, arguments_constructor) {
-	Vector2D v(0.1, 0.2);
-	ASSERT_EQ(0.1, v.x());
-	ASSERT_EQ(0.2, v.y());
+	Vector2D v1(0.1, 0.2);
+	ASSERT_EQ(0.1, v1.x());
+	ASSERT_EQ(0.2, v1.y());
+
+	Vector2D v2 = Vector2D(0.1, 0.2);
+	ASSERT_EQ(0.1, v2.x());
+	ASSERT_EQ(0.2, v2.y());
+
+	// 在"堆"上调用参数构造器
+	Vector2D* v3 = new Vector2D(0.1, 0.2);
+	ASSERT_EQ(0.1, v3->x());
+	ASSERT_EQ(0.2, v3->y());
+
+	delete v3;
 }
 
 /// @brief 测试拷贝构造器
@@ -31,9 +54,21 @@ TEST(TEST_SUITE_NAME, copy_constructor) {
 	ASSERT_EQ(0.2, v1.y());
 
 	// 调用拷贝构造器的语法格式 2
-	Vector2D v3(v2);
+	Vector2D v3(v1);
 	ASSERT_EQ(0.1, v3.x());
 	ASSERT_EQ(0.2, v3.y());
+
+	// 调用拷贝构造器的语法格式 3
+	Vector2D v4 = Vector2D(v1);
+	ASSERT_EQ(0.1, v3.x());
+	ASSERT_EQ(0.2, v3.y());
+
+	// 调用拷贝构造器的语法格式 3
+	Vector2D* v5 = new Vector2D(v1);
+	ASSERT_EQ(0.1, v3.x());
+	ASSERT_EQ(0.2, v3.y());
+
+	delete v5;
 }
 
 /// @brief 测试赋值运算符的重载

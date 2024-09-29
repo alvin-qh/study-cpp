@@ -3,11 +3,11 @@
 #ifndef __CPLUSPLUS_OOP_AFFINE_FUNC_H
 #define __CPLUSPLUS_OOP_AFFINE_FUNC_H
 
-
 #include <type_traits>
-using namespace std;
 
 namespace cpp {
+	using namespace std;
+
 	/// 定义数值类型泛型参数
 	template<typename T>
 	concept NumberType = is_arithmetic<T>::value;

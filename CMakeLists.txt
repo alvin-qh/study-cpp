@@ -23,7 +23,7 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
     message(STATUS "Make release building ...")
 else()
     # cmake .. -DCMAKE_BUILD_TYPE=Debug
-    add_compile_options(-DDEBUG -fsanitize=address)
+    add_compile_options(-DDEBUG -fsanitize=address -fsanitize-recover=address -fno-stack-protector -fno-omit-frame-pointer)
     message(STATUS "Make debug building ...")
 endif()
 

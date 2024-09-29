@@ -40,8 +40,10 @@ TEST(TEST_SUITE_NAME, heap_offer) {
 	int data[4];
 	int_array_shuffle(data, ARRAY_SIZE(data), 5);
 
-	// 将测试数据加入堆中
-	for (uint i = 0; i < ARRAY_SIZE(data); i++) heap_offer(h, data[i]);
+    // 将测试数据加入堆中
+    for (uint i = 0; i < ARRAY_SIZE(data); i++) {
+		heap_offer(h, data[i]);
+	}
 
 	// 确认添加元素后, 堆的状态, 此时堆存储区未被重建
 	EXPECT_EQ(h.size, 4);

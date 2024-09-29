@@ -12,7 +12,7 @@ TEST(TEST_SUITE_NAME, copy_constructor) {
 	Point p1(10, 20);
 
 	// 调用默认拷贝构造器
-	Point p2 = p1;
+	auto p2 = p1;
 	ASSERT_EQ(10, p2.x());
 	ASSERT_EQ(20, p2.y());
 }

@@ -13,7 +13,7 @@ TEST(TEST_SUITE_NAME, affine_func) {
 
 	ASSERT_EQ(100, add.value());
 
-	// 测试 `()` 运算符重载, 即调用仿函数
+	// 测试 `()` 运算符重载, 即调用仿函数
 	ASSERT_EQ(300, add(200));
 	ASSERT_EQ(600, add(200, 300));
 }

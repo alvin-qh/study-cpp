@@ -10,7 +10,7 @@ project(study-cpp CXX C)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(DCMAKE_EXE_LINKER_FLAGS "-fsanitize=address")
+# set(DCMAKE_EXE_LINKER_FLAGS "-fsanitize=address")
 
 # 要求启动测试 (该指令必须在根配置中出现一次)
 enable_testing()

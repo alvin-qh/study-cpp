@@ -4,6 +4,11 @@
 #define __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
 
 namespace cpp {
+	template<typename R, typename Fn, typename ...Args>
+	R callback(Fn fn, Args...args) {
+		return fn(args...);
+	}
+
 	/// @brief 递归停止函数
 	///
 	/// 当 `recursive_args` 模板函数的 `Args` 不定模板参数递归到数量为 `1` 时,

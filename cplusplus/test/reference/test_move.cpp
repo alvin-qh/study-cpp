@@ -119,26 +119,40 @@ TEST(TEST_SUITE_NAME, moveable_class) {
 	// 定义一个变量 (左值), 此时对象有效, 且内容正常
 	Moveable m1(100);
 	ASSERT_TRUE(m1.valid());
-	ASSERT_EQ(m1.size(), 1);
 	ASSERT_EQ(*m1, 100);
 
 	// 将 `m1` 变量转为右值引用, 并调用 `Moveable` 类型的 "移动构造器" 对对象进行移动
 	// 完成移动后, `m1` 对象失效, 内容被移动到 `m2` 对象中
 	Moveable m2 = move(m1);
-	ASSERT_EQ(m2.size(), 1);
 	ASSERT_EQ(*m2, 100);
 	ASSERT_FALSE(m1.valid());
 
-	// 在函数内创建临时变量并返回, 此时整个函数调用可看作是 "右值引用"
-	Moveable m3 = []() { return Moveable(200, 2); }();
-	ASSERT_EQ(m3.size(), 2);
-	ASSERT_EQ(m3[0], 200);
-	ASSERT_EQ(m3[1], 200);
+	// 这里调用 `移动赋值运算符` 将 `m2` 变量内容移动到 `m1` 变量
+	// 完成移动操作后, `m2` 对象失效, 内容被移动到 `m1` 对象中
+	m1 = move(m2);
+	ASSERT_TRUE(m1.valid());
+	ASSERT_EQ(*m1, 100);
+	ASSERT_FALSE(m2.valid());
 
-	m3 = move(m2);
+	// 传参时, 如果实参是 "临时对象", 则可作为 "右值引用" 进行传参,
+	// 这里的返回值也是一个 "临时对象" (刻意为之), 故返回值也可看作为一个 "右值引用"
+	// 这里调用 "移动构造器" 创建 `m3` 对象
+	Moveable m3 = [](Moveable<int>&& m) { return Moveable(*m); }(Moveable(100));
 	ASSERT_TRUE(m3.valid());
-	ASSERT_EQ(m3.size(), 1);
 	ASSERT_EQ(*m3, 100);
 
-	ASSERT_FALSE(m2.valid());
+	// 这里调用 `移动赋值运算符` 将函数返回值内容移动到 `m3` 变量
+	m3 = [](Moveable<int>&& m) { return Moveable(*m); }(Moveable(100));
+	ASSERT_TRUE(m3.valid());
+	ASSERT_EQ(*m3, 100);
+
+	// 这里 `m1` 是一个左值, 故无法作为 "右值引用" 进行传参
+	// m3 = [](Moveable<int>&& m) { return m; }(m1);
+
+	// 需要将 `m1` 转为 "右值引用" 后, 即可进行传参
+	// 完成移动操作后, `m1` 对象失效, 内容被移动到 `m3` 对象中
+	m3 = [](Moveable<int>&& m) { return m; }(move(m1));
+	ASSERT_TRUE(m3.valid());
+	ASSERT_EQ(*m3, 100);
+	ASSERT_FALSE(m1.valid());
 }

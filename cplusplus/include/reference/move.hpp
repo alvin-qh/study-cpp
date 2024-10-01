@@ -17,71 +17,35 @@ namespace cpp {
 	/// 具备更高的性能.
 	///
 	/// @tparam T
-	template<typename T, typename _Alloc = allocator<T>>
+	template<typename T>
 	class Moveable {
-		typedef Moveable<T, _Alloc> Self;
+		typedef Moveable<T> Self;
 	private:
 		T* _ptr;
-		size_t _len;
 
-		_Alloc _alloc;
-
-		/// @brief 根据所给值以及长度设置当前对象
+		/// @brief 分离当前对象中存储的指针
 		///
-		/// @param val 所给值
-		/// @param len 所需长度
-		void _from_value(const T& val, size_t len) {
-			T* ptr = _alloc.allocate(len);
-
-			for (size_t i = 0; i < len; ++i) {
-				new(ptr + i) T(val);
-			}
-
-			_ptr = ptr;
-			_len = len;
+		/// @return 当前对象存储的指针值
+		T* _detach() {
+			T* tmp = _ptr;
+			_ptr = nullptr;
+			return tmp;
 		}
-
-		/// @brief 销毁指向指向的内存空间
-		void _free() {
-			if (_ptr) {
-				T* ptr = _ptr;
-				_ptr = nullptr;
-
-				size_t len = _len;
-				_len = 0;
-
-				for (size_t i = 0; i < len; ++i) {
-					(ptr + i)->~T();
-				}
-
-				_alloc.deallocate(ptr, len);
-			}
-		}
-
 	public:
 		/// @brief 默认构造器
 		Moveable() :
-			_ptr(nullptr),
-			_len(0) {
+			_ptr(nullptr) {
 		}
 
 		/// @brief 参数构造器
 		///
 		/// @param val 所给值
-		Moveable(const T& val) {
-			_from_value(val, 1);
-		}
-
-		/// @brief 参数构造器
-		///
-		/// @param val 所给值
-		/// @param len 所需长度
-		Moveable(const T& val, size_t len) {
-			_from_value(val, len);
+		Moveable(const T& val) :
+			_ptr(new T(val)) {
 		}
 
 		/// @brief 删除拷贝构造器
-		// Moveable(const Moveable&) = delete;
+		Moveable(const Moveable&) = delete;
 
 		/// @brief 移动构造器
 		///
@@ -89,23 +53,24 @@ namespace cpp {
 		///
 		/// `Motivate(Motivate&&) noexcept = default`
 		///
-		/// 如果需要真正的移动对象, 则需要自定义移动构造器.
+		/// 如果需要真正的移动对象, 则需要自定义 "移动构造器".
+		///
+		/// 在该 "移动构造器" 中, 将源对象 `o` 中存储的指针转移到当前对象,
+		/// 并在源对象中将指针设置为 `null` 以避免析构销毁
 		///
 		/// @param o 被复制对象
 		Moveable(Moveable&& o) noexcept :
-			_ptr(o._ptr),
-			_len(o._len) {
-			// 完成移动后, 对源对象进行处理, 防止其销毁已转移的资源
-			o._ptr = nullptr;
-			o._len = 0;
+			_ptr(o._detach()) {
 		};
 
 		/// @brief 析构函数
 		virtual ~Moveable() {
-			_free();
+			if (_ptr) {
+				delete _ptr;
+			}
 		}
 
-		/// @brief 取消复制运算符重载
+		/// @brief 删除复制运算符
 		Self& operator=(const Self&) = delete;
 
 		/// @brief 重载赋值运算符以 "移动" 对象
@@ -113,17 +78,11 @@ namespace cpp {
 		/// @param o 被移动对象
 		/// @return 当前对象的引用
 		Self& operator=(Self&& o) noexcept {
-			// 销毁当前对象引用的资源
-			_free();
+			if (_ptr) {
+				delete _ptr;
+			}
 
-			// 移动源对象引用的资源
-			_ptr = o._ptr;
-			_len = o._len;
-
-			// 处理源对象, 避免其销毁已移动的资源
-			o._ptr = nullptr;
-			o._len = 0;
-
+			_ptr = o._detach();
 			return *this;
 		}
 
@@ -136,23 +95,6 @@ namespace cpp {
 		///
 		/// @return 指针指向的值的只读引用
 		const T& operator*() const { return *_ptr; }
-
-		/// @brief 重载下标运算符
-		///
-		/// @param index 下标索引值
-		/// @return 下标索引值对应的值的可变引用
-		T& operator[](size_t index) { return _ptr[index]; }
-
-		/// @brief 重载下标运算符
-		///
-		/// @param index 下标索引值
-		/// @return 下标索引值对应的值的只读引用
-		const T& operator[](size_t index) const { return _ptr[index]; }
-
-		/// @brief 获取集合长度
-		///
-		/// @return 集合长度值
-		size_t size() const { return _len; }
 
 		/// @brief 判断对象是否有效
 		///

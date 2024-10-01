@@ -96,10 +96,10 @@ namespace cpp {
 		/// @return 指针指向的值的只读引用
 		const T& operator*() const { return *_ptr; }
 
-		/// @brief 判断对象是否有效
+		/// @brief 重载布尔运算符, 确定指针有效
 		///
-		/// @return 是否有效
-		bool valid() const { return _ptr != nullptr; }
+		/// @return 指针是否有效
+		operator bool() const { return _ptr != nullptr; }
 	};
 } // ! namespace cpp
 

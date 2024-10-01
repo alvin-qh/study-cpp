@@ -24,16 +24,17 @@ namespace cpp {
 	/// @tparam T
 	template<typename T, typename _Alloc = allocator<T>>
 	class Box {
+		typedef Box<T, _Alloc> Self;
 	private:
-		_Alloc _alloc;
-
 		T* _ptr;
 		size_t _len;
-	private:
+
+		_Alloc _alloc;
+
 		/// @brief 根据所给值创建指向单个对象的指针
 		///
 		/// @param val 所给值
-		void _alloc(const T& val, size_t len) {
+		void _allocate(const T& val, size_t len) {
 			// 分配内存
 			T* ptr = _alloc.allocate(len);
 
@@ -41,16 +42,14 @@ namespace cpp {
 			for (size_t i = 0; i < len; ++i) {
 				new (ptr + i) T(val);
 			}
-
 			_ptr = ptr;
 			_len = len;
 		}
 
 		/// @brief 销毁当前指针
 		void _free() {
-			T* ptr = _ptr;
-
-			if (ptr) {
+			if (_ptr) {
+				T* ptr = _ptr;
 				_ptr = nullptr;
 
 				size_t len = _len;
@@ -65,12 +64,22 @@ namespace cpp {
 				_alloc.deallocate(ptr, len);
 			}
 		}
+
+		/// @brief 私有参数构造器
+		///
+		/// 通过包含指针和长度的元组对象
+		///
+		/// @param tup 元组对象引用
+		Box(const tuple<T*, size_t>&& tup) :
+			_ptr(get<0>(tup)),
+			_len(get<1>(tup)) {
+		}
 	public:
-	
 		/// @brief 默认构造函数
 		Box() :
 			_ptr(nullptr),
-			_len(0) {}
+			_len(0) {
+		}
 
 		/// @brief 参数构造器
 		///
@@ -79,7 +88,7 @@ namespace cpp {
 		/// @param value 所给的值
 		/// @param len 元素个数
 		Box(const T& value, size_t len = 1) {
-			_alloc(value, len);
+			_allocate(value, len);
 		}
 
 		/// @brief 参数构造器
@@ -89,26 +98,38 @@ namespace cpp {
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
 		Box(T* ptr, size_t len = 1) :
-			Box() {
-			attach(ptr, len);
+			_ptr(ptr),
+			_len(len) {
 		}
 
 		/// @brief 禁用拷贝构造函数
-		Box(const Box&) = delete;
+		Box(const Self&) = delete;
 
-		Box(Box&& o) {
-			tuple<T*, size_t> r = o.detach();
-			_ptr = get<0>(r);
-			_len = get<1>(r);
+		/// @brief 移动构造器
+		///
+		/// @param o 被移动对象
+		Box(Self&& o) noexcept :
+			Box(o.detach()) {
 		}
 
 		/// @brief 析构函数, 销毁当前堆内存
 		virtual ~Box() {
-			_delete();
+			_free();
 		}
 
 		/// @brief 禁用赋值运算符
-		Box& operator=(const Box& o) = delete;
+		Self& operator=(const Self&) = delete;
+
+		/// @brief 重载移动赋值运算符
+		///
+		/// @param o 被移动对象
+		/// @return 当前对象引用
+		Self& operator=(Self&& o) noexcept {
+			tuple<T*, size_t> tup = o.detach();
+			_ptr = get<0>(tup);
+			_len = get<1>(tup);
+			return *this;
+		};
 
 		/// @brief 重载 `*` (解引) 运算符, 获取当前指针指向的的值的可变引用
 		///
@@ -132,6 +153,11 @@ namespace cpp {
 		/// @return 下标对应的值的只读引用
 		const T& operator[](size_t n) const { return *(_ptr + n); }
 
+		/// @brief 重载布尔运算符, 确定指针有效
+		///
+		/// @return 指针是否有效
+		operator bool() const { return _ptr != nullptr; }
+
 		/// @brief 获取当前指针指向的元素个数
 		///
 		/// @return 当前指针指向的元素个数
@@ -152,7 +178,7 @@ namespace cpp {
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
 		void attach(T* ptr, size_t len = 1) {
-			_delete();
+			_free();
 
 			_ptr = ptr;
 			_len = len;
@@ -164,7 +190,7 @@ namespace cpp {
 		/// @param begin 起始位置迭代器
 		/// @param end 结束位置迭代器
 		template<typename _Iter>
-		static Box from_iter(const _Iter& begin, const _Iter& end) {
+		static Self from_iter(const _Iter& begin, const _Iter& end) {
 			// 计算数组长度
 			size_t len = end - begin;
 

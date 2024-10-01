@@ -52,7 +52,7 @@ TEST(TEST_SUITE_NAME, std_move_string) {
 
 	// 通过 `std::move` 将左值转为右值引用, 通过 `std::string` 类型的 "移动构造器"
 	// 将 `str1` 对象的内容移动到 `str2` 对象中
-	string str2 = move(str1);
+	string str2 = std::move(str1);
 
 	// 确认内容已经移动到目标对象
 	ASSERT_EQ(str2, "Hello");
@@ -64,7 +64,7 @@ TEST(TEST_SUITE_NAME, std_move_string) {
 	for (int i = 0; i < 10; i++) {
 		v1.push_back(i);
 	}
-	vector<int> v2 = move(v1);
+	vector<int> v2 = std::move(v1);
 	ASSERT_EQ(v1.size(), 0);
 	ASSERT_EQ(v2.size(), 10);
 }
@@ -81,7 +81,7 @@ TEST(TEST_SUITE_NAME, std_move_vector) {
 
 	// 通过 `std::move` 将左值转为右值引用, 通过 `std::vector` 类型的 "移动构造器"
 	// 将 `v1` 对象的内容移动到 `v2` 对象中
-	vector<int> v2 = move(v1);
+	vector<int> v2 = std::move(v1);
 
 	// 确认内容已经移动到目标对象
 	ASSERT_EQ(v2.size(), 10);
@@ -105,7 +105,7 @@ TEST(TEST_SUITE_NAME, std_move_list) {
 
 	// 通过 `std::move` 将左值转为右值引用, 通过 `std::list` 类型的 "移动构造器"
 	// 将 `l1` 对象的内容移动到 `l2` 对象中
-	list<int> l2 = move(l1);
+	list<int> l2 = std::move(l1);
 
 	// 确认内容已经移动到目标对象
 	ASSERT_EQ(l2.size(), 10);
@@ -118,32 +118,32 @@ TEST(TEST_SUITE_NAME, std_move_list) {
 TEST(TEST_SUITE_NAME, moveable_class) {
 	// 定义一个变量 (左值), 此时对象有效, 且内容正常
 	Moveable m1(100);
-	ASSERT_TRUE(m1.valid());
+	ASSERT_TRUE(m1);
 	ASSERT_EQ(*m1, 100);
 
 	// 将 `m1` 变量转为右值引用, 并调用 `Moveable` 类型的 "移动构造器" 对对象进行移动
 	// 完成移动后, `m1` 对象失效, 内容被移动到 `m2` 对象中
-	Moveable m2 = move(m1);
+	Moveable m2 = std::move(m1);
 	ASSERT_EQ(*m2, 100);
-	ASSERT_FALSE(m1.valid());
+	ASSERT_FALSE(m1);
 
 	// 这里调用 `移动赋值运算符` 将 `m2` 变量内容移动到 `m1` 变量
 	// 完成移动操作后, `m2` 对象失效, 内容被移动到 `m1` 对象中
-	m1 = move(m2);
-	ASSERT_TRUE(m1.valid());
+	m1 = std::move(m2);
+	ASSERT_TRUE(m1);
 	ASSERT_EQ(*m1, 100);
-	ASSERT_FALSE(m2.valid());
+	ASSERT_FALSE(m2);
 
 	// 传参时, 如果实参是 "临时对象", 则可作为 "右值引用" 进行传参,
 	// 这里的返回值也是一个 "临时对象" (刻意为之), 故返回值也可看作为一个 "右值引用"
 	// 这里调用 "移动构造器" 创建 `m3` 对象
 	Moveable m3 = [](Moveable<int>&& m) { return Moveable(*m); }(Moveable(100));
-	ASSERT_TRUE(m3.valid());
+	ASSERT_TRUE(m3);
 	ASSERT_EQ(*m3, 100);
 
 	// 这里调用 `移动赋值运算符` 将函数返回值内容移动到 `m3` 变量
 	m3 = [](Moveable<int>&& m) { return Moveable(*m); }(Moveable(100));
-	ASSERT_TRUE(m3.valid());
+	ASSERT_TRUE(m3);
 	ASSERT_EQ(*m3, 100);
 
 	// 这里 `m1` 是一个左值, 故无法作为 "右值引用" 进行传参
@@ -151,8 +151,8 @@ TEST(TEST_SUITE_NAME, moveable_class) {
 
 	// 需要将 `m1` 转为 "右值引用" 后, 即可进行传参
 	// 完成移动操作后, `m1` 对象失效, 内容被移动到 `m3` 对象中
-	m3 = [](Moveable<int>&& m) { return m; }(move(m1));
-	ASSERT_TRUE(m3.valid());
+	m3 = [](Moveable<int>&& m) { return m; }(std::move(m1));
+	ASSERT_TRUE(m3);
 	ASSERT_EQ(*m3, 100);
-	ASSERT_FALSE(m1.valid());
+	ASSERT_FALSE(m1);
 }

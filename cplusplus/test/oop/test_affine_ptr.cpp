@@ -1,8 +1,9 @@
 #include "oop/affine_ptr.hpp"
 
-#include <gtest/gtest.h>
 #include <vector>
 #include <list>
+#include <utility>
+#include <gtest/gtest.h>
 
 #include "../test.h"
 
@@ -11,17 +12,20 @@
 using namespace std;
 using namespace cpp;
 
-/// @brief 测试构建智能指针
+/// @brief 测试构建 `Box` 智能指针, 存储单值
 TEST(TEST_SUITE_NAME, box_with_value) {
 	Box<int> box(100);
+	ASSERT_TRUE(box);
 	ASSERT_EQ(*box, 100);
 
 	*box = 200;
 	ASSERT_EQ(*box, 200);
 }
 
+/// @brief 测试构建 `Box` 智能指针, 存储数组
 TEST(TEST_SUITE_NAME, box_with_array) {
 	Box<int> box(100, 10);
+	ASSERT_TRUE(box);
 	ASSERT_EQ(box.size(), 10);
 
 	for (size_t i = 0; i < box.size(); i++) {
@@ -34,13 +38,19 @@ TEST(TEST_SUITE_NAME, box_with_array) {
 	ASSERT_EQ(box[9], 200);
 }
 
+/// @brief 测试通过数组的指针构建 `Box` 智能指针
+///
+/// `Box` 对象中存储数组指针指向那部分数值
 TEST(TEST_SUITE_NAME, box_with_array_ptr) {
 	int* arr = new int[10];
 	for (size_t i = 0; i < 10; i++) {
 		arr[i] = i + 1;
 	}
 
+	// 通过迭代器设置 `Box` 对象中存储的值
 	Box<int> box = Box<int>::from_iter(arr, arr + 10);
+	ASSERT_TRUE(box);
+
 	for (size_t i = 0; i < box.size(); i++) {
 		ASSERT_EQ(*(arr + i), box[i]);
 	}
@@ -48,13 +58,19 @@ TEST(TEST_SUITE_NAME, box_with_array_ptr) {
 	delete[] arr;
 }
 
+/// @brief 测试通过向量对象迭代器构建 `Box` 智能指针
+///
+/// `Box` 对象中存储向量迭代器范围内的值
 TEST(TEST_SUITE_NAME, box_with_vector_iter) {
 	vector<int> v(10);
 	for (size_t i = 0; i < v.size(); i++) {
 		v[i] = i + 1;
 	}
 
+	// 通过迭代器设置 `Box` 对象中存储的值
 	Box<int> box1 = Box<int>::from_iter(v.begin(), v.end());
+	ASSERT_TRUE(box1);
+
 	for (size_t i = 0; i < box1.size(); i++) {
 		ASSERT_EQ(v[i], box1[i]);
 	}
@@ -66,4 +82,21 @@ TEST(TEST_SUITE_NAME, box_with_vector_iter) {
 	}
 
 	vector<int> v2(l.begin(), l.end());
+}
+
+/// @brief 测试 `Box` 智能指针的对象移动
+TEST(TEST_SUITE_NAME, move_instance) {
+	Box<int> b1(100);
+
+	// 调用移动构造器
+	Box<int> b2 = std::move(b1);
+	ASSERT_TRUE(b2);
+	ASSERT_EQ(*b2, 100);
+	ASSERT_FALSE(b1);
+
+	// 调用移动赋值运算符
+	b1 = std::move(b2);
+	ASSERT_TRUE(b1);
+	ASSERT_EQ(*b1, 100);
+	ASSERT_FALSE(b2);
 }

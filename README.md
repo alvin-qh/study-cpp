@@ -72,3 +72,33 @@ ctest -C DEBUG -VV
 
 - `-C DEBUG` 表示以调试模式执行测试
 - `-VV` 显示测试详细信息
+
+## 4. 设置编译器
+
+CMake 可以通过环境变量指定使用的编译器, 设置如下环境变量即可:
+
+```bash
+export CC="/usr/local/opt/llvm/bin/clang"
+export CXX="/usr/local/opt/llvm/bin/clang++"
+```
+
+本例设置为 LLVM 中的 clang 和 clang++ 作为编译器, 也可以选择 gcc/g++ 以及 MSVC 编译器等
+
+## 5. 配置 VSCode
+
+### 5.1. 插件
+
+VSCode 中用于支持 C/C++ 开发的插件包括:
+
+- 基本插件:
+  - C/C++;
+  - CMake;
+  - CMake Tools;
+  - CodeLLDB;
+- 测试插件:
+  - C++ TestMate;
+  - CMake Test Explorer
+
+### 5.2. 环境配置
+
+通过命令面板的 "CMake: Scan for Kits" 以及 "CMake: Select a Kit" 命令, 即可扫描本机上的所有工具链并选择其中的一个 (例如: LLVM Clang)

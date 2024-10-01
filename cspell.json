@@ -9,6 +9,8 @@
     "googletest",
     "gtest",
     "libgtest",
+    "LLDB",
+    "MSVC",
     "NUMSYS",
     "shiftdown",
     "shiftup",

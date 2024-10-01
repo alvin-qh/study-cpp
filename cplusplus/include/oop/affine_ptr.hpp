@@ -4,6 +4,7 @@
 #define __CPLUSPLUS_OOP_AFFINE_PTR_H
 
 #include <memory>
+#include <tuple>
 #include <type_traits>
 
 namespace cpp {
@@ -32,7 +33,7 @@ namespace cpp {
 		/// @brief 根据所给值创建指向单个对象的指针
 		///
 		/// @param val 所给值
-		void _from_value(const T& val, size_t len) {
+		void _alloc(const T& val, size_t len) {
 			// 分配内存
 			T* ptr = _alloc.allocate(len);
 
@@ -46,7 +47,7 @@ namespace cpp {
 		}
 
 		/// @brief 销毁当前指针
-		void _delete() {
+		void _free() {
 			T* ptr = _ptr;
 
 			if (ptr) {
@@ -65,6 +66,7 @@ namespace cpp {
 			}
 		}
 	public:
+	
 		/// @brief 默认构造函数
 		Box() :
 			_ptr(nullptr),
@@ -77,7 +79,7 @@ namespace cpp {
 		/// @param value 所给的值
 		/// @param len 元素个数
 		Box(const T& value, size_t len = 1) {
-			_from_value(value, len);
+			_alloc(value, len);
 		}
 
 		/// @brief 参数构造器
@@ -92,7 +94,13 @@ namespace cpp {
 		}
 
 		/// @brief 禁用拷贝构造函数
-		Box(const Box& o) = delete;
+		Box(const Box&) = delete;
+
+		Box(Box&& o) {
+			tuple<T*, size_t> r = o.detach();
+			_ptr = get<0>(r);
+			_len = get<1>(r);
+		}
 
 		/// @brief 析构函数, 销毁当前堆内存
 		virtual ~Box() {
@@ -132,13 +140,11 @@ namespace cpp {
 		/// @brief 分离当前指针
 		///
 		/// @return 当前指针
-		T* detach() {
-			T* ptr = _ptr;
-
+		tuple<T*, size_t> detach() {
+			tuple<T*, size_t> r(_ptr, _len);
 			_ptr = nullptr;
 			_len = 0;
-
-			return ptr;
+			return r;
 		}
 
 		/// @brief 根据从另一个 `Box` 对象分离的指针构造当前对象

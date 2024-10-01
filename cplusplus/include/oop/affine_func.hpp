@@ -26,8 +26,8 @@ namespace cpp {
 		/// @brief 构造函数
 		///
 		/// @param x 输入值
-		Addition(T x)
-			: _x(x) {}
+		Addition(T x) :
+			_x(x) {}
 
 		/// @brief 拷贝构造器
 		///

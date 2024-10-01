@@ -4,23 +4,24 @@
 namespace cpp {
 	/// Vector2D implement
 
-	Vector2D::Vector2D()
-		: _x(0)
-		, _y(0)
-		, __destroy_count(nullptr) {}
+	Vector2D::Vector2D() :
+		_x(0),
+		_y(0),
+		__destroy_count(nullptr) {
+	}
 
-	Vector2D::Vector2D(double x, double y)
-		: _x(x)
-		, _y(y)
-		, __destroy_count(nullptr) {
+	Vector2D::Vector2D(double x, double y) :
+		_x(x),
+		_y(y),
+		__destroy_count(nullptr) {
 		// 另一种形式的成员变量赋值
 		// _x = x;
 		// _y = y;
 	}
 
 	// 在拷贝构造器中调用参数构造器
-	Vector2D::Vector2D(const Vector2D& o)
-		: Vector2D(o._x, o._y) {
+	Vector2D::Vector2D(const Vector2D& o) :
+		Vector2D(o._x, o._y) {
 		if (__destroy_count) {
 			*__destroy_count += 1;
 		}
@@ -53,20 +54,25 @@ namespace cpp {
 
 	/// Vector3D implement
 
-	Vector3D::Vector3D()
-		: Vector2D()
-		, _z(0) {}
+	Vector3D::Vector3D() :
+		Vector2D(),
+		_z(0) {
+	}
 
-	Vector3D::Vector3D(double x, double y, double z)
-		: Vector2D(x, y)
-		, _z(z) {}
+	Vector3D::Vector3D(double x, double y, double z) :
+		Vector2D(x, y),
+		_z(z) {
+	}
 
-	Vector3D::Vector3D(const Vector3D& o)
-		: Vector2D(o)
-		, _z(o._z) {}
+	Vector3D::Vector3D(const Vector3D& o) :
+		Vector2D(o),
+		_z(o._z) {
+	}
 
 	Vector3D::~Vector3D() {
-		if (__destroy_count) { *__destroy_count += 1; }
+		if (__destroy_count) {
+			*__destroy_count += 1;
+		}
 	}
 
 	Vector3D& Vector3D::operator=(const Vector3D& o) {

@@ -66,9 +66,9 @@ namespace cpp {
 		}
 	public:
 		/// @brief 默认构造函数
-		Box()
-			: _ptr(nullptr)
-			, _len(0) {}
+		Box() :
+			_ptr(nullptr),
+			_len(0) {}
 
 		/// @brief 参数构造器
 		///
@@ -86,8 +86,8 @@ namespace cpp {
 		///
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
-		Box(T* ptr, size_t len = 1)
-			: Box() {
+		Box(T* ptr, size_t len = 1) :
+			Box() {
 			attach(ptr, len);
 		}
 

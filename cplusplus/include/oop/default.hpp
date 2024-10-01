@@ -10,16 +10,18 @@ namespace cpp {
 		double _x, _y;
 	public:
 		/// @brief 默认构造器
-		Point()
-			: _x(0)
-			, _y(0) {}
+		Point() :
+			_x(0),
+			_y(0) {
+		}
 
 		/// @brief 参数构造器
 		/// @param x `x` 坐标值
 		/// @param y `y` 坐标值
-		Point(double x, double y)
-			: _x(x)
-			, _y(y) {}
+		Point(double x, double y) :
+			_x(x),
+			_y(y) {
+		}
 
 		/// @brief 定义拷贝构造函数
 		///

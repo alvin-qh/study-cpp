@@ -20,11 +20,11 @@ add_compile_options(-pthread -fopenmp -W -Wno-unknown-pragmas)
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     # cmake .. -DCMAKE_BUILD_TYPE=Release
-    add_compile_options(-DNDEBUG -O2)
+    add_compile_options(-DNDEBUG -O3)
     message(STATUS "Make release building ...")
 else()
     # cmake .. -DCMAKE_BUILD_TYPE=Debug
-    add_compile_options(-DDEBUG -fsanitize=address -fsanitize-recover=address -fno-stack-protector -fno-omit-frame-pointer)
+    add_compile_options(-DDEBUG)
     message(STATUS "Make debug building ...")
 endif()
 

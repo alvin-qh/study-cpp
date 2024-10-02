@@ -13,5 +13,5 @@ struct TestTypeDetect {
 
 /// @brief 测试泛型函数
 TEST(TEST_SUITE_NAME, aaaa) {
-	static_assert(has_func<TestTypeDetect>::value);
+	ASSERT_TRUE(has_operator_sub<TestTypeDetect>::value);
 }

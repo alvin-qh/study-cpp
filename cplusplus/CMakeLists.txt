@@ -19,12 +19,15 @@ set(cplusplus_test_src
     test/oop/test_affine_ptr.cpp
     test/oop/test_default.cpp
     test/template/test_func.cpp
-    test/template/test_info_generic_param.cpp
+    test/template/test_inf_generic_param.cpp
 )
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 include_directories(include)
-include_directories(${PROJECT_SOURCE_DIR}/vendor/googletest/googletest/include)
+include_directories(
+    ${PROJECT_SOURCE_DIR}/vendor/googletest/googletest/include
+    ${PROJECT_SOURCE_DIR}/vendor/googletest/googlemock/include
+)
 
 # 设置生成的执行文件
 # algorithm_test 为执行文件名, 其后为相关的源码文件集
@@ -37,6 +40,7 @@ add_executable(cplusplus_test
 # 链接库会自动在当前路径下的 lib 目录中查找, 无需文件前缀 lib 和后缀 .a 等, gtest => libgtest.a
 target_link_libraries(cplusplus_test
     PRIVATE gtest
+    PRIVATE gmock
 )
 
 # 在调试模式下, 增加 sanitize 库链接以检测内存泄漏

@@ -6,8 +6,6 @@
 
 #include "common.h"
 
-#include <memory.h>
-
 namespace alg {
 	/// @brief 向量集合结构体
 	///

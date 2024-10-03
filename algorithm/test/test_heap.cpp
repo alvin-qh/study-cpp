@@ -1,7 +1,7 @@
+#include <gtest/gtest.h>
+
 #include "heap.h"
 #include "test.h"
-
-#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_algorithm_heap
 
@@ -40,8 +40,8 @@ TEST(TEST_SUITE_NAME, heap_offer) {
 	int data[4];
 	int_array_shuffle(data, ARRAY_SIZE(data), 5);
 
-    // 将测试数据加入堆中
-    for (uint i = 0; i < ARRAY_SIZE(data); i++) {
+	// 将测试数据加入堆中
+	for (uint i = 0; i < ARRAY_SIZE(data); i++) {
 		heap_offer(h, data[i]);
 	}
 

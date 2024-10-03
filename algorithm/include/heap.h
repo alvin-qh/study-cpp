@@ -6,9 +6,6 @@
 
 #include "common.h"
 
-#include <memory.h>
-#include <stdio.h>
-
 namespace alg {
 	/// @brief 定义堆结构体
 	///

@@ -4,6 +4,8 @@
 #define __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
 
 namespace cpp {
+	using namespace std;
+
 	/// @brief 通过可变模板参数定义的参数列表调用回调函数
 	///
 	/// 通过可变参数模板 `...Args` 定义函数参数 `args`,
@@ -43,6 +45,16 @@ namespace cpp {
 	template<typename T, typename ...Args>
 	T recursive_args(T head, Args...args) {
 		return head + recursive_args<T>(args...);
+	}
+
+	template<typename T>
+	T _double_args(T val) {
+		return val + val;
+	}
+
+	template<typename R, typename ...Args>
+	vector<R> expand_args(Args...args) {
+		return vector<R> { _double_args<R>(args)... };
 	}
 } // ! namespace cpp
 

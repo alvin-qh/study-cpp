@@ -3,9 +3,6 @@
 #ifndef __CPLUSPLUS_TEMPLATE_TYPE_DETECT_H
 #define __CPLUSPLUS_TEMPLATE_TYPE_DETECT_H
 
-#include <type_traits>
-#include <utility>
-
 namespace cpp {
 	using namespace std;
 

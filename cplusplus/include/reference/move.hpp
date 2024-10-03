@@ -4,8 +4,6 @@
 #define __CPLUSPLUS_REFERENCE_MOVE_H
 
 namespace cpp {
-	using namespace std;
-
 	/// @brief 可移动类型
 	///
 	/// 可移动类型即可通过 “右值引用” 构造器 (或 “右值引用” 赋值运算符)

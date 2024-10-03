@@ -1,13 +1,20 @@
-#include "template/type_detect.hpp"
-
 #include <gtest/gtest.h>
+#include <type_traits>
+#include <utility>
+
 #include "../test.h"
+#include "template/type_detect.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_template_type_detect
 
 using namespace cpp;
 
-struct TestTypeDetect {
+struct HasOperatorSub {
+	HasOperatorSub& operator-(HasOperatorSub& t) { return t; }
+};
+
+
+struct  {
 	TestTypeDetect& operator-(TestTypeDetect& t) { return t; }
 };
 

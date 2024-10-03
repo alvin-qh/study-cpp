@@ -3,8 +3,6 @@
 #ifndef __CPLUSPLUS_TEMPLATE_CONCEPT_H
 #define __CPLUSPLUS_TEMPLATE_CONCEPT_H
 
-#include <type_traits>
-
 namespace cpp {
 	using namespace std;
 

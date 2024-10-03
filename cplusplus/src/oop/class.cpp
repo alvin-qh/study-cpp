@@ -1,4 +1,6 @@
+#include <stdint.h>
 #include <cmath>
+
 #include "oop/class.hpp"
 
 namespace cpp {

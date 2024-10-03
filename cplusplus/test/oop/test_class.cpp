@@ -1,7 +1,8 @@
-#include "oop/class.hpp"
-
 #include <gtest/gtest.h>
+#include <stdint.h>
+
 #include "../test.h"
+#include "oop/class.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_class
 

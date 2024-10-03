@@ -3,8 +3,6 @@
 #ifndef __CPLUSPLUS_OOP_CLASS_H
 #define __CPLUSPLUS_OOP_CLASS_H
 
-#include <stdint.h>
-
 namespace cpp {
 	/// @brief 定义 2D 向量类
 	class Vector2D {

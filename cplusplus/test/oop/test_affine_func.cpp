@@ -1,7 +1,8 @@
-#include "oop/affine_func.hpp"
-
 #include <gtest/gtest.h>
+#include <type_traits>
+
 #include "../test.h"
+#include "oop/affine_func.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_affine_func
 

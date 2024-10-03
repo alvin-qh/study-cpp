@@ -22,7 +22,6 @@ namespace cpp {
 
 	template<typename T>
 	struct has_operator_sub<T, void_t<decltype(declval<T>().operator-(declval<T&>()))>> : true_type {};
-
 } // ! namespace cpp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_TYPE_DETECT_H

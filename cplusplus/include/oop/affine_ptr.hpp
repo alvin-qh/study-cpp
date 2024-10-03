@@ -3,10 +3,6 @@
 #ifndef __CPLUSPLUS_OOP_AFFINE_PTR_H
 #define __CPLUSPLUS_OOP_AFFINE_PTR_H
 
-#include <memory>
-#include <tuple>
-#include <type_traits>
-
 namespace cpp {
 	using namespace std;
 

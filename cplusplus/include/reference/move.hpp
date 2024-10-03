@@ -3,8 +3,6 @@
 #ifndef __CPLUSPLUS_REFERENCE_MOVE_H
 #define __CPLUSPLUS_REFERENCE_MOVE_H
 
-#include <memory>
-
 namespace cpp {
 	using namespace std;
 

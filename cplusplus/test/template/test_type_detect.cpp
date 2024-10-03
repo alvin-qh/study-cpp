@@ -11,7 +11,7 @@ using namespace cpp;
 
 /// @brief 定义具备 `-` 运算符的类型
 struct HasOperatorSub {
-	HasOperatorSub& operator-(HasOperatorSub& t) { return t; }
+	HasOperatorSub operator-(const HasOperatorSub& t) { return t; }
 };
 
 /// @brief 定义不具备 `-` 运算符的类型

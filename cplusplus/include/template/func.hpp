@@ -11,9 +11,7 @@ namespace cpp {
 	/// @param b 加数
 	/// @return 返回和
 	template<typename T>
-	T add(T a, T b) {
-		return a + b;
-	}
+	T add(T a, T b) { return a + b; }
 } // ! namespace cpp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_FUNC_H

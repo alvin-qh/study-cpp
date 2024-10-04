@@ -1,7 +1,7 @@
-#include <gtest/gtest.h>
-
-#include "numsys.h"
 #include "test.h"
+#include "numsys.h"
+
+#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_convert_numsys
 

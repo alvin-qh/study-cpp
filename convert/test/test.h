@@ -4,8 +4,6 @@
 #ifndef __CONVERT_TEST_H
 #define __CONVERT_TEST_H
 
-#include "common.h"
-
 namespace conv {
 } // ! namespace conv
 

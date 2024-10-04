@@ -1,7 +1,6 @@
-#include <gtest/gtest.h>
-
-#include "../test.h"
 #include "oop/default.hpp"
+
+#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_oop_default
 

@@ -1,11 +1,9 @@
-#include <gtest/gtest.h>
-#include <memory>
 #include <vector>
 #include <list>
-#include <utility>
 
-#include "../test.h"
 #include "oop/affine_ptr.hpp"
+
+#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_affine_ptr
 

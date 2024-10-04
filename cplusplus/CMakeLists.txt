@@ -14,6 +14,7 @@ set(cplusplus_src
 set(cplusplus_test_src
     test/test_main.cpp
     test/reference/test_move.cpp
+    test/reference/test_ref.cpp
     test/oop/test_class.cpp
     test/oop/test_affine_func.cpp
     test/oop/test_affine_ptr.cpp

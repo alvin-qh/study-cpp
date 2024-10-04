@@ -3,13 +3,15 @@
 #ifndef __CPLUSPLUS_OOP_CLASS_H
 #define __CPLUSPLUS_OOP_CLASS_H
 
+#include <sys/types.h>
+
 namespace cpp {
 	/// @brief 定义 2D 向量类
 	class Vector2D {
 	protected:
 		double _x;
 		double _y;
-		uint32_t* __destroy_count;
+		uint* __destroy_count;
 
 	public:
 		/// @brief 默认构造器
@@ -49,7 +51,7 @@ namespace cpp {
 		/// @brief 设置析构数量记录变量指针
 		///
 		/// @param destroy_count 整数变量指针
-		inline void __set_destroy_count_ref(uint32_t* destroy_count) {
+		inline void __set_destroy_count_ref(uint* destroy_count) {
 			this->__destroy_count = destroy_count;
 		}
 

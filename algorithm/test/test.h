@@ -4,7 +4,7 @@
 #ifndef __ALGORITHM_TEST_H
 #define __ALGORITHM_TEST_H
 
-#include "common.h"
+#include <sys/types.h>
 
 namespace alg {
 	/// @brief 对整数进行比较

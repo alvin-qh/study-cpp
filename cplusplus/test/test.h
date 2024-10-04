@@ -6,6 +6,8 @@
 #ifndef __CPLUSPLUS_TEST_H
 #define __CPLUSPLUS_TEST_H
 
+#include <sys/types.h>
+
 namespace cpp {
 	/// @brief 对浮点数进行指定小数位数保留
 	/// @param n 浮点数数值

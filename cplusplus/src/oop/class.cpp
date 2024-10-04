@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <sys/types.h>
 #include <cmath>
 
 #include "oop/class.hpp"

@@ -3,6 +3,9 @@
 #ifndef __CPLUSPLUS_OOP_AFFINE_PTR_H
 #define __CPLUSPLUS_OOP_AFFINE_PTR_H
 
+#include <utility>
+#include <memory>
+
 namespace cpp {
 	using namespace std;
 

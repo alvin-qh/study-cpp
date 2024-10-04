@@ -1,7 +1,6 @@
 #include "template/concept.hpp"
 
 #include <gtest/gtest.h>
-#include "../test.h"
 
 #define TEST_SUITE_NAME test_cplusplus_template_concept
 

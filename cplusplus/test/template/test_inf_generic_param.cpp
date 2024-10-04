@@ -1,11 +1,10 @@
 #include <string>
 #include <vector>
 
+#include "template/inf_generic_param.hpp"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-
-#include "template/inf_generic_param.hpp"
-#include "../test.h"
 
 #define TEST_SUITE_NAME test_cplusplus_template_inf_generic_param
 

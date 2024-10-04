@@ -1,12 +1,10 @@
-#include "reference/move.hpp"
-
 #include <string>
 #include <vector>
 #include <list>
-#include <utility>
-#include <gtest/gtest.h>
 
-#include "../test.h"
+#include "reference/move.hpp"
+
+#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_reference_move
 

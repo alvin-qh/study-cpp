@@ -11,6 +11,9 @@
 #ifndef __CPLUSPLUS_TEMPLATE_SFINAE_H
 #define __CPLUSPLUS_TEMPLATE_SFINAE_H
 
+#include <type_traits>
+#include <utility>
+
 namespace cpp {
 	/// @brief 当 `T` 类型内部具备 `T::type_x` 类型时, `foo` 模板函数的特化
 	///
@@ -54,16 +57,46 @@ namespace cpp {
 	template<typename T1>
 	struct is_same_type<T1, T1> : std::true_type {};
 
-	/// @brief 检测
-	/// @tparam T
+	/// @brief 检测指定类型是否包含默认构造器
+	///
+	/// @tparam T 带检测类型
 	template<typename T>
 	class is_default_constructible {
-		template<typename U = T, typename = decltype(U())>
-		static std::true_type test(void*) { return std::true_type(); }
+		/// @brief 定义模板方法, 具备两个模板参数
+		///
+		/// - 第一个模板参数 (`U`) 为要检测的目标类型
+		///
+		/// - 第二个模板参数 (匿名) 为通过 `decltype` 运算符推断的 `U` 类型默认构造器类型
+		///
+		/// 当 `U()` 存在 (即 `U` 类型具备默认构造器) 时, 当前模板方法推断成功, 返回 `std::true_type` 结果;
+		/// 当 `U()` 不存在 (即 `U` 类型没有默认构造器) 时, 当前模板方法推断错误, 同时, 后面的 `test`
+		/// 模板方法推断成功
+		///
+		/// @tparam U 要检测的目标类型
+		/// @param 该参数仅用于占位, 并无实际意义, 任何类型均可, 其目的是: 令两个 `test` 方法既可以形成重载, 又可以传递同样的参数,
+		///        可以为一个 `test` 方法定义任意类型参数, 另一个 `test` 方法定义 `...` 参数 (表示任意参数)
+		/// @return `std::true_type` 类型实例
+		template<typename U, typename = decltype(U())>
+		static auto test(void*) { return std::true_type(); }
 
+		/// @brief 定义模板方法, 具备一个模板参数
+		///
+		/// 当 `U` 类型不具备默认构造器时, `decltype(U())` 推断失败, 且根据 SFINAE 特性,
+		/// 编译器会尝试匹配当前模板函数 (只具备一个模板参数)
+		///
+		/// @tparam U 要检测的目标类型
+		/// @param 该参数仅用于占位, 并无实际意义, 任何类型均可, 其目的是: 令两个 `test` 方法既可以形成重载, 又可以传递同样的参数,
+		///        可以为一个 `test` 方法定义任意类型参数, 另一个 `test` 方法定义 `...` 参数 (表示任意参数)
+		/// @return `std::false_type` 类型实例
 		template<typename U>
-		static std::false_type test(...) { return std::false_type(); }
+		static auto test(...) { return std::false_type(); }
 	public:
+		/// @brief 常量值
+		///
+		/// 该常量值为: 调用 `test` 方法, 如果 `T` 类型有默认构造器, 则 `test` 方法返回 `std::true_type` 类型实例,
+		/// 如果 `T` 类型没有默认构造器, 则 `test` 方法返回 `std::false_type` 类型实例;
+		///
+		/// 通过 `is_same_type` 类型比较结果后, `T` 类型具备默认构造器时值为 `true`, 否则值为 `false`
 		static constexpr bool value = is_same_type<decltype(test<T>(nullptr)), std::true_type>::value;
 	};
 
@@ -94,7 +127,8 @@ namespace cpp {
 	///
 	/// 2. 对 `has_operator_sub` 进行偏特化, 令其第二个模板参数为
 	///    `void_t<decltype(declval<T>().operator-(declval<const T&>()))>` 类型,
-	///    如果第二个模板参数偏特化成功, 则 `has_operator_sub` 将继承自 `std::true_type`
+	///    如果第二个模板参数偏特化成功 (即类型 `T` 具备 `T::operator-(const T&)` 方法),
+	///    则 `has_operator_sub` 将继承自 `std::true_type`
 	///
 	/// 整体借助了 C++ 的 SFINAE 特性, 即所给类型导致模板参数无效时, 不会立即编译失败,
 	/// 而是尝试模板参数的其它展开方式

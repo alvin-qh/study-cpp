@@ -3,12 +3,12 @@
 #ifndef __CPLUSPLUS_TEMPLATE_CONCEPT_H
 #define __CPLUSPLUS_TEMPLATE_CONCEPT_H
 
-namespace cpp {
-	using namespace std;
+#include <type_traits>
 
+namespace cpp {
 	/// 定义数值类型泛型参数
 	template<typename T>
-	concept NumberType = is_arithmetic<T>::value;
+	concept NumberType = std::is_arithmetic<T>::value;
 
 	/// @brief 使用 `NumberType` 定义泛型参数, 只接收数值类型参数
 	///
@@ -17,9 +17,7 @@ namespace cpp {
 	/// @param b 加数
 	/// @return 返回和
 	template<NumberType T>
-	T add(T a, T b) {
-		return a + b;
-	}
+	T add(T a, T b) { return a + b; }
 } // ! namespace cpp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_CONCEPT_H

@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <type_traits>
 
 #include "../test.h"
 #include "template/sfinae.hpp"
@@ -6,6 +7,24 @@
 #define TEST_SUITE_NAME test_cplusplus_template_sfinae
 
 using namespace cpp;
+
+/// @brief 定义类型, 内部包含 `type_x` 类型定义
+///
+/// `type_x` 类型为 `int` 类型的别名
+struct X {
+	typedef int type_x;
+
+	X() {}
+};
+
+/// @brief 定义类型, 内部包含 `type_y` 类型定义
+///
+/// `type_y` 类型为 `int` 类型的别名
+struct Y {
+	typedef int type_y;
+
+	Y(int) {}
+};
 
 /// @brief 测试模板函数的 SFINAE
 TEST(TEST_SUITE_NAME, function_sfinae) {
@@ -25,4 +44,26 @@ TEST(TEST_SUITE_NAME, function_sfinae) {
 	// 模板均匹配失败, 故 `foo(T)` 模板函数匹配成功
 	r = foo<int>(1);
 	ASSERT_EQ(r, "foo-type-any");
+}
+
+TEST(TEST_SUITE_NAME, class_sfinae) {
+	bool same = is_same_type<int, int>::value;
+	ASSERT_TRUE(same);
+
+	same = is_same_type<int, unsigned int>::value;
+	ASSERT_FALSE(same);
+
+	typedef X XX;
+
+	same = is_same_type<X, XX>::value;
+	ASSERT_TRUE(same);
+
+	same = is_same_type<X, Y>::value;
+	ASSERT_FALSE(same);
+
+	bool has = is_default_constructible<X>::value;
+	ASSERT_TRUE(has);
+
+	has = is_default_constructible<Y>::value;
+	ASSERT_FALSE(has);
 }

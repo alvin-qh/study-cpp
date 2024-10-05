@@ -13,8 +13,9 @@ set(cplusplus_src
 # cplusplus_test_src 是变量名, 可以任意
 set(cplusplus_test_src
     test/test_main.cpp
+    test/reference/test_left_ref.cpp
+    test/reference/test_right_ref.cpp
     test/reference/test_move.cpp
-    test/reference/test_ref.cpp
     test/oop/test_class.cpp
     test/oop/test_affine_func.cpp
     test/oop/test_affine_ptr.cpp

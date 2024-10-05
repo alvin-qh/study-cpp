@@ -62,6 +62,7 @@ namespace cpp {
 	/// @tparam T 带检测类型
 	template<typename T>
 	class is_default_constructible {
+	private:
 		/// @brief 定义模板方法, 具备两个模板参数
 		///
 		/// - 第一个模板参数 (`U`) 为要检测的目标类型

@@ -21,6 +21,7 @@ set(cplusplus_test_src
     test/template/test_func.cpp
     test/template/test_affine_func.cpp
     test/template/test_affine_ptr.cpp
+    test/template/test_concept.cpp
     test/template/test_inf_generic_param.cpp
     test/template/test_sfinae.cpp
 )

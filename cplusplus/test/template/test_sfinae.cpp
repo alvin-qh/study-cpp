@@ -84,11 +84,36 @@ TEST(TEST_SUITE_NAME, detect_type_if_has_operator_sub) {
 	ASSERT_FALSE(has_operator_sub<NoOperatorSub>::value);
 }
 
-/// @brief 测试通过 `enable_if` 约束模板类的泛型参数类型
-TEST(TEST_SUITE_NAME, constraint_template_argument) {
+/// @brief 测试通过 `enable_if` 约束模板函数的泛型参数类型
+TEST(TEST_SUITE_NAME, constraint_function_template_argument) {
+	// 因为 `int` 类型具备 `+` 运算符, 故可以正常编译运行
+	int r1 = add<int>(100, 200);
+	ASSERT_EQ(r1, 300);
+
+	// 因为 `std::string` 类型具备 `+` 运算符, 故可以正常编译运行
+	string r2 = add<string>("Hello", " World");
+	ASSERT_EQ(r2, "Hello World");
+
+	// 因为 `X` 类型不具备 `+` 运算符, 故无法编译成功
+	// X r3 = add<X>(X(), X());
+}
+
+/// @brief 测试通过 `enable_if` 约束模板函数的返回值类型
+TEST(TEST_SUITE_NAME, constraint_function_return_type) {
+	// 因为 `int` 类型具备 `-` 运算符, 故可以作为函数返回值, 模板函数有效
+	int r1 = sub<int>(200, 100);
+	ASSERT_EQ(r1, 100);
+
+	// 因为 `std::string` 类型不具备 `-` 运算符, 故无法作为函数返回值, 模板函数失效
+	// string r2 = sub<string>("Hello", " World");
+}
+
+/// @brief 测试通过 `enable_if_t` 约束模板类的泛型参数类型
+TEST(TEST_SUITE_NAME, constraint_class_template_argument) {
 	// `int` 类型具备 `-` 运算符, 故类型正常
 	Subtract<int> s1(10);
-	ASSERT_EQ(s1.value(), 10);
+	s1.sub(8);
+	ASSERT_EQ(s1.value(), 2);
 
 	// `string` 类型不具备 `-` 运算符, 故类型正常
 	// Subtract<string> s2("Hello");

@@ -159,47 +159,118 @@ namespace cpp {
 
 	// --------------------------------------------------------------------------
 
+	/// @brief 检测类型是否包含 `+` 运算符
+	template<typename T, typename = void>
+	struct has_operator_add : std::false_type {};
+
+	template<typename T>
+	struct has_operator_add<T, std::void_t<decltype(std::declval<T>() + std::declval<const T&>())>> : std::true_type {};
+
+	/// @brief 定义模板函数, 并通过 `std::enable_if` 对模板参数检测
+	///
+	/// 如果 `T` 类型具备 `+` 运算符, 则模板参数生效, 该模板函数可以正确编译, 否则模板参数失效, 编译失败
+	///
+	/// @tparam T 待检测模板参数
+	/// @param x T 类型参数
+	/// @param y T 类型参数
+	/// @return 两个参数之和
+	template<typename T, typename = typename std::enable_if<has_operator_add<T>::value, T>::type>
+	T add(T x, T y) {
+		return x + y;
+	}
+
+	/// @brief 定义模板函数, 并通过 `std::enable_if` 对函数返回值类型进行定义
+	///
+	/// 如果 `T` 类型具备 `-` 运算符, 则函数返回值生效, 函数编译成功, 否则函数编译失败
+	///
+	/// @tparam T 待检测模板参数
+	/// @param x T 类型参数
+	/// @param y T 类型参数
+	/// @return 两个参数之和
+	template<typename T>
+	typename std::enable_if<has_operator_sub<T>::value, T>::type
+	sub(T x, T y) {
+		return x - y;
+	}
+
+	// --------------------------------------------------------------------------
+
 	/// @brief 利用 SFINAE 对模板类的泛型参数进行约束
 	///
-	/// 
+	/// 利用模板的偏特化, 即可利用 SFINAE 特性对模板类型进行约束, 为此, C++ 提供了
+	/// `std::enable_if_t` 类型, 具体方式为:
 	///
-	/// @tparam T 模板参数
+	/// 1. 定义模板类, 且除了所需模板参数 `T` 外, 额外增加 `void` 类型匿名模板参数;
+	///
+	/// 2. 定义类型的偏特化模板, 将匿名模板参数特化为
+	///    `std::enable_if_t<has_operator_sub<T>::value>` 类型;
+	///
+	/// `std::enable_if_t` 模板的参数为一个 `bool` 常量值, 如果该值为 `true`,
+	/// 则 `std::enable_if_t` 类型生效, 否则 `std::enable_if_t` 类型无效,
+	/// 导致当前模板类无效
+	///
+	/// 利用 SFINAE 机制配合 `std::enable_if_t` 模板, 即可对模板类的其它模板参数进行检测,
+	/// 如果不符合条件, 则 `std::enable_if_t` 类型失效, 此时具备 `void`
+	/// 类型匿名模板参数的模板生效;
+	///
+	/// C++ 20 之后, 提供了更方便的模式对模板参数, 参考 `concept.hpp` 中的介绍
+	///
+	/// @tparam T 要检测的模板参数
 	template<typename T, typename = void>
 	struct Subtract {
 		static_assert(false, "type T must has operator -");
 	};
 
-	/// @brief 通过 `std::enable_if_t` 模板对类型进行约束
+	/// @brief 对模板参数进行检测
 	///
-	/// @tparam T
+	/// 当 `T` 类型具备 `-` 运算符, 则 `has_operator_sub<T>:value` 为 `true`,
+	/// 从而 `std::enable_if_t<...>` 类型生效, 当前模板类型生效;
+	///
+	/// 反之, 当前模板类失效, 且上一个 `Subtract` 生效, 完成类型检测
+	///
+	/// @tparam T 要检测的模板参数
 	template<typename T>
 	class Subtract<T, std::enable_if_t<has_operator_sub<T>::value>> {
 	private:
 		T _val;
 	public:
+		/// @brief 参数构造器
+		///
+		/// @param val `T` 类型参数
 		Subtract(T val)
 			: _val(val) {
 		}
 
+		/// @brief 拷贝构造器
 		Subtract(const Subtract&) = default;
 
+		/// @brief 析构函数
 		virtual ~Subtract() { }
 
+		/// @brief 重载赋值运算符
+		///
+		/// @return 当前对象引用
 		Subtract& operator=(const Subtract&) = default;
 
+		/// @brief 执行减法操作
+		///
+		/// 将当前实例中存储的 `T` 类型变量和参数传入的 `T` 类型参数相减, 返回结果
+		///
+		/// @param val 减数
+		/// @return 相减结果
 		Subtract& sub(const T& val) {
-			_val -= val;
+			_val = _val - val;
 			return *this;
 		}
 
-		Subtract& sub(const T& v1, const T& v2) {
-			_val -= v1;
-			_val -= v2;
-			return *this;
-		}
-
+		/// @brief 获取当前实例中保存的 `T` 类型变量的可变引用
+		///
+		/// @return `T` 类型变量的可变引用
 		T& value() { return _val; }
 
+		/// @brief 获取当前实例中保存的 `T` 类型变量的只读引用
+		///
+		/// @return `T` 类型变量的只读引用
 		const T& value() const { return _val; }
 	};
 } // namespace cpp

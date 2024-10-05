@@ -1,16 +1,28 @@
+#include <string>
+
+#include "../test.h"
 #include "template/concept.hpp"
 
 #include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_template_concept
 
+using namespace std;
 using namespace cpp;
 
-/// @brief 测试泛型函数对泛型类型的约束
-TEST(TEST_SUITE_NAME, add) {
-	EXPECT_EQ(3, add(1, 2));
-	EXPECT_EQ(3.3, number_to_fixed(add(1.1, 2.2), 2));
+/// @brief 测试通过 `concept` 方式对泛型类型的约束
+TEST(TEST_SUITE_NAME, concept_definition) {
+	ASSERT_EQ(add(1, 2), 3);
+	ASSERT_EQ(number_to_fixed(add(1.1, 2.2), 2), 3.3);
 
 	// `add` 函数不支持非数值类型参数
-	// EXPECT_EQ("Hello World", add(string("Hello "), string("World")));
+	// ASSERT_EQ("Hello World", add(string("Hello "), string("World")));
+}
+
+/// @brief 测试通过 `requires` 方式对泛型类型的约束
+TEST(TEST_SUITE_NAME, requires_definition) {
+	ASSERT_EQ(Subtract<int>::sub(2, 1), 1);
+
+	// 由于 `std::string` 类型不包括 `-` 运算符, 故 `Subtract<string>` 模板编译失败
+	// ASSERT_EQ(Subtract<string>::sub("Hello World", "Hello "), "World");
 }

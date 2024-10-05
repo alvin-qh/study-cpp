@@ -1,7 +1,7 @@
 #include <vector>
 #include <list>
 
-#include "oop/affine_ptr.hpp"
+#include "template/affine_ptr.hpp"
 
 #include <gtest/gtest.h>
 

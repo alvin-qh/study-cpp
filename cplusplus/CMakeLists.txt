@@ -17,10 +17,10 @@ set(cplusplus_test_src
     test/reference/test_right_ref.cpp
     test/reference/test_move.cpp
     test/oop/test_class.cpp
-    test/oop/test_affine_func.cpp
-    test/oop/test_affine_ptr.cpp
     test/oop/test_default.cpp
     test/template/test_func.cpp
+    test/template/test_affine_func.cpp
+    test/template/test_affine_ptr.cpp
     test/template/test_inf_generic_param.cpp
     test/template/test_sfinae.cpp
 )

@@ -106,18 +106,22 @@ namespace cpp {
 	/// @brief 定义模板类型, 无论模板参数为何, 其 `make_void<T>::type` 都为 `void` 类型
 	///
 	/// @tparam ...T 任意模板参数
-	template<typename...T>
-	struct make_void {
-		using type = void;
-	};
+	// template<typename...T>
+	// struct make_void {
+	// 	using type = void;
+	// };
 
 	/// @brief 定义 `void_t` 类型
 	///
+	/// 在 C++ 17 中, 引入了原生的 `void_t` 类型, 定义如下:
+	///
+	/// `template<typename...> using void_t = void;`
+	///
 	/// @tparam ...T 任意模板参数列表
-	template<typename...T>
-	using void_t = typename make_void<T...>::type;
+	// template<typename...T>
+	// using void_t = typename make_void<T...>::type;
 
-	/// @brief 用于检测指定类型是否包含 `T operator-(const T&)` 方法
+	/// @brief 用于检测指定类型是否包含 `-` 运算符
 	///
 	/// C++ 20 版本之前, 没有提供直接检测类型方法的办法, 但可以使用 C++ 的模板特性间接达成目标;
 	///
@@ -127,24 +131,21 @@ namespace cpp {
 	///    其中 `T` 参数表示要检测的目标类型;
 	///
 	/// 2. 对 `has_operator_sub` 进行偏特化, 令其第二个模板参数为
-	///    `void_t<decltype(declval<T>().operator-(declval<const T&>()))>` 类型,
-	///    如果第二个模板参数偏特化成功 (即类型 `T` 具备 `T::operator-(const T&)` 方法),
-	///    则 `has_operator_sub` 将继承自 `std::true_type`
+	///    `void_t<decltype(declval<T>() - declval<const T&>())>` 类型,
+	///    如果第二个模板参数偏特化成功 (即类型 `T` 具备 `-` 运算符), 则 `has_operator_sub`
+	///    将继承自 `std::true_type`;
 	///
 	/// 整体借助了 C++ 的 SFINAE 特性, 即所给类型导致模板参数无效时, 不会立即编译失败,
 	/// 而是尝试模板参数的其它展开方式
 	///
 	/// `std::declval` 函数用于获取所给类型的 "右值引用" 而无需对类型进行实例化, 故:
-	/// `declval<T>().operator-(declval<const T&>())` 表示 `T::operator-(const T&)`
-	/// 方法的引用;
+	/// `declval<T>() - declval<const T&>()` 表示 `-` 运算符方法的引用;
 	///
-	/// 接下来, 即通过 `decltype` 关键字对方法引用进行类型推断, 获得 `T::operator-(const T&)`
-	/// 方法返回值类型;
+	/// 接下来, 即通过 `decltype` 关键字对方法引用进行类型推断, 获得 `-` 方法返回值类型;
 	///
-	/// 也就是说, 只要 `T` 类型具备 `T::operator-(const T&)` 方法, `has_operator_sub`
-	/// 类型的偏特化会成立, 从而 `has_operator_sub<T>` 继承自 `std::true_type` 类型,
-	/// 否则会继承自 `std::false_type` 类型, 从而完成 `T` 类型是否包含 `T::operator-(const T&)`
-	/// 方法的检测
+	/// 也就是说, 只要 `T` 类型具备 `-` 运算符, `has_operator_sub` 类型的偏特化会成立,
+	/// 从而 `has_operator_sub<T>` 继承自 `std::true_type` 类型, 否则会继承自 `std::false_type`
+	/// 类型, 从而完成 `T` 类型是否包含 `-` 运算符的检测
 	///
 	/// @tparam T 待检测类型
 	template<typename T, typename = void>
@@ -154,7 +155,53 @@ namespace cpp {
 	///
 	/// @tparam T 待检测类型
 	template<typename T>
-	struct has_operator_sub<T, void_t<decltype(std::declval<T>().operator-(std::declval<const T&>()))>> : std::true_type {};
+	struct has_operator_sub<T, std::void_t<decltype(std::declval<T>() - std::declval<const T&>())>> : std::true_type {};
+
+	// --------------------------------------------------------------------------
+
+	/// @brief 利用 SFINAE 对模板类的泛型参数进行约束
+	///
+	/// 
+	///
+	/// @tparam T 模板参数
+	template<typename T, typename = void>
+	struct Subtract {
+		static_assert(false, "type T must has operator -");
+	};
+
+	/// @brief 通过 `std::enable_if_t` 模板对类型进行约束
+	///
+	/// @tparam T
+	template<typename T>
+	class Subtract<T, std::enable_if_t<has_operator_sub<T>::value>> {
+	private:
+		T _val;
+	public:
+		Subtract(T val)
+			: _val(val) {
+		}
+
+		Subtract(const Subtract&) = default;
+
+		virtual ~Subtract() { }
+
+		Subtract& operator=(const Subtract&) = default;
+
+		Subtract& sub(const T& val) {
+			_val -= val;
+			return *this;
+		}
+
+		Subtract& sub(const T& v1, const T& v2) {
+			_val -= v1;
+			_val -= v2;
+			return *this;
+		}
+
+		T& value() { return _val; }
+
+		const T& value() const { return _val; }
+	};
 } // namespace cpp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_SFINAE_H

@@ -1,4 +1,4 @@
-#include "oop/affine_func.hpp"
+#include "template/affine_func.hpp"
 
 #include <gtest/gtest.h>
 

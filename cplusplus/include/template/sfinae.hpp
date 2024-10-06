@@ -189,7 +189,7 @@ namespace cpp {
 	/// @return 两个参数之和
 	template<typename T>
 	typename std::enable_if<has_operator_sub<T>::value, T>::type
-	sub(T x, T y) {
+		sub(T x, T y) {
 		return x - y;
 	}
 
@@ -257,7 +257,7 @@ namespace cpp {
 		/// 将当前实例中存储的 `T` 类型变量和参数传入的 `T` 类型参数相减, 返回结果
 		///
 		/// @param val 减数
-		/// @return 相减结果
+		/// @return 相减结果
 		Subtract& sub(const T& val) {
 			_val = _val - val;
 			return *this;

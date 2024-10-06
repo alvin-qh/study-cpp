@@ -7,6 +7,7 @@ project(cplusplus)
 # cplusplus_src 是变量名, 可以任意
 set(cplusplus_src
     src/oop/class.cpp
+    src/oop/inherit.cpp
 )
 
 # 设置测试源文件集变量
@@ -18,6 +19,7 @@ set(cplusplus_test_src
     test/reference/test_move.cpp
     test/oop/test_class.cpp
     test/oop/test_default.cpp
+    test/oop/test_inherit.cpp
     test/template/test_func.cpp
     test/template/test_affine_func.cpp
     test/template/test_affine_ptr.cpp

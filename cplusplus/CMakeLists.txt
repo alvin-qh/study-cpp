@@ -6,7 +6,9 @@ project(cplusplus)
 # 设置项目源文件集变量
 # cplusplus_src 是变量名, 可以任意
 set(cplusplus_src
+    src/oop/new_delete.cpp
     src/oop/class.cpp
+    src/oop/operator.cpp
     src/oop/inherit.cpp
 )
 
@@ -17,8 +19,10 @@ set(cplusplus_test_src
     test/reference/test_left_ref.cpp
     test/reference/test_right_ref.cpp
     test/reference/test_move.cpp
+    test/oop/test_new_delete.cpp
     test/oop/test_class.cpp
     test/oop/test_default.cpp
+    test/oop/test_operator.cpp
     test/oop/test_inherit.cpp
     test/template/test_func.cpp
     test/template/test_affine_func.cpp

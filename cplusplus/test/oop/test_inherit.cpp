@@ -9,57 +9,57 @@ using namespace cpp;
 /// @brief 测试类型继承
 TEST(TEST_SUITE_NAME, inherit) {
 	// 测试参数构造器
-	Vector3D v1(0.1, 0.2, 0.3);
-	ASSERT_EQ(0.1, v1.x());
-	ASSERT_EQ(0.2, v1.y());
-	ASSERT_EQ(0.3, v1.z());
+	Point3D p1(0.1, 0.2, 0.3);
+	ASSERT_EQ(0.1, p1.x());
+	ASSERT_EQ(0.2, p1.y());
+	ASSERT_EQ(0.3, p1.z());
 
 	// 测试拷贝构造器
-	Vector3D v2 = v1;
-	ASSERT_EQ(0.1, v2.x());
-	ASSERT_EQ(0.2, v2.y());
-	ASSERT_EQ(0.3, v2.z());
+	Point3D p2 = p1;
+	ASSERT_EQ(0.1, p2.x());
+	ASSERT_EQ(0.2, p2.y());
+	ASSERT_EQ(0.3, p2.z());
 }
 
 /// @brief 测试赋值运算符的重载
 TEST(TEST_SUITE_NAME, assign_operator_override) {
-	Vector3D v1(0.1, 0.2, 0.3), v2;
+	Point3D p1(0.1, 0.2, 0.3), p2;
 
 	// 调用重载赋值运算符
-	v2 = v1;
-	ASSERT_EQ(0.1, v2.x());
-	ASSERT_EQ(0.2, v2.y());
-	ASSERT_EQ(0.3, v2.z());
+	p2 = p1;
+	ASSERT_EQ(0.1, p2.x());
+	ASSERT_EQ(0.2, p2.y());
+	ASSERT_EQ(0.3, p2.z());
 }
 
 /// @brief 测试比较运算符的重载
 TEST(TEST_SUITE_NAME, equal_operator_override) {
-	Vector3D v1(0.1, 0.2, 0.3), v2;
-	ASSERT_FALSE(v1 == v2);
-	ASSERT_TRUE(v1 != v2);
+	Point3D p1(0.1, 0.2, 0.3), p2;
+	ASSERT_FALSE(p1 == p2);
+	ASSERT_TRUE(p1 != p2);
 
-	v2 = v1;
-	ASSERT_TRUE(v1 == v2);
-	ASSERT_FALSE(v2 != v2);
+	p2 = p1;
+	ASSERT_TRUE(p1 == p2);
+	ASSERT_FALSE(p2 != p2);
 
-	Vector2D v3(0.1, 0.2);
-	ASSERT_TRUE(v1 != v3);
-	ASSERT_FALSE(v1 == v3);
+	Point2D p3(0.1, 0.2);
+	ASSERT_TRUE(p1 != p3);
+	ASSERT_FALSE(p1 == p3);
 }
 
 /// @brief 测试多态特性
 TEST(TEST_SUITE_NAME, virtual_method) {
-	// 当指针指向 `Vector2D` 实例时, 调用 `Vector2D::length` 方法
-	const Vector2D* pv = new Vector2D(3, 4);
-	ASSERT_EQ(5, pv->length());
+	// 当指针指向 `Point2D` 实例时, 调用 `Point2D::norm` 方法
+	const Point2D* p = new Point2D(3, 4);
+	ASSERT_EQ(5, p->norm());
 
-	delete pv;
+	delete p;
 
-	// 当指针指向 `Vector3D` 实例时, 调用 `Vector3D::length` 方法
-	pv = new Vector3D(3, 4, 8);
-	ASSERT_EQ(9.4339811320566032, pv->length());
+	// 当指针指向 `Point3D` 实例时, 调用 `Point3D::norm` 方法
+	p = new Point3D(3, 4, 8);
+	ASSERT_EQ(9.4339811320566032, p->norm());
 
-	delete pv;
+	delete p;
 }
 
 /// @brief 测试析构函数
@@ -69,8 +69,8 @@ TEST(TEST_SUITE_NAME, destructor) {
 	// 当 `Vector3D` 实例被销毁后, `destroy_count` 值加 2, 表示 `Vector3D`
 	// 的析构函数 以及 `Vector2D` 的析构函数各执行了一次
 	{
-		Vector3D v;
-		v.__set_destroy_count_ref(&destroy_count);
+		Point3D p;
+		p.__set_destroy_count_ref(&destroy_count);
 	}
 	ASSERT_EQ(2, destroy_count);
 }

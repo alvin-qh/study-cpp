@@ -8,6 +8,7 @@ project(cplusplus)
 set(cplusplus_src
     src/oop/new_delete.cpp
     src/oop/class.cpp
+    src/oop/default.cpp
     src/oop/operator.cpp
     src/oop/inherit.cpp
 )

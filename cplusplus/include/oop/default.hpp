@@ -10,18 +10,13 @@ namespace cpp {
 		double _x, _y;
 	public:
 		/// @brief 默认构造器
-		Point() :
-			_x(0),
-			_y(0) {
-		}
+		Point();
 
 		/// @brief 参数构造器
+		///
 		/// @param x `x` 坐标值
 		/// @param y `y` 坐标值
-		Point(double x, double y) :
-			_x(x),
-			_y(y) {
-		}
+		Point(double x, double y);
 
 		/// @brief 定义拷贝构造函数
 		///
@@ -47,19 +42,17 @@ namespace cpp {
 		///
 		/// @param o 同类型对象引用
 		/// @return `true` 表示相等，`false` 表示不相等
-		bool operator==(const Point& o) const {
-			return this == &o ? true : _x == o._x && _y == o._y;
-		};
+		bool operator==(const Point& o) const;
 
 		/// @brief 获取 `x` 坐标值
 		///
 		/// @return `x` 坐标值
-		double x() const { return _x; }
+		double x() const;
 
 		/// @brief 获取 `y` 坐标值
 		///
 		/// @return `y` 坐标值
-		double y() const { return _y; }
+		double y() const;
 	};
 }
 

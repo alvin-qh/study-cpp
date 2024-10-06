@@ -43,7 +43,7 @@ namespace cpp {
 		/// @return 两个对象是否相同
 		bool operator==(const Point3D& o) const;
 
-		/// @brief 令 `Vector3D` 实例和 `Vector2D` 不相等
+		/// @brief 令 `Point3D` 实例和 `Point2D` 不相等
 		///
 		/// @return 不相等
 		bool operator==(const Point2D&) const;

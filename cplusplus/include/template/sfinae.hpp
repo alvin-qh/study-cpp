@@ -218,7 +218,6 @@ namespace cpp {
 	/// @tparam T 要检测的模板参数
 	template<typename T, typename = void>
 	struct Subtract {
-		static_assert(false, "type T must has operator -");
 	};
 
 	/// @brief 对模板参数进行检测

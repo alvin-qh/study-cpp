@@ -93,7 +93,7 @@ TEST(TEST_SUITE_NAME, equal_operator_override) {
 
 /// @brief 测试析构函数
 TEST(TEST_SUITE_NAME, destructor) {
-	uint destroy_count = 0;
+	uint32_t destroy_count = 0;
 
 	// 当 `Point2D` 实例被销毁后, `destroy_count` 值加 1,
 	// 表示 `Point2D` 的析构函数执行了一次

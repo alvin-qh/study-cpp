@@ -16,10 +16,10 @@ namespace alg {
 		T* array;
 
 		// 堆元素个数
-		uint size;
+		size_t size;
 
 		// 堆存储区长度
-		uint capacity;
+		size_t capacity;
 
 		// 比较函数指针
 		int (*comp_ptr)(const T&, const T&);
@@ -65,7 +65,7 @@ namespace alg {
 	/// @param h 堆对象引用
 	/// @param new_capacity 新的存储区长度
 	template <typename T>
-	void _heap_rebuild(heap<T>& h, uint new_capacity) {
+	void _heap_rebuild(heap<T>& h, size_t new_capacity) {
 		// 为存储区分配内存空间
 		T* new_array = _array_alloc(new_capacity, T());
 
@@ -87,12 +87,12 @@ namespace alg {
 	template <typename T>
 	void _heap_shiftup(heap<T>& h) {
 		// 获取最末子节点的索引
-		uint c = h.size;
+		size_t c = h.size;
 
 		// 循环直到根节点结束
 		while (c > 1) {
 			// 获取子节点的父节点索引
-			uint p = c / 2;
+			size_t p = c / 2;
 
 			// 比较两个节点元素大小
 			if (h.comp_ptr(h.array[p], h.array[c]) <= 0)
@@ -114,9 +114,9 @@ namespace alg {
 	/// @param value 要添加的元素值
 	/// @return 堆中元素个数
 	template <typename T>
-	uint heap_offer(heap<T>& h, const T& value) {
+	size_t heap_offer(heap<T>& h, const T& value) {
 		// 计算要放置元素的索引
-		uint index = h.size + 1;
+		size_t index = h.size + 1;
 
 		// 如果堆存储区长度不够, 则重建堆存储区
 		if (index >= h.capacity) {
@@ -138,7 +138,7 @@ namespace alg {
 	template <typename T>
 	void _heap_shiftdown(heap<T>& h) {
 		// 获取最末子节点的索引
-		uint p = 1, c;
+		size_t p = 1, c;
 
 		// 循环直到最后一个子节点被访问
 		while ((c = p * 2) <= h.size) {

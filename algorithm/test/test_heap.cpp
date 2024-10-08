@@ -41,7 +41,7 @@ TEST(TEST_SUITE_NAME, heap_offer) {
 	int_array_shuffle(data, ARRAY_SIZE(data), 5);
 
 	// 将测试数据加入堆中
-	for (uint i = 0; i < ARRAY_SIZE(data); i++) {
+	for (size_t i = 0; i < ARRAY_SIZE(data); i++) {
 		heap_offer(h, data[i]);
 	}
 
@@ -53,7 +53,7 @@ TEST(TEST_SUITE_NAME, heap_offer) {
 	int_array_shuffle(data, ARRAY_SIZE(data), 1);
 
 	// 继续将测试数据加入堆中
-	for (uint i = 0; i < ARRAY_SIZE(data); i++) {
+	for (size_t i = 0; i < ARRAY_SIZE(data); i++) {
 		heap_offer(h, data[i]);
 	}
 
@@ -62,7 +62,7 @@ TEST(TEST_SUITE_NAME, heap_offer) {
 	ASSERT_NE(h.capacity, DEFAULT_CAPACITY);
 
 	// 确认从堆中获取元素的顺序
-	for (uint i = 1; h.size > 0; i++) {
+	for (size_t i = 1; h.size > 0; i++) {
 		ASSERT_EQ(heap_poll(h), i);
 	}
 

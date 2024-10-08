@@ -4,7 +4,7 @@
 #ifndef __ALGORITHM_TEST_H
 #define __ALGORITHM_TEST_H
 
-#include <sys/types.h>
+#include <stdint.h>
 
 namespace alg {
 	/// @brief 对整数进行比较
@@ -20,7 +20,7 @@ namespace alg {
 	/// @param size 整数数组长度
 	/// @param start 填充值的起始值
 	/// @return 数组指针
-	int* int_array_fill(int* array, uint size, int start = 1);
+	int* int_array_fill(int* array, size_t size, int start = 1);
 
 	/// @brief 将数组元素进行填充后乱序
 	///
@@ -29,7 +29,7 @@ namespace alg {
 	/// @param start 填充值的起始值
 	/// @param times 打乱的次数
 	/// @return 数组指针
-	int* int_array_shuffle(int* array, uint size, int start = 1, uint times = 100);
+	int* int_array_shuffle(int* array, size_t size, int start = 1, size_t times = 100);
 
 	/// @brief 判断两个数组是否相等
 	///
@@ -37,7 +37,7 @@ namespace alg {
 	/// @param right 待比较的数组指针
 	/// @param len 待比较的数组长度
 	/// @return 两个数组是否相等
-	bool is_int_array_eq(const int* left, const int* right, uint len);
+	bool is_int_array_eq(const int* left, const int* right, size_t len);
 } // ! namespace alg
 
 #endif // ! __ALGORITHM_TEST_H

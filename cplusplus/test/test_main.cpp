@@ -14,8 +14,8 @@ int main(int argc, char* argv[]) {
 }
 
 namespace cpp {
-	double number_to_fixed(double n, uint fixed) {
-		uint p = pow(10, fixed);
+	double number_to_fixed(double n, uint32_t fixed) {
+		uint32_t p = pow(10, fixed);
 		if (n > 0) {
 			return round(n * p) / p;
 		}

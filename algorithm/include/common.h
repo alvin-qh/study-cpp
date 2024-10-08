@@ -5,16 +5,16 @@
 #define __ALGORITHM_COMMON_H
 
 #include <stdlib.h>
-#include <sys/types.h>
+#include <stdint.h>
 
  /// 存储区初始大小常量
 #define DEFAULT_CAPACITY 5
 
 /// 计算存储区扩展长度
-#define NEW_CAPACITY(oc) ((uint)((oc) + ((oc) + 1) / 2))
+#define NEW_CAPACITY(oc) ((size_t)((oc) + ((oc) + 1) / 2))
 
 /// 计算数组长度的宏
-#define ARRAY_SIZE(x) ((uint)(sizeof(x) / sizeof((x)[0])))
+#define ARRAY_SIZE(x) ((size_t)(sizeof(x) / sizeof((x)[0])))
 
 namespace alg {
 	/// @brief 交换两个变量的值
@@ -41,7 +41,7 @@ namespace alg {
 	/// @param dst 复制的目标数组
 	/// @param len 要复制的长度
 	template <typename T>
-	void _array_copy(const T* src, T* dst, uint len) {
+	void _array_copy(const T* src, T* dst, size_t len) {
 		while (len-- > 0) {
 			// 使用 C++ operator::new 运算符, 对指定内存空间调用"拷贝构造器"
 			new (dst++) T(*src++);
@@ -54,10 +54,10 @@ namespace alg {
 	/// @param array 待销毁的数组指针
 	/// @param size 数组长度
 	template <typename T>
-	void _array_free(T* array, uint size) {
+	void _array_free(T* array, size_t size) {
 		if (array) {
 			// 调用析构函数
-			for (uint i = 0; i < size; i++) {
+			for (size_t i = 0; i < size; i++) {
 				array[i].~T();
 			}
 
@@ -73,12 +73,12 @@ namespace alg {
 	/// @param default_value 数值元素默认值
 	/// @return 数组指针
 	template <typename T>
-	T* _array_alloc(uint size, const T& default_value) {
+	T* _array_alloc(size_t size, const T& default_value) {
 		// 分配内存
 		T* array = (T*)malloc(sizeof(T) * size);
 
 		// 显式调用构造器
-		for (uint i = 0; i < size; i++) {
+		for (size_t i = 0; i < size; i++) {
 			new (&array[i]) T(default_value);
 		}
 

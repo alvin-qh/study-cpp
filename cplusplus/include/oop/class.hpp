@@ -3,7 +3,7 @@
 #ifndef __CPLUSPLUS_OOP_CLASS_H
 #define __CPLUSPLUS_OOP_CLASS_H
 
-#include <sys/types.h>
+#include <cstdint>
 
 namespace cpp {
 	/// @brief 定义 2D 坐标点类
@@ -11,7 +11,7 @@ namespace cpp {
 	protected:
 		double _x;
 		double _y;
-		uint* __destroy_count;
+		uint32_t* __destroy_count;
 	public:
 		/// @brief 默认构造器
 		Point2D();
@@ -50,7 +50,7 @@ namespace cpp {
 		/// @brief 设置析构数量记录变量指针
 		///
 		/// @param destroy_count 整数变量指针
-		void __set_destroy_count_ref(uint* destroy_count);
+		void __set_destroy_count_ref(uint32_t* destroy_count);
 
 		/// @brief 重新设置成员变量的值
 		///

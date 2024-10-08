@@ -64,7 +64,7 @@ TEST(TEST_SUITE_NAME, virtual_method) {
 
 /// @brief 测试析构函数
 TEST(TEST_SUITE_NAME, destructor) {
-	uint destroy_count = 0;
+	uint32_t destroy_count = 0;
 
 	// 当 `Point3D` 实例被销毁后, `destroy_count` 值加 2, 表示 `Point3D`
 	// 的析构函数 以及 `Point2D` 的析构函数各执行了一次

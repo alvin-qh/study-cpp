@@ -16,10 +16,10 @@ namespace alg {
 		T* array;
 
 		/// @brief 向量元素个数
-		uint size;
+		size_t size;
 
 		/// @brief 向量元素存储区实际长度
-		uint capacity;
+		size_t capacity;
 	};
 
 	/// @brief 初始化向量结构体对象
@@ -58,7 +58,7 @@ namespace alg {
 	/// @param data 存储要设置值的数组
 	/// @param len `data` 数组长度
 	template <typename T>
-	void vector_set(vector<T>& v, const T* data, uint len) {
+	void vector_set(vector<T>& v, const T* data, size_t len) {
 		if (!data || len == 0) {
 			return;
 		}
@@ -84,7 +84,7 @@ namespace alg {
 	/// @param v 向量结构体引用
 	/// @param new_capacity 新设置向量的最大容量
 	template <typename T>
-	void _vector_rebuild(vector<T>& v, uint new_capacity) {
+	void _vector_rebuild(vector<T>& v, size_t new_capacity) {
 		// 为存储区分配内存空间
 		T* new_array = _array_alloc(new_capacity, T());
 
@@ -106,7 +106,7 @@ namespace alg {
 	/// @param value 要添加的值
 	/// @return 添加后向量长度
 	template <typename T>
-	uint vector_add(vector<T>& v, const T& value) {
+	size_t vector_add(vector<T>& v, const T& value) {
 		// 如果向量存储区长度不够, 则重建向量存储区
 		if (v.size >= v.capacity) {
 			_vector_rebuild(v, NEW_CAPACITY(v.capacity));
@@ -125,7 +125,7 @@ namespace alg {
 	/// @param len 数组的长度
 	/// @return 添加后向量长度
 	template <typename T>
-	uint vector_append(vector<T>& v, const T* data, uint len) {
+	size_t vector_append(vector<T>& v, const T* data, size_t len) {
 		// 判断空余空间是否足够存放, 如果不够则需重建存储空间
 		if (v.capacity - v.size < len) {
 			_vector_rebuild(v, v.size + len);

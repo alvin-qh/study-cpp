@@ -47,7 +47,7 @@ namespace cpp {
 		return _x == o._x && _y == o._y;
 	}
 
-	void Point2D::__set_destroy_count_ref(uint* destroy_count) {
+	void Point2D::__set_destroy_count_ref(uint32_t* destroy_count) {
 		__destroy_count = destroy_count;
 	}
 

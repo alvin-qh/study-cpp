@@ -19,15 +19,15 @@ namespace alg {
 		return a - b;
 	}
 
-	int* int_array_fill(int* array, uint size, int start /* = 1*/) {
-		for (uint i = 0; i < size; i++) {
+	int* int_array_fill(int* array, size_t size, int start /* = 1*/) {
+		for (size_t i = 0; i < size; i++) {
 			array[i] = start++;
 		}
 		return array;
 	}
 
 	int* int_array_shuffle(
-		int* array, uint size, int start /* = 1*/, uint times /* = 100*/) {
+		int* array, size_t size, int start /* = 1*/, size_t times /* = 100*/) {
 		if (size == 0) {
 			return array;
 		}
@@ -36,13 +36,13 @@ namespace alg {
 		int_array_fill(array, size, start);
 
 		// 设置随机数种子
-		srandom((uint)time(nullptr));
+		srand((size_t)time(nullptr));
 
 		// 循环若干次
-		for (uint n = 0; n < times; ++n) {
+		for (size_t n = 0; n < times; ++n) {
 			// 计算两个随机位置
-			uint i = (uint)(random() % size);
-			uint j = (uint)(random() % size);
+			size_t i = (size_t)(rand() % size);
+			size_t j = (size_t)(rand() % size);
 
 			// 将两个随机位置的元素进行交换
 			if (i != j) {
@@ -53,7 +53,7 @@ namespace alg {
 		return array;
 	}
 
-	bool is_int_array_eq(const int* left, const int* right, uint len) {
+	bool is_int_array_eq(const int* left, const int* right, size_t len) {
 		while (len-- > 0) {
 			if (*left++ != *right++) {
 				return false;

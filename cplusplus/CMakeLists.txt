@@ -55,14 +55,22 @@ target_link_libraries(cplusplus_test
     PRIVATE gmock
 )
 
+target_compile_options(cplusplus_test
+    # -fno-stack-protector 关闭栈保护
+    # -fno-omit-frame-pointer 去掉函数调用时的 frame pointer
+    PRIVATE -fno-stack-protector -fno-omit-frame-pointer
+)
+
 # 在调试模式下, 增加 sanitize 库链接以检测内存泄漏
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    target_compile_options(cplusplus_test
-        PRIVATE -fsanitize=address -fsanitize-recover=address -fno-stack-protector -fno-omit-frame-pointer
-    )
-    target_link_libraries(cplusplus_test
-        PRIVATE -fsanitize=address
-    )
+    if (NOT WIN32)
+        target_compile_options(cplusplus_test
+            PRIVATE -fsanitize=address -fsanitize-recover=address
+        )
+        target_link_libraries(cplusplus_test
+            PRIVATE -fsanitize=address
+        )
+    endif()
 endif()
 
 # 启用测试

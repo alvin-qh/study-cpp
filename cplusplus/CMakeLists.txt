@@ -65,7 +65,7 @@ target_compile_options(cplusplus_test
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     if (NOT WIN32)
         target_compile_options(cplusplus_test
-            PRIVATE -fsanitize=address -fsanitize-recover=address
+            PRIVATE -fsanitize=address -fsanitize-recover=address -fno-optimize-sibling-calls
         )
         target_link_libraries(cplusplus_test
             PRIVATE -fsanitize=address

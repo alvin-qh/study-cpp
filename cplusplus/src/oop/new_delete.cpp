@@ -8,4 +8,10 @@ namespace cpp {
 	void __free(void* ptr) {
 		return ::free(ptr);
 	}
+
+
+}
+
+void* operator new(size_t n) {
+	return cpp::__malloc(n);
 }

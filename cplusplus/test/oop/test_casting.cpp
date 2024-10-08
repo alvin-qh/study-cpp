@@ -1,9 +1,8 @@
-#include "oop/casting.hpp"
-
 #include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_oop_casting
 
+/// @brief 用于测试指针转换的父类
 class A {
 protected:
 	int _id;
@@ -17,11 +16,11 @@ public:
 	}
 
 	virtual const char* who_am_i() const noexcept { return "class A"; }
-
 	virtual int id() const { return _id; }
 };
 
-class B :public A {
+/// @brief 用于测试指针转换的子类
+class B : public A {
 private:
 	int _tag;
 public:
@@ -31,7 +30,6 @@ public:
 	}
 
 	virtual const char* who_am_i() const noexcept override { return "class B"; }
-
 	virtual int tag() const { return _tag; }
 };
 

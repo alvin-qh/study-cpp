@@ -5,6 +5,8 @@
 
 #include <memory>
 
+void* operator new(size_t n);
+
 namespace cpp {
 	void* __malloc(size_t n);
 	void __free(void* ptr);

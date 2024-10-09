@@ -4,6 +4,7 @@
 #ifndef __ALGORITHM_TEST_H
 #define __ALGORITHM_TEST_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 namespace alg {

@@ -6,9 +6,9 @@
 
 using namespace cpp;
 
-TEST(TEST_SUITE_NAME, test_global_new_operator)
-{
+TEST(TEST_SUITE_NAME, test_global_new_operator) {
 	int* p = new int(100);
 	EXPECT_EQ(*p, 100);
 
+	delete p;
 }

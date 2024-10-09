@@ -3,6 +3,11 @@
 # 设置支持的 CMake 最低版本
 cmake_minimum_required(VERSION 3.10)
 
+# 设置默认的构建类型
+if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+    set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
 # 定义项目名称
 project(study-cpp CXX C)
 

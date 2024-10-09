@@ -6,11 +6,11 @@
 #include <memory>
 
 void* operator new(size_t n);
+void* operator new(size_t n, std::nothrow_t&) noexcept;
+void operator delete(void* ptr) noexcept;
+void operator delete(void* ptr, size_t n) noexcept;
 
 namespace cpp {
-	void* __malloc(size_t n);
-	void __free(void* ptr);
-
 	template <typename T>
 	class allocator {
 		using value_type = T;

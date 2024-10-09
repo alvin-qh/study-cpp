@@ -5,14 +5,53 @@
 
 #include <memory>
 
+/// @brief 重载 `new` 操作符, 为单个对象分配内存
+///
+/// 该 `new` 操作符当内存分配失败后, 会抛出异常
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
 // void* operator new(size_t n);
+
+/// @brief 重载 `new[]` 操作符, 为一系列对象分配内存
+///
+/// 该 `new[]` 操作符当内存分配失败后, 会抛出异常
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
+// void* operator new[](size_t n);
+
+/// @brief 重载 `new` 操作符, 为单个对象分配内存
+///
+/// 该 `new` 操作符当内存分配失败后, 不会抛出异常, 返回 `nullptr`
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
 // void* operator new(size_t n, const std::nothrow_t&) noexcept;
 
-// void* operator new[](size_t n);
+/// @brief 重载 `new` 操作符, 为单个对象分配内存
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
 // void* operator new[](size_t n, const std::nothrow_t&) noexcept;
 
+
+/// @brief 重载 `new` 操作符, 为单个对象分配内存
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
 // void operator delete(void* ptr) noexcept;
+
+/// @brief 重载 `new` 操作符, 为单个对象分配内存
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
 // void operator delete(void* ptr, const std::nothrow_t&) noexcept;
+
+/// @brief 重载 `new` 操作符, 为单个对象分配内存
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
 // void operator delete(void* ptr, size_t n) noexcept;
 
 namespace cpp {

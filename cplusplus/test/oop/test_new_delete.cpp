@@ -10,7 +10,14 @@ TEST(TEST_SUITE_NAME, test_global_new_delete_operator) {
 	int* p = new int(100);
 	EXPECT_EQ(*p, 100);
 
-	// delete p;
+	delete p;
+}
+
+TEST(TEST_SUITE_NAME, test_nothrow_new_delete_operator) {
+	int* p = new (std::nothrow) int(100);
+	EXPECT_EQ(*p, 100);
+
+	delete p;
 }
 
 TEST(TEST_SUITE_NAME, test_global_new_delete_array_operator) {
@@ -20,7 +27,7 @@ TEST(TEST_SUITE_NAME, test_global_new_delete_array_operator) {
 	EXPECT_EQ(ps[2], 3);
 	EXPECT_EQ(ps[3], 4);
 
-	// delete[] ps;
+	delete[] ps;
 }
 
 class A {
@@ -33,8 +40,12 @@ public:
 	int value() const { return _val; }
 };
 
-TEST(TEST_SUITE_NAME, test_call_constructor) {
+TEST(TEST_SUITE_NAME, test_placement_new) {
 	A* pa = static_cast<A*>(::malloc(sizeof(A)));
+	new (pa) A(100);
 
-	// free(pa);
+	ASSERT_EQ(pa->value(), 100);
+
+	pa->~A();
+	free(pa);
 }

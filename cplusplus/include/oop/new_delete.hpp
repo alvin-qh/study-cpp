@@ -5,10 +5,15 @@
 
 #include <memory>
 
-void* operator new(size_t n);
-void* operator new(size_t n, std::nothrow_t&) noexcept;
-void operator delete(void* ptr) noexcept;
-void operator delete(void* ptr, size_t n) noexcept;
+// void* operator new(size_t n);
+// void* operator new(size_t n, const std::nothrow_t&) noexcept;
+
+// void* operator new[](size_t n);
+// void* operator new[](size_t n, const std::nothrow_t&) noexcept;
+
+// void operator delete(void* ptr) noexcept;
+// void operator delete(void* ptr, const std::nothrow_t&) noexcept;
+// void operator delete(void* ptr, size_t n) noexcept;
 
 namespace cpp {
 	template <typename T>

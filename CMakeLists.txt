@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # 设置默认的构建类型
-if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
@@ -38,28 +38,27 @@ endif()
 function(enable_sanitize target)
     message(STATUS "Enable sanitize for ${target}")
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        # using Clang
+    set(_sanitize_arg address)
+
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+            set(_sanitize_arg leak)
+        endif()
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+            unset(_sanitize_arg)
+        endif()
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    endif()
+
+    if (DEFINED _sanitize_arg)
         target_compile_options(${target}
-            PRIVATE -fsanitize=address
+            PRIVATE -fsanitize=${_sanitize_arg} -fsanitize-recover=${_sanitize_arg}
         )
         target_link_libraries(${target}
-            PRIVATE -fsanitize=address
+            PRIVATE -fsanitize=${_sanitize_arg}
         )
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        # using GCC
-        if (NOT WIN32)
-            target_compile_options(${target}
-                PRIVATE -fsanitize=address -fsanitize-recover=address
-            )
-            target_link_libraries(${target}
-                PRIVATE -fsanitize=address
-            )
-        endif()
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-        # using Intel C++
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        # using Visual Studio C++
     endif()
 endfunction(enable_sanitize target)
 

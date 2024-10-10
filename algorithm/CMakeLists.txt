@@ -35,23 +35,8 @@ target_link_libraries(algorithm_test
     PRIVATE gtest
 )
 
-target_compile_options(algorithm_test
-    # -fno-stack-protector 关闭栈保护
-    # -fno-omit-frame-pointer 去掉函数调用时的 frame pointer
-    PRIVATE -fno-stack-protector -fno-omit-frame-pointer
-)
-
-# 在调试模式下, 增加 sanitize 库链接以检测内存泄漏
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    if (NOT WIN32)
-        target_compile_options(algorithm_test
-            PRIVATE -fsanitize=address -fsanitize-recover=address
-        )
-        target_link_libraries(algorithm_test
-            PRIVATE -fsanitize=address
-        )
-    endif()
-endif()
+# 启用 sanitize
+enable_sanitize(algorithm_test)
 
 # 启用测试
 enable_testing()

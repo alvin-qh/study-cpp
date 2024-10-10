@@ -22,7 +22,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 enable_testing()
 
 # 设置编译参数
-add_compile_options(-g -pthread -fopenmp -W -Wno-unknown-pragmas)
+add_compile_options(-g -pthread -fopenmp -W -Wno-unknown-pragmas -fno-stack-protector -fno-omit-frame-pointer)
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     # cmake .. -DCMAKE_BUILD_TYPE=Release
@@ -33,6 +33,35 @@ else()
     add_compile_options(-DDEBUG)
     message(STATUS "Make debug building ...")
 endif()
+
+# 定义函数, 用于启用 sanitize
+function(enable_sanitize target)
+    message(STATUS "Enable sanitize for ${target}")
+
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        # using Clang
+        target_compile_options(${target}
+            PRIVATE -fsanitize=address
+        )
+        target_link_libraries(${target}
+            PRIVATE -fsanitize=address
+        )
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        # using GCC
+        if (NOT WIN32)
+            target_compile_options(${target}
+                PRIVATE -fsanitize=address -fsanitize-recover=address
+            )
+            target_link_libraries(${target}
+                PRIVATE -fsanitize=address
+            )
+        endif()
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+        # using Intel C++
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        # using Visual Studio C++
+    endif()
+endfunction(enable_sanitize target)
 
 # 添加子项目 (vendor 路径下是引入的三方项目)
 add_subdirectory(vendor/googletest)

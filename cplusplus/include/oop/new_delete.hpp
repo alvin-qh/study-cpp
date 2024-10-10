@@ -5,54 +5,70 @@
 
 #include <memory>
 
-/// @brief 重载 `new` 操作符, 为单个对象分配内存
-///
-/// 该 `new` 操作符当内存分配失败后, 会抛出异常
+/// @brief 重载 `new` 操作符, 当内存分配失败后, 会抛出异常
 ///
 /// @param n 要分配的内存大小
 /// @return 指向分配内存地址的指针
-void* operator new(size_t n);
+// void* operator new(size_t n);
 
-/// @brief 重载 `new[]` 操作符, 为一系列对象分配内存
-///
-/// 该 `new[]` 操作符当内存分配失败后, 会抛出异常
+/// @brief 重载 `new[]` 操作符, 当内存分配失败后, 会抛出异常
 ///
 /// @param n 要分配的内存大小
 /// @return 指向分配内存地址的指针
-void* operator new[](size_t n);
+// void* operator new[](size_t n);
 
-/// @brief 重载 `new` 操作符, 为单个对象分配内存
-///
-/// 该 `new` 操作符当内存分配失败后, 不会抛出异常, 返回 `nullptr`
-///
-/// @param n 要分配的内存大小
-/// @return 指向分配内存地址的指针
-void* operator new(size_t n, const std::nothrow_t&) noexcept;
-
-/// @brief 重载 `new` 操作符, 为单个对象分配内存
+/// @brief 重载 `new` 操作符, 当内存分配失败后, 不会抛出异常,
+/// 而是返回 `nullptr`
 ///
 /// @param n 要分配的内存大小
 /// @return 指向分配内存地址的指针
-void* operator new[](size_t n, const std::nothrow_t&) noexcept;
+// void* operator new(size_t n, const std::nothrow_t&) noexcept;
 
-
-/// @brief 重载 `new` 操作符, 为单个对象分配内存
+/// @brief 重载 `new[]` 操作符, 当内存分配失败后, 不会抛出异常,
+/// 而是返回 `nullptr`
 ///
 /// @param n 要分配的内存大小
 /// @return 指向分配内存地址的指针
-void operator delete(void* ptr) noexcept;
+// void* operator new[](size_t n, const std::nothrow_t&) noexcept;
 
-/// @brief 重载 `new` 操作符, 为单个对象分配内存
+/// @brief 重载 `delete` 操作, 用于回收 `new` 操作分配的内存
 ///
 /// @param n 要分配的内存大小
 /// @return 指向分配内存地址的指针
-void operator delete(void* ptr, const std::nothrow_t&) noexcept;
+// void operator delete(void* ptr) noexcept;
 
-/// @brief 重载 `new` 操作符, 为单个对象分配内存
+/// @brief 重载 `delete[]` 操作符, 用于回收 `new[]` 操作符分配的内存
 ///
 /// @param n 要分配的内存大小
 /// @return 指向分配内存地址的指针
-void operator delete(void* ptr, size_t n) noexcept;
+// void operator delete[](void* ptr) noexcept;
+
+/// @brief 重载 `delete` 操作符, 在回收内存时不会抛出异常
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
+// void operator delete(void* ptr, const std::nothrow_t&) noexcept;
+
+/// @brief 重载 `delete[]` 操作符, 用于回收 `new[]` 操作符分配的内存,
+/// 且不会抛出异常
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
+// void operator delete[](void* ptr, const std::nothrow_t&) noexcept;
+
+#ifdef __cpp_sized_deallocation
+/// @brief 重载 `delete` 操作符, 用于回收指定大小的内存
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
+// void operator delete(void* ptr, size_t n) noexcept;
+
+/// @brief 重载 `delete[]` 操作符, 用于回收指定大小的内存
+///
+/// @param n 要分配的内存大小
+/// @return 指向分配内存地址的指针
+// void operator delete[](void* ptr, size_t size) noexcept;
+#endif
 
 namespace cpp {
 	template <typename T>

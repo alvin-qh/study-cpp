@@ -10,7 +10,7 @@ TEST(TEST_SUITE_NAME, test_global_new_delete_operator) {
 	int* p = new int(100);
 	EXPECT_EQ(*p, 100);
 
-	// delete p;
+	delete p;
 }
 
 TEST(TEST_SUITE_NAME, test_nothrow_new_delete_operator) {
@@ -27,7 +27,7 @@ TEST(TEST_SUITE_NAME, test_global_new_delete_array_operator) {
 	EXPECT_EQ(ps[2], 3);
 	EXPECT_EQ(ps[3], 4);
 
-	// delete[] ps;
+	delete[] ps;
 }
 
 class A {

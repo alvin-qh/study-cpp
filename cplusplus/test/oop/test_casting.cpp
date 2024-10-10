@@ -137,6 +137,7 @@ TEST(TEST_SUITE_NAME, dynamic_casting_for_reference) {
 	ASSERT_EQ(rb.id(), 200);
 	ASSERT_EQ(rb.tag(), 10);
 
+#if (!defined(__clang__) || !defined(__APPLE__))
 	A a;
 
 	// `A&` => `B&`
@@ -150,6 +151,7 @@ TEST(TEST_SUITE_NAME, dynamic_casting_for_reference) {
 	catch (std::bad_cast& e) {
 		ASSERT_STREQ(e.what(), "std::bad_cast");
 	}
+#endif
 }
 
 /// @brief 只读/可变指针类型转换

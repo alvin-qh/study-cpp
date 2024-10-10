@@ -11,12 +11,11 @@ endif()
 # 定义项目名称
 project(study-cpp CXX C)
 
-# 设置 C++ 版本及其它配置
-set(CMAKE_CXX_STANDARD 20)
+# 设置 CMake 参数
+set(CMAKE_CXX_STANDARD 20) # 设置 C++ 版本及其它配置
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-# set(CMAKE_EXE_LINKER_FLAGS "-fsanitize=address")
+set(CMAKE_VERBOSE_MAKEFILE ON) # 显示构建命令明细
 
 # 要求启动测试 (该指令必须在根配置中出现一次)
 enable_testing()
@@ -34,33 +33,7 @@ else()
     message(STATUS "Make debug building ...")
 endif()
 
-# 定义函数, 用于启用 sanitize
-function(enable_sanitize target)
-    message(STATUS "Enable sanitize for ${target}")
-
-    set(_sanitize_arg address)
-
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-            set(_sanitize_arg leak)
-        endif()
-    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-            unset(_sanitize_arg)
-        endif()
-    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
-    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    endif()
-
-    if (DEFINED _sanitize_arg)
-        target_compile_options(${target}
-            PRIVATE -fsanitize=${_sanitize_arg} -fsanitize-recover=${_sanitize_arg}
-        )
-        target_link_libraries(${target}
-            PRIVATE -fsanitize=${_sanitize_arg}
-        )
-    endif()
-endfunction(enable_sanitize target)
+include(cmake/sanitize.cmake)
 
 # 添加子项目 (vendor 路径下是引入的三方项目)
 add_subdirectory(vendor/googletest)

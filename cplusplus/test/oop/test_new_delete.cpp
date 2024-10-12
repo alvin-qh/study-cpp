@@ -1,5 +1,6 @@
 #include "oop/new_delete.hpp"
 
+#include <cstddef>
 #include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_oop_new_delete
@@ -48,6 +49,7 @@ TEST(TEST_SUITE_NAME, test_nothrow_new_delete_array_operator) {
 	::operator delete[](ps, std::nothrow);
 }
 
+/// @brief 定义测试类, 用于测试
 class A {
 private:
 	int _val;
@@ -58,12 +60,20 @@ public:
 	int value() const { return _val; }
 };
 
+/// @brief 测试 `placement new` 运算符
+///
+/// 所谓 `placement new` 操作符, 即在当前一块现有内存区域上, 执行指定类型的构造函数,
+/// 将这块内存实例化成所需对象
+///
+/// 使用 `placement new` 操作符, 需要: 1. 手动分配内存; 2. 手动执行对象的析构函数;
+/// 3. 手动释放内存;
 TEST(TEST_SUITE_NAME, test_placement_new) {
-	A* pa = static_cast<A*>(::malloc(sizeof(A)));
-	new (pa) A(100);
+	std::byte buf[sizeof(A)];
 
+	A* pa = reinterpret_cast<A*>(buf);
+
+	new (pa) A(100);
 	ASSERT_EQ(pa->value(), 100);
 
 	pa->~A();
-	free(pa);
 }

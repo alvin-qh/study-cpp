@@ -2,69 +2,56 @@
 
 #include "oop/class.hpp"
 
-namespace cpp {
-	Point2D::Point2D() :
-		_x(0),
-		_y(0),
-		__destroy_count(nullptr) {
+namespace cpp::oop {
+	AClass::AClass() :
+		AClass(0) { // 调用其它构造器
 	}
 
-	Point2D::Point2D(double x, double y) :
-		_x(x),
-		_y(y),
+	AClass::AClass(int value) :
+		_value(value),
 		__destroy_count(nullptr) {
 		// 另一种形式的成员变量赋值
-		// _x = x;
-		// _y = y;
+		// _value = value;
+		// __destroy_count = nullptr;
 	}
 
 	// 在拷贝构造器中调用参数构造器
-	Point2D::Point2D(const Point2D& o) :
-		Point2D(o._x, o._y) {
+	AClass::AClass(const AClass& o) :
+		AClass(o._value) {
 		if (__destroy_count) {
 			*__destroy_count += 1;
 		}
 	}
 
-	Point2D::~Point2D() {
+	AClass::~AClass() {
 		if (__destroy_count) {
 			*__destroy_count += 1;
 		}
 	}
 
-	Point2D& Point2D::operator=(const Point2D& o) {
+	AClass& AClass::operator=(const AClass& o) {
 		if (this != &o) {
-			_x = o._x;
-			_y = o._y;
+			_value = o._value;
 		}
 		return *this;
 	}
 
-	bool Point2D::operator==(const Point2D& o) const {
+	bool AClass::operator==(const AClass& o) const {
 		if (this == &o) {
 			return true;
 		}
-		return _x == o._x && _y == o._y;
+		return _value == o._value;
 	}
 
-	void Point2D::__set_destroy_count_ref(uint32_t* destroy_count) {
+	void AClass::__set_destroy_count_ref(uint32_t* destroy_count) {
 		__destroy_count = destroy_count;
 	}
 
-	void Point2D::set(double x, double y) {
-		_x = x;
-		_y = y;
+	void AClass::set_value(int value) {
+		_value = value;
 	}
 
-	double Point2D::norm() const {
-		return sqrt(_x * _x + _y * _y);
-	}
-
-	double Point2D::x() const {
-		return _x;
-	}
-
-	double Point2D::y() const {
-		return _y;
+	double AClass::value() const {
+		return _value;
 	}
 } // namespace cpp

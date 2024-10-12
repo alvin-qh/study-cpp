@@ -70,7 +70,7 @@
 // void operator delete[](void* ptr, size_t size) noexcept;
 #endif
 
-namespace cpp {
+namespace cpp::new_delete_opt {
 	class Point {
 	private:
 		int _x, _y;
@@ -81,9 +81,13 @@ namespace cpp {
 		virtual ~Point() = default;
 	public:
 		Point& operator=(const Point&) = default;
-		operator new 
 		int x() const;
 		int y() const;
+
+		void* operator new(size_t n);
+		void* operator new[](size_t n);
+		void operator delete(void* ptr) noexcept;
+		void operator delete[](void* ptr) noexcept;
 	};
 }
 

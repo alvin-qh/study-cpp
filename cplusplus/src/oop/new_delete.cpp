@@ -28,9 +28,14 @@ void operator delete(void* ptr, size_t n) noexcept { __free(ptr, n); }
 void operator delete[](void* ptr, size_t n) noexcept { __free(ptr, n); }
 #endif
 
-namespace cpp {
+namespace cpp::new_delete_opt {
 	Point::Point() : Point(0, 0) {}
 	Point::Point(int x, int y) : _x(x), _y(y) {}
 	int Point::x() const { return _x; }
 	int Point::y() const { return _y; }
+
+	void* Point::operator new(size_t n) { return __malloc(n); }
+	void* Point::operator new[](size_t n) { return __malloc(n); }
+	void Point::operator delete(void* ptr) noexcept { return ::free(ptr); }
+	void Point::operator delete[](void* ptr) noexcept { return ::free(ptr); }
 }

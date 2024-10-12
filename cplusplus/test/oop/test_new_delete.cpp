@@ -5,7 +5,7 @@
 
 #define TEST_SUITE_NAME test_cplusplus_oop_new_delete
 
-using namespace cpp;
+using namespace cpp::new_delete_opt;
 
 /// @brief 测试通过 `operator new(size_t)` 操作分配内存,
 /// 并通过 `operator delete(void*)` 操作进行回收
@@ -76,4 +76,8 @@ TEST(TEST_SUITE_NAME, test_placement_new) {
 	ASSERT_EQ(pa->value(), 100);
 
 	pa->~A();
+}
+
+TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class) {
+	Point* p = new Point(1, 2);
 }

@@ -2,7 +2,24 @@
 
 #include "oop/inherit.hpp"
 
-namespace cpp {
+namespace cpp::oop {
+	BaseClass::BaseClass() : BaseClass(0) {}
+
+	BaseClass::BaseClass(int a) : _a(a), __destroy_count(nullptr) {}
+
+	BaseClass::BaseClass(const BaseClass& o) : BaseClass(o._a) {}
+
+	virtual BaseClass::~BaseClass() {}
+
+	BaseClass& BaseClass::operator=(const BaseClass& o) {
+		_a = o._a;
+		return *this;
+	}
+
+	virtual std::string BaseClass::to_string() const {
+		return std::to_string(_a);
+	}
+
 	Point3D::Point3D() :
 		Point2D(), // 调用父类默认构造器
 		_z(0) {

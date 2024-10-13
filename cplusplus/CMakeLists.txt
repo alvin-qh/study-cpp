@@ -37,8 +37,7 @@ set(cplusplus_test_src
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 include_directories(include)
 include_directories(
-    ${PROJECT_SOURCE_DIR}/vendor/googletest/googletest/include
-    ${PROJECT_SOURCE_DIR}/vendor/googletest/googlemock/include
+    ${CMAKE_SOURCE_DIR}/vendor/format
 )
 
 # 设置生成的执行文件

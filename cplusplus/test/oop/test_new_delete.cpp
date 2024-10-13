@@ -80,4 +80,17 @@ TEST(TEST_SUITE_NAME, test_placement_new) {
 
 TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class) {
 	Point* p = new Point(1, 2);
+	ASSERT_EQ(p->x(), 1);
+	ASSERT_EQ(p->y(), 2);
+
+	delete p;
+
+	Point* ps = new Point[]{ Point(1, 2), Point(3, 4) };
+	ASSERT_EQ(ps[0].x(), 1);
+	ASSERT_EQ(ps[0].y(), 2);
+
+	ASSERT_EQ(ps[1].x(), 3);
+	ASSERT_EQ(ps[1].y(), 4);
+
+	delete[] ps;
 }

@@ -3,31 +3,18 @@
 #include "oop/class.hpp"
 
 namespace cpp::oop {
-	AClass::AClass() :
-		AClass(0) { // 调用其它构造器
-	}
+	// 在默认构造器中调用参数构造器
+	AClass::AClass() : AClass(0) {}
 
-	AClass::AClass(int value) :
-		_value(value),
-		__destroy_count(nullptr) {
+	AClass::AClass(int value) : _value(value) {
 		// 另一种形式的成员变量赋值
 		// _value = value;
-		// __destroy_count = nullptr;
 	}
 
 	// 在拷贝构造器中调用参数构造器
-	AClass::AClass(const AClass& o) :
-		AClass(o._value) {
-		if (__destroy_count) {
-			*__destroy_count += 1;
-		}
-	}
+	AClass::AClass(const AClass& o) : AClass(o._value) {}
 
-	AClass::~AClass() {
-		if (__destroy_count) {
-			*__destroy_count += 1;
-		}
-	}
+	AClass::~AClass() {}
 
 	AClass& AClass::operator=(const AClass& o) {
 		if (this != &o) {
@@ -41,10 +28,6 @@ namespace cpp::oop {
 			return true;
 		}
 		return _value == o._value;
-	}
-
-	void AClass::__set_destroy_count_ref(uint32_t* destroy_count) {
-		__destroy_count = destroy_count;
 	}
 
 	void AClass::set_value(int value) {

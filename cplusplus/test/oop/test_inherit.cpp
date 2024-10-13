@@ -4,73 +4,70 @@
 
 #define TEST_SUITE_NAME test_cplusplus_oop_inherit
 
-using namespace cpp;
+using namespace cpp::oop;
 
 /// @brief 测试类型继承
 TEST(TEST_SUITE_NAME, inherit) {
 	// 测试参数构造器
-	Point3D p1(0.1, 0.2, 0.3);
-	ASSERT_EQ(0.1, p1.x());
-	ASSERT_EQ(0.2, p1.y());
-	ASSERT_EQ(0.3, p1.z());
+	ChildClass c1(1, 1.1);
+	ASSERT_EQ(1, c1.a());
+	ASSERT_EQ(1.1, c1.b());
 
 	// 测试拷贝构造器
-	Point3D p2 = p1;
-	ASSERT_EQ(0.1, p2.x());
-	ASSERT_EQ(0.2, p2.y());
-	ASSERT_EQ(0.3, p2.z());
+	ChildClass c2 = c1;
+	ASSERT_EQ(1, c2.a());
+	ASSERT_EQ(1.1, c2.b());
 }
 
 /// @brief 测试赋值运算符的重载
 TEST(TEST_SUITE_NAME, assign_operator_override) {
-	Point3D p1(0.1, 0.2, 0.3), p2;
+	ChildClass c1(1, 1.1), c2;
 
 	// 调用重载赋值运算符
-	p2 = p1;
-	ASSERT_EQ(0.1, p2.x());
-	ASSERT_EQ(0.2, p2.y());
-	ASSERT_EQ(0.3, p2.z());
+	c2 = c1;
+	ASSERT_EQ(1, c2.a());
+	ASSERT_EQ(1.1, c2.b());
 }
 
 /// @brief 测试比较运算符的重载
 TEST(TEST_SUITE_NAME, equal_operator_override) {
-	Point3D p1(0.1, 0.2, 0.3), p2;
-	ASSERT_FALSE(p1 == p2);
-	ASSERT_TRUE(p1 != p2);
+	ChildClass c1(1, 1.1), c2;
+	ASSERT_FALSE(c1 == c2);
+	ASSERT_TRUE(c1 != c2);
 
-	p2 = p1;
-	ASSERT_TRUE(p1 == p2);
-	ASSERT_FALSE(p2 != p2);
+	c2 = c1;
+	ASSERT_TRUE(c1 == c2);
+	ASSERT_FALSE(c2 != c2);
 
-	Point2D p3(0.1, 0.2);
-	ASSERT_TRUE(p1 != p3);
-	ASSERT_FALSE(p1 == p3);
+	ChildClass c3(2, 2.2);
+	ASSERT_TRUE(c1 != c3);
+	ASSERT_FALSE(c1 == c3);
 }
 
 /// @brief 测试多态特性
 TEST(TEST_SUITE_NAME, virtual_method) {
-	// 当指针指向 `Point2D` 实例时, 调用 `Point2D::norm` 方法
-	const Point2D* p = new Point2D(3, 4);
-	ASSERT_EQ(5, p->norm());
+	// 当指针指向 `BaseClass` 实例时, 调用 `BaseClass::to_string` 方法
+	const BaseClass* pb = new BaseClass(1);
+	ASSERT_STREQ("BaseClass(1)", pb->to_string().c_str());
 
-	delete p;
+	delete pb;
 
-	// 当指针指向 `Point3D` 实例时, 调用 `Point3D::norm` 方法
-	p = new Point3D(3, 4, 8);
-	ASSERT_EQ(9.4339811320566032, p->norm());
+	// 当指针指向 `ChildClass` 实例时, 调用 `ChildClass::to_string` 方法
+	pb = new ChildClass(1, 1.1);
+	ASSERT_STREQ("ChildClass(1, 1.1)", pb->to_string().c_str());
 
-	delete p;
+	delete pb;
 }
 
 /// @brief 测试析构函数
 TEST(TEST_SUITE_NAME, destructor) {
 	uint32_t destroy_count = 0;
 
-	// 当 `Point3D` 实例被销毁后, `destroy_count` 值加 2, 表示 `Point3D`
-	// 的析构函数 以及 `Point2D` 的析构函数各执行了一次
+	// 当 `ChildClass` 实例被销毁后, `destroy_count` 值加 2, 表示 `ChildClass`
+	// 的析构函数 以及 `BaseClass` 的析构函数各执行了一次
 	{
-		Point3D p;
-		p.__set_destroy_count_ref(&destroy_count);
+		ChildClass p;
+		p.__set_destroy_count_ptr(&destroy_count);
 	}
 	ASSERT_EQ(2, destroy_count);
 }

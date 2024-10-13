@@ -51,7 +51,7 @@ TEST(TEST_SUITE_NAME, copy_constructor) {
 
 	// 调用拷贝构造器的语法格式 3
 	AClass p4 = AClass(c1);
-	ASSERT_EQ(1o0, p4.value());
+	ASSERT_EQ(100, p4.value());
 
 	// 调用拷贝构造器的语法格式 3
 	AClass* pc = new AClass(c1);
@@ -71,24 +71,11 @@ TEST(TEST_SUITE_NAME, assign_operator_override) {
 
 /// @brief 测试比较运算符的重载
 TEST(TEST_SUITE_NAME, equal_operator_override) {
-	Point2D c1(100), c2;
+	AClass c1(100), c2;
 	ASSERT_FALSE(c1 == c2);
 	ASSERT_TRUE(c1 != c2);
 
 	c2 = c1;
 	ASSERT_FALSE(c1 != c2);
 	ASSERT_TRUE(c1 == c2);
-}
-
-/// @brief 测试析构函数
-TEST(TEST_SUITE_NAME, destructor) {
-	uint32_t destroy_count = 0;
-
-	// 当 `Point2D` 实例被销毁后, `destroy_count` 值加 1,
-	// 表示 `Point2D` 的析构函数执行了一次
-	{
-		AClass c;
-		c.__set_destroy_count_ref(&destroy_count);
-	}
-	ASSERT_EQ(1, destroy_count);
 }

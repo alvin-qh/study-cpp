@@ -3,14 +3,15 @@
 #ifndef __CPLUSPLUS_OOP_INHERIT_H
 #define __CPLUSPLUS_OOP_INHERIT_H
 
+#include <cstdint>
 #include <string>
 
 namespace cpp::oop {
 	/// @brief 定义父类
 	class BaseClass {
-	private:
+	protected:
 		int _a;
-		uint32_t* __destroy_count;
+		uint32_t* __destroy_count_ptr;
 	public:
 		/// @brief 默认构造器
 		BaseClass();
@@ -22,7 +23,7 @@ namespace cpp::oop {
 
 		/// @brief 拷贝构造器
 		///
-		/// @param o 另一个对象
+		/// @param o 另一个对象引用
 		BaseClass(const BaseClass& o);
 
 		/// @brief 虚析构函数
@@ -33,9 +34,20 @@ namespace cpp::oop {
 
 		/// @brief 重载赋值运算符
 		///
-		/// @param o 另一个对象
+		/// @param o 另一个对象引用
 		/// @return 当前对象引用
 		BaseClass& operator=(const BaseClass& o);
+
+		/// @brief 重载判等运算符
+		///
+		/// @param o 另一个对象引用
+		/// @return 两个对象是否相等
+		bool operator==(const BaseClass& o) const;
+
+		/// @brief 设置整数指针用于记录析构次数
+		///
+		/// @param destroy_count 指向记录析构次数值的指针
+		void __set_destroy_count_ptr(uint32_t* destroy_count);
 
 		/// @brief 将当前对象转为字符串
 		///
@@ -48,7 +60,9 @@ namespace cpp::oop {
 		///
 		/// @return `_a` 字段值
 		int a() const;
-	}
+	protected:
+		void __increment_destroy_count();
+	};
 
 	/// @brief 定义子类
 	class ChildClass : public BaseClass {
@@ -89,12 +103,17 @@ namespace cpp::oop {
 		/// @brief 令 `ChildClass` 实例和 `BaseClass` 不相等
 		///
 		/// @return 不相等
-		bool operator==(const BaseClass&) const;
+		bool operator==(const BaseClass&) const = delete;
 
 		/// @brief 重新设置成员变量的值
 		///
 		/// @param b `b` 参数值, 对应 `_b` 字段
 		void set_b(double b);
+
+		/// @brief 获取 `_b` 字段值
+		///
+		/// @return `b` 字段值
+		double b() const;
 
 		/// @brief 重写父类虚函数
 		///
@@ -102,11 +121,6 @@ namespace cpp::oop {
 		///
 		/// @return 字符串对象
 		virtual std::string to_string() const override;
-
-		/// @brief 获取 `_y` 字段值
-		///
-		/// @return `y` 字段值
-		double y() const;
 	};
 }
 

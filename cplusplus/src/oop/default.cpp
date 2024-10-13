@@ -1,25 +1,13 @@
 #include "oop/default.hpp"
 
-namespace cpp {
-	Point::Point() :
-		_x(0),
-		_y(0) {
-	}
+namespace cpp::oop {
+	using namespace std;
 
-	Point::Point(double x, double y) :
-		_x(x),
-		_y(y) {
-	}
+	Default::Default() : Default("") {}
 
-	bool Point::operator==(const Point& o) const {
-		return this == &o ? true : _x == o._x && _y == o._y;
-	}
+	Default::Default(const string& name) : _name(name) {}
 
-	double Point::x() const {
-		return _x;
-	}
+	bool Default::operator==(const Default& o) const { return _name == o._name; }
 
-	double Point::y() const {
-		return _y;
-	}
-} // namespace cpp
+	const string& Default::name() const { return _name; }
+} // ! namespace cpp::oop

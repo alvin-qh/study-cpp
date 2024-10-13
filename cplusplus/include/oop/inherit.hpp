@@ -122,6 +122,6 @@ namespace cpp::oop {
 		/// @return 字符串对象
 		virtual std::string to_string() const override;
 	};
-}
+} // ! namespace cpp::oop
 
 #endif // ! __CPLUSPLUS_OOP_INHERIT_H

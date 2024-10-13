@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-namespace cpp {
+namespace cpp::reference {
 	/// @brief 检测一个变量是否 "右值引用" 类型
 	///
 	/// @tparam T 变量类型
@@ -29,6 +29,6 @@ namespace cpp {
 		/// @return 返回常量 `true`
 		static constexpr bool test(const T&) { return false; }
 	};
-} // ! namespace cpp
+} // ! namespace cpp::reference
 
 #endif // ! __CPLUSPLUS_REFERENCE_RIGHT_REF_H

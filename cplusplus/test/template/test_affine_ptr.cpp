@@ -8,7 +8,7 @@
 #define TEST_SUITE_NAME test_cplusplus_affine_ptr
 
 using namespace std;
-using namespace cpp;
+using namespace cpp::temp;
 
 /// @brief 测试构建 `Box` 智能指针, 存储单值
 TEST(TEST_SUITE_NAME, box_with_value) {

@@ -7,14 +7,9 @@ class A {
 protected:
 	int _id;
 
-	A(int id) :
-		_id(id) {
-	}
+	A(int id) : _id(id) {}
 public:
-	A() :
-		A(100) {
-	}
-
+	A() : A(100) {}
 	virtual const char* who_am_i() const noexcept { return "class A"; }
 	virtual int id() const { return _id; }
 };
@@ -24,11 +19,7 @@ class B : public A {
 private:
 	int _tag;
 public:
-	B() :
-		A(200),
-		_tag(10) {
-	}
-
+	B() : A(200), _tag(10) {}
 	virtual const char* who_am_i() const noexcept override { return "class B"; }
 	virtual int tag() const { return _tag; }
 };

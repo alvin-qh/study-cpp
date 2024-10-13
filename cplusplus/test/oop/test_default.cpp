@@ -4,24 +4,22 @@
 
 #define TEST_SUITE_NAME test_cplusplus_oop_default
 
-using namespace cpp;
+using namespace cpp::oop;
 
 /// @brief 测试默认的拷贝构造器
 TEST(TEST_SUITE_NAME, copy_constructor) {
-	Point p1(10, 20);
+	Default d1("d1");
 
 	// 调用默认拷贝构造器
-	auto p2 = p1;
-	ASSERT_EQ(10, p2.x());
-	ASSERT_EQ(20, p2.y());
+	auto d2 = d1;
+	ASSERT_STREQ("d1", d2.name().c_str());
 }
 
 /// @brief 测试默认的赋值运算符重载
 TEST(TEST_SUITE_NAME, assign_operator_override) {
-	Point p1(10, 20), p2;
+	Default d1("d1"), d2;
 
 	// 调用默认的赋值运算符
-	p2 = p1;
-	ASSERT_EQ(10, p2.x());
-	ASSERT_EQ(20, p2.y());
+	d2 = d1;
+	ASSERT_EQ("d1", d2.name());
 }

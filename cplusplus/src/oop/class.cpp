@@ -17,24 +17,13 @@ namespace cpp::oop {
 	AClass::~AClass() {}
 
 	AClass& AClass::operator=(const AClass& o) {
-		if (this != &o) {
-			_value = o._value;
-		}
+		_value = o._value;
 		return *this;
 	}
 
-	bool AClass::operator==(const AClass& o) const {
-		if (this == &o) {
-			return true;
-		}
-		return _value == o._value;
-	}
+	bool AClass::operator==(const AClass& o) const { return _value == o._value; }
 
-	void AClass::set_value(int value) {
-		_value = value;
-	}
+	void AClass::set_value(int value) { _value = value; }
 
-	double AClass::value() const {
-		return _value;
-	}
-} // namespace cpp
+	double AClass::value() const { return _value; }
+} // ! namespace cpp::oop

@@ -6,13 +6,8 @@
 #include <utility>
 #include <memory>
 
-namespace cpp {
+namespace cpp::temp {
 	using namespace std;
-
-	template<typename _Iter>
-	struct _IterToolkit {
-		using opt_sub_t = decltype(_Iter::operator-);
-	};
 
 	/// @brief 定义仿指针类型
 	///
@@ -41,6 +36,7 @@ namespace cpp {
 			for (size_t i = 0; i < len; ++i) {
 				new (ptr + i) T(val);
 			}
+
 			_ptr = ptr;
 			_len = len;
 		}
@@ -69,16 +65,10 @@ namespace cpp {
 		/// 通过包含指针和长度的元组对象
 		///
 		/// @param tup 元组对象引用
-		Box(const tuple<T*, size_t>&& tup) :
-			_ptr(get<0>(tup)),
-			_len(get<1>(tup)) {
-		}
+		Box(const tuple<T*, size_t>&& tup) : Box(get<0>(tup), get<1>(tup)) {}
 	public:
 		/// @brief 默认构造函数
-		Box() :
-			_ptr(nullptr),
-			_len(0) {
-		}
+		Box() : Box(nullptr, 0) {}
 
 		/// @brief 参数构造器
 		///
@@ -86,9 +76,7 @@ namespace cpp {
 		///
 		/// @param value 所给的值
 		/// @param len 元素个数
-		Box(const T& value, size_t len = 1) {
-			_allocate(value, len);
-		}
+		Box(const T& value, size_t len = 1) { _allocate(value, len); }
 
 		/// @brief 参数构造器
 		///
@@ -96,10 +84,7 @@ namespace cpp {
 		///
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
-		Box(T* ptr, size_t len = 1) :
-			_ptr(ptr),
-			_len(len) {
-		}
+		Box(T* ptr, size_t len = 1) : _ptr(ptr), _len(len) {}
 
 		/// @brief 禁用拷贝构造函数
 		Box(const Self&) = delete;
@@ -107,14 +92,10 @@ namespace cpp {
 		/// @brief 移动构造器
 		///
 		/// @param o 被移动对象
-		Box(Self&& o) noexcept :
-			Box(o.detach()) {
-		}
+		Box(Self&& o) noexcept : Box(o.detach()) {}
 
 		/// @brief 析构函数, 销毁当前堆内存
-		virtual ~Box() {
-			_free();
-		}
+		virtual ~Box() { _free(); }
 
 		/// @brief 禁用赋值运算符
 		Self& operator=(const Self&) = delete;
@@ -204,6 +185,6 @@ namespace cpp {
 			return Box(ptr, len);
 		}
 	};
-} // ! namespace cpp
+} // ! namespace cpp::temp
 
 #endif // ! __CPLUSPLUS_OOP_AFFINE_PTR_H

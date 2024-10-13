@@ -5,9 +5,9 @@
 
 #include <vector>
 
-using namespace std;
+namespace cpp::reference {
+	using namespace std;
 
-namespace cpp {
 	/// @brief 交换两个变量值
 	///
 	/// @tparam T 被交换值的类型
@@ -45,6 +45,6 @@ namespace cpp {
 		left.insert(left.end(), right.begin(), right.end());
 		return left;
 	}
-} // ! namespace cpp
+} // ! namespace cpp::reference
 
 #endif // ! __CPLUSPLUS_REFERENCE_LEFT_REF_H

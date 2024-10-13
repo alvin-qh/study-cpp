@@ -9,7 +9,7 @@
 #define TEST_SUITE_NAME test_cplusplus_template_inf_generic_param
 
 using namespace std;
-using namespace cpp;
+using namespace cpp::temp;
 
 using testing::ElementsAre;
 

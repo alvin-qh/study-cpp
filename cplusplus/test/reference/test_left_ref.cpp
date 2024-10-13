@@ -80,16 +80,16 @@ TEST(TEST_SUITE_NAME, reference_of_pointer) {
 /// @brief 测试引用类型函数参数
 TEST(TEST_SUITE_NAME, function_reference_argument) {
 	int a = 100, b = 200;
-	cpp::swap(a, b);
+	reference::swap(a, b);
 	ASSERT_EQ(a, 200);
 	ASSERT_EQ(b, 100);
 
 	string s1 = "Hello", s2 = "World";
-	cpp::swap(s1, s2);
+	reference::swap(s1, s2);
 	ASSERT_EQ(s1, "World");
 	ASSERT_EQ(s2, "Hello");
 
 	vector<int> v1 = { 1, 2, 3 }, v2 = { 4, 5, 6 };
-	auto r = merge(v1, v2);
+	auto r = reference::merge(v1, v2);
 	ASSERT_THAT(v1, ElementsAre(1, 2, 3, 4, 5, 6));
 }

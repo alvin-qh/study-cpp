@@ -8,12 +8,12 @@
 #define TEST_SUITE_NAME test_cplusplus_template_concept
 
 using namespace std;
-using namespace cpp;
+using namespace cpp::temp;
 
 /// @brief 测试通过 `concept` 方式对泛型类型的约束
 TEST(TEST_SUITE_NAME, concept_definition) {
 	ASSERT_EQ(add(1, 2), 3);
-	ASSERT_EQ(number_to_fixed(add(1.1, 2.2), 2), 3.3);
+	ASSERT_EQ(cpp::number_to_fixed(add(1.1, 2.2), 2), 3.3);
 
 	// `add` 函数不支持非数值类型参数
 	// ASSERT_EQ("Hello World", add(string("Hello "), string("World")));

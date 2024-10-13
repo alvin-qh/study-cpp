@@ -5,7 +5,7 @@
 
 #define TEST_SUITE_NAME test_cplusplus_oop_new_delete
 
-using namespace cpp::new_delete_opt;
+using namespace cpp::oop;
 
 /// @brief 测试通过 `operator new(size_t)` 操作分配内存,
 /// 并通过 `operator delete(void*)` 操作进行回收
@@ -78,19 +78,16 @@ TEST(TEST_SUITE_NAME, test_placement_new) {
 	pa->~A();
 }
 
+/// @brief 测试通过类中定义的 `new/delete` 操作符分配内存
 TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class) {
-	Point* p = new Point(1, 2);
-	ASSERT_EQ(p->x(), 1);
-	ASSERT_EQ(p->y(), 2);
+	NewDelete* po = new NewDelete("object-1");
+	ASSERT_STREQ(po->name().c_str(), "object-1");
 
-	delete p;
+	delete po;
 
-	Point* ps = new Point[]{ Point(1, 2), Point(3, 4) };
-	ASSERT_EQ(ps[0].x(), 1);
-	ASSERT_EQ(ps[0].y(), 2);
+	NewDelete* pos = new NewDelete[]{ NewDelete("object-1"), NewDelete("object-2") };
+	ASSERT_EQ(pos[0].name(), "object-1");
+	ASSERT_EQ(pos[1].name(), "object-2");
 
-	ASSERT_EQ(ps[1].x(), 3);
-	ASSERT_EQ(ps[1].y(), 4);
-
-	delete[] ps;
+	delete[] pos;
 }

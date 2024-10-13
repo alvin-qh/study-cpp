@@ -9,7 +9,7 @@
 #define TEST_SUITE_NAME test_cplusplus_reference_move
 
 using namespace std;
-using namespace cpp;
+using namespace cpp::reference;
 
 /// @brief 移动语义
 ///

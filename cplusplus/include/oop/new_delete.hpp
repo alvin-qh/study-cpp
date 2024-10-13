@@ -4,6 +4,7 @@
 #define __CPLUSPLUS_OPP_NEW_DELETE_H
 
 #include <memory>
+#include <string>
 
 /// @brief 重载 `new` 操作符, 当内存分配失败后, 会抛出异常
 ///
@@ -70,25 +71,65 @@
 // void operator delete[](void* ptr, size_t size) noexcept;
 #endif
 
-namespace cpp::new_delete_opt {
-	class Point {
+namespace cpp::oop {
+	/// @brief 定义具备 `new/delete` 操作符重载的类
+	///
+	/// 一个类如果重载了 `new` 和 `delete` 操作符 (必须同时重载),
+	/// 则在通过 `new` 创建对象以及通过 `delete` 销毁对象时,
+	/// 将不再调用全局操作符, 而是调用当前类型重载的操作符
+	class NewDelete {
 	private:
-		int _x, _y;
+		std::string _name;
 	public:
-		Point();
-		Point(int x, int y);
-		Point(const Point&) = default;
-		virtual ~Point() = default;
-	public:
-		Point& operator=(const Point&) = default;
-		int x() const;
-		int y() const;
+		/// @brief 默认构造器
+		NewDelete();
 
+		/// @brief 参数构造器
+		///
+		/// @param name 参数
+		NewDelete(const std::string& name);
+
+		/// @brief 拷贝构造器
+		///
+		/// @param 另一个对象引用
+		NewDelete(const NewDelete&) = default;
+
+		/// @brief 析构函数
+		virtual ~NewDelete() = default;
+	public:
+		/// @brief 重载赋值运算符
+		///
+		/// @param 另一个对象引用
+		/// @return 当前对象引用
+		NewDelete& operator=(const NewDelete&) = default;
+
+		/// @brief 获取 `_name` 字段值
+		///
+		/// @return `_name` 字段值
+		const std::string& name() const;
+
+		/// @brief 重载 `new` 操作符
+		///
+		/// @param n 要分配内存的大小
+		/// @return 指向所分配内存地址的指针
 		void* operator new(size_t n);
+
+		/// @brief 重载 `new[]` 操作符
+		///
+		/// @param n 要分配内存的大小
+		/// @return 指向所分配内存地址的指针
 		void* operator new[](size_t n);
+
+		/// @brief 回收指针指向的内存地址
+		///
+		/// @param ptr 指向要回收内存地址的指针
 		void operator delete(void* ptr) noexcept;
+
+		/// @brief 回收指针指向的内存地址
+		///
+		/// @param ptr 指向要回收内存地址的指针
 		void operator delete[](void* ptr) noexcept;
 	};
-}
+} // ! namespace cpp::oop
 
 #endif // ! __CPLUSPLUS_OPP_NEW_DELETE_H

@@ -7,7 +7,7 @@
 #define TEST_SUITE_NAME test_cplusplus_reference_right_ref
 
 using namespace std;
-using namespace cpp;
+using namespace cpp::reference;
 
 
 /// @brief 测试右值引用

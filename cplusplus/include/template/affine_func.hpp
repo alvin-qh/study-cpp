@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-namespace cpp {
+namespace cpp::temp {
 	using namespace std;
 
 	/// @brief 检测指定类型是否有 `+` 运算符
@@ -30,52 +30,44 @@ namespace cpp {
 	///
 	/// @tparam T 数值类型泛型参数
 	template<addition_type T>
-	class Addition {
+	class AffineFunc {
 	private:
 		T _x;
-
 	public:
 		/// @brief 构造函数
 		///
 		/// @param x 输入值
-		Addition(T x) :
-			_x(x) {}
+		AffineFunc(T x) : _x(x) {}
 
 		/// @brief 拷贝构造器
 		///
 		/// @param o 输入对象
-		Addition(const Addition& o) = default;
+		AffineFunc(const AffineFunc& o) = default;
 
 		/// @brief 重载赋值运算符
 		///
 		/// @param o 输入对象
 		/// @return 当前对象引用
-		Addition& operator=(const Addition& o) = default;
+		AffineFunc& operator=(const AffineFunc& o) = default;
 
 		/// @brief 重载 `()` 运算符
 		///
 		/// @param y 输入值
 		/// @return 参数 `y` 和当前值相加的结果
-		T operator()(T y) const {
-			return _x + y;
-		}
+		T operator()(T y) const { return _x + y; }
 
 		/// @brief 重载 `()` 运算符
 		///
 		/// @param y 输入值 1
 		/// @param z 输入值 2
 		/// @return 参数 `y` 和 `z` 与当前值相加的结果
-		T operator()(T y, T z) const {
-			return _x + y + z;
-		}
+		T operator()(T y, T z) const { return _x + y + z; }
 
 		/// @brief 获取当前值
 		///
 		/// @return 当前值
-		T value() const {
-			return _x;
-		}
+		T value() const { return _x; }
 	};
-} // ! namespace cpp
+} // ! namespace cpp::temp
 
 #endif // ! __CPLUSPLUS_OOP_AFFINE_FUNC_H

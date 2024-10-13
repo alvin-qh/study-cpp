@@ -3,7 +3,7 @@
 #ifndef __CPLUSPLUS_REFERENCE_MOVE_H
 #define __CPLUSPLUS_REFERENCE_MOVE_H
 
-namespace cpp {
+namespace cpp::reference {
 	/// @brief 可移动类型
 	///
 	/// 可移动类型即可通过 “右值引用” 构造器 (或 “右值引用” 赋值运算符)
@@ -29,16 +29,12 @@ namespace cpp {
 		}
 	public:
 		/// @brief 默认构造器
-		Moveable() :
-			_ptr(nullptr) {
-		}
+		Moveable() : _ptr(nullptr) {}
 
 		/// @brief 参数构造器
 		///
 		/// @param val 所给值
-		Moveable(const T& val) :
-			_ptr(new T(val)) {
-		}
+		Moveable(const T& val) : _ptr(new T(val)) {}
 
 		/// @brief 删除拷贝构造器
 		Moveable(const Moveable&) = delete;
@@ -55,9 +51,7 @@ namespace cpp {
 		/// 并在源对象中将指针设置为 `null` 以避免析构销毁
 		///
 		/// @param o 被复制对象
-		Moveable(Moveable&& o) noexcept :
-			_ptr(o._detach()) {
-		};
+		Moveable(Moveable&& o) noexcept : _ptr(o._detach()) {}
 
 		/// @brief 析构函数
 		virtual ~Moveable() {
@@ -74,9 +68,8 @@ namespace cpp {
 		/// @param o 被移动对象
 		/// @return 当前对象的引用
 		Self& operator=(Self&& o) noexcept {
-			if (_ptr) {
-				delete _ptr;
-			}
+			// 调用析构函数必须通过 `this` 指针
+			this->~Moveable();
 
 			_ptr = o._detach();
 			return *this;
@@ -97,6 +90,6 @@ namespace cpp {
 		/// @return 指针是否有效
 		operator bool() const { return _ptr != nullptr; }
 	};
-} // ! namespace cpp
+} // ! namespace cpp::reference
 
 #endif // ! __CPLUSPLUS_REFERENCE_MOVE_H

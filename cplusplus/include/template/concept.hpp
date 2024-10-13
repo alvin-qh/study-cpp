@@ -5,7 +5,7 @@
 
 #include <type_traits>
 
-namespace cpp {
+namespace cpp::temp {
 	/// @brief 通过 `concept` 关键字声明符合特定要求的模板定义
 	///
 	/// ```
@@ -49,6 +49,6 @@ namespace cpp {
 	struct Subtract {
 		static T sub(T a, T b) { return a - b; }
 	};
-} // ! namespace cpp
+} // ! namespace cpp::temp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_CONCEPT_H

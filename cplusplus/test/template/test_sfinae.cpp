@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace cpp;
+using namespace cpp::temp;
 
 /// @brief 定义类型
 ///
@@ -60,8 +61,8 @@ TEST(TEST_SUITE_NAME, class_sfinae) {
 	ASSERT_FALSE((is_same_type<X, Y>::value));
 
 	// 测试检测类型是否包含默认构造器
-	ASSERT_TRUE(cpp::is_default_constructible<X>::value);
-	ASSERT_FALSE(cpp::is_default_constructible<Y>::value);
+	ASSERT_TRUE(temp::is_default_constructible<X>::value);
+	ASSERT_FALSE(temp::is_default_constructible<Y>::value);
 }
 
 /// @brief 定义具备 `-` 运算符的类型

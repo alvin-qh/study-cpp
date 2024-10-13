@@ -14,28 +14,22 @@
 #include <type_traits>
 #include <utility>
 
-namespace cpp {
+namespace cpp::temp {
 	/// @brief 当 `T` 类型内部具备 `T::type_x` 类型时, `foo` 模板函数的特化
 	///
 	/// @tparam T 具备 `T::type_x` 类型定义的类型
 	template <typename T>
-	const char* foo(typename T::type_x) {
-		return "foo-type-x";
-	}
+	const char* foo(typename T::type_x) { return "foo-type-x"; }
 
 	/// @brief 当 `T` 类型内部具备 `T::type_y` 类型时, `foo` 模板函数的特化
 	///
 	/// @tparam T 具备 `T::type_y` 类型定义的类型
 	template <typename T>
-	const char* foo(typename T::type_y) {
-		return "foo-type-y";
-	}
+	const char* foo(typename T::type_y) { return "foo-type-y"; }
 
 	/// @brief 当 `foo` 函数的所有特化都不满足时, 编译器选择 `foo` 函数
 	template <typename T>
-	const char* foo(T) {
-		return "foo-type-any";
-	}
+	const char* foo(T) { return "foo-type-any"; }
 
 	// --------------------------------------------------------------------------
 
@@ -108,7 +102,7 @@ namespace cpp {
 	/// @tparam ...T 任意模板参数
 	// template<typename...T>
 	// struct make_void {
-	// 	using type = void;
+	//     using type = void;
 	// };
 
 	/// @brief 定义 `void_t` 类型
@@ -155,7 +149,10 @@ namespace cpp {
 	///
 	/// @tparam T 待检测类型
 	template<typename T>
-	struct has_operator_sub<T, std::void_t<decltype(std::declval<T>() - std::declval<const T&>())>> : std::true_type {};
+	struct has_operator_sub<
+		T,
+		std::void_t<decltype(std::declval<T>() - std::declval<const T&>())>
+	> : std::true_type {};
 
 	// --------------------------------------------------------------------------
 
@@ -164,7 +161,10 @@ namespace cpp {
 	struct has_operator_add : std::false_type {};
 
 	template<typename T>
-	struct has_operator_add<T, std::void_t<decltype(std::declval<T>() + std::declval<const T&>())>> : std::true_type {};
+	struct has_operator_add<
+		T,
+		std::void_t<decltype(std::declval<T>() + std::declval<const T&>())>
+	> : std::true_type {};
 
 	/// @brief 定义模板函数, 并通过 `std::enable_if` 对模板参数检测
 	///
@@ -174,10 +174,11 @@ namespace cpp {
 	/// @param x T 类型参数
 	/// @param y T 类型参数
 	/// @return 两个参数之和
-	template<typename T, typename = typename std::enable_if<has_operator_add<T>::value, T>::type>
-	T add(T x, T y) {
-		return x + y;
-	}
+	template<
+		typename T,
+		typename = typename std::enable_if<has_operator_add<T>::value, T>::type
+	>
+	T add(T x, T y) { return x + y; }
 
 	/// @brief 定义模板函数, 并通过 `std::enable_if` 对函数返回值类型进行定义
 	///
@@ -189,9 +190,7 @@ namespace cpp {
 	/// @return 两个参数之和
 	template<typename T>
 	typename std::enable_if<has_operator_sub<T>::value, T>::type
-		sub(T x, T y) {
-		return x - y;
-	}
+		sub(T x, T y) { return x - y; }
 
 	// --------------------------------------------------------------------------
 
@@ -217,8 +216,7 @@ namespace cpp {
 	///
 	/// @tparam T 要检测的模板参数
 	template<typename T, typename = void>
-	struct Subtract {
-	};
+	struct Subtract {};
 
 	/// @brief 对模板参数进行检测
 	///
@@ -236,15 +234,13 @@ namespace cpp {
 		/// @brief 参数构造器
 		///
 		/// @param val `T` 类型参数
-		Subtract(T val)
-			: _val(val) {
-		}
+		Subtract(T val) : _val(val) {}
 
 		/// @brief 拷贝构造器
 		Subtract(const Subtract&) = default;
 
 		/// @brief 析构函数
-		virtual ~Subtract() { }
+		virtual ~Subtract() {}
 
 		/// @brief 重载赋值运算符
 		///
@@ -272,6 +268,6 @@ namespace cpp {
 		/// @return `T` 类型变量的只读引用
 		const T& value() const { return _val; }
 	};
-} // namespace cpp
+} // ! namespace cpp::temp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_SFINAE_H

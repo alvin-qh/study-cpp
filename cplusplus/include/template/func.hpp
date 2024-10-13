@@ -3,7 +3,7 @@
 #ifndef __CPLUSPLUS_TEMPLATE_FUNC_H
 #define __CPLUSPLUS_TEMPLATE_FUNC_H
 
-namespace cpp {
+namespace cpp::temp {
 	/// @brief 使用 `NumberType` 定义泛型参数, 只接收数值类型参数
 	///
 	/// @tparam T 任意类型
@@ -12,6 +12,6 @@ namespace cpp {
 	/// @return 返回和
 	template<typename T>
 	T add(T a, T b) { return a + b; }
-} // ! namespace cpp
+} // ! namespace cpp::temp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_FUNC_H

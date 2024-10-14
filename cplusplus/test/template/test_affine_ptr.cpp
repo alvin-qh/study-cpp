@@ -1,9 +1,9 @@
-#include <vector>
-#include <list>
+#include <gtest/gtest.h>
 
 #include "template/affine_ptr.hpp"
 
-#include <gtest/gtest.h>
+#include <vector>
+#include <list>
 
 #define TEST_SUITE_NAME test_cplusplus_affine_ptr
 

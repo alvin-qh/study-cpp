@@ -3,6 +3,8 @@
 #ifndef __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
 #define __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
 
+#include <vector>
+
 namespace cpp::temp {
 	using namespace std;
 

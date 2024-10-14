@@ -1,9 +1,9 @@
-#include <string>
-
-#include "../test.h"
-#include "template/concept.hpp"
-
 #include <gtest/gtest.h>
+
+#include "template/concept.hpp"
+#include "../test.h"
+
+#include <string>
 
 #define TEST_SUITE_NAME test_cplusplus_template_concept
 

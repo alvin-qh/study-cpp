@@ -1,6 +1,6 @@
-#include "template/affine_func.hpp"
-
 #include <gtest/gtest.h>
+
+#include "template/affine_func.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_affine_func
 

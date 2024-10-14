@@ -1,8 +1,8 @@
-#include <string>
+#include <gtest/gtest.h>
 
 #include "template/sfinae.hpp"
 
-#include <gtest/gtest.h>
+#include <string>
 
 #define TEST_SUITE_NAME test_cplusplus_template_sfinae
 

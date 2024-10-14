@@ -32,6 +32,7 @@ set(cplusplus_test_src
     test/template/test_concept.cpp
     test/template/test_inf_generic_param.cpp
     test/template/test_sfinae.cpp
+    test/template/test_specialization.cpp
 )
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置

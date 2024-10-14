@@ -1,7 +1,7 @@
-#include "../test.h"
-#include "template/func.hpp"
-
 #include <gtest/gtest.h>
+
+#include "template/func.hpp"
+#include "../test.h"
 
 #define TEST_SUITE_NAME test_cplusplus_template_func
 

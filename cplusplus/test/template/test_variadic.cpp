@@ -1,24 +1,59 @@
-#include "template/inf_generic_param.hpp"
-
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include <string>
+#include "template/variadic.hpp"
 
-#define TEST_SUITE_NAME test_cplusplus_template_inf_generic_param
+#include <string>
+#include <vector>
+
+#define TEST_SUITE_NAME test_cplusplus_template_variadic
 
 using namespace std;
 using namespace cpp::temp;
 
 using testing::ElementsAre;
 
+/// @brief 测试不定模板参数的类
+///
+/// 通过不定模板参数向该类型传递构造器参数
+class TestClass {
+private:
+	double _x, _y, _z;
+public:
+	TestClass() : TestClass(0) {}
+	TestClass(double val) : TestClass(val, val, val) {}
+	TestClass(double x, double y, double z) : _x(x), _y(y), _z(z) {}
+	TestClass(const TestClass&) = default;
+	virtual ~TestClass() = default;
+
+	double x() const { return _x; }
+	double y() const { return _y; }
+	double z() const { return _z; }
+};
+
+/// @brief 测试通过不定模板参数调用不同重载的构造器
+TEST(TEST_SUITE_NAME, variadic_template_arguments) {
+	TestClass o = create_object<TestClass>();
+	ASSERT_EQ(o.x(), 0);
+	ASSERT_EQ(o.y(), 0);
+	ASSERT_EQ(o.z(), 0);
+
+	o = create_object<TestClass>(0.1);
+	ASSERT_EQ(o.x(), 0.1);
+	ASSERT_EQ(o.y(), 0.1);
+	ASSERT_EQ(o.z(), 0.1);
+
+	o = create_object<TestClass>(0.1, 0.2, 0.3);
+	ASSERT_EQ(o.x(), 0.1);
+	ASSERT_EQ(o.y(), 0.2);
+	ASSERT_EQ(o.z(), 0.3);
+}
+
 /// @brief 定义函数, 测试可变模板参数函数 (两个参数)
 /// @param a 参数 1
 /// @param b 参数 2
 /// @return 返回值
-int _add(int a, int b) {
-	return a + b;
-}
+int _add(int a, int b) { return a + b; }
 
 /// @brief 定义仿函数, 测试可变参数模板函数 (三个参数)
 ///

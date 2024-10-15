@@ -1,12 +1,19 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
-#define __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
-
-#include <vector>
+#ifndef __CPLUSPLUS_TEMPLATE_VARIADIC_H
+#define __CPLUSPLUS_TEMPLATE_VARIADIC_H
 
 namespace cpp::temp {
 	using namespace std;
+
+	/// @brief 创建指定类型对象
+	///
+	/// @tparam T 要创建对象的类型
+	/// @tparam ...Args `T` 类型构造器参数列表类型
+	/// @param ...args `T` 类型构造器参数列表
+	/// @return `T` 类型对象实例
+	template<typename T, typename... Args>
+	T create_object(Args... args) { return T(args...); }
 
 	/// @brief 通过可变模板参数定义的参数列表调用回调函数
 	///
@@ -61,4 +68,4 @@ namespace cpp::temp {
 	vector<R> expand_args(Args...args) { return vector<R> { _double_args<R>(args)... }; }
 } // ! namespace cpp::temp
 
-#endif // ! __CPLUSPLUS_TEMPLATE_INF_GENERIC_PARAM_H
+#endif // ! __CPLUSPLUS_TEMPLATE_VARIADIC_H

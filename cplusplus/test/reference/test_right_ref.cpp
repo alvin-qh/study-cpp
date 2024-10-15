@@ -23,21 +23,6 @@ using namespace cpp::reference;
 ///
 /// 通过 `&&` 运算符, C++ 允许为右值建立引用, 称为 "右值引用",
 /// 右值引用可以临时获取到右值的所有权, 通过这种方式, 即可避免额外的构造和析构动作
-TEST(TEST_SUITE_NAME, make_right_reference) {
-	// 常量 `100` 为右值, 为其建立引用
-	int&& n1 = 100;
-	ASSERT_EQ(n1, 100);
-
-	// 可修改右值引用
-	n1 = 200;
-	ASSERT_EQ(n1, 200);
-
-	// 在函数内部创建的值为临时变量, 可通过右值引用对其进行引用
-	int&& n2 = []() { return 200; }();
-	ASSERT_EQ(n2, 200);
-}
-
-/// @brief 判断一个值是否为右值引用
 TEST(TEST_SUITE_NAME, check_if_right_reference) {
 	// 临时变量/对象为右值引用
 	ASSERT_TRUE(is_right_reference<int>::test(int(0)));
@@ -45,13 +30,17 @@ TEST(TEST_SUITE_NAME, check_if_right_reference) {
 	ASSERT_TRUE(is_right_reference<string>::test("Hello"));
 	ASSERT_TRUE(is_right_reference<string>::test(string("Hello")));
 
-	// 变量引用为左值引用, 不是右值引用
-	int n = 100;
-	ASSERT_FALSE(is_right_reference<int>::test(n));
+	// 具有返回值的函数调用表现为一个右值
+	ASSERT_TRUE(is_right_reference<string>::test([] { return string("Hello"); } ()));
 
-	// 变量引用为左值引用, 不是右值引用
-	string s = "Hello";
-	ASSERT_FALSE(is_right_reference<string>::test(s));
+	// 引用类型变量为一个左值
+	int n = 100;
+	int& rn = n;
+	ASSERT_FALSE(is_right_reference<int>::test(rn));
+
+	// 右值引用变量本身也是一个左值
+	int&& rrn = 100;
+	ASSERT_FALSE(is_right_reference<int>::test(rrn));
 }
 
 /// @brief 获取左值临时的右值引用

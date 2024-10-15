@@ -11,6 +11,35 @@
 using namespace std;
 using namespace cpp::reference;
 
+/// @brief 测试右值引用传递
+TEST(TEST_SUITE_NAME, move_reference) {
+	// 定义函数, 参数为一个左值引用
+	function<void(int&)> l_func = [](int&) {};
+
+	// 定义函数, 参数为一个右值引用
+	function<void(int&&)> r_func = [](int&&) {};
+
+	// 定义变量以及变量的引用以及右值引用变量
+	int n = 1;
+	int& rn = n;
+	int&& rrn = std::move(n); // 将左值引用转为右值引用
+
+	// 右值引用变量本身是左值, 故可以传递给 `int&` 类型参数
+	l_func(rrn);
+
+	// 右值引用变量本身是左值, 故无法传递给 `int&&` 类型参数
+	// r_func(rrn);
+
+	// 可以通过 `move` 将变量转为右值引用
+	r_func(std::move(n));
+
+	// 可以通过 `move` 将变量的引用转为右值引用
+	r_func(std::move(rn));
+
+	// 可以通过 `move` 将变量的右值引用变量转为右值引用
+	r_func(std::move(rrn));
+}
+
 /// @brief 移动语义
 ///
 /// 有了右值引用, 即可完成所谓的 "移动" 语义, 即将源对象的内容 "移动到" 目标对象.

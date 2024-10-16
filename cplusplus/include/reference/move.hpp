@@ -3,11 +3,13 @@
 #ifndef __CPLUSPLUS_REFERENCE_MOVE_H
 #define __CPLUSPLUS_REFERENCE_MOVE_H
 
+#include <utility>
+
 namespace cpp::reference {
 	/// @brief 可移动类型
 	///
 	/// 可移动类型即可通过 “右值引用” 构造器 (或 “右值引用” 赋值运算符)
-	/// 将实例从一个变量移动到另一个变量.
+	/// 将实例从一个变量移动到另一个变量
 	///
 	/// 可移动类型在将其 “临时变量” 赋值到另一个变量 (例如从函数返回) 时,
 	/// 具备更高的性能.

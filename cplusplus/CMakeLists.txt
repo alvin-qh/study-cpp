@@ -20,6 +20,7 @@ set(cplusplus_test_src
     test/reference/test_left_ref.cpp
     test/reference/test_right_ref.cpp
     test/reference/test_move.cpp
+    test/reference/test_forward.cpp
     test/oop/test_casting.cpp
     test/oop/test_new_delete.cpp
     test/oop/test_class.cpp

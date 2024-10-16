@@ -91,3 +91,11 @@ TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class) {
 
 	delete[] pos;
 }
+
+// TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class_with_noexcept) {
+// 	NewDelete* pos = new (std::nothrow) NewDelete[]{ , NewDelete("object-2") };
+// 	ASSERT_EQ(pos[0].name(), "object-1");
+// 	ASSERT_EQ(pos[1].name(), "object-2");
+
+// 	delete[] pos;
+// }

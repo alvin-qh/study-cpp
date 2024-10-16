@@ -37,6 +37,7 @@ set(cplusplus_test_src
     test/ptr/test_unique_ptr.cpp
     test/ptr/test_shared_ptr.cpp
     test/ptr/test_weak_ptr.cpp
+    test/utility/test_functions.cpp
 )
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置

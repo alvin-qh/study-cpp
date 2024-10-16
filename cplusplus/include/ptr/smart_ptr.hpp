@@ -85,7 +85,7 @@ namespace cpp::ptr {
 		/// @return 当前对象引用
 		LargeObject& operator=(const LargeObject& o) {
 			if (this != &o) {
-				std::copy(o.data, o.data + SIZE, _data);
+				std::copy(o._data, o._data + SIZE, _data);
 			}
 			return *this;
 		};

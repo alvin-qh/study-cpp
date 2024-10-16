@@ -54,9 +54,6 @@ TEST(TEST_SUITE_NAME, assign_shared_ptr) {
 	// 确认当前对象的引用计数器为 `1`
 	ASSERT_EQ(ptr1.use_count(), 1);
 
-	// 确认当前资源只具备唯一引用
-	ASSERT_TRUE(ptr1.unique());
-
 	// 调用拷贝构造器 `shared_ptr(shared_ptr&)`, 通过增加引用计数, 令两个变量都引用到同一个资源
 	shared_ptr<LargeObject<int, 10>> ptr2 = ptr1;
 
@@ -67,10 +64,6 @@ TEST(TEST_SUITE_NAME, assign_shared_ptr) {
 	// 确认 `shared_ptr` 对象的引用计数器增加
 	ASSERT_EQ(ptr1.use_count(), 2);
 	ASSERT_EQ(ptr2.use_count(), 2);
-
-	// 确认当前资源不再具备唯一引用
-	ASSERT_FALSE(ptr1.unique());
-	ASSERT_FALSE(ptr2.unique());
 
 	ASSERT_EQ(ptr1->size(), 10);
 	ASSERT_EQ(ptr2->size(), 10);
@@ -86,7 +79,6 @@ TEST(TEST_SUITE_NAME, assign_shared_ptr) {
 	ptr1.reset();
 	ASSERT_FALSE(ptr1);
 	ASSERT_EQ(ptr2.use_count(), 1);
-	ASSERT_TRUE(ptr2.unique());
 
 	// 调用赋值运算符 (`unique_ptr& operator=(unique_ptr&)`) 将 `shared_ptr` 变量进行赋值;
 	ptr1 = ptr2;

@@ -23,11 +23,25 @@
 #include <stdexcept>
 
 namespace cpp::ptr {
+	/// @brief 用于测试智能指针的类
+	///
+	/// 该类型表示一个非常大的数组数据, 通过 `T` 表示数组元素类型, `SIZE` 表示数组大小
+	///
+	/// 一般情况下, 不应该将过大的数据结构放在栈内存中, 而是通过 `new` 等运算符在堆内存中分配空间
+	///
+	/// @tparam T 数组元素类型
+	/// @tparam SIZE 数组大小
 	template<typename T, size_t SIZE>
 	class LargeObject {
 	private:
+		// 保存数据的数组
 		T _data[SIZE];
 
+		/// @brief 向数组填充数据
+		///
+		/// @tparam _Iter 原数据的迭代器类型
+		/// @param begin 原数据的起始迭代器实例
+		/// @param end 原数据的结束迭代器实例
 		template <typename _Iter>
 		void _fill(_Iter begin, _Iter end) {
 			size_t i = 0;
@@ -36,31 +50,50 @@ namespace cpp::ptr {
 			}
 		}
 	public:
+		/// @brief 默认构造器
 		LargeObject() : LargeObject(T()) {}
 
+		/// @brief 参数构造器
+		///
+		/// @param init_val 初始值, 数组的每一项都会初始化为该值
 		LargeObject(const T& init_val) {
 			for (size_t i = 0; i < SIZE; ++i) {
 				new (_data + i) T(init_val);
 			}
 		};
 
+		/// @brief 参数构造器
+		///
+		/// @param l 数据列表
 		LargeObject(std::initializer_list<T> l) { _fill(l.begin(), l.end()); }
 
-		/// @brief 禁用拷贝构造器
+		/// @brief 拷贝构造器
+		///
+		/// @param o 另一个对象
 		LargeObject(const LargeObject& o) { std::copy(o._data, o._data + SIZE, _data); }
 
+		/// @brief 析构函数
 		virtual ~LargeObject() {
 			for (size_t i = 0; i < SIZE; ++i) {
 				_data[i].~T();
 			}
 		}
 
-		/// @brief 禁用赋值运算
+		/// @brief 赋值构造器
+		///
+		/// @param o 另一个对象引用
+		/// @return 当前对象引用
 		LargeObject& operator=(const LargeObject& o) {
-			std::copy(o.data, o.data + SIZE, _data);
+			if (this != &o) {
+				std::copy(o.data, o.data + SIZE, _data);
+			}
 			return *this;
 		};
 
+		/// @brief 重载下标操作符, 获取数组的每一项元素的引用
+		///
+		/// @param index 下标值
+		/// @return 下标对应的元素引用
 		T& operator[](size_t index) {
 			if (index >= SIZE) {
 				throw std::out_of_range("index out of range");
@@ -68,10 +101,17 @@ namespace cpp::ptr {
 			return _data[index];
 		}
 
+		/// @brief 重载下标操作符, 获取数组的每一项元素的只读引用
+		///
+		/// @param index 下标值
+		/// @return 下标对应的元素只读引用
 		const T& operator[](size_t index) const {
 			return const_cast<LargeObject*>(this)->operator[](index);
 		}
 
+		/// @brief 获取数组长度
+		///
+		/// @return 数组长度
 		constexpr size_t size() const { return SIZE; }
 	};
 }

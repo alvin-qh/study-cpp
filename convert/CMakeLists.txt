@@ -3,20 +3,14 @@
 # 设置子项目名称
 project(convert)
 
-# 设置项目源文件集变量
-set(convert_src
-    src/numsys.cpp
-)
+# 设置项目源文件集合
+file(GLOB_RECURSE convert_src "src/*.cpp" "src/*.c")
 
-# 设置测试源文件集变量
-set(convert_test_src
-    test/test_main.cpp
-    test/test_numsys.cpp
-)
+# 设置项目测试文件集合
+file(GLOB_RECURSE convert_test_src "test/*.cpp" "test/*.c")
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 include_directories(include)
-include_directories(${PROJECT_SOURCE_DIR}/vendor/googletest/googletest/include)
 
 # 设置生成的执行文件
 # algorithm_test 为执行文件名, 其后为相关的源码文件集
@@ -44,4 +38,5 @@ add_test(
 )
 
 include(GoogleTest)
+
 gtest_discover_tests(convert_test)

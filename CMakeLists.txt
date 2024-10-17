@@ -17,7 +17,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_VERBOSE_MAKEFILE ON) # 显示构建命令明细
 
-
 # 要求启动测试 (该指令必须在根配置中出现一次)
 enable_testing()
 

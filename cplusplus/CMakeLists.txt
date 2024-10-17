@@ -3,54 +3,27 @@
 # 设置子项目名称
 project(cplusplus)
 
-# 设置项目源文件集变量
-# cplusplus_src 是变量名, 可以任意
-set(cplusplus_src
-    src/oop/new_delete.cpp
-    src/oop/class.cpp
-    src/oop/default.cpp
-    src/oop/operator.cpp
-    src/oop/inherit.cpp
-)
+# 设置项目源文件集合
+file(GLOB_RECURSE cplusplus_src "src/*.cpp" "src/*.c")
 
-# 设置测试源文件集变量
-# cplusplus_test_src 是变量名, 可以任意
-set(cplusplus_test_src
-    test/test_main.cpp
-    test/reference/test_left_ref.cpp
-    test/reference/test_right_ref.cpp
-    test/reference/test_move.cpp
-    test/reference/test_forward.cpp
-    test/oop/test_casting.cpp
-    test/oop/test_new_delete.cpp
-    test/oop/test_class.cpp
-    test/oop/test_default.cpp
-    test/oop/test_operator.cpp
-    test/oop/test_inherit.cpp
-    test/template/test_func.cpp
-    test/template/test_affine_func.cpp
-    test/template/test_affine_ptr.cpp
-    test/template/test_concept.cpp
-    test/template/test_variadic.cpp
-    test/template/test_sfinae.cpp
-    test/template/test_specialization.cpp
-    test/ptr/test_unique_ptr.cpp
-    test/ptr/test_shared_ptr.cpp
-    test/ptr/test_weak_ptr.cpp
-    test/utility/test_functions.cpp
-)
-
-# 设置头文件路径, 用于指定在代码中 #include 文件的位置
-include_directories(include)
-include_directories(
-    ${CMAKE_SOURCE_DIR}/vendor/format
-)
+# 设置项目测试文件集合
+file(GLOB_RECURSE cplusplus_test_src "test/*.cpp" "test/*.c")
 
 # 设置生成的执行文件
 # algorithm_test 为执行文件名, 其后为相关的源码文件集
 add_executable(cplusplus_test
     ${cplusplus_src}
     ${cplusplus_test_src}
+)
+
+# 设置头文件路径, 用于指定在代码中 #include 文件的位置
+include_directories(
+    include
+)
+
+# 为测试执行文件设置头文件路径
+target_include_directories(cplusplus_test
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format
 )
 
 # 增加本项目使用的链接库

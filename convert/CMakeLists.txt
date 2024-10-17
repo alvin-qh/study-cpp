@@ -19,6 +19,11 @@ add_executable(convert_test
     ${convert_test_src}
 )
 
+target_precompile_headers(convert_test
+    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
+    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
+)
+
 # 增加本项目使用的链接库
 # 链接库会自动在当前路径下的 lib 目录中查找, 无需文件前缀 lib 和后缀 .a 等, gtest => libgtest.a
 target_link_libraries(convert_test

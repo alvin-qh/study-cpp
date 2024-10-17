@@ -58,3 +58,21 @@ TEST(TEST_SUITE_NAME, decltype) {
 	decltype(std::declval<string>().c_str()) c = "Hello";
 	ASSERT_EQ(typeid(c), typeid(const char*));
 }
+
+/// @brief `std::exchange` 函数将指定变量值替换为新值, 并返回其原本的值
+///
+/// `std::exchange` 函数的两个参数可以为不同类型, 只要这两个类型允许赋值操作即可,
+/// 例如 `double` 和 `int` 类型
+TEST(TEST_SUITE_NAME, exchange) {
+	// 将 `s1` 变量的值进行替换, 并将原本的值给 `s2` 变量
+	string s1 = "Hello", s2;
+	s2 = std::exchange(s1, "World");
+	ASSERT_STREQ(s2.c_str(), "Hello");
+	ASSERT_STREQ(s1.c_str(), "World");
+
+	// 将 `n1` 变量的值进行替换, 并将原本的值给 `n2` 变量
+	double n1 = 1.2, n2;
+	n2 = std::exchange(n1, int(2));
+	ASSERT_EQ(n1, 2.0);
+	ASSERT_EQ(n2, 1.2);
+}

@@ -1,18 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "reference/forward.hpp"
-#include "utility/functions.hpp"
+#include <string_view>
 
-#include <utility>
-#include <string>
-
-#define TEST_SUITE_NAME test_cplusplus_utility_functions
+#define TEST_SUITE_NAME test_cplusplus_string_string_view
 
 using namespace std;
-using namespace cpp::utility;
-using namespace cpp::reference;
-
-/// https://learn.microsoft.com/zh-cn/cpp/standard-library/utility-functions?view=msvc-170
 
 /// @brief 测试将可变引用转为只读引用的各类方法
 TEST(TEST_SUITE_NAME, as_const) {

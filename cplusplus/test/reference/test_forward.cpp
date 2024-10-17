@@ -13,7 +13,7 @@ using namespace cpp::reference;
 using testing::ElementsAre;
 
 /// @brief 测试 `std::forward` 参数转发结果
-TEST(TEST_SUITE_NAME, reference_of_variable) {
+TEST(TEST_SUITE_NAME, arguments_forward) {
 	int a = 1;
 	int& ra = a;
 

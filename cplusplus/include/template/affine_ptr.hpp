@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_OOP_AFFINE_PTR_H
-#define __CPLUSPLUS_OOP_AFFINE_PTR_H
+#ifndef __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H
+#define __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H
 
 #include <utility>
 #include <memory>
@@ -187,4 +187,4 @@ namespace cpp::temp {
 	};
 } // ! namespace cpp::temp
 
-#endif // ! __CPLUSPLUS_OOP_AFFINE_PTR_H
+#endif // ! __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_OOP_AFFINE_FUNC_H
-#define __CPLUSPLUS_OOP_AFFINE_FUNC_H
+#ifndef __CPLUSPLUS_TEMPLATE_AFFINE_FUNC_H
+#define __CPLUSPLUS_TEMPLATE_AFFINE_FUNC_H
 
 #include <type_traits>
 
@@ -70,4 +70,4 @@ namespace cpp::temp {
 	};
 } // ! namespace cpp::temp
 
-#endif // ! __CPLUSPLUS_OOP_AFFINE_FUNC_H
+#endif // ! __CPLUSPLUS_TEMPLATE_AFFINE_FUNC_H

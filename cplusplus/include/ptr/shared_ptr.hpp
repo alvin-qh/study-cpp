@@ -14,8 +14,8 @@
 
 #pragma once
 
-#ifndef __CPLUSPLUS_PTR_SMART_PTR_H
-#define __CPLUSPLUS_PTR_SMART_PTR_H
+#ifndef __CPLUSPLUS_PTR_SHARED_PTR_H
+#define __CPLUSPLUS_PTR_SHARED_PTR_H
 
 #include <cstdint>
 #include <memory>
@@ -116,4 +116,4 @@ namespace cpp::ptr {
 	};
 }
 
-#endif // ! __CPLUSPLUS_PTR_SMART_PTR_H
+#endif // !__CPLUSPLUS_PTR_SHARED_PTR_H

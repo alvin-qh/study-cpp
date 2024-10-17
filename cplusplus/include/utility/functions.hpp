@@ -11,14 +11,14 @@ namespace cpp::utility {
 	/// @tparam T 参数类型
 	/// @param 参数
 	template <typename T>
-	void only_const_reference(const T&) {}
+	constexpr void only_const_reference(const T&) {}
 
 	/// @brief 重载 `only_const_reference` 函数, 当参数非只读引用时引发编译错误
 	///
 	/// @tparam T 参数类型
 	/// @param 参数
 	template <typename T>
-	void only_const_reference(T&) { static_assert(false, "need const reference"); }
+	constexpr void only_const_reference(T&) = delete;
 } // ! namespace cpp::utility
 
 #endif // ! __CPLUSPLUS_UTILITY_FUNCTIONS_H

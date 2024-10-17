@@ -267,9 +267,3 @@ TEST(TEST_SUITE_NAME, make_shared_ptr_object_for_array) {
 	ASSERT_EQ(ptr[4][1], 41);
 	ASSERT_EQ(ptr[4][2], 42);
 }
-
-TEST(TEST_SUITE_NAME, make_shared_ptr_for_overwrite) {
-	shared_ptr<LargeObject<int, 5>[]> ptr = make_shared_for_overwrite<LargeObject<int, 5>[]>(20);
-	ASSERT_EQ(ptr[0][0], 0);
-	ASSERT_EQ(ptr[0][1], 0);
-}

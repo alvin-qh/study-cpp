@@ -13,4 +13,6 @@ TEST(TEST_SUITE_NAME, unpack_struct) {
 	ASSERT_EQ(x, 1);
 	ASSERT_EQ(y, 2);
 	ASSERT_EQ(z, 3);
+
+	auto& [a, b, c] = unpack;
 }

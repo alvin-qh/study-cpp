@@ -97,3 +97,4 @@ TEST(TEST_SUITE_NAME, forward) {
 	ASSERT_EQ(do_forward(std::move(a)), RIGHT_REF);
 	ASSERT_EQ(do_forward([]() {return 100;}()), RIGHT_REF);
 }
+

@@ -40,20 +40,15 @@ TEST(TEST_SUITE_NAME, box_with_array) {
 ///
 /// `Box` 对象中存储数组指针指向那部分数值
 TEST(TEST_SUITE_NAME, box_with_array_ptr) {
-	int* arr = new int[10];
-	for (size_t i = 0; i < 10; i++) {
-		arr[i] = i + 1;
-	}
+	int arr[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 	// 通过迭代器设置 `Box` 对象中存储的值
-	Box<int> box = Box<int>::from_iter(arr, arr + 10);
+	Box<int> box = Box<int>::from_iter(static_cast<int*>(arr), static_cast<int*>(arr) + 10);
 	ASSERT_TRUE(box);
 
 	for (size_t i = 0; i < box.size(); i++) {
-		ASSERT_EQ(*(arr + i), box[i]);
+		ASSERT_EQ(arr[i], box[i]);
 	}
-
-	delete[] arr;
 }
 
 /// @brief 测试通过向量对象迭代器构建 `Box` 智能指针

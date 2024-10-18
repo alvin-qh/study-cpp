@@ -29,43 +29,22 @@ namespace cpp::temp {
 		///
 		/// @param val 所给值
 		void _allocate(const T& val, size_t len) {
-			// 分配内存
-			T* ptr = _alloc.allocate(len);
-
-			// 为内存的每个元素调用 `T` 类型的构造函数
-			for (size_t i = 0; i < len; ++i) {
-				new (ptr + i) T(val);
-			}
-
-			_ptr = ptr;
+			// 分配内存, 为内存的每个元素调用 `T` 类型的构造函数
+			_ptr = _alloc.allocate(len);
+			std::uninitialized_fill_n(_ptr, len, val);
 			_len = len;
 		}
 
 		/// @brief 销毁当前指针
 		void _free() {
-			if (_ptr) {
-				T* ptr = _ptr;
-				_ptr = nullptr;
+			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
+				// 为数组各元素调用析构函数, 释放数组内存
+				std::destroy_n(ptr, _len);
+				_alloc.deallocate(ptr, _len);
 
-				size_t len = _len;
 				_len = 0;
-
-				// 为数组各元素调用析构函数
-				for (size_t i = 0; i < len; ++i) {
-					(ptr + i)->~T();
-				}
-
-				// 释放数组内存
-				_alloc.deallocate(ptr, len);
 			}
 		}
-
-		/// @brief 私有参数构造器
-		///
-		/// 通过包含指针和长度的元组对象
-		///
-		/// @param tup 元组对象引用
-		Box(const tuple<T*, size_t>&& tup) : Box(get<0>(tup), get<1>(tup)) {}
 	public:
 		/// @brief 默认构造函数
 		Box() : Box(nullptr, 0) {}
@@ -92,7 +71,10 @@ namespace cpp::temp {
 		/// @brief 移动构造器
 		///
 		/// @param o 被移动对象
-		Box(Self&& o) noexcept : Box(o.detach()) {}
+		Box(Self&& o) noexcept :
+			_ptr(std::exchange(o._ptr, nullptr)),
+			_len(std::exchange(o._len, 0)) {
+		}
 
 		/// @brief 析构函数, 销毁当前堆内存
 		virtual ~Box() { _free(); }
@@ -105,9 +87,12 @@ namespace cpp::temp {
 		/// @param o 被移动对象
 		/// @return 当前对象引用
 		Self& operator=(Self&& o) noexcept {
-			tuple<T*, size_t> tup = o.detach();
-			_ptr = get<0>(tup);
-			_len = get<1>(tup);
+			if (T* ptr = std::exchange(_ptr, nullptr); ptr != nullptr) {
+				_alloc.deallocate(ptr, _len);
+			}
+
+			_ptr = std::exchange(o._ptr, nullptr);
+			_len = std::exchange(o._len, 0);
 			return *this;
 		};
 
@@ -143,16 +128,6 @@ namespace cpp::temp {
 		/// @return 当前指针指向的元素个数
 		size_t size() const { return _len; }
 
-		/// @brief 分离当前指针
-		///
-		/// @return 当前指针
-		tuple<T*, size_t> detach() {
-			tuple<T*, size_t> r(_ptr, _len);
-			_ptr = nullptr;
-			_len = 0;
-			return r;
-		}
-
 		/// @brief 根据从另一个 `Box` 对象分离的指针构造当前对象
 		///
 		/// @param ptr 从另一个对象中分离的指针
@@ -172,15 +147,11 @@ namespace cpp::temp {
 		template<typename _Iter>
 		static Self from_iter(const _Iter& begin, const _Iter& end) {
 			// 计算数组长度
-			size_t len = end - begin;
+			size_t len = std::distance(begin, end);
 
-			// 分配内存
+			// 分配内存并拷贝数据
 			T* ptr = (_Alloc()).allocate(len);
-
-			// 为内存的每个元素调用 `T` 类型的构造函数
-			for (size_t i = 0; i < len; ++i) {
-				new (ptr + i) T(*(begin + i));
-			}
+			std::uninitialized_copy(begin, end, ptr);
 
 			return Box(ptr, len);
 		}

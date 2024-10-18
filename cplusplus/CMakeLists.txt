@@ -26,6 +26,7 @@ target_include_directories(cplusplus_test
     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format
 )
 
+# 指定需要预编译的头文件
 target_precompile_headers(cplusplus_test
     PUBLIC ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
     PUBLIC ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h

@@ -68,14 +68,21 @@ public:
 /// 使用 `placement new` 操作符, 需要: 1. 手动分配内存; 2. 手动执行对象的析构函数;
 /// 3. 手动释放内存;
 TEST(TEST_SUITE_NAME, test_placement_new) {
-	std::byte buf[sizeof(A)];
+	std::byte buf[sizeof(A) * 10];
 
 	A* pa = reinterpret_cast<A*>(buf);
 
-	new (pa) A(100);
-	ASSERT_EQ(pa->value(), 100);
+	for (std::size_t i = 0; i < sizeof(buf) / sizeof(A); ++i) {
+		new (pa + i) A(i + 1);
+	}
 
-	pa->~A();
+	ASSERT_EQ(pa[0].value(), 1);
+	ASSERT_EQ(pa[5].value(), 6);
+	ASSERT_EQ(pa[9].value(), 10);
+
+	for (std::size_t i = 0; i < sizeof(buf) / sizeof(A); ++i) {
+		pa[i].~A();
+	}
 }
 
 /// @brief 测试通过类中定义的 `new/delete` 操作符分配内存
@@ -91,11 +98,3 @@ TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class) {
 
 	delete[] pos;
 }
-
-// TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class_with_noexcept) {
-// 	NewDelete* pos = new (std::nothrow) NewDelete[]{ , NewDelete("object-2") };
-// 	ASSERT_EQ(pos[0].name(), "object-1");
-// 	ASSERT_EQ(pos[1].name(), "object-2");
-
-// 	delete[] pos;
-// }

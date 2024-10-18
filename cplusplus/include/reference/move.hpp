@@ -20,15 +20,6 @@ namespace cpp::reference {
 		typedef Moveable<T> Self;
 	private:
 		T* _ptr;
-
-		/// @brief 分离当前对象中存储的指针
-		///
-		/// @return 当前对象存储的指针值
-		T* _detach() {
-			T* tmp = _ptr;
-			_ptr = nullptr;
-			return tmp;
-		}
 	public:
 		/// @brief 默认构造器
 		Moveable() : _ptr(nullptr) {}
@@ -53,12 +44,12 @@ namespace cpp::reference {
 		/// 并在源对象中将指针设置为 `null` 以避免析构销毁
 		///
 		/// @param o 被复制对象
-		Moveable(Moveable&& o) noexcept : _ptr(o._detach()) {}
+		Moveable(Moveable&& o) noexcept : _ptr(std::exchange(o._ptr, nullptr)) {}
 
 		/// @brief 析构函数
 		virtual ~Moveable() {
-			if (_ptr) {
-				delete _ptr;
+			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
+				delete ptr;
 			}
 		}
 
@@ -72,8 +63,8 @@ namespace cpp::reference {
 		Self& operator=(Self&& o) noexcept {
 			// 调用析构函数必须通过 `this` 指针
 			this->~Moveable();
+			_ptr = std::exchange(o._ptr, nullptr);
 
-			_ptr = o._detach();
 			return *this;
 		}
 

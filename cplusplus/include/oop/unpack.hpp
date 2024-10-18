@@ -7,6 +7,7 @@ namespace cpp::oop {
 	/// @brief 定义结构体, 演示 unpack 操作
 	struct Unpack {
 		double x, y, z;
+		int data[3];
 	};
 } // ! namespace cpp::oop
 

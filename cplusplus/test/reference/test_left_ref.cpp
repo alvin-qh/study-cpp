@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+
 #define TEST_SUITE_NAME test_cplusplus_reference_left_ref
 
 using namespace std;

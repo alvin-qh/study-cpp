@@ -16,8 +16,10 @@ TEST(TEST_SUITE_NAME, unpack_struct) {
 
 	// 将结构体实例的字段按顺序展开到 4 个变量中
 	auto [x, y, z, data] = obj;
-	// 将数组展开到
+
+	// 将数组元素展开到变量
 	auto [a, b, c] = data;
+
 	ASSERT_EQ(x, 1);
 	ASSERT_EQ(y, 2);
 	ASSERT_EQ(z, 3);
@@ -27,13 +29,17 @@ TEST(TEST_SUITE_NAME, unpack_struct) {
 
 	// 将实例字段的引用按顺序展开到 3 个变量中
 	auto& [rx, ry, rz, rdata] = obj;
+
+	// 将数组元素的引用展开到变量
 	auto& [ra, rb, rc] = rdata;
+
 	rx = 100;
 	ry = 200;
 	rz = 300;
 	ra = -100;
 	rb = -200;
 	rc = -300;
+
 	ASSERT_EQ(obj.x, 100);
 	ASSERT_EQ(obj.y, 200);
 	ASSERT_EQ(obj.z, 300);

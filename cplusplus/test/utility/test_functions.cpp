@@ -5,6 +5,7 @@
 
 #include <utility>
 #include <string>
+#include <type_traits>
 
 #define TEST_SUITE_NAME test_cplusplus_utility_functions
 
@@ -48,17 +49,17 @@ TEST(TEST_SUITE_NAME, decltype) {
 	// 通过产生一个 `int&&` 引用, 推断 `int` 类型的大小
 	ASSERT_EQ(sizeof(std::declval<int>()), 4);
 
-	// 通过产生一个 `int&&` 引用, 推断 `a` 变量的类型为 `int`
+	// 通过产生一个 `int&&` 引用, 推断 `a` 变量的类型为 `int&&`
 	decltype(std::declval<int>()) a = 2;
-	ASSERT_EQ(typeid(a), typeid(int));
+	ASSERT_TRUE((is_same<decltype(a), int&&>::value));
 
 	// 通过 `string&& + const char*&&` 的计算结果类型, 推断 `b` 变量的类型为 `string`
 	decltype(std::declval<string>() + std::declval<const char*>()) b = "Hello";
-	ASSERT_EQ(typeid(b), typeid(string));
+	ASSERT_TRUE((is_same<decltype(b), string>::value));
 
 	// 通过 `(string&&).c_str()` 方法的调用结果类型, 推断 `c` 变量的类型为 `const char*`
 	decltype(std::declval<string>().c_str()) c = "Hello";
-	ASSERT_EQ(typeid(c), typeid(const char*));
+	ASSERT_TRUE((is_same<decltype(c), const char*>::value));
 }
 
 /// @brief `std::exchange` 函数将指定变量值替换为新值, 并返回其原本的值

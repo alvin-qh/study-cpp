@@ -10,7 +10,7 @@ using namespace cpp::oop;
 /// 也可以将数组的元素值按顺序展开到各个变量中;
 ///
 /// 在结构体 (或数组) 展开到变量时, 变量的数量必须和结构体字段数量 (或数组元素数量) 相同
-TEST(TEST_SUITE_NAME, unpack_struct) {
+TEST(TEST_SUITE_NAME, unpack_object) {
 	// 定义一个具备三个字段的结构体实例
 	Unpack obj = Unpack{ 1, 2, 3, { -1, -2, -3 } };
 

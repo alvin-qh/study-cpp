@@ -173,6 +173,8 @@ TEST(TEST_SUITE_NAME, apply_tuple_with_tuple) {
 }
 
 /// @brief 测试展开 (解构) `tuple` 对象到变量
+///
+/// `tuple` 本质上仍是包含指定数量字段的结构体, 故可以通过 C++ 的结构体结构将结构体字段按顺序展开到变量
 TEST(TEST_SUITE_NAME, unpack_tuple) {
 	tuple<int, float, string> t = make_tuple(1, 1.0f, "hello");
 
@@ -184,7 +186,11 @@ TEST(TEST_SUITE_NAME, unpack_tuple) {
 	ASSERT_EQ(c, "hello");
 }
 
-/// @brief 测试通过 `tie` 函数将 `tuple` 对象的值传递给
+/// @brief 测试通过 `tie` 函数将 `tuple` 对象的值传递给现有变量
+///
+/// `tie` 函数的参数为变量的引用, 会构建一个每个字段均为这些变量引用的 `tuple` 对象,
+/// 通过为该 `tuple` 对象赋值, 即可将被赋值的 `tuple` 对象每个字段的引用进行传递,
+/// 从而将被赋值 `tuple` 对象的每个字段值传递到指定的变量中
 TEST(TEST_SUITE_NAME, tie_with_tuple) {
 	tuple<int, float, string> t = make_tuple(1, 1.0f, "hello");
 
@@ -192,6 +198,7 @@ TEST(TEST_SUITE_NAME, tie_with_tuple) {
 	float y;
 	string z;
 
+	// 构建一个由 `x`, `y`, `z` 变量的引用 `tuple` 对象, 从而将 `t` 对象的每个字段值, 传递给这些变量
 	std::tie(x, y, z) = t;
 	ASSERT_EQ(x, 1);
 	ASSERT_EQ(y, 1.0f);

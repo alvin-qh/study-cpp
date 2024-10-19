@@ -23,7 +23,9 @@ TEST(TEST_SUITE_NAME, use_initialize_list) {
 }
 
 /// @brief 测试通过 `std::initializer_list` (列表初始化对象)
-/// 作为类构造器参数
+///
+/// 作为类构造器参数, `std::initializer_list` 可以通过
+/// brace-enclosed initializer list 语法进行
 TEST(TEST_SUITE_NAME, constructor_with_initialize_list) {
 	// 调用参数构造器, 并传入 `std::initializer_list` 实例作为构造器参数
 	Sequence<int> seq = { 1, 2, 3, 4, 5 };

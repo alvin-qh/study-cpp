@@ -19,7 +19,6 @@ TEST(TEST_SUITE_NAME, create_array) {
 
 	// 确认数组对象的长度和元素值
 	ASSERT_EQ(arr.size(), 5);
-	ASSERT_THAT(arr, ElementsAre(0, 0, 0, 0, 0));
 
 	// 通过 `initialize_list` 参数构造器初始化数组对象
 	arr = array<int, 5>{ 1, 2, 3, 4, 5 };

@@ -79,18 +79,18 @@ namespace cpp::collection {
 			return tmp;
 		}
 
-		_self_type operator-(const T& n) const {
+		__self_type operator-(const T& n) const {
 			__self_type tmp(*this);
 			tmp._value -= n;
 			return tmp;
 		}
 
-		_self_type& operator+=(const T& n) {
+		__self_type& operator+=(const T& n) {
 			_value += n;
 			return *this;
 		}
 
-		_self_type& operator-=(const T& n) {
+		__self_type& operator-=(const T& n) {
 			_value -= n;
 			return *this;
 		}
@@ -102,6 +102,14 @@ namespace cpp::collection {
 		bool operator==(const __self_type& o) const { return _value == o._value; }
 
 		bool operator!=(const __self_type& o) const { return !(*this == o); }
+
+		bool operator>(const __self_type& o) const { return _value > o._value; }
+
+		bool operator<(const __self_type& o) const { return _value < o._value; }
+
+		bool operator>=(const __self_type& o) const { return _value >= o._value; }
+
+		bool operator<=(const __self_type& o) const { return _value <= o._value; }
 	};
 
 	template <number_only_type T>
@@ -140,6 +148,6 @@ namespace cpp::collection {
 
 #endif // _cplusplus < 201703L
 
-	} // namespace cpp::collection
+		} // namespace cpp::collection
 
 #endif

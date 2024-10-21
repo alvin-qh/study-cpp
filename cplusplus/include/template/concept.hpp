@@ -4,8 +4,10 @@
 #define __CPLUSPLUS_TEMPLATE_CONCEPT_H
 
 #include <type_traits>
+#include <concepts>
 
 namespace cpp::temp {
+
 	/// @brief 通过 `concept` 关键字声明符合特定要求的模板定义
 	///
 	/// ```
@@ -23,7 +25,8 @@ namespace cpp::temp {
 	/// @param a 被加数
 	/// @param b 加数
 	/// @return 返回和
-	template<number_only_type T>
+	template <number_only_type T>
+	// template<typename T> requires number_only_type<T>
 	T add(T a, T b) { return a + b; }
 
 	// --------------------------------------------------------------------------
@@ -45,10 +48,35 @@ namespace cpp::temp {
 	///
 	/// @tparam T 模板参数
 	template<typename T>
-		requires has_operator_sub<T>::value
+		requires (std::is_arithmetic<T>::value) && (has_operator_sub<T>::value)
 	struct Subtract {
 		static T sub(T a, T b) { return a - b; }
 	};
+
+	// --------------------------------------------------------------------------
+
+	template<typename T>
+	concept has_operator_multiply =
+		std::is_arithmetic<T>::value &&
+		requires(T a, T b) { a* b; };
+
+	template <typename T> requires has_operator_multiply<T>
+	// template <has_operator_multiply T>
+	T multiply(T a, T b) { return a * b; }
+
+	// --------------------------------------------------------------------------
+
+	template<typename T>
+	concept self_addition =
+		std::is_arithmetic<T>::value &&
+		requires(T n) {
+			{ ++n } -> std::same_as<T&>;
+			{ n++ } -> std::same_as<T>;
+	};
+
+	template <self_addition T>
+	T& increment(T& n) { return ++n; }
+
 } // ! namespace cpp::temp
 
 #endif // ! __CPLUSPLUS_TEMPLATE_CONCEPT_H

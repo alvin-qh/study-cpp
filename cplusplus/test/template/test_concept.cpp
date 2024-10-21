@@ -26,3 +26,17 @@ TEST(TEST_SUITE_NAME, requires_definition) {
 	// 由于 `std::string` 类型不包括 `-` 运算符, 故 `Subtract<string>` 模板编译失败
 	// ASSERT_EQ(Subtract<string>::sub("Hello World", "Hello "), "World");
 }
+
+TEST(TEST_SUITE_NAME, concept_combine) {
+	ASSERT_EQ(multiply(10, 20), 200);
+
+	// multiply("hello", "word");
+}
+
+TEST(TEST_SUITE_NAME, concept_rule) {
+	int n = 1;
+	ASSERT_EQ(increment(n), 2);
+
+	double f = 1.1;
+	ASSERT_EQ(increment(f), 2.1);
+}

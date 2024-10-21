@@ -8,6 +8,12 @@
 #include <memory>
 #include <utility>
 
+#define __new_iterator (__cplusplus >= 201703L)
+
+#if (!__new_iterator)
+#include <iterator>
+#endif
+
 namespace cpp::collection {
 
 	/// @brief 定义迭代器类型
@@ -21,45 +27,14 @@ namespace cpp::collection {
 	/// @tparam T 数组元素类型
 	template <typename T, typename _Alloc = std::allocator<T>>
 	class dynamic_array {
+	private:
+		using __self = dynamic_array<T>;
+	public:
 		using iterator_type = __iterator<T>;
-		using const_iterator_type = __iterator<const T>;
 		using reverse_iterator_type = __reverse_iterator<T>;
+		using const_iterator_type = __iterator<const T>;
 		using const_reverse_iterator_type = __reverse_iterator<const T>;
 		using allocator_type = _Alloc;
-		using __self = dynamic_array<T>;
-	private:
-		T* _data;
-		size_t _size;
-
-		allocator_type _alloc;
-
-		/// @brief 分配地址
-		///
-		/// @param size 要分配的地址大小
-		/// @return
-		T* __alloc_n(size_t size) {
-			_data = size ? _alloc.allocate(size) : nullptr;
-			_size = size;
-			return _data;
-		}
-
-		/// @brief 将另一个对象进行移动
-		///
-		/// @param o 另一个对象的右值引用
-		void __move(__self&& o) noexcept {
-			if (_size = std::exchange(o._size, 0); _size > 0) {
-				_data = std::exchange(o._data, nullptr);
-			}
-		}
-
-		/// @brief 销毁当前数据指针
-		void __free() {
-			if (T* data = std::exchange(_data, nullptr); data) {
-				_alloc.deallocate(data, _size);
-				_data = nullptr;
-				_size = 0;
-			}
-		}
 	public:
 		/// @brief 默认构造器
 		dynamic_array() : _data(nullptr), _size(0) {}
@@ -187,42 +162,101 @@ namespace cpp::collection {
 		///
 		/// @return 迭代器对象
 		const_reverse_iterator_type rend() const { return const_reverse_iterator_type(_data - 1); }
+	private:
+		T* _data;
+		size_t _size;
+
+		allocator_type _alloc;
+
+		/// @brief 分配地址
+		///
+		/// @param size 要分配的地址大小
+		/// @return
+		T* __alloc_n(size_t size) {
+			_data = size ? _alloc.allocate(size) : nullptr;
+			_size = size;
+			return _data;
+		}
+
+		/// @brief 将另一个对象进行移动
+		///
+		/// @param o 另一个对象的右值引用
+		void __move(__self&& o) noexcept {
+			if (_size = std::exchange(o._size, 0); _size > 0) {
+				_data = std::exchange(o._data, nullptr);
+			}
+		}
+
+		/// @brief 销毁当前数据指针
+		void __free() {
+			if (T* data = std::exchange(_data, nullptr); data) {
+				_alloc.deallocate(data, _size);
+				_data = nullptr;
+				_size = 0;
+			}
+		}
 	};
 
-	template <typename T>
-	struct __base_iterator {
+	/// @brief 定义父类, 包含必要类型定义
+	///
+	/// 为让迭代器支持 `std::iterator_traits` 工具类提供的类型推断, 需要为迭代器提供如下类型定义:
+	///
+	/// - `difference_type`: 迭代器偏移量类型
+	/// - `value_type`: 迭代器元素类型
+	/// - `pointer`: 迭代器元素指针类型
+	/// - `reference`: 迭代器元素引用类型
+	/// - `iterator_category`: 迭代器分类
+	///
+	/// 如果上述定义未完全提供, 则 C++ 编译器会根据 SFINAE 特性进行偏特化, 使用预定义类型, 并不会报告错误
+	///
+	/// 参见 https://zh.cppreference.com/w/cpp/iterator/iterator_traits
+	///
+	/// @tparam T 迭代器元素类型
+	/// @tparam _category 迭代器类别类型
+	/// @tparam _difference_type 迭代器差值类型
+	template <
+		typename T,
+		typename _category = std::random_access_iterator_tag,
+		typename _difference_type = ptrdiff_t
+	>
+	struct __iterator_type_define {
+		using difference_type = _difference_type;
 		using value_type = T;
-		using pointer_type = T*;
-		using const_pointer_type = const T*;
-		using reference_type = T&;
-		using const_reference_type = const T&;
+		using pointer = T*;
+		using reference = T&;
+		using iterator_category = _category;
 	protected:
-		__base_iterator() = default;
+		__iterator_type_define() = default;
 	};
 
-#if (__cplusplus >= 201703L)
-
-	/// @brief 迭代器类
+	/// @brief 定义迭代器类
 	/// @tparam T 被迭代类型
 	template <typename T>
-	class __iterator : public __base_iterator<T> {
+	class __iterator : public __iterator_type_define<T>
+#if (!__new_iterator)
+		// C++ 17 前, 需要继承 `std::iterator` 类型
+		, std::iterator<typename __iterator_type_define<T>::iterator_category, T>
+#endif
+	{
 		template <typename, typename> friend class dynamic_array;
 
 		using __self = __iterator<T>;
-		using __base = __base_iterator<T>;
+		using __base = __iterator_type_define<T>;
+	public:
+		// 为 `std::iterator_traits` 提供类型定义
+		using difference_type = typename __base::difference_type;
 		using value_type = typename __base::value_type;
-		using pointer_type = typename __base::pointer_type;
-		using const_pointer_type = typename __base::const_pointer_type;
-		using reference_type = typename __base::reference_type;
-		using const_reference_type = typename __base::const_reference_type;
+		using pointer = typename __base::pointer;
+		using reference = typename __base::reference;
+		using iterator_category = typename __base::iterator_category;
 	private:
 		/// @brief 表示位置的指针
-		pointer_type _ptr;
+		pointer _ptr;
 
 		/// @brief 参数构造器
 		///
 		/// @param ptr 指针值
-		explicit __iterator(pointer_type ptr) : _ptr(ptr) {}
+		explicit __iterator(pointer ptr) : _ptr(ptr) {}
 	public:
 		/// @brief 拷贝构造器
 		///
@@ -323,12 +357,12 @@ namespace cpp::collection {
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
 		/// @return 当前指针指向的值的只读引用
-		const_reference_type operator*() const { return *_ptr; }
+		const reference operator*() const { return *_ptr; }
 
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
-		///  @return 当前指针指向的值的可变引用
-		reference_type operator*() { return *_ptr; }
+		/// @return 当前指针指向的值的可变引用
+		reference operator*() { return *_ptr; }
 
 		/// @brief 重载三路比较运算符
 		///
@@ -346,24 +380,32 @@ namespace cpp::collection {
 	/// @brief 反向迭代器类型
 	/// @tparam T 被迭代类型
 	template <typename T>
-	class __reverse_iterator : public __base_iterator<T> {
+	class __reverse_iterator :
+		public __iterator_type_define<T>
+#if (!__new_iterator)
+		// C++ 17 前, 需要继承 `std::iterator` 类型
+		, public std::iterator<typename __iterator_type_define<T>::iterator_category, T>
+#endif
+	{
 		template <typename, typename> friend class dynamic_array;
 
 		using __self = __reverse_iterator<T>;
-		using __base = __base_iterator<T>;
+		using __base = __iterator_type_define<T>;
+	public:
+		// 为 `std::iterator_traits` 提供类型定义
+		using difference_type = typename __base::difference_type;
 		using value_type = typename __base::value_type;
-		using pointer_type = typename __base::pointer_type;
-		using const_pointer_type = typename __base::const_pointer_type;
-		using reference_type = typename __base::reference_type;
-		using const_reference_type = typename __base::const_reference_type;
+		using pointer = typename __base::pointer;
+		using reference = typename __base::reference;
+		using iterator_category = typename __base::iterator_category;
 	protected:
 		/// @brief 表示位置的指针
-		pointer_type _ptr;
+		pointer _ptr;
 
 		/// @brief 参数构造器
 		///
 		/// @param ptr 指针值
-		explicit __reverse_iterator(pointer_type ptr) noexcept : _ptr(ptr) {}
+		explicit __reverse_iterator(pointer ptr) noexcept : _ptr(ptr) {}
 	public:
 		/// @brief 拷贝构造器
 		///
@@ -464,12 +506,12 @@ namespace cpp::collection {
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
 		/// @return 当前指针指向的值的只读引用
-		const_reference_type operator*() const { return *_ptr; }
+		const reference operator*() const { return *_ptr; }
 
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
 		/// @return 当前指针指向的值的可变引用
-		reference_type operator*() { return *_ptr; }
+		reference operator*() { return *_ptr; }
 
 		/// @brief 重载三路比较运算符
 		///
@@ -482,15 +524,7 @@ namespace cpp::collection {
 		/// @param o 其它对象引用
 		/// @return 对象是否相等
 		bool operator==(const __self& o) const noexcept { return _ptr == o._ptr; }
-	};
-
-#else
-
-	template <typename T>
-	class Range {
-	};
-
-#endif // _cplusplus < 201703L
+};
 
 } // namespace cpp::collection
 

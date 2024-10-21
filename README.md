@@ -39,8 +39,12 @@ add_test(
 mkdir build
 cd build
 
+cmake .. -G "Unix Makefiles"
 cmake ..
 ```
+
+- `-G "Unix Makefiles"` 表示创建 GUN 标准的 Makefile 文件, 用于支持后续ffga772221;,i1
+   `make` 命令
 
 CMake 执行完毕后, 执行 `make` 命令编译项目
 
@@ -83,6 +87,12 @@ export CXX="/usr/local/opt/llvm/bin/clang++"
 ```
 
 本例设置为 LLVM 中的 clang 和 clang++ 作为编译器, 也可以选择 gcc/g++ 以及 MSVC 编译器等
+
+> 安装最新版本 LLVM 和 CLang
+>
+> ```bash
+> sudo apt install clang-19 lldb-19 lld-19
+> ```
 
 ## 5. 配置 VSCode
 

@@ -10,6 +10,7 @@
     "gtest",
     "libgtest",
     "LLDB",
+    "Makefiles",
     "MSVC",
     "NUMSYS",
     "shiftdown",

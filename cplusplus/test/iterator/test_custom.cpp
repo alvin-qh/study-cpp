@@ -1,12 +1,12 @@
-#include "collection/iterator.hpp"
+#include "iterator/custom.hpp"
 
 #include <vector>
 
 #include <gtest/gtest.h>
 
-#define TEST_SUITE_NAME test_cplusplus_collection_iterator
+#define TEST_SUITE_NAME test_cplusplus_iterator_custom
 
-using namespace cpp::collection;
+using namespace cpp::iter;
 
 /// @brief 测试定义迭代器
 TEST(TEST_SUITE_NAME, define_iterator) {
@@ -135,6 +135,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::reference, const int&>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::iterator_category, std::random_access_iterator_tag>));
 
+	// 当使用原生指针作为迭代器类型时, 测试 `std::iterator_traits` 中定义的类型
 	using pointer_iterator_type = int*;
 
 	ASSERT_TRUE((std::is_same_v<pointer_iterator_type, int*>));

@@ -3,7 +3,6 @@
 #ifndef __CPLUSPLUS_COLLECTION_ITERATOR_H
 #define __CPLUSPLUS_COLLECTION_ITERATOR_H
 
-#include <cstddef>
 #include <type_traits>
 #include <memory>
 #include <utility>
@@ -14,7 +13,12 @@
 #include <iterator>
 #endif
 
-namespace cpp::collection {
+/// 测试迭代器
+///
+/// C++ 的迭代器用于遍历数据, 根据迭代器的遍历方式, 可分为:
+///
+/// -
+namespace cpp::iter {
 
 	/// @brief 定义迭代器类型
 	template <typename> class __iterator;
@@ -35,6 +39,39 @@ namespace cpp::collection {
 		using const_iterator_type = __iterator<const T>;
 		using const_reverse_iterator_type = __reverse_iterator<const T>;
 		using allocator_type = _Alloc;
+	private:
+		T* _data;
+		size_t _size;
+
+		allocator_type _alloc;
+
+		/// @brief 分配地址
+		///
+		/// @param size 要分配的地址大小
+		/// @return
+		T* __alloc_n(size_t size) {
+			_data = size ? _alloc.allocate(size) : nullptr;
+			_size = size;
+			return _data;
+		}
+
+		/// @brief 将另一个对象进行移动
+		///
+		/// @param o 另一个对象的右值引用
+		void __move(__self&& o) noexcept {
+			if (_size = std::exchange(o._size, 0); _size > 0) {
+				_data = std::exchange(o._data, nullptr);
+			}
+		}
+
+		/// @brief 销毁当前数据指针
+		void __free() {
+			if (T* data = std::exchange(_data, nullptr); data) {
+				_alloc.deallocate(data, _size);
+				_data = nullptr;
+				_size = 0;
+			}
+		}
 	public:
 		/// @brief 默认构造器
 		dynamic_array() : _data(nullptr), _size(0) {}
@@ -162,39 +199,6 @@ namespace cpp::collection {
 		///
 		/// @return 迭代器对象
 		const_reverse_iterator_type rend() const { return const_reverse_iterator_type(_data - 1); }
-	private:
-		T* _data;
-		size_t _size;
-
-		allocator_type _alloc;
-
-		/// @brief 分配地址
-		///
-		/// @param size 要分配的地址大小
-		/// @return
-		T* __alloc_n(size_t size) {
-			_data = size ? _alloc.allocate(size) : nullptr;
-			_size = size;
-			return _data;
-		}
-
-		/// @brief 将另一个对象进行移动
-		///
-		/// @param o 另一个对象的右值引用
-		void __move(__self&& o) noexcept {
-			if (_size = std::exchange(o._size, 0); _size > 0) {
-				_data = std::exchange(o._data, nullptr);
-			}
-		}
-
-		/// @brief 销毁当前数据指针
-		void __free() {
-			if (T* data = std::exchange(_data, nullptr); data) {
-				_alloc.deallocate(data, _size);
-				_data = nullptr;
-				_size = 0;
-			}
-		}
 	};
 
 	/// @brief 定义父类, 包含必要类型定义
@@ -375,7 +379,7 @@ namespace cpp::collection {
 		/// @param o 其它对象引用
 		/// @return 判等结果
 		bool operator==(const __self& o) const noexcept { return _ptr == o._ptr; }
-	};
+};
 
 	/// @brief 反向迭代器类型
 	/// @tparam T 被迭代类型
@@ -524,7 +528,7 @@ namespace cpp::collection {
 		/// @param o 其它对象引用
 		/// @return 对象是否相等
 		bool operator==(const __self& o) const noexcept { return _ptr == o._ptr; }
-};
+	};
 
 } // namespace cpp::collection
 

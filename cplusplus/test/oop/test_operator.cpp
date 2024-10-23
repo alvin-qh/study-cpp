@@ -6,6 +6,33 @@
 
 using namespace cpp::oop;
 
+/// @brief 测试拷贝赋值运算符重载
+TEST(TEST_SUITE_NAME, operator_assign) {
+	Operator o1(1, 2, 3), o2;
+
+	// 调用拷贝赋值运算符
+	o2 = o1;
+	ASSERT_EQ(o2.x(), 1);
+	ASSERT_EQ(o2.y(), 2);
+	ASSERT_EQ(o2.z(), 3);
+}
+
+/// @brief 测试移动赋值运算符
+TEST(TEST_SUITE_NAME, operator_move_assign) {
+	Operator o1(1, 2, 3), o2;
+
+	// 调用移动赋值运算符
+	o2 = std::move(o1);
+	ASSERT_EQ(o2.x(), 1);
+	ASSERT_EQ(o2.y(), 2);
+	ASSERT_EQ(o2.z(), 3);
+
+	// `o1` 对象的内容已被移动
+	ASSERT_EQ(o1.x(), 0);
+	ASSERT_EQ(o1.y(), 0);
+	ASSERT_EQ(o1.z(), 0);
+}
+
 /// @brief 测试加法运算符重载, 将两个对象相加
 TEST(TEST_SUITE_NAME, operator_plus) {
 	Operator o1(1, 2, 3), o2(10, 20, 30);
@@ -60,4 +87,54 @@ TEST(TEST_SUITE_NAME, operator_times_with_object) {
 
 	double r = o1 * o2;
 	ASSERT_EQ(r, 140);
+}
+
+/// @brief 测试 `++` 运算符重载
+///
+/// 测试前置 `++` 以及后置 `++` 运算符重载
+TEST(TEST_SUITE_NAME, operator_self_add) {
+	Operator o1(1, 2, 3);
+
+	Operator o2 = ++o1;
+	ASSERT_EQ(o1.x(), 2);
+	ASSERT_EQ(o1.y(), 3);
+	ASSERT_EQ(o1.z(), 4);
+
+	ASSERT_EQ(o2.x(), 2);
+	ASSERT_EQ(o2.y(), 3);
+	ASSERT_EQ(o2.z(), 4);
+
+	o2 = o1++;
+	ASSERT_EQ(o1.x(), 3);
+	ASSERT_EQ(o1.y(), 4);
+	ASSERT_EQ(o1.z(), 5);
+
+	ASSERT_EQ(o2.x(), 2);
+	ASSERT_EQ(o2.y(), 3);
+	ASSERT_EQ(o2.z(), 4);
+}
+
+/// @brief 测试 `--` 运算符重载
+///
+/// 测试前置 `--` 以及后置 `--` 运算符重载
+TEST(TEST_SUITE_NAME, operator_self_sub) {
+	Operator o1(1, 2, 3);
+
+	Operator o2 = --o1;
+	ASSERT_EQ(o1.x(), 0);
+	ASSERT_EQ(o1.y(), 1);
+	ASSERT_EQ(o1.z(), 2);
+
+	ASSERT_EQ(o2.x(), 0);
+	ASSERT_EQ(o2.y(), 1);
+	ASSERT_EQ(o2.z(), 2);
+
+	o2 = o1--;
+	ASSERT_EQ(o1.x(), -1);
+	ASSERT_EQ(o1.y(), 0);
+	ASSERT_EQ(o1.z(), 1);
+
+	ASSERT_EQ(o2.x(), 0);
+	ASSERT_EQ(o2.y(), 1);
+	ASSERT_EQ(o2.z(), 2);
 }

@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "oop/operator.hpp"
 
 namespace cpp::oop {
@@ -6,6 +8,15 @@ namespace cpp::oop {
 	Operator::Operator() : Operator(0, 0, 0) {}
 
 	Operator::Operator(double x, double y, double z) :_x(x), _y(y), _z(z) {}
+
+	Operator& Operator::operator=(Operator&& right) noexcept {
+		if (this != &right) {
+			_x = exchange(right._x, 0);
+			_y = exchange(right._y, 0);
+			_z = exchange(right._z, 0);
+		}
+		return *this;
+	}
 
 	Operator Operator::operator+(const Operator& right) const {
 		return Operator(

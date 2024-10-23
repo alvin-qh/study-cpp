@@ -31,13 +31,21 @@ namespace cpp::oop {
 		/// 使用默认析构函数
 		virtual ~Operator() = default;
 
-		/// @brief 赋值运算符重载
+		/// @brief 拷贝赋值运算符重载
 		///
-		/// 使用默认赋值运算符重载
+		/// 使用默认拷贝赋值运算符重载
 		///
 		/// @param right 另一个对象实例
 		/// @return 当前对象引用
 		Operator& operator=(const Operator& right) = default;
+
+		/// @brief 移动赋值运算符重载
+		///
+		/// 将 `right` 对象移动到当前对象
+		///
+		/// @param right 被移动的对象右值引用
+		/// @return 当前对象引用
+		Operator& operator=(Operator&& right) noexcept;
 
 		/// @brief 加法运算符重载
 		///
@@ -124,6 +132,18 @@ namespace cpp::oop {
 		/// @param right 当前类型对象引用
 		/// @return 结果对象实例
 		friend Operator operator-(const std::tuple<double, double, double>& left, const Operator& right);
+
+		/// @brief 重载判等运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 是否相等
+		bool operator==(const Operator& right) const noexcept;
+
+		/// @brief 重载三路比较运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 表示比较结果的 `std::strong_ordering` 对象
+		std::strong_ordering operator<=>(const Operator& right) const noexcept;
 
 		double x() const;
 		double y() const;

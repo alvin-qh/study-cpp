@@ -81,6 +81,50 @@ namespace cpp::oop {
 		/// @return 下标对应的变量值
 		double operator[](int index) const;
 
+		/// @brief 重载前置自增运算符
+		///
+		/// @return 当前对象引用
+		Operator& operator++() noexcept;
+
+		/// @brief 重载后置自增运算符
+		///
+		/// @return 当前对象副本
+		Operator operator++(int) noexcept;
+
+		/// @brief 重载前置自减运算符
+		///
+		/// @return 当前对象引用
+		Operator& operator--() noexcept;
+
+		/// @brief 重载后置自减运算符
+		///
+		/// @return 当前对象副本
+		Operator operator--(int) noexcept;
+
+		/// @brief 重载加法运算符, 允许当前对象和一个三元组对象进行相加
+		///
+		/// @param right 三元组对象引用
+		/// @return 结果对象实例
+		Operator operator+(const std::tuple<double, double, double>& right) const noexcept;
+
+		/// @brief 将加法运算符重载设置为友元函数
+		///
+		/// @param right 当前类型对象引用
+		/// @return 结果对象实例
+		friend Operator operator+(const std::tuple<double, double, double>& left, const Operator& right);
+
+		/// @brief 重载减法运算符, 允许当前对象和一个三元组对象进行相减
+		///
+		/// @param right 三元组对象引用
+		/// @return 结果对象实例
+		Operator operator-(const std::tuple<double, double, double>& right) const noexcept;
+
+		/// @brief 将减法运算符重载设置为友元函数
+		///
+		/// @param right 当前类型对象引用
+		/// @return 结果对象实例
+		friend Operator operator-(const std::tuple<double, double, double>& left, const Operator& right);
+
 		double x() const;
 		double y() const;
 		double z() const;
@@ -100,6 +144,21 @@ namespace cpp::oop {
 	/// @param right
 	/// @return 两个对象相减的结果
 	Operator operator-(const Operator& left, const Operator& right);
+
+	/// @brief 重载加法运算符, 允许一个三元组对象和 `Operator` 类型对象相加
+	///
+	/// @param left 三元组对象引用
+	/// @param right `Operator` 对象引用
+	/// @return 计算结果对象
+	Operator operator+(const std::tuple<double, double, double>& left, const Operator& right);
+
+	/// @brief 重载加法运算符, 允许一个三元组对象和 `Operator` 类型对象相减
+	///
+	/// @param left 三元组对象引用
+	/// @param right `Operator` 对象引用
+	/// @return 计算结果对象
+	Operator operator-(const std::tuple<double, double, double>& left, const Operator& right);
+
 } // ! namespace cpp::oop
 
 #endif // ! __CPLUSPLUS_OPP_OPERATOR_H

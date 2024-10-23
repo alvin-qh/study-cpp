@@ -1,8 +1,8 @@
-#include "iterator/custom.hpp"
+#include <gtest/gtest.h>
 
 #include <vector>
 
-#include <gtest/gtest.h>
+#include "iterator/custom.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_iterator_custom
 
@@ -99,7 +99,7 @@ TEST(TEST_SUITE_NAME, for_in_statement) {
 
 /// @brief 测试通过 `std::iterator_traits` 工具类进行迭代器类型推断
 TEST(TEST_SUITE_NAME, iterator_traits) {
-	using iterator_type = dynamic_array<int>::iterator_type;
+	using iterator_type = dynamic_array<int>::iterator;
 
 	ASSERT_TRUE((std::is_same_v<iterator_type, __iterator<int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::difference_type, std::ptrdiff_t>));
@@ -108,7 +108,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::reference, int&>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::iterator_category, std::random_access_iterator_tag>));
 
-	using const_iterator_type = dynamic_array<int>::const_iterator_type;
+	using const_iterator_type = dynamic_array<int>::const_iterator;
 
 	ASSERT_TRUE((std::is_same_v<const_iterator_type, __iterator<const int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::difference_type, std::ptrdiff_t>));
@@ -117,7 +117,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::reference, const int&>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::iterator_category, std::random_access_iterator_tag>));
 
-	using reverse_iterator_type = dynamic_array<int>::reverse_iterator_type;
+	using reverse_iterator_type = dynamic_array<int>::reverse_iterator;
 
 	ASSERT_TRUE((std::is_same_v<reverse_iterator_type, __reverse_iterator<int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::difference_type, std::ptrdiff_t>));
@@ -126,7 +126,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::reference, int&>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::iterator_category, std::random_access_iterator_tag>));
 
-	using const_reverse_iterator_type = dynamic_array<int>::const_reverse_iterator_type;
+	using const_reverse_iterator_type = dynamic_array<int>::const_reverse_iterator;
 
 	ASSERT_TRUE((std::is_same_v<const_reverse_iterator_type, __reverse_iterator<const int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::difference_type, std::ptrdiff_t>));

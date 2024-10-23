@@ -1,10 +1,9 @@
-#include <string>
-
-#include "reference/left_ref.hpp"
-
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <string>
+
+#include "reference/left_ref.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_reference_left_ref
 

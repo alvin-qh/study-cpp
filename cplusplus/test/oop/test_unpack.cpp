@@ -1,6 +1,6 @@
-#include "oop/unpack.hpp"
-
 #include <gtest/gtest.h>
+
+#include "oop/unpack.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_unpack
 

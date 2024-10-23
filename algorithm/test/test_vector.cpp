@@ -1,7 +1,7 @@
+#include <gtest/gtest.h>
+
 #include "test.h"
 #include "vector.h"
-
-#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_algorithm_vector
 

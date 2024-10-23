@@ -1,9 +1,9 @@
+#include <gtest/gtest.h>
+
 #include <time.h>
 
 #include "common.h"
 #include "test.h"
-
-#include <gtest/gtest.h>
 
 /// @brief 主函数, 执行 gtest 测试套件
 int main(int argc, char* argv[]) {

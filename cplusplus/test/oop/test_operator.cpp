@@ -1,6 +1,6 @@
-#include "oop/operator.hpp"
-
 #include <gtest/gtest.h>
+
+#include "oop/operator.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_operator
 
@@ -38,7 +38,7 @@ TEST(TEST_SUITE_NAME, operator_index) {
 }
 
 /// @brief 测试乘法运算符重载, 将当前对象和一个浮点数相乘
-TEST(TEST_SUITE_NAME, operator_times_to_double) {
+TEST(TEST_SUITE_NAME, operator_times_with_double) {
 	Operator o1(1, 2, 3);
 
 	Operator res1 = o1 * 2.0;
@@ -55,7 +55,7 @@ TEST(TEST_SUITE_NAME, operator_times_to_double) {
 /// @brief 测试乘法运算符重载, 将当前对象和另一个对象相乘
 ///
 /// 该运算符重载返回一个浮点数
-TEST(TEST_SUITE_NAME, operator_times_to_object) {
+TEST(TEST_SUITE_NAME, operator_times_with_object) {
 	Operator o1(1, 2, 3), o2(10, 20, 30);
 
 	double r = o1 * o2;

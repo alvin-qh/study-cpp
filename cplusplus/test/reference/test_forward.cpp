@@ -1,9 +1,9 @@
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
 #include <string>
 
 #include "reference/forward.hpp"
-
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
 
 #define TEST_SUITE_NAME test_cplusplus_reference_forward
 

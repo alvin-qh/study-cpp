@@ -1,7 +1,8 @@
-#include "oop/new_delete.hpp"
+#include <gtest/gtest.h>
 
 #include <cstddef>
-#include <gtest/gtest.h>
+
+#include "oop/new_delete.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_new_delete
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_COLLECTION_ITERATOR_H
-#define __CPLUSPLUS_COLLECTION_ITERATOR_H
+#ifndef __CPLUSPLUS_ITERATOR_CUSTOM_H
+#define __CPLUSPLUS_ITERATOR_CUSTOM_H
 
 #include <type_traits>
 #include <memory>
@@ -34,10 +34,10 @@ namespace cpp::iter {
 	private:
 		using __self = dynamic_array<T>;
 	public:
-		using iterator_type = __iterator<T>;
-		using reverse_iterator_type = __reverse_iterator<T>;
-		using const_iterator_type = __iterator<const T>;
-		using const_reverse_iterator_type = __reverse_iterator<const T>;
+		using iterator = __iterator<T>;
+		using reverse_iterator = __reverse_iterator<T>;
+		using const_iterator = __iterator<const T>;
+		using const_reverse_iterator = __reverse_iterator<const T>;
 		using allocator_type = _Alloc;
 	private:
 		T* _data;
@@ -163,42 +163,42 @@ namespace cpp::iter {
 		/// @brief 获取起始迭代器对象
 		///
 		/// @return 迭代器对象
-		iterator_type begin() { return iterator_type(_data); }
+		iterator begin() { return iterator(_data); }
 
 		/// @brief 获取起始只读迭代器
 		///
 		/// @return 只读迭代器对象
-		const_iterator_type begin() const { return const_iterator_type(_data); }
+		const_iterator begin() const { return const_iterator(_data); }
 
 		/// @brief 获取终止迭代器对象
 		///
 		/// @return 迭代器对象
-		iterator_type end() { return iterator_type(_data + _size); }
+		iterator end() { return iterator(_data + _size); }
 
 		/// @brief 获取终止只读迭代器对象
 		///
 		/// @return 只读迭代器对象
-		const_iterator_type end() const { return const_iterator_type(_data + _size); }
+		const_iterator end() const { return const_iterator(_data + _size); }
 
 		/// @brief 获取起始反向迭代器对象
 		///
 		/// @return 迭代器对象
-		reverse_iterator_type rbegin() { return reverse_iterator_type(_data + _size - 1); }
+		reverse_iterator rbegin() { return reverse_iterator(_data + _size - 1); }
 
 		/// @brief 获取起始只读反向迭代器对象
 		///
 		/// @return 只读迭代器对象
-		const_reverse_iterator_type rbegin() const { return const_reverse_iterator_type(_data + _size - 1); }
+		const_reverse_iterator rbegin() const { return const_reverse_iterator(_data + _size - 1); }
 
 		/// @brief 获取起始终止迭代器对象
 		///
 		/// @return 迭代器对象
-		reverse_iterator_type rend() { return reverse_iterator_type(_data - 1); }
+		reverse_iterator rend() { return reverse_iterator(_data - 1); }
 
 		/// @brief 获取起始终止迭代器对象
 		///
 		/// @return 迭代器对象
-		const_reverse_iterator_type rend() const { return const_reverse_iterator_type(_data - 1); }
+		const_reverse_iterator rend() const { return const_reverse_iterator(_data - 1); }
 	};
 
 	/// @brief 定义父类, 包含必要类型定义
@@ -262,6 +262,9 @@ namespace cpp::iter {
 		/// @param ptr 指针值
 		explicit __iterator(pointer ptr) : _ptr(ptr) {}
 	public:
+		/// @brief 默认构造器
+		__iterator() : __iterator(nullptr) {}
+
 		/// @brief 拷贝构造器
 		///
 		/// @param 其它对象引用
@@ -340,6 +343,11 @@ namespace cpp::iter {
 		/// @return 减法结果对象
 		__self operator-(ptrdiff_t offset) const noexcept { return __self(_ptr - offset); }
 
+		/// @brief 重载减法运算符, 支持
+		/// @param o
+		/// @return
+		difference_type operator-(const __self& o) const noexcept { return static_cast<difference_type>((_ptr - o._ptr)); }
+
 		/// @brief 重载加法赋值运算符, 将当前对象保存的指针移动指定偏移量
 		///
 		/// @param offset 偏移量值
@@ -411,6 +419,9 @@ namespace cpp::iter {
 		/// @param ptr 指针值
 		explicit __reverse_iterator(pointer ptr) noexcept : _ptr(ptr) {}
 	public:
+		/// @brief 默认构造器
+		__reverse_iterator() : __reverse_iterator(nullptr) {}
+
 		/// @brief 拷贝构造器
 		///
 		/// @param o 其它对象引用
@@ -530,6 +541,6 @@ namespace cpp::iter {
 		bool operator==(const __self& o) const noexcept { return _ptr == o._ptr; }
 	};
 
-} // namespace cpp::collection
+} // ! namespace cpp::collection
 
-#endif
+#endif // ! __CPLUSPLUS_ITERATOR_CUSTOM_H

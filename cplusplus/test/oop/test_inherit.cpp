@@ -1,6 +1,6 @@
-#include "oop/inherit.hpp"
-
 #include <gtest/gtest.h>
+
+#include "oop/inherit.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_inherit
 

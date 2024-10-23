@@ -1,6 +1,6 @@
-#include "oop/initialize_list.hpp"
-
 #include <gtest/gtest.h>
+
+#include "oop/initialize_list.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_initialize_list
 

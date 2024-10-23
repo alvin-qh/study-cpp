@@ -1,8 +1,8 @@
+#include <gtest/gtest.h>
+
 #include <string>
 
 #include "reference/right_ref.hpp"
-
-#include <gtest/gtest.h>
 
 #define TEST_SUITE_NAME test_cplusplus_reference_right_ref
 

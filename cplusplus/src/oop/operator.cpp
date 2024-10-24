@@ -97,6 +97,60 @@ namespace cpp::oop {
 		);
 	}
 
+	bool Operator::operator==(const Operator& right) const noexcept {
+		if (this == &right) {
+			return true;
+		}
+		return
+			_x == right._x &&
+			_y == right._y &&
+			_z == right._z;
+	}
+
+#if __cplusplus >= 202002L
+
+	partial_ordering Operator::operator<=>(const Operator& right) const noexcept {
+		partial_ordering ord = _x <=> right._x;
+
+		if (ord != partial_ordering::equivalent) {
+			ord = _y <=> right._y;
+			if (ord == partial_ordering::equivalent) {
+				ord = _z <=> right._z;
+			}
+		}
+		return ord;
+	}
+
+#else
+
+	bool Operator::operator<(const Operator& right) const noexcept {
+		return
+			_x < right._x ||
+			(_x == right._x && _y < right._y) ||
+			(_x == right._x && _y == right._y && _z < right._z);
+	}
+
+	bool Operator::operator<=(const Operator& right) const noexcept {
+		return !(*this > right);
+	}
+
+	bool Operator::operator>(const Operator& right) const noexcept {
+		return
+			_x > right._x ||
+			(_x == right._x && _y > right._y) ||
+			(_x == right._x && _y == right._y && _z > right._z);
+	}
+
+	bool Operator::operator>=(const Operator& right) const noexcept {
+		return !(*this < right);
+	}
+
+	bool Operator::operator!=(const Operator& right) const noexcept {
+		return !(*this == right);
+	}
+
+#endif // ! __cplusplus >= 202002L
+
 	Operator operator-(const Operator& left, const Operator& right) {
 		return Operator(
 			left._x - right._x,

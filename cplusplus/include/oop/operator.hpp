@@ -139,11 +139,56 @@ namespace cpp::oop {
 		/// @return 是否相等
 		bool operator==(const Operator& right) const noexcept;
 
+#if __cplusplus >= 202002L
+
 		/// @brief 重载三路比较运算符
+		///
+		/// 三路运算符可以同时进行 `==`, `!=`, `<`, `>`, `<=`, `>=` 比较, 对于一个类来说, 如果重载了 `<=>` 和 `==`
+		/// 运算符, 则可以自动生成全部的比较运算符
+		///
+		/// 三路运算符可以返回如下三类对象:
+		///
+		/// - `std::strong_ordering`: 强序性比较, 应比较所有成员字段, 等值结果唯一;
+		/// - `std::weak_ordering`: 弱序性比较, 即对成员字段进计算后进行比较, 等值结果不唯一;
+		/// - `std::partial_ordering`: 偏序性比较, 即忽略无法比较的成员进行比较, 等值结果不唯一;
 		///
 		/// @param right 待比较的对象引用
 		/// @return 表示比较结果的 `std::strong_ordering` 对象
-		std::strong_ordering operator<=>(const Operator& right) const noexcept;
+		std::partial_ordering operator<=>(const Operator& right) const noexcept;
+
+#else
+
+		/// @brief 重载小于运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 是否小于
+		bool operator<(const Operator& right) const noexcept;
+
+		/// @brief 重载小于等于运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 是否小于等于
+		bool operator<=(const Operator& right) const noexcept;
+
+		/// @brief 重载大于运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 是否大于
+		bool operator>(const Operator& right) const noexcept;
+
+		/// @brief 重载大于等于运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 是否大于等于
+		bool operator>=(const Operator& right) const noexcept;
+
+		/// @brief 重载不等于运算符
+		///
+		/// @param right 待比较的对象引用
+		/// @return 是否不等于
+		bool operator!=(const Operator& right) const noexcept;
+
+#endif // ! __cplusplus >= 202002L
 
 		double x() const;
 		double y() const;
@@ -179,6 +224,6 @@ namespace cpp::oop {
 	/// @return 计算结果对象
 	Operator operator-(const std::tuple<double, double, double>& left, const Operator& right);
 
-} // ! namespace cpp::oop
+	} // ! namespace cpp::oop
 
 #endif // ! __CPLUSPLUS_OPP_OPERATOR_H

@@ -1,9 +1,12 @@
 #include <gtest/gtest.h>
 
+#include <tuple>
+
 #include "oop/operator.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_oop_operator
 
+using namespace std;
 using namespace cpp::oop;
 
 /// @brief 测试拷贝赋值运算符重载
@@ -34,10 +37,26 @@ TEST(TEST_SUITE_NAME, operator_move_assign) {
 }
 
 /// @brief 测试加法运算符重载, 将两个对象相加
-TEST(TEST_SUITE_NAME, operator_plus) {
+TEST(TEST_SUITE_NAME, operator_addition) {
 	Operator o1(1, 2, 3), o2(10, 20, 30);
 
 	Operator r = o1 + o2;
+	ASSERT_EQ(r.x(), 11);
+	ASSERT_EQ(r.y(), 22);
+	ASSERT_EQ(r.z(), 33);
+
+	r = o2 + o1;
+	ASSERT_EQ(r.x(), 11);
+	ASSERT_EQ(r.y(), 22);
+	ASSERT_EQ(r.z(), 33);
+
+	tuple<double, double, double> tup = make_tuple(10.0, 20.0, 30.0);
+	r = o1 + tup;
+	ASSERT_EQ(r.x(), 11);
+	ASSERT_EQ(r.y(), 22);
+	ASSERT_EQ(r.z(), 33);
+
+	r = tup + o1;
 	ASSERT_EQ(r.x(), 11);
 	ASSERT_EQ(r.y(), 22);
 	ASSERT_EQ(r.z(), 33);
@@ -46,13 +65,29 @@ TEST(TEST_SUITE_NAME, operator_plus) {
 /// @brief 测试减法运算符重载, 将两个对象相减
 ///
 /// 该减法运算符重载是通过 `Operator` 类型的友元函数完成
-TEST(TEST_SUITE_NAME, operator_minus) {
+TEST(TEST_SUITE_NAME, operator_subtraction) {
 	Operator o1(1, 2, 3), o2(10, 20, 30);
 
 	Operator r = o1 - o2;
 	ASSERT_EQ(r.x(), -9);
 	ASSERT_EQ(r.y(), -18);
 	ASSERT_EQ(r.z(), -27);
+
+	r = o2 - o1;
+	ASSERT_EQ(r.x(), 9);
+	ASSERT_EQ(r.y(), 18);
+	ASSERT_EQ(r.z(), 27);
+
+	tuple<double, double, double> tup = make_tuple(10.0, 20.0, 30.0);
+	r = o1 - tup;
+	ASSERT_EQ(r.x(), -9);
+	ASSERT_EQ(r.y(), -18);
+	ASSERT_EQ(r.z(), -27);
+
+	r = tup - o1;
+	ASSERT_EQ(r.x(), 9);
+	ASSERT_EQ(r.y(), 18);
+	ASSERT_EQ(r.z(), 27);
 }
 
 /// @brief 测试下标操作符重载, 获取指定变量值
@@ -92,7 +127,7 @@ TEST(TEST_SUITE_NAME, operator_times_with_object) {
 /// @brief 测试 `++` 运算符重载
 ///
 /// 测试前置 `++` 以及后置 `++` 运算符重载
-TEST(TEST_SUITE_NAME, operator_self_add) {
+TEST(TEST_SUITE_NAME, operator_plus) {
 	Operator o1(1, 2, 3);
 
 	Operator o2 = ++o1;
@@ -117,7 +152,7 @@ TEST(TEST_SUITE_NAME, operator_self_add) {
 /// @brief 测试 `--` 运算符重载
 ///
 /// 测试前置 `--` 以及后置 `--` 运算符重载
-TEST(TEST_SUITE_NAME, operator_self_sub) {
+TEST(TEST_SUITE_NAME, operator_minus) {
 	Operator o1(1, 2, 3);
 
 	Operator o2 = --o1;
@@ -137,4 +172,16 @@ TEST(TEST_SUITE_NAME, operator_self_sub) {
 	ASSERT_EQ(o2.x(), 0);
 	ASSERT_EQ(o2.y(), 1);
 	ASSERT_EQ(o2.z(), 2);
+}
+
+/// @brief 测试三路运算符重载
+TEST(TEST_SUITE_NAME, operator_three_way_compare) {
+	Operator o1(1, 2, 3), o2(10, 20, 30);
+
+	ASSERT_FALSE(o1 == o2);
+	ASSERT_TRUE(o1 != o2);
+	ASSERT_FALSE(o1 > o2);
+	ASSERT_FALSE(o1 >= o2);
+	ASSERT_TRUE(o1 < o2);
+	ASSERT_TRUE(o1 <= o2);
 }

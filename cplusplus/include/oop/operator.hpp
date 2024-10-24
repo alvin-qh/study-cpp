@@ -152,11 +152,13 @@ namespace cpp::oop {
 		/// - `std::weak_ordering`: 弱序性比较, 即对成员字段进计算后进行比较, 等值结果不唯一;
 		/// - `std::partial_ordering`: 偏序性比较, 即忽略无法比较的成员进行比较, 等值结果不唯一;
 		///
+		/// 三路运算符在 C++20 以上支持
+		///
 		/// @param right 待比较的对象引用
 		/// @return 表示比较结果的 `std::strong_ordering` 对象
 		std::partial_ordering operator<=>(const Operator& right) const noexcept;
 
-#else
+#else // 对于低于 C++20 版本, 则需要重载如下比较运算符
 
 		/// @brief 重载小于运算符
 		///

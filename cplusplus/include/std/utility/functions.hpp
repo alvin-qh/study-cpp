@@ -3,7 +3,8 @@
 #ifndef __CPLUSPLUS_UTILITY_FUNCTIONS_H
 #define __CPLUSPLUS_UTILITY_FUNCTIONS_H
 
-namespace cpp::utility {
+namespace cpp::std {
+
 	using namespace std;
 
 	/// @brief 定义函数, 用于判断参数是否为只读引用
@@ -19,6 +20,7 @@ namespace cpp::utility {
 	/// @param 参数
 	template <typename T>
 	constexpr void only_const_reference(T&) = delete;
+
 } // ! namespace cpp::utility
 
 #endif // ! __CPLUSPLUS_UTILITY_FUNCTIONS_H

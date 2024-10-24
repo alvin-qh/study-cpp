@@ -10,7 +10,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "iterator/custom.hpp"
+#include "iterator/dynamic_array.hpp"
 #include "iterator/concept.hpp"
 
 #include <iterator>
@@ -50,8 +50,11 @@ TEST(TEST_SUITE_NAME, iterator_type_concept) {
 	// need_random_access_iterator(fl.begin());
 
 	dynamic_array<int> da;
+	auto it = da.begin();
+	auto m = std::move(it);
+
 	need_input_or_output_iterator(da.begin());
 	need_forward_iterator(da.begin());
 	need_bidirectional_iterator(da.begin());
-	// need_random_access_iterator(da.begin());
+	need_random_access_iterator(da.begin());
 }

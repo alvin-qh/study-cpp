@@ -6,6 +6,7 @@
 #include <memory>
 
 namespace cpp::oop {
+
 	/// @brief 定义类, 演示运算符重载
 	class Operator {
 	private:

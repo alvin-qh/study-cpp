@@ -7,6 +7,7 @@
 #include <string>
 
 namespace cpp::oop {
+
 	/// @brief 定义父类
 	class BaseClass {
 	protected:

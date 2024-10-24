@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "iterator/custom.hpp"
+#include "iterator/dynamic_array.hpp"
 
 #define TEST_SUITE_NAME test_cplusplus_iterator_custom
 
@@ -101,7 +101,7 @@ TEST(TEST_SUITE_NAME, for_in_statement) {
 TEST(TEST_SUITE_NAME, iterator_traits) {
 	using iterator_type = dynamic_array<int>::iterator;
 
-	ASSERT_TRUE((std::is_same_v<iterator_type, __iterator<int>>));
+	ASSERT_TRUE((std::is_same_v<iterator_type, ptr_based_iterator<int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::difference_type, std::ptrdiff_t>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::value_type, int>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::pointer, int*>));
@@ -110,7 +110,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 
 	using const_iterator_type = dynamic_array<int>::const_iterator;
 
-	ASSERT_TRUE((std::is_same_v<const_iterator_type, __iterator<const int>>));
+	ASSERT_TRUE((std::is_same_v<const_iterator_type, ptr_based_iterator<const int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::difference_type, std::ptrdiff_t>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::value_type, const int>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::pointer, const int*>));
@@ -119,7 +119,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 
 	using reverse_iterator_type = dynamic_array<int>::reverse_iterator;
 
-	ASSERT_TRUE((std::is_same_v<reverse_iterator_type, __reverse_iterator<int>>));
+	ASSERT_TRUE((std::is_same_v<reverse_iterator_type, ptr_based_reverse_iterator<int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::difference_type, std::ptrdiff_t>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::value_type, int>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::pointer, int*>));
@@ -128,7 +128,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 
 	using const_reverse_iterator_type = dynamic_array<int>::const_reverse_iterator;
 
-	ASSERT_TRUE((std::is_same_v<const_reverse_iterator_type, __reverse_iterator<const int>>));
+	ASSERT_TRUE((std::is_same_v<const_reverse_iterator_type, ptr_based_reverse_iterator<const int>>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::difference_type, std::ptrdiff_t>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::value_type, const int>));
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::pointer, const int*>));

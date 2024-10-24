@@ -74,6 +74,7 @@ TEST(TEST_SUITE_NAME, test_placement_new) {
 	A* pa = reinterpret_cast<A*>(buf);
 
 	for (std::size_t i = 0; i < sizeof(buf) / sizeof(A); ++i) {
+		// 通过 `placement new` 操作符调用构造器
 		new (pa + i) A(i + 1);
 	}
 
@@ -82,6 +83,7 @@ TEST(TEST_SUITE_NAME, test_placement_new) {
 	ASSERT_EQ(pa[9].value(), 10);
 
 	for (std::size_t i = 0; i < sizeof(buf) / sizeof(A); ++i) {
+		// 调用析构函数
 		pa[i].~A();
 	}
 }

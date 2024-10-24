@@ -57,9 +57,7 @@ namespace cpp::ptr {
 		///
 		/// @param init_val 初始值, 数组的每一项都会初始化为该值
 		LargeObject(const T& init_val) {
-			for (size_t i = 0; i < SIZE; ++i) {
-				new (_data + i) T(init_val);
-			}
+			std::uninitialized_fill_n(_data, SIZE, init_val);
 		};
 
 		/// @brief 参数构造器
@@ -74,9 +72,7 @@ namespace cpp::ptr {
 
 		/// @brief 析构函数
 		virtual ~LargeObject() {
-			for (size_t i = 0; i < SIZE; ++i) {
-				_data[i].~T();
-			}
+			std::destroy_n(_data, SIZE);
 		}
 
 		/// @brief 赋值构造器

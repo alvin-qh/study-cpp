@@ -72,6 +72,7 @@
 #endif
 
 namespace cpp::oop {
+
 	/// @brief 定义具备 `new/delete` 操作符重载的类
 	///
 	/// 一个类如果重载了 `new` 和 `delete` 操作符 (必须同时重载),
@@ -130,6 +131,7 @@ namespace cpp::oop {
 		/// @param ptr 指向要回收内存地址的指针
 		void operator delete[](void* ptr) noexcept;
 	};
+
 } // ! namespace cpp::oop
 
 #endif // ! __CPLUSPLUS_OPP_NEW_DELETE_H

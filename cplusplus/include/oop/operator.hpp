@@ -202,13 +202,11 @@ namespace cpp::oop {
 	/// 全局运算符重载必须符合如下要求:
 	///
 	/// 1. 参数必须为自定义类型, 而非 C++ 基本类型;
-	///
 	/// 2. 参数定义必须符合运算符左右值的要求;
-	///
 	/// 3. 如果需要访问相关类型的私有成员, 需要在相关类型中定义全局运算符重载函数为友元函数;
 	///
-	/// @param left
-	/// @param right
+	/// @param left 待比较的对象引用
+	/// @param right 待比较的对象引用
 	/// @return 两个对象相减的结果
 	Operator operator-(const Operator& left, const Operator& right);
 

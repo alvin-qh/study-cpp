@@ -185,3 +185,22 @@ TEST(TEST_SUITE_NAME, operator_three_way_compare) {
 	ASSERT_TRUE(o1 < o2);
 	ASSERT_TRUE(o1 <= o2);
 }
+
+/// @brief 测试运算符在子类中的继承情况
+TEST(TEST_SUITE_NAME, operator_inherit) {
+	OperatorChild oc1(1, 2, 3), oc2;
+
+	oc2 = oc1;
+	ASSERT_EQ(oc2.x(), 1);
+	ASSERT_EQ(oc2.y(), 2);
+	ASSERT_EQ(oc2.z(), 3);
+
+	oc2 = std::move(oc1);
+	ASSERT_EQ(oc2.x(), 1);
+	ASSERT_EQ(oc2.y(), 2);
+	ASSERT_EQ(oc2.z(), 3);
+
+	ASSERT_EQ(oc1.x(), 0);
+	ASSERT_EQ(oc1.y(), 0);
+	ASSERT_EQ(oc1.z(), 0);
+}

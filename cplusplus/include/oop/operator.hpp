@@ -225,6 +225,39 @@ namespace cpp::oop {
 	/// @return 计算结果对象
 	Operator operator-(const std::tuple<double, double, double>& left, const Operator& right);
 
+
+	/// @brief 测试继承时运算符的继承情况
+	class OperatorChild : public Operator {
+	public:
+		/// @brief 默认构造器
+		OperatorChild();
+
+		/// @brief 参数构造器
+		///
+		/// @param x 参数 1
+		/// @param y 参数 2
+		/// @param z 参数 3
+		OperatorChild(double x, double y, double z);
+
+		/// @brief 析构函数
+		virtual ~OperatorChild() override = default;
+
+		/// @brief 拷贝构造器
+		OperatorChild(const OperatorChild&) = default;
+
+		/// @brief 重载赋值运算符
+		///
+		/// 如果不明确重载赋值运算符, 子类会自动产生一个默认赋值运算符重载 (default),
+		/// 故子类需显式定义赋值运算符重载, 并在重载方法内调用父类赋值运算符重载
+		OperatorChild& operator=(const OperatorChild&) noexcept = default;
+
+		/// @brief 重载移动赋值运算符
+		///
+		/// 如果不明确重载赋值运算符, 子类会自动产生一个默认赋值运算符重载 (default),
+		/// 故子类需显式定义赋值运算符重载, 并在重载方法内调用父类赋值运算符重载
+		OperatorChild& operator=(OperatorChild&&) noexcept = default;
+	};
+
 	} // ! namespace cpp::oop
 
 #endif // ! __CPLUSPLUS_OPP_OPERATOR_H

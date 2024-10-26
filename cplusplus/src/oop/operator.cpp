@@ -175,4 +175,8 @@ namespace cpp::oop {
 		);
 	}
 
+	OperatorChild::OperatorChild() : Operator() {}
+
+	OperatorChild::OperatorChild(double x, double y, double z) : Operator(x, y, z) {}
+
 } // ! namespace cpp::oop

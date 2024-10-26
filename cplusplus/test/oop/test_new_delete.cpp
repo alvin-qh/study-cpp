@@ -91,7 +91,7 @@ TEST(TEST_SUITE_NAME, test_placement_new) {
 /// @brief 测试通过类中定义的 `new/delete` 操作符分配内存
 TEST(TEST_SUITE_NAME, test_overload_new_delete_operator_for_class) {
 	NewDelete* po = new NewDelete("object-1");
-	ASSERT_STREQ(po->name().c_str(), "object-1");
+	ASSERT_EQ(po->name(), "object-1");
 
 	delete po;
 

@@ -12,7 +12,7 @@ TEST(TEST_SUITE_NAME, copy_constructor) {
 
 	// 调用默认拷贝构造器
 	auto d2 = d1;
-	ASSERT_STREQ("d1", d2.name().c_str());
+	ASSERT_EQ("d1", d2.name());
 }
 
 /// @brief 测试默认的赋值运算符重载

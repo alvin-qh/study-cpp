@@ -168,7 +168,7 @@ TEST(TEST_SUITE_NAME, apply_tuple_with_tuple) {
 
 	// 通过 `tuple` 对象作为参数, 调用 `FromTuple` 类的构造函数
 	FromTuple ft = make_from_tuple<FromTuple>(args);
-	ASSERT_STREQ(ft.name.c_str(), "Alvin");
+	ASSERT_EQ(ft.name, "Alvin");
 	ASSERT_EQ(ft.count, 100);
 }
 

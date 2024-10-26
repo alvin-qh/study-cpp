@@ -48,13 +48,13 @@ TEST(TEST_SUITE_NAME, equal_operator_override) {
 TEST(TEST_SUITE_NAME, virtual_method) {
 	// 当指针指向 `BaseClass` 实例时, 调用 `BaseClass::to_string` 方法
 	const BaseClass* pb = new BaseClass(1);
-	ASSERT_STREQ("BaseClass(1)", pb->to_string().c_str());
+	ASSERT_EQ("BaseClass(1)", pb->to_string());
 
 	delete pb;
 
 	// 当指针指向 `ChildClass` 实例时, 调用 `ChildClass::to_string` 方法
 	pb = new ChildClass(1, 1.1);
-	ASSERT_STREQ("ChildClass(1, 1.1)", pb->to_string().c_str());
+	ASSERT_EQ("ChildClass(1, 1.1)", pb->to_string());
 
 	delete pb;
 }

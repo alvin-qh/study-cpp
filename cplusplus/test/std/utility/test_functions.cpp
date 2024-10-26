@@ -70,8 +70,8 @@ TEST(TEST_SUITE_NAME, exchange) {
 	// 将 `s1` 变量的值进行替换, 并将原本的值给 `s2` 变量
 	string s1 = "Hello", s2;
 	s2 = std::exchange(s1, "World");
-	ASSERT_STREQ(s2.c_str(), "Hello");
-	ASSERT_STREQ(s1.c_str(), "World");
+	ASSERT_EQ(s2, "Hello");
+	ASSERT_EQ(s1, "World");
 
 	// 将 `n1` 变量的值进行替换, 并将原本的值给 `n2` 变量
 	double n1 = 1.2, n2;

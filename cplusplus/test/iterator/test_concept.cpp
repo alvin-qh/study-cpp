@@ -25,36 +25,38 @@ using namespace cpp::iter;
 /// 对于 C++20 以上版本, 提供了 concept 功能对泛型参数进行约束, 故
 ///
 /// 迭代器会提供一个 "类型" 标记, 用于体现迭代器的特性, C++
+#if __cplusplus >= 202002L
+
 TEST(TEST_SUITE_NAME, iterator_type_concept) {
 	// 对于 `random_access_iterator` 类型迭代器, 其特性包含全部迭代器特性
 	vector<int> v;
-	need_input_or_output_iterator(v.begin());
-	need_forward_iterator(v.begin());
-	need_bidirectional_iterator(v.begin());
-	need_random_access_iterator(v.begin());
+	ASSERT_TRUE(is_input_or_output_iterator(v.begin()));
+	ASSERT_TRUE(is_forward_iterator(v.begin()));
+	ASSERT_TRUE(is_bidirectional_iterator(v.begin()));
+	ASSERT_TRUE(is_random_access_iterator(v.begin()));
 
 	// 对于 `bidirectional_iterator` 类型迭代器, 其特性包含 `input_iterator`,
 	// `output_iterator` 以及 `forward_iterator` 迭代器特性
 	list<int> l;
-	need_input_or_output_iterator(l.begin());
-	need_forward_iterator(l.begin());
-	need_bidirectional_iterator(l.begin());
-	// need_random_access_iterator(l.begin());
+	ASSERT_TRUE(is_input_or_output_iterator(l.begin()));
+	ASSERT_TRUE(is_forward_iterator(l.begin()));
+	ASSERT_TRUE(is_bidirectional_iterator(l.begin()));
+	ASSERT_FALSE(is_random_access_iterator(l.begin())); // 不具备 `random_access_iterator` 特性
 
 	// 对于 `forward_iterator` 类型迭代器, 其特性包含 `input_iterator` 以及
 	// `output_iterator` 迭代器特性
 	forward_list<int> fl;
-	need_input_or_output_iterator(fl.begin());
-	need_forward_iterator(fl.begin());
-	// need_bidirectional_iterator(fl.begin());
-	// need_random_access_iterator(fl.begin());
+	ASSERT_TRUE(is_input_or_output_iterator(fl.begin()));
+	ASSERT_TRUE(is_forward_iterator(fl.begin()));
+	ASSERT_FALSE(is_bidirectional_iterator(fl.begin()));  // 不具备 `bidirectional_iterator` 特性
+	ASSERT_FALSE(is_random_access_iterator(fl.begin())); // 不具备 `random_access_iterator` 特性
 
+	// 自定义迭代器符合 `random_access_iterator` 迭代器特性
 	dynamic_array<int> da;
-	auto it = da.begin();
-	auto m = std::move(it);
-
-	need_input_or_output_iterator(da.begin());
-	need_forward_iterator(da.begin());
-	need_bidirectional_iterator(da.begin());
-	need_random_access_iterator(da.begin());
+	ASSERT_TRUE(is_input_or_output_iterator(da.begin()));
+	ASSERT_TRUE(is_forward_iterator(da.begin()));
+	ASSERT_TRUE(is_bidirectional_iterator(da.begin()));
+	ASSERT_TRUE(is_random_access_iterator(da.begin()));
 }
+
+#endif

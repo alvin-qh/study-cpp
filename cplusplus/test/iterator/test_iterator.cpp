@@ -71,6 +71,7 @@ TEST(TEST_SUITE_NAME, random_access_iterator) {
 	int n = *da.begin();
 	ASSERT_EQ(n, 1);
 
+	// 从起始位置开始, 按步长 2 向后迭代, 被加数为迭代器对象
 	for (auto it = da.begin(); it <= da.end(); it += 2) {
 		ASSERT_EQ(*it, n);
 		n += 2;
@@ -79,6 +80,7 @@ TEST(TEST_SUITE_NAME, random_access_iterator) {
 	n = *da.rbegin();
 	ASSERT_EQ(n, 5);
 
+	// 从结束位置开始, 按步长 2 向前迭代, 被加数为迭代器对象
 	for (auto it = da.rbegin(); it <= da.rend(); it += 2) {
 		ASSERT_EQ(*it, n);
 		n -= 2;
@@ -87,10 +89,12 @@ TEST(TEST_SUITE_NAME, random_access_iterator) {
 	n = *da.begin();
 	ASSERT_EQ(n, 1);
 
+	// 从起始位置开始, 按步长 2 向后迭代
 	auto it = da.begin();
 	while (it < da.end()) {
 		ASSERT_EQ(*it, n);
 
+		// 被加数为 `ptrdiff_t` 数值
 		it = 2 + it;
 		n += 2;
 	}
@@ -98,16 +102,20 @@ TEST(TEST_SUITE_NAME, random_access_iterator) {
 	n = *(da.rend() - 1);
 	ASSERT_EQ(n, 1);
 
+	// 从结束位置开始, 按步长 2 向前迭代
 	auto rit = da.rend() - 1;
 	while (rit >= da.rbegin()) {
 		ASSERT_EQ(*rit, n);
 
+		// 被减数为 `ptrdiff_t` 数值
 		rit = 2 - rit;
 		n += 2;
 	}
 }
 
 /// @brief 测试通过迭代器支持的 `for in` 语句
+///
+/// 
 TEST(TEST_SUITE_NAME, for_in_statement) {
 	dynamic_array<int> da{ 1, 2, 3, 4, 5 };
 

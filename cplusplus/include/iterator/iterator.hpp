@@ -32,6 +32,15 @@ namespace cpp::iter {
 	///
 	/// 如果上述定义未完全提供, 则 C++ 编译器会根据 SFINAE 特性进行偏特化, 使用预定义类型, 并不会报告错误
 	///
+	/// 对于 C++ 17 以前的版本, 自定义迭代器需继承 `std::iterator` 类, 并根据迭代器类型设置
+	/// `iterator_category` 枚举来指定迭代器类型
+	///
+	/// 对于 C++ 17 以后的版本, 自定义迭代器无需继承 `std::iterator` 类, 而是根据自定义迭代器中定义的方法来表达不同迭代器类型:
+	///
+	/// - 具备 `+` 运算符和 `*` 运算符的迭代器表达为 `input/output iterator` 和 `forward iterator`;
+	/// - 具备 `+`, `-` 运算符和 `*` 运算符的迭代器表达为 `input/output iterator` 和 `bidirectional iterator`;
+	/// - 具备 `+`, `-` 运算符, `[]` 运算符和 `*` 运算符的迭代器表达为 `input/output iterator` 和 `random access iterator`;
+	///
 	/// 参见 https://zh.cppreference.com/w/cpp/iterator/iterator_traits
 	///
 	/// @tparam T 迭代器元素类型
@@ -123,7 +132,8 @@ namespace cpp::iter {
 		const reference operator[](difference_type n) const { return *(_ptr + n); }
 	};
 
-	/// @brief 定义迭代器类
+	/// @brief 定义正向迭代器类
+	///
 	/// @tparam T 被迭代类型
 	template <
 		typename T,
@@ -227,19 +237,25 @@ namespace cpp::iter {
 		///
 		/// @param offset 偏移量值
 		/// @return 加法结果对象
-		__self operator+(difference_type offset) const noexcept { return __self(__base::_ptr + offset); }
+		__self operator+(difference_type offset) const noexcept {
+			return __self(__base::_ptr + offset);
+		}
 
 		/// @brief 重载减法运算符, 将当前指针移动指定偏移量
 		///
 		/// @param offset 偏移量值
 		/// @return 减法结果对象
-		__self operator-(difference_type offset) const noexcept { return __self(__base::_ptr - offset); }
+		__self operator-(difference_type offset) const noexcept {
+			return __self(__base::_ptr - offset);
+		}
 
 		/// @brief 重载减法运算符, 支持两个迭代器对象相减, 返回相差的偏移量
 		///
 		/// @param o 另一个迭代器对象引用
 		/// @return 偏移量值
-		difference_type operator-(const __self& o) const noexcept { return static_cast<difference_type>(__base::_ptr - o._ptr); }
+		difference_type operator-(const __self& o) const noexcept {
+			return static_cast<difference_type>(__base::_ptr - o._ptr);
+		}
 
 		/// @brief 重载加法赋值运算符, 将当前对象保存的指针移动指定偏移量
 		///
@@ -263,16 +279,31 @@ namespace cpp::iter {
 		///
 		/// @param o 其它对象引用
 		/// @return 比较结果
-		std::strong_ordering operator<=>(const __self& o) const noexcept { return __base::_ptr <=> o._ptr; }
+		std::strong_ordering operator<=>(const __self& o) const noexcept {
+			return __base::_ptr <=> o._ptr;
+		}
 
-		/// @brief 重载
-		friend __self operator+(difference_type offset, const __self& o) noexcept { return __self(o._ptr + offset); }
+		/// @brief 重载加号运算符, 将一个偏移量值和迭代器对象相加
+		///
+		/// @param left 表示偏移量的值
+		/// @param right 迭代器对象引用
+		/// @return 加法结果对象
+		friend __self operator+(difference_type left, const __self& right) noexcept {
+			return __self(right._ptr + left);
+		}
 
-		/// @brief 重载
-		friend __self operator-(difference_type offset, const __self& o) noexcept { return __self(o._ptr - offset); }
+		/// @brief 重载减号运算符, 将一个偏移量值和迭代器对象相减
+		///
+		/// @param left 表示偏移量的值
+		/// @param right 迭代器对象引用
+		/// @return 加法结果对象
+		friend __self operator-(difference_type left, const __self& right) noexcept {
+			return __self(right._ptr - left);
+		}
 };
 
-	/// @brief 反向迭代器类型
+	/// @brief 定义反向迭代器类
+	///
 	/// @tparam T 被迭代类型
 	template <
 		typename T,
@@ -377,25 +408,31 @@ namespace cpp::iter {
 		///
 		/// @param offset 偏移量值
 		/// @return 加法结果对象
-		__self operator+(ptrdiff_t offset) const noexcept { return __self(__base::_ptr - offset); }
+		__self operator+(difference_type offset) const noexcept {
+			return __self(__base::_ptr - offset);
+		}
 
 		/// @brief 重载减法运算符, 将当前指针移动指定偏移量
 		///
 		/// @param offset 偏移量值
 		/// @return 减法结果对象
-		__self operator-(ptrdiff_t offset) const noexcept { return __self(__base::_ptr + offset); }
+		__self operator-(difference_type offset) const noexcept {
+			return __self(__base::_ptr + offset);
+		}
 
 		/// @brief 重载减法运算符, 支持两个迭代器对象相减, 返回相差的偏移量
 		///
 		/// @param o 另一个迭代器对象引用
 		/// @return 偏移量值
-		difference_type operator-(const __self& o) const noexcept { return static_cast<difference_type>(o._ptr - __base::_ptr); }
+		difference_type operator-(const __self& o) const noexcept {
+			return static_cast<difference_type>(o._ptr - __base::_ptr);
+		}
 
 		/// @brief 重载加法赋值运算符, 将当前对象保存的指针移动指定偏移量
 		///
 		/// @param offset 偏移量值
 		/// @return 当前对象引用
-		__self& operator+=(ptrdiff_t offset) noexcept {
+		__self& operator+=(difference_type offset) noexcept {
 			__base::_ptr -= offset;
 			return *this;
 		}
@@ -404,7 +441,7 @@ namespace cpp::iter {
 		///
 		/// @param offset 偏移量值
 		/// @return 当前对象引用
-		__self& operator-=(ptrdiff_t offset) noexcept {
+		__self& operator-=(difference_type offset) noexcept {
 			__base::_ptr += offset;
 			return *this;
 		}
@@ -413,11 +450,27 @@ namespace cpp::iter {
 		///
 		/// @param o 其它对象引用
 		/// @return 比较结果
-		std::strong_ordering operator<=>(const __self& o) const { return o._ptr <=> __base::_ptr; }
+		std::strong_ordering operator<=>(const __self& o) const {
+			return o._ptr <=> __base::_ptr;
+		}
 
-		friend __self operator+(ptrdiff_t offset, const __self& o) noexcept { return __self(o._ptr - offset); }
+		/// @brief 重载加号运算符, 将一个偏移量值和迭代器对象相加
+		///
+		/// @param left 表示偏移量的值
+		/// @param right 迭代器对象引用
+		/// @return 加法结果对象
+		friend __self operator+(difference_type left, const __self& right) noexcept {
+			return __self(right._ptr - left);
+		}
 
-		friend __self operator-(ptrdiff_t offset, const __self& o) noexcept { return __self(o._ptr + offset); }
+		/// @brief 重载减号运算符, 将一个偏移量值和迭代器对象相减
+		///
+		/// @param left 表示偏移量的值
+		/// @param right 迭代器对象引用
+		/// @return 加法结果对象
+		friend __self operator-(difference_type left, const __self& right) noexcept {
+			return __self(right._ptr + left);
+		}
 	};
 
 } // ! namespace cpp::collection

@@ -83,6 +83,28 @@ TEST(TEST_SUITE_NAME, random_access_iterator) {
 		ASSERT_EQ(*it, n);
 		n -= 2;
 	}
+
+	n = *da.begin();
+	ASSERT_EQ(n, 1);
+
+	auto it = da.begin();
+	while (it < da.end()) {
+		ASSERT_EQ(*it, n);
+
+		it = 2 + it;
+		n += 2;
+	}
+
+	n = *(da.rend() - 1);
+	ASSERT_EQ(n, 1);
+
+	auto rit = da.rend() - 1;
+	while (rit >= da.rbegin()) {
+		ASSERT_EQ(*rit, n);
+
+		rit = 2 - rit;
+		n += 2;
+	}
 }
 
 /// @brief 测试通过迭代器支持的 `for in` 语句

@@ -110,8 +110,16 @@ namespace cpp::iter {
 		/// @return 当前指针指向的值的可变引用
 		reference operator*() { return *_ptr; }
 
+		/// @brief 重载下标运算符, 根据索引值获取对应元素引用
+		///
+		/// @param n 下标值
+		/// @return 对应下标的元素引用
 		reference operator[](difference_type n) { return *(_ptr + n); }
 
+		/// @brief 重载下标运算符, 根据索引值获取对应元素只读引用
+		///
+		/// @param n 下标值
+		/// @return 对应下标的元素只读引用
 		const reference operator[](difference_type n) const { return *(_ptr + n); }
 	};
 
@@ -256,6 +264,12 @@ namespace cpp::iter {
 		/// @param o 其它对象引用
 		/// @return 比较结果
 		std::strong_ordering operator<=>(const __self& o) const noexcept { return __base::_ptr <=> o._ptr; }
+
+		/// @brief 重载
+		friend __self operator+(difference_type offset, const __self& o) noexcept { return __self(o._ptr + offset); }
+
+		/// @brief 重载
+		friend __self operator-(difference_type offset, const __self& o) noexcept { return __self(o._ptr - offset); }
 };
 
 	/// @brief 反向迭代器类型
@@ -400,6 +414,10 @@ namespace cpp::iter {
 		/// @param o 其它对象引用
 		/// @return 比较结果
 		std::strong_ordering operator<=>(const __self& o) const { return o._ptr <=> __base::_ptr; }
+
+		friend __self operator+(ptrdiff_t offset, const __self& o) noexcept { return __self(o._ptr - offset); }
+
+		friend __self operator-(ptrdiff_t offset, const __self& o) noexcept { return __self(o._ptr + offset); }
 	};
 
 } // ! namespace cpp::collection

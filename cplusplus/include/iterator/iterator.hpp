@@ -130,6 +130,11 @@ namespace cpp::iter {
 		/// @param n 下标值
 		/// @return 对应下标的元素只读引用
 		const reference operator[](difference_type n) const { return *(_ptr + n); }
+
+		/// @brief 判断迭代器是否有效
+		///
+		/// @return 迭代器是否有效
+		bool valid() const { return _ptr != nullptr; }
 	};
 
 	/// @brief 定义正向迭代器类
@@ -180,22 +185,10 @@ namespace cpp::iter {
 		~ptr_based_iterator() = default;
 
 		/// @brief 赋值运算符重载
-		///
-		/// @param  其它对象引用
-		/// @return 当前对象引用
-		__self& operator=(const __self& o) noexcept {
-			__base::operator=(o);
-			return *this;
-		};
+		__self& operator=(const __self&) noexcept = default;
 
 		/// @brief 移动赋值运算符重载
-		///
-		/// @param o 其它对象右值引用
-		/// @return 当前对象引用
-		__self& operator=(__self&& o) noexcept {
-			__base::operator=(std::move(o));
-			return *this;
-		}
+		__self& operator=(__self&&) noexcept = default;
 
 		/// @brief 自加运算符重载, 将当前指针移动 1 个偏移量
 		///
@@ -300,7 +293,7 @@ namespace cpp::iter {
 		friend __self operator-(difference_type left, const __self& right) noexcept {
 			return __self(right._ptr - left);
 		}
-};
+	};
 
 	/// @brief 定义反向迭代器类
 	///
@@ -351,22 +344,10 @@ namespace cpp::iter {
 		~ptr_based_reverse_iterator() = default;
 
 		/// @brief 赋值运算符重载
-		///
-		/// @param  其它对象引用
-		/// @return 当前对象引用
-		__self& operator=(const __self& o) noexcept {
-			__base::operator=(o);
-			return *this;
-		};
+		__self& operator=(const __self& o) noexcept = default;
 
 		/// @brief 移动赋值运算符重载
-		///
-		/// @param o 其它对象右值引用
-		/// @return 当前对象引用
-		__self& operator=(__self&& o) noexcept {
-			__base::operator=(std::move(o));
-			return *this;
-		}
+		__self& operator=(__self&& o) noexcept = default;
 
 		/// @brief 自加运算符重载, 将当前指针移动 1 个偏移量
 		///

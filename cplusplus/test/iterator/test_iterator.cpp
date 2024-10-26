@@ -115,7 +115,7 @@ TEST(TEST_SUITE_NAME, random_access_iterator) {
 
 /// @brief 测试通过迭代器支持的 `for in` 语句
 ///
-/// 
+/// 实现了迭代器后, 即可通过 `for in` 语法通过循环调用迭代器
 TEST(TEST_SUITE_NAME, for_in_statement) {
 	dynamic_array<int> da{ 1, 2, 3, 4, 5 };
 
@@ -177,4 +177,50 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 #if (__new_iterator)
 	ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_concept, std::contiguous_iterator_tag>));
 #endif
+}
+
+/// @brief 测试迭代器的赋值运算符重载
+TEST(TEST_SUITE_NAME, iterator_assignment) {
+	dynamic_array<int> da{ 1, 2, 3, 4, 5 };
+
+	decltype(da.begin()) it1, it2, it3;
+
+	it1 = da.begin();
+	ASSERT_EQ(*it1, 1);
+
+	it2 = it1;
+	ASSERT_EQ(*it2, 1);
+
+	it3 = it2 + 1;
+	ASSERT_EQ(*it3, 2);
+
+	decltype(da.rbegin()) rit1, rit2, rit3;
+
+	rit1 = da.rbegin();
+	ASSERT_EQ(*rit1, 5);
+
+	rit2 = rit1;
+	ASSERT_EQ(*rit2, 5);
+
+	rit3 = rit2 + 1;
+	ASSERT_EQ(*rit3, 4);
+}
+
+/// @brief 测试迭代器的移动赋值运算
+TEST(TEST_SUITE_NAME, iterator_movement) {
+	dynamic_array<int> da{ 1, 2, 3, 4, 5 };
+
+	decltype(da.begin()) it1, it2;
+
+	it1 = da.begin();
+	ASSERT_TRUE(it1.valid());
+
+	// 执行移动赋值运算
+	it2 = std::move(it1);
+
+	// 迭代器内部指针已经从 `it1` 移动到 `it2`
+	ASSERT_FALSE(it1.valid());
+	ASSERT_TRUE(it2.valid());
+
+	ASSERT_EQ(*it2, 1);
 }

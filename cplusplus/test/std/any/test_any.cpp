@@ -3,7 +3,7 @@
 #include <any>
 #include <vector>
 
-#define TEST_SUITE_NAME test_cplusplus_utility_any
+#define TEST_SUITE_NAME test_cplusplus_std_any
 
 using namespace std;
 using testing::ElementsAre;

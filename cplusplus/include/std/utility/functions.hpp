@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_UTILITY_FUNCTIONS_H
-#define __CPLUSPLUS_UTILITY_FUNCTIONS_H
+#ifndef __CPLUSPLUS_STD_UTILITY_FUNCTIONS_H
+#define __CPLUSPLUS_STD_UTILITY_FUNCTIONS_H
 
-namespace cpp::std {
+namespace cpp::std_ {
 
 	using namespace std;
 
@@ -23,4 +23,4 @@ namespace cpp::std {
 
 } // ! namespace cpp::utility
 
-#endif // ! __CPLUSPLUS_UTILITY_FUNCTIONS_H
+#endif // ! __CPLUSPLUS_STD_UTILITY_FUNCTIONS_H

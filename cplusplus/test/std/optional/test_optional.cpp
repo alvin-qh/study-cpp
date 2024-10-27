@@ -34,4 +34,5 @@ TEST(TEST_SUITE_NAME, test_optional_type) {
 TEST(TEST_SUITE_NAME, test_optional_return_value) {
 	optional<int> opt = check_even_number(2);
 	ASSERT_TRUE(opt.has_value());
+	ASSERT_EQ(*opt, 2);
 }

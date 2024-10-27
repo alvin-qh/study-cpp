@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_STD_OPTIONAL_H
-#define __CPLUSPLUS_STD_OPTIONAL_H
+#ifndef __CPLUSPLUS_STD_OPTIONAL_OPTIONAL_H
+#define __CPLUSPLUS_STD_OPTIONAL_OPTIONAL_H
 
 #include <optional>
 
@@ -24,4 +24,4 @@ namespace cpp::std_ {
 
 } // ! namespace cpp::std
 
-#endif // ! __CPLUSPLUS_STD_OPTIONAL_H
+#endif // ! __CPLUSPLUS_STD_OPTIONAL_OPTIONAL_H

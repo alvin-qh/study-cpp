@@ -6,12 +6,54 @@ namespace cxx::oop {
 
     Constructor::Constructor(double value) noexcept : _val(value) {}
 
+    Constructor::Constructor(int int_part, uint32_t dec_part) noexcept {
+        double dec = 0;
+        while (dec_part > 0) {
+            uint32_t n = dec_part % 10;
+            dec_part /= 10;
+            dec = (dec * 0.1) + (n * 0.1);
+        }
+        _val = int_part + dec;
+    }
+
+    Constructor::Constructor(const nothing_t&, std::initializer_list<double> list) noexcept {
+        double dec = 0;
+        for (auto it = list.begin(); it != list.end(); ++it) {
+            dec += *it;
+        }
+        _val = dec;
+    }
+
     Constructor::Constructor(std::string&& val) : _val(std::stod(val)) {}
 
     Constructor::Constructor(const std::string& val) :_val(std::stod(val)) {}
+
+    Constructor::Constructor(const Constructor& o) noexcept : _val(o._val) {
+        std::cout << "copy constructor" << std::endl;
+    }
 
     Constructor::~Constructor() noexcept {}
 
     double Constructor::value() const noexcept { return _val; }
 
+
+    Constructor make_constructor(double value) noexcept {
+        // 直接返回 `double` 值, 自动调用 `Constructor(double)` 构造器
+        return value;
+    }
+
+    Constructor make_constructor(int int_part, uint32_t dec_part) noexcept {
+        // 直接返回 "value list", 自动调用 `Constructor(int, uint_32)` 构造器
+        return { int_part, dec_part };
+    }
+
+    Constructor make_constructor(std::string&& s) {
+        // 必须显式调用构造器构造返回值对象
+        return Constructor(std::move(s));
+    }
+
+    Constructor make_constructor(const std::string& s) {
+        // 必须显式调用构造器构造返回值对象
+        return Constructor(s);
+    }
 } // ! namespace cxx::oop

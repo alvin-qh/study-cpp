@@ -1,9 +1,8 @@
 #include <cmath>
-
-#include "oop/inherit.h"
-
 #include <string>
 #include <Format.h>
+
+#include "oop/inherit.h"
 
 namespace cxx::oop {
     using namespace std;

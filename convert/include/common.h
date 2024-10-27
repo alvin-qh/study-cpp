@@ -1,8 +1,8 @@
 #pragma once
 
-#ifndef __CONVERT_COMMON_H
-#define __CONVERT_COMMON_H
+#ifndef __CONVERT__COMMON_H
+#define __CONVERT__COMMON_H
 
 #include <stdlib.h>
 
-#endif // !__CONVERT_COMMON_H
+#endif // ! __CONVERT__COMMON_H

@@ -1,12 +1,13 @@
 /// 向量集合演示
 #pragma once
 
-#ifndef __ALGORITHM_VECTOR_H
-#define __ALGORITHM_VECTOR_H
+#ifndef __ALGORITHM__VECTOR_H
+#define __ALGORITHM__VECTOR_H
 
 #include "common.h"
 
-namespace alg {
+namespace algorithm {
+
 	/// @brief 向量集合结构体
 	///
 	/// @tparam T
@@ -137,6 +138,7 @@ namespace alg {
 
 		return v.size;
 	}
-} // namespace alg
 
-#endif // #__ALGORITHM_VECTOR_H
+} // namespace algorithm
+
+#endif // __ALGORITHM__VECTOR_H

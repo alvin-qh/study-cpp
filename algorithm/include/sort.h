@@ -1,12 +1,13 @@
 /// 排序算法演示
 #pragma once
 
-#ifndef __ALGORITHM_SORT_H
-#define __ALGORITHM_SORT_H
+#ifndef __ALGORITHM__SORT_H
+#define __ALGORITHM__SORT_H
 
 #include "common.h"
 
-namespace alg {
+namespace algorithm {
+
 	/// @brief 对指定数组进行快速排序
 	///
 	/// @tparam T
@@ -73,6 +74,7 @@ namespace alg {
 		}
 		return true;
 	}
-} // namespace alg
 
-#endif //__ALGORITHM_SORT_H
+} // namespace algorithm
+
+#endif //__ALGORITHM__SORT_H

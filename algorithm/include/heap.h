@@ -1,12 +1,13 @@
 /// 堆算法演示
 #pragma once
 
-#ifndef __ALGORITHM_HEAP_H
-#define __ALGORITHM_HEAP_H
+#ifndef __ALGORITHM__HEAP_H
+#define __ALGORITHM__HEAP_H
 
 #include "common.h"
 
-namespace alg {
+namespace algorithm {
+
 	/// @brief 定义堆结构体
 	///
 	/// @tparam T
@@ -186,6 +187,6 @@ namespace alg {
 		return ret;
 	}
 
-} // ! namespace alg
+} // ! namespace algorithm
 
-#endif // ! __ALGORITHM_HEAP_H
+#endif // ! __ALGORITHM__HEAP_H

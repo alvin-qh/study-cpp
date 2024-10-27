@@ -4,10 +4,10 @@
 project(convert)
 
 # 设置项目源文件集合
-file(GLOB_RECURSE convert_src "src/*.cpp" "src/*.c")
+file(GLOB_RECURSE convert_src "src/*.cc" "src/*.c")
 
 # 设置项目测试文件集合
-file(GLOB_RECURSE convert_test_src "test/*.cpp" "test/*.c")
+file(GLOB_RECURSE convert_test_src "test/*.cc" "test/*.c")
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 include_directories(include)

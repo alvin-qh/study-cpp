@@ -1,8 +1,8 @@
 /// 定义所有其他头文件所需的公共内容
 #pragma once
 
-#ifndef __ALGORITHM_COMMON_H
-#define __ALGORITHM_COMMON_H
+#ifndef __ALGORITHM__COMMON_H
+#define __ALGORITHM__COMMON_H
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -16,7 +16,8 @@
 /// 计算数组长度的宏
 #define ARRAY_SIZE(x) ((size_t)(sizeof(x) / sizeof((x)[0])))
 
-namespace alg {
+namespace algorithm {
+
 	/// @brief 交换两个变量的值
 	///
 	/// @tparam T 任意类型
@@ -84,6 +85,7 @@ namespace alg {
 
 		return array;
 	}
-} // ! namespace alg
 
-#endif // ! __ALGORITHM_COMMON_H
+} // ! namespace algorithm
+
+#endif // ! __ALGORITHM__COMMON_H

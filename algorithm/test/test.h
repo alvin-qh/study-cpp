@@ -1,13 +1,14 @@
 /// 测试公共部分
 #pragma once
 
-#ifndef __ALGORITHM_TEST_H
-#define __ALGORITHM_TEST_H
+#ifndef __ALGORITHM__TEST_H
+#define __ALGORITHM__TEST_H
 
 #include <stddef.h>
 #include <stdint.h>
 
-namespace alg {
+namespace algorithm {
+
 	/// @brief 对整数进行比较
 	///
 	/// @param a 待比较的值
@@ -39,6 +40,7 @@ namespace alg {
 	/// @param len 待比较的数组长度
 	/// @return 两个数组是否相等
 	bool is_int_array_eq(const int* left, const int* right, size_t len);
-} // ! namespace alg
+
+} // ! namespace algorithm
 
 #endif // ! __ALGORITHM_TEST_H

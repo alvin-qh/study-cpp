@@ -66,9 +66,15 @@ namespace cxx::oop {
 		explicit Constructor(std::string&& val);
 		explicit Constructor(const std::string& val);
 
-		/// @brief
-		/// @param o
+		/// @brief 拷贝构造器
+		///
+		/// @param o 被拷贝的对象引用
 		Constructor(const Constructor& o) noexcept;
+
+		/// @brief 移动构造器
+		///
+		/// @param o 被移动的对象右值引用
+		Constructor(Constructor&& o) noexcept;
 
 		virtual ~Constructor() noexcept;
 

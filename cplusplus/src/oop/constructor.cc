@@ -24,12 +24,19 @@ namespace cxx::oop {
         _val = dec;
     }
 
-    Constructor::Constructor(std::string&& val) : _val(std::stod(val)) {}
+    Constructor::Constructor(std::string&& val) {
+        // 本代码仅为演示参数 `val` 被移动, 
+        // 正常情况下字符串转数值无需使用移动语意
+        std::string s(std::move(val));
+        _val = std::stod(s);
+    }
 
     Constructor::Constructor(const std::string& val) :_val(std::stod(val)) {}
 
-    Constructor::Constructor(const Constructor& o) noexcept : _val(o._val) {
-        std::cout << "copy constructor" << std::endl;
+    Constructor::Constructor(const Constructor& o) noexcept : _val(o._val) {}
+
+    Constructor::Constructor(Constructor&& o) noexcept
+        : _val(std::exchange(o._val, 0)) {
     }
 
     Constructor::~Constructor() noexcept {}

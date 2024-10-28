@@ -110,4 +110,40 @@ TEST(TEST_SUITE_NAME, auto_constructor) {
     // 参数为 `const std::string&` 类型
     auto c4 = make_constructor(s);
     ASSERT_EQ(c4.value(), 123.456);
+
+    // 参数为 `std::string&&` 类型, 且参数 `s` 已被移动
+    auto c5 = make_constructor(std::move(s));
+    ASSERT_EQ(c5.value(), 123.456);
+    ASSERT_EQ(s, "");
+}
+
+/// @brief 测试拷贝构造器
+///
+/// 拷贝构造器可以看作是特殊参数的参数构造器, 故构造器调用规则和参数构造器一致
+TEST(TEST_SUITE_NAME, copy_constructor) {
+    Constructor c1(1.0);
+
+    // 写法 1
+    Constructor c2(c1);
+    ASSERT_EQ(c2.value(), 1.0);
+
+    // 写法 2
+    Constructor c3 = c2;
+    ASSERT_EQ(c3.value(), 1.0);
+
+    // 写法 3
+    Constructor c4{ c3 };
+    ASSERT_EQ(c4.value(), 1.0);
+}
+
+/// @brief 测试移动构造器
+TEST(TEST_SUITE_NAME, move_constructor) {
+    // 通过临时对象, 调用移动构造器
+    Constructor c1(Constructor{ 1, 123 });
+    ASSERT_EQ(c1.value(), 1.123);;
+
+    // 通过移动语义调用移动构造器
+    Constructor c2(std::move(c1));
+    ASSERT_EQ(c2.value(), 1.123);
+    ASSERT_EQ(c1.value(), 0.0);
 }

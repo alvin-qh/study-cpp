@@ -1,11 +1,10 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 
-#include <array>
+#include <tuple>
 
 using namespace std;
 
-#define TEST_SUITE_NAME test_cplusplus_collection__tuple
+#define TEST_SUITE_NAME test_cplusplus_stl_tuple__tuple
 
 /// @brief 测试创建 `tuple` 对象
 ///

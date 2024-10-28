@@ -60,7 +60,7 @@ TEST(TEST_SUITE_NAME, value_list_constructor) {
 }
 
 /// @brief 测试构造器值列表和初始化列表
-TEST(TEST_SUITE_NAME, initialize_list) {
+TEST(TEST_SUITE_NAME, initializer_list) {
     Constructor c1(nothing, { 1.1 ,2.2, 3.3 });
     ASSERT_EQ(c1.value(), 6.6);
 

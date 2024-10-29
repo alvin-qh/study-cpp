@@ -1,8 +1,11 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <tuple>
 
 using namespace std;
+
+using testing::ElementsAre;
 
 #define TEST_SUITE_NAME test_cplusplus_stl_tuple__tuple
 
@@ -56,9 +59,9 @@ TEST(TEST_SUITE_NAME, tuple_size) {
 TEST(TEST_SUITE_NAME, tuple_element) {
     tuple<int, float, string> t = make_tuple(1, 1.0f, "hello");
 
-    ASSERT_TRUE((std::is_same<tuple_element<0, decltype(t)>::type, int>::value));
-    ASSERT_TRUE((std::is_same<tuple_element<1, decltype(t)>::type, float>::value));
-    ASSERT_TRUE((std::is_same<tuple_element<2, decltype(t)>::type, string>::value));
+    ASSERT_TRUE((std::is_same_v<tuple_element<0, decltype(t)>::type, int>));
+    ASSERT_TRUE((std::is_same_v<tuple_element<1, decltype(t)>::type, float>));
+    ASSERT_TRUE((std::is_same_v<tuple_element<2, decltype(t)>::type, string>));
 }
 
 /// @brief 测试将两个 `tuple` 对象合并为新的 `tuple` 对象
@@ -231,3 +234,55 @@ TEST(TEST_SUITE_NAME, tuple_from_pair) {
     ASSERT_EQ(s, "world");
 }
 
+/// @brief 测试在元组中包含可忽略字段
+TEST(TEST_SUITE_NAME, ignore_field) {
+    // `std::ignore` 对象可以被赋予任何值, 且不会有任何实质性操作
+    std::ignore = 100;
+    std::ignore = "hello";
+
+    string s;
+
+    // 本例中, 原本需要一个 `std::tuple<bool&, string&>` 
+    // 类型元组来接收 `std::pair<bool, string>` 对象, 但通过 
+    // `std::ignore` 对象占位, 可以不接收 `bool` 值
+    std::tie(std::ignore, s) = make_pair(true, "hello");
+    ASSERT_EQ(s, "hello");
+}
+
+/// @brief 将对象转发到元组
+///
+/// 通过 `std::forward_as_tuple` 函数, 可以通过元组来进行对象转发, 即:
+/// - 如果传递给元组的是一个左值引用, 则元组中存储该左值引用;
+/// - 如果传递给元组的是一个右值引用, 则元组中存储该右值引用;
+///
+/// 对于 `std::forward_as_tuple` 函数的返回值 `t1`, 
+/// 如果通过元组类的移动构造器创建新元组对象 `t2` 时, 则 `t1` 中所有右值引用,
+/// 其引用的对象会被移动到 `t2` 对象中
+///
+/// 故, 可通过 `std::forward_as_tuple` 函数, 利用元组进行一组对象的 "批量移动",
+/// 一般需配合 `std::tie` 函数一起使用
+TEST(TEST_SUITE_NAME, forward_as_tuple) {
+    string s1("hello"), s2;
+    vector<int> v1{ 1, 2, 3, 4, 5 }, v2;
+
+    auto t = forward_as_tuple(std::move(s1), std::move(v1));
+
+    // 通过 `std::tuple(std::tuple&&)` 移动构造器, 将 `t` 对象中的两个值进行转发;
+    // 相当于 `s2 = std::move(std::get<0>(t)); v2 = std::move(std::get<1>(t));`
+    tie(s2, v2) = std::move(t);
+    ASSERT_EQ(s2, "hello");
+    ASSERT_THAT(v2, ElementsAre(1, 2, 3, 4, 5));
+
+    ASSERT_EQ(s1, "");
+    ASSERT_TRUE(v1.empty());
+
+    // 通过 `forward_as_tuple` 返回值产生的临时对象产生右值引用, 
+    // 调用 `std::tuple(std::tuple&&)` 移动构造器, 将 `s2`, `v2` 对象的值移动到
+    // `s1`, `v1` 对象中
+    tie(s1, v1) = forward_as_tuple(std::move(s2), std::move(v2));
+    ASSERT_EQ(s1, "hello");
+    ASSERT_THAT(v1, ElementsAre(1, 2, 3, 4, 5));
+
+    ASSERT_EQ(s2, "");
+    ASSERT_TRUE(v2.empty());
+}

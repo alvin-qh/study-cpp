@@ -138,7 +138,7 @@ TEST(TEST_SUITE_NAME, tuple_get) {
 /// @brief 测试通过 `tuple` 对象作为函数参数
 ///
 /// 通过 `std::apply` 函数, 可以将一个 `tuple` 对象的值按顺序展开并作为参数传递给指定函数
-TEST(TEST_SUITE_NAME, apply_tuple) {
+TEST(TEST_SUITE_NAME, apply) {
     // 定义具备两个参数的函数
     auto func = [](const string& first, int second) { return first + " " + std::to_string(second); };
 
@@ -161,7 +161,7 @@ struct FromTuple {
 ///
 /// 通过 `std::make_from_tuple` 函数, 可以将一个 `tuple` 对象的值按顺序展开并作为参数传递给指定构造函数,
 /// 以构造指定类型对象
-TEST(TEST_SUITE_NAME, apply_tuple_with_tuple) {
+TEST(TEST_SUITE_NAME, make_from_tuple) {
     // 按照 `FromTuple` 类型的构造函数定义对应的 `tuple` 对象
     tuple<string, int> args = make_tuple("Alvin", 100);
 
@@ -190,7 +190,7 @@ TEST(TEST_SUITE_NAME, unpack_tuple) {
 /// `tie` 函数的参数为变量的引用, 会构建一个每个字段均为这些变量引用的 `tuple` 对象,
 /// 通过为该 `tuple` 对象赋值, 即可将被赋值的 `tuple` 对象每个字段的引用进行传递,
 /// 从而将被赋值 `tuple` 对象的每个字段值传递到指定的变量中
-TEST(TEST_SUITE_NAME, tie_with_tuple) {
+TEST(TEST_SUITE_NAME, tuple_from_tie) {
     tuple<int, float, string> t = make_tuple(1, 1.0f, "hello");
 
     int x;
@@ -203,3 +203,31 @@ TEST(TEST_SUITE_NAME, tie_with_tuple) {
     ASSERT_EQ(y, 1.0f);
     ASSERT_EQ(z, "hello");
 }
+
+/// @brief 测试通过 `std::pair` 对象设置元组对象
+TEST(TEST_SUITE_NAME, tuple_from_pair) {
+    pair<int, string> p = make_pair(1, "hello");
+
+    // 通过 `std::pair` 对象构造元组对象, 元组对象中会包含两个值
+    tuple<int, string> t = p;
+    ASSERT_EQ(std::get<0>(t), 1);
+    ASSERT_EQ(std::get<1>(t), "hello");
+
+    p.first = 2;
+    p.second = "world";
+
+    // 将 `std::pair` 对象复制给元组对象
+    t = p;
+    ASSERT_EQ(std::get<0>(t), 2);
+    ASSERT_EQ(std::get<1>(t), "world");
+
+    int n;
+    string s;
+
+    // 通过 `std::tie` 函数构包含两个变量引用的造元组对象, 
+    // 并用 `std::pair` 对象对其赋值
+    std::tie(n, s) = p;
+    ASSERT_EQ(n, 2);
+    ASSERT_EQ(s, "world");
+}
+

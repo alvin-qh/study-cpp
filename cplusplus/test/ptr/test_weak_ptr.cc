@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "ptr/smart_ptr.h"
+#include "large_object.h"
 
 #define TEST_SUITE_NAME test_cplusplus_ptr__weak_ptr
 
@@ -24,7 +24,7 @@ using namespace cxx::pointer;
 TEST(TEST_SUITE_NAME, make_weak_ptr) {
     // 通过 `make_shared` 函数创建实例
     shared_ptr<LargeObject<int, 10>> s_ptr_1 = make_shared<LargeObject<int, 10>>(
-        initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+        initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
     );
 
     // 通过 `shared_ptr` 实例创建 `weak_ptr` 实例, 此时不会增加 `shared_ptr` 实例的引用计数

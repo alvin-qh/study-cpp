@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "ptr/smart_ptr.h"
+#include "large_object.h"
 
 #define TEST_SUITE_NAME test_cplusplus_ptr__shared_ptr
 
@@ -16,7 +16,7 @@ using namespace cxx::pointer;
 TEST(TEST_SUITE_NAME, make_shared_ptr) {
     // 通过 `shared_ptr` 类构造器创建实例
     shared_ptr<LargeObject<int, 10>> ptr = shared_ptr<LargeObject<int, 10>>(
-        new LargeObject<int, 10>(initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+        new LargeObject<int, 10>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
     );
     // `shared_ptr` 重载了 `operator bool()` 操作符, 可以作为 `bool` 类型使用;
     // `ptr` 变量为 `true` 表示 `shared_ptr` 对象有效
@@ -30,7 +30,7 @@ TEST(TEST_SUITE_NAME, make_shared_ptr) {
 
     // 通过 `make_shared` 函数创建实例
     ptr = make_shared<LargeObject<int, 10>>(
-        initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+        initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
     );
 
     ASSERT_TRUE(ptr);
@@ -45,7 +45,7 @@ TEST(TEST_SUITE_NAME, make_shared_ptr) {
 /// @brief 测试 `shared_ptr` 智能指针的赋值
 TEST(TEST_SUITE_NAME, assign_shared_ptr) {
     shared_ptr<LargeObject<int, 10>> ptr1 = make_shared<LargeObject<int, 10>>(
-        initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+        initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
     );
 
     // `ptr1` 变量为 `true` 表示 `unique_ptr` 对象有效
@@ -103,8 +103,7 @@ TEST(TEST_SUITE_NAME, assign_shared_ptr) {
 /// @brief 测试 `shared_ptr` 智能指针的移动赋值
 TEST(TEST_SUITE_NAME, move_shared_ptr) {
     shared_ptr<LargeObject<int, 10>> ptr1 = make_shared<LargeObject<int, 10>>(
-        initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-    );
+        initializer_list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
 
     // `ptr1` 变量为 `true` 表示 `unique_ptr` 对象有效
     ASSERT_TRUE(ptr1);
@@ -139,7 +138,7 @@ TEST(TEST_SUITE_NAME, move_shared_ptr) {
 /// @brief 测试 `shared_ptr` 对象中获取其保存的指针
 TEST(TEST_SUITE_NAME, get_object_ptr_from_shared_ptr) {
     shared_ptr<LargeObject<int, 10>> ptr = make_shared<LargeObject<int, 10>>(
-        initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+        initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
     );
 
     // 通过 `shared_ptr::get` 方法获取实际对象的裸指针值,
@@ -160,10 +159,10 @@ TEST(TEST_SUITE_NAME, get_object_ptr_from_shared_ptr) {
 TEST(TEST_SUITE_NAME, swap_object_ptr_in_two_shared_ptr_object) {
     shared_ptr<LargeObject<int, 10>>
         ptr1 = make_shared<LargeObject<int, 10>>(
-            initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+            initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
         ),
         ptr2 = make_shared<LargeObject<int, 10>>(
-            initializer_list<int>{10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
+            initializer_list<int>{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }
         );
 
     // 交换两个 `shared_ptr` 托管的对象指针
@@ -191,7 +190,7 @@ TEST(TEST_SUITE_NAME, swap_object_ptr_in_two_shared_ptr_object) {
 /// 在调用 `shared_ptr::reset` 方法时, 如果之前已经有对象指针托管, 则会释放之前托管的对象
 TEST(TEST_SUITE_NAME, reset_unique_ptr_object) {
     shared_ptr<LargeObject<int, 10>> ptr = make_shared<LargeObject<int, 10>>(
-        initializer_list<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+        initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
     );
 
     // 将托管的指针重设为 `null` 值
@@ -201,7 +200,7 @@ TEST(TEST_SUITE_NAME, reset_unique_ptr_object) {
     // 将托管的指针重设为另一个指针值
     ptr.reset(
         make_unique<LargeObject<int, 10>>(
-            initializer_list<int>{10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
+            initializer_list<int>{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }
         ).release()
     );
 
@@ -216,7 +215,7 @@ TEST(TEST_SUITE_NAME, reset_unique_ptr_object) {
 
     ptr.reset(
         new LargeObject<int, 10>(
-            initializer_list<int>{10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
+            initializer_list<int>{ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }
         ),
         [](LargeObject<int, 10>* p) { delete p; }
     );

@@ -1,6 +1,3 @@
-/**
- * 测试公共部分
- */
 #pragma once
 
 #ifndef __CPLUSPLUS__TEST_H

@@ -74,8 +74,7 @@ TEST(TEST_SUITE_NAME, initializer_list) {
 /// @brief 测试构造器值列表和初始化列表
 TEST(TEST_SUITE_NAME, explicit) {
     // 显式调用 `explicit` 参数构造器
-    // 构造器参数为 `std::string&&` 类型 (因为通过 `const char*` 
-    // 自动产生了 `std::string` 临时对象)
+    // 构造器参数为 `std::string&&` 类型 (因为通过 `const char*` 自动产生了 `std::string` 临时对象)
     Constructor c1("123.456");
     ASSERT_EQ(c1.value(), 123.456);
 

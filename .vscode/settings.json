@@ -73,7 +73,9 @@
         "version": "cpp",
         "charconv": "cpp",
         "strstream": "cpp",
-        "cfenv": "cpp"
+        "cfenv": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "search.exclude": {

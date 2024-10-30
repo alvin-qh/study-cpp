@@ -14,33 +14,6 @@ using namespace cxx::stl;
 
 using testing::ElementsAre;
 
-/// @brief 测试 `optional<T>` 类型对象
-TEST(TEST_SUITE_NAME, optional_type) {
-    optional<string> opt;
-
-    // 判断 `optional<T>` 类型对象是否有值
-    ASSERT_FALSE(opt.has_value());
-
-    opt = "hello";
-    ASSERT_TRUE(opt.has_value());
-
-    // 通过 `*` 操作符获取 `optional<T>` 类型对象中存储值的引用
-    ASSERT_EQ(*opt, "hello");
-
-    // 通过 `->` 操作符获取 `optional<T>` 类型对象中存储值的指针
-    ASSERT_STREQ(opt->c_str(), "hello");
-
-    // 为 `optional<T>` 类型对象设置表示空的对象
-    opt = std::nullopt;
-    ASSERT_FALSE(opt.has_value());
-
-    opt = "world";
-
-    // 重置 `optional<T>` 类对象, 将其保存的值清空
-    opt.reset();
-    ASSERT_FALSE(opt.has_value());
-}
-
 /// @brief 测试构造器
 TEST(TEST_SUITE_NAME, constructors) {
     // 1. 测试 `optional<T>(const T&)` 构造器
@@ -75,6 +48,11 @@ TEST(TEST_SUITE_NAME, constructors) {
     optional<vector<int>> o4 = optional<vector<int>>(std::in_place, { 1, 2, 3, 4, 5 });
     ASSERT_TRUE(o4.has_value());
     ASSERT_THAT(*o4, ElementsAre(1, 2, 3, 4, 5));
+
+    // 5. 测试 `optional<T>(nullopt_t)` 构造器, 构造一个表示 "空" 的 `optional` 对象
+
+    optional<Person> o5 = nullopt;
+    ASSERT_FALSE(o5.has_value());
 }
 
 /// @brief 测试通过 `std::make_optional` 构造对象
@@ -118,6 +96,8 @@ TEST(TEST_SUITE_NAME, move) {
     shared_ptr<Person> ps = make_shared<Person>("Tom", 18, 'M');
 
     optional<shared_ptr<Person>> o1(ps);
+
+    // 将 `o1` 对象移动到 `o2` 对象
     optional<shared_ptr<Person>> o2(std::move(o1));
 
     ASSERT_TRUE(*o2);
@@ -136,7 +116,65 @@ TEST(TEST_SUITE_NAME, function_return_value) {
     ASSERT_FALSE(opt.has_value());
 }
 
-TEST(TEST_SUITE_NAME, initializer_list_constructor) {
-    optional<int> opt_n{ 42 };
+/// @brief 测试清空 `optional` 对象中存储的值
+TEST(TEST_SUITE_NAME, reset) {
+    auto opt = make_optional<Person>("Tom", 18, 'M');
+    ASSERT_TRUE(opt.has_value());
+
+    // 将 `optional` 对象中存储的值清除
+    opt.reset();
+    ASSERT_FALSE(opt.has_value());
+
+    opt = make_optional<Person>("Lucy", 20, 'F');
+    ASSERT_TRUE(opt.has_value());
+    ASSERT_EQ(*opt, Person("Lucy", 20, 'F'));
 }
 
+/// @brief 测试替换 `optional` 对象中存储的值
+TEST(TEST_SUITE_NAME, emplace) {
+    shared_ptr<Person>
+        p1 = make_shared<Person>("Tom", 18, 'M'),
+        p2 = make_shared<Person>("Lucy", 20, 'F');
+
+    auto opt = make_optional(p1);
+    ASSERT_EQ(**opt, Person("Tom", 18, 'M'));
+
+    // 1. 通过对象引用替换
+
+    opt.emplace(p2);
+    ASSERT_EQ(**opt, Person("Lucy", 20, 'F'));
+
+    // 2. 通过右值引用替换
+    opt.emplace(std::move(p1));
+    ASSERT_EQ(**opt, Person("Tom", 18, 'M'));
+
+    // `p1` 对象已被移动
+    ASSERT_FALSE(p1);
+
+    // 3. 通过存储类型构造器参数替换, 这里指 `shared_ptr<Person>(Person*)` 构造器
+    opt.emplace(new Person("Jerry", 22, 'M'));
+    ASSERT_EQ(**opt, Person("Jerry", 22, 'M'));
+}
+
+/// @brief 测试获取 `optional` 对象中存储的值
+TEST(TEST_SUITE_NAME, value) {
+    auto opt = make_optional(Person("Tom", 18, 'M'));
+
+    // 通过 `*` 运算符, 获取所存储对象的引用
+    ASSERT_EQ(*opt, Person("Tom", 18, 'M'));
+
+    // 通过 `->` 运算符, 获取所存储对象的指针
+    ASSERT_EQ(opt->name(), "Tom");
+
+    // 通过 `value()` 方法, 获取所存储对象的引用
+    ASSERT_EQ(opt.value(), Person("Tom", 18, 'M'));
+
+    // 通过 `value()` 方法, 获取所存储对象的右值引用 (当 `optional` 对象本身为右值时)
+    Person psn = std::move(opt).value();
+    ASSERT_EQ(psn, Person("Tom", 18, 'M'));
+
+    // 确认 `optional` 对象中存储的值已被移动
+    ASSERT_EQ(opt->name(), "");
+    ASSERT_EQ(opt->age(), 0);
+    ASSERT_EQ(opt->gender(), '\0');
+}

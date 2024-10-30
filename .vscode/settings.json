@@ -75,7 +75,8 @@
         "strstream": "cpp",
         "cfenv": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "__bit_reference": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "search.exclude": {

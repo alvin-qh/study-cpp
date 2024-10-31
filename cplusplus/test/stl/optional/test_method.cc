@@ -6,7 +6,7 @@
 
 #include "stl/optional/func.h"
 
-#define TEST_SUITE_NAME test_cplusplus_stl_optional__optional
+#define TEST_SUITE_NAME test_cplusplus_stl_optional__method
 
 using namespace std;
 
@@ -31,25 +31,43 @@ TEST(TEST_SUITE_NAME, has_value) {
 TEST(TEST_SUITE_NAME, value) {
     auto opt = make_optional<string>("hello");
 
-    // 通过 `*` 运算符, 获取所存储对象的引用
+    // 1. 通过 `*` 运算符, 获取所存储对象的值
     ASSERT_EQ(*opt, "hello");
 
-    // 通过 `->` 运算符, 获取所存储对象的指针
+    // 2. 通过 `->` 运算符, 获取所存储对象的指针
     ASSERT_EQ(opt->length(), 5);
 
-    // 通过 `value` 方法, 获取所存储对象的引用
+    // 3. 通过 `value` 方法, 获取所存储对象的引用
     ASSERT_EQ(opt.value(), "hello");
 
-    // 通过 `value` 方法, 获取所存储对象的右值引用 (当 `optional` 对象本身为右值时)
+    // 4. 通过 `value` 方法, 获取所存储对象的右值引用 (当 `optional` 对象本身为右值时)
     string s = std::move(opt).value();
     ASSERT_EQ(s, "hello");
 
     // 确认 `optional` 对象中存储的值已被移动
     ASSERT_EQ(*opt, "");
+}
 
-    // 对于 "空" `optional`, 返回其内部对象的默认值
-    opt = optional<string>();
-    ASSERT_EQ(*opt, "");
+/// @brief 测试 `optional` 默认值
+///
+/// 当 `optional<T>` 对象不包含有效值时, 通过不同的方法获取值会有不同的结果:
+/// 1. 通过 `*` 运算符获取的为 `T` 类型的默认值 (即通过默认构造器实例化的值);
+/// 2. 通过 `->` 运算符获取的为 `T` 类型的默认值 (即通过默认构造器实例化的值) 的指针;
+/// 3. 调用 `value` 方法会抛出 `std::bad_optional_access` 异常;
+TEST(TEST_SUITE_NAME, default_value) {
+    optional<string> o1 = nullopt;
+    ASSERT_EQ(*o1, "");
+    ASSERT_EQ(o1->c_str(), nullptr);
+    ASSERT_THROW(o1.value(), bad_optional_access);
+
+    optional<int> o2 = nullopt;
+    ASSERT_EQ(*o2, 0);
+    ASSERT_THROW(o2.value(), bad_optional_access);
+
+    optional<vector<int>> o3 = nullopt;
+    ASSERT_EQ(*o3, vector<int>());
+    ASSERT_EQ(o3->size(), 0);
+    ASSERT_THROW(o3.value(), bad_optional_access);
 }
 
 /// @brief 测试交换两个 `optional` 对象中保存的值

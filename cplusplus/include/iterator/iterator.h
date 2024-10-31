@@ -52,6 +52,7 @@ namespace cxx::iterator {
 		using value_type = T;
 		using pointer = T*;
 		using reference = T&;
+		using const_reference = const T&;
 		using iterator_category = _category;
 	private:
 		using __self = __iterator_type_define<T, _category, _difference_type>;
@@ -112,7 +113,7 @@ namespace cxx::iterator {
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
 		/// @return 当前指针指向的值的只读引用
-		const reference operator*() const { return *_ptr; }
+		const_reference operator*() const { return *_ptr; }
 
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
@@ -129,7 +130,7 @@ namespace cxx::iterator {
 		///
 		/// @param n 下标值
 		/// @return 对应下标的元素只读引用
-		const reference operator[](difference_type n) const { return *(_ptr + n); }
+		const_reference operator[](difference_type n) const { return *(_ptr + n); }
 
 		/// @brief 判断迭代器是否有效
 		///

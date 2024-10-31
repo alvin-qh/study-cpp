@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wsizeof-array-div"
+
 #include <gtest/gtest.h>
 
 #include <cstddef>
@@ -101,3 +104,5 @@ TEST(TEST_SUITE_NAME, class_override_new_delete_operator) {
 
     delete[] pos;
 }
+
+#pragma clang diagnostic pop

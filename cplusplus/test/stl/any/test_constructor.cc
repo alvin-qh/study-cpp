@@ -59,3 +59,24 @@ TEST(TEST_SUITE_NAME, in_place_initialized_list_constructor) {
     any a2(std::in_place_type<vector<int>>, { 1, 2, 3, 4, 5 });
     ASSERT_THAT(any_cast<vector<int>>(a2), ElementsAre(1, 2, 3, 4, 5));
 }
+
+/// @brief 测试拷贝构造器
+TEST(TEST_SUITE_NAME, copy_constructor) {
+    any a1(make_any<string>("hello"));
+
+    // 调用拷贝构造器
+    any a2(a1);
+    ASSERT_EQ(any_cast<string>(a1), any_cast<string>(a2));
+}
+
+/// @brief 测试移动构造器
+TEST(TEST_SUITE_NAME, move_constructor) {
+    any a1(make_any<string>("hello"));
+
+    // 调用移动构造器
+    any a2(std::move(a1));
+    ASSERT_EQ(any_cast<string>(a2), "hello");
+
+    // 变量 `a1` 的值已经被移动
+    ASSERT_FALSE(a1.has_value());
+}

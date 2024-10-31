@@ -3,7 +3,10 @@
 
 #include <tuple>
 
+#include "../type.h"
+
 using namespace std;
+using namespace cxx::stl;
 
 using testing::ElementsAre;
 
@@ -227,7 +230,7 @@ TEST(TEST_SUITE_NAME, tuple_from_pair) {
     int n;
     string s;
 
-    // 通过 `std::tie` 函数构包含两个变量引用的造元组对象, 
+    // 通过 `std::tie` 函数构包含两个变量引用的造元组对象,
     // 并用 `std::pair` 对象对其赋值
     std::tie(n, s) = p;
     ASSERT_EQ(n, 2);
@@ -242,8 +245,8 @@ TEST(TEST_SUITE_NAME, ignore_field) {
 
     string s;
 
-    // 本例中, 原本需要一个 `std::tuple<bool&, string&>` 
-    // 类型元组来接收 `std::pair<bool, string>` 对象, 但通过 
+    // 本例中, 原本需要一个 `std::tuple<bool&, string&>`
+    // 类型元组来接收 `std::pair<bool, string>` 对象, 但通过
     // `std::ignore` 对象占位, 可以不接收 `bool` 值
     std::tie(std::ignore, s) = make_pair(true, "hello");
     ASSERT_EQ(s, "hello");
@@ -255,7 +258,7 @@ TEST(TEST_SUITE_NAME, ignore_field) {
 /// - 如果传递给元组的是一个左值引用, 则元组中存储该左值引用;
 /// - 如果传递给元组的是一个右值引用, 则元组中存储该右值引用;
 ///
-/// 对于 `std::forward_as_tuple` 函数的返回值 `t1`, 
+/// 对于 `std::forward_as_tuple` 函数的返回值 `t1`,
 /// 如果通过元组类的移动构造器创建新元组对象 `t2` 时, 则 `t1` 中所有右值引用,
 /// 其引用的对象会被移动到 `t2` 对象中
 ///
@@ -276,7 +279,7 @@ TEST(TEST_SUITE_NAME, forward_as_tuple) {
     ASSERT_EQ(s1, "");
     ASSERT_TRUE(v1.empty());
 
-    // 通过 `forward_as_tuple` 返回值产生的临时对象产生右值引用, 
+    // 通过 `forward_as_tuple` 返回值产生的临时对象产生右值引用,
     // 调用 `std::tuple(std::tuple&&)` 移动构造器, 将 `s2`, `v2` 对象的值移动到
     // `s1`, `v1` 对象中
     tie(s1, v1) = forward_as_tuple(std::move(s2), std::move(v2));

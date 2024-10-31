@@ -15,12 +15,7 @@ namespace cxx::stl {
 	///
 	/// @param n 整数值
 	/// @return `optional<int>` 类对象
-	optional<int> check_even_number(int n) {
-		if (n % 2 == 0) {
-			return n;
-		}
-		return std::nullopt;
-	}
+	optional<int> check_even_number(int n);
 
 } // ! namespace cxx::std
 

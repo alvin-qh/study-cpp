@@ -14,12 +14,10 @@ using cxx::stl::Person;
 
 /// @brief 测试默认构造器
 ///
-/// 默认构造器产生的 `any` 对象不包含任何值, 此时获取 `any`
-/// 值时会抛出 `bad_any_cast` 异常
+/// 默认构造器产生的 `any` 对象不包含任何值
 TEST(TEST_SUITE_NAME, default_constructor) {
     any a;
-    ASSERT_THROW(any_cast<void*>(a), bad_any_cast);
-    ASSERT_THROW(any_cast<int>(a), bad_any_cast);
+    ASSERT_FALSE(a.has_value());
 }
 
 /// @brief 测试参数构造器

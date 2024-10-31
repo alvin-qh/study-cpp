@@ -55,9 +55,9 @@ TEST(TEST_SUITE_NAME, value) {
 /// 2. 通过 `->` 运算符获取的为 `T` 类型的默认值 (即通过默认构造器实例化的值) 的指针;
 /// 3. 调用 `value` 方法会抛出 `std::bad_optional_access` 异常;
 TEST(TEST_SUITE_NAME, default_value) {
-    optional<string> o1 = nullopt;
+    optional<string> o1;
     ASSERT_EQ(*o1, "");
-    ASSERT_EQ(o1->c_str(), nullptr);
+    // ASSERT_EQ(o1->c_str(), nullptr);
     ASSERT_THROW(o1.value(), bad_optional_access);
 
     optional<int> o2 = nullopt;

@@ -12,7 +12,7 @@ using namespace cxx::oop;
 /// 并通过 `operator delete(void*)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_new_delete_operator) {
     int* p = new int(100);
-    EXPECT_EQ(*p, 100);
+    ASSERT_EQ(*p, 100);
 
     delete p;
 }
@@ -21,7 +21,7 @@ TEST(TEST_SUITE_NAME, global_new_delete_operator) {
 /// 并通过 `operator delete(void*, const std::nothrow_t&)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_nothrow_new_delete_operator) {
     int* p = new (std::nothrow) int(100);
-    EXPECT_EQ(*p, 100);
+    ASSERT_EQ(*p, 100);
 
     ::operator delete(p, std::nothrow);
 }
@@ -30,10 +30,10 @@ TEST(TEST_SUITE_NAME, global_nothrow_new_delete_operator) {
 /// 并通过 `operator delete[](void*)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_array_new_delete_operator) {
     int* ps = new int[] {1, 2, 3, 4};
-    EXPECT_EQ(ps[0], 1);
-    EXPECT_EQ(ps[1], 2);
-    EXPECT_EQ(ps[2], 3);
-    EXPECT_EQ(ps[3], 4);
+    ASSERT_EQ(ps[0], 1);
+    ASSERT_EQ(ps[1], 2);
+    ASSERT_EQ(ps[2], 3);
+    ASSERT_EQ(ps[3], 4);
 
     delete[] ps;
 }
@@ -42,10 +42,10 @@ TEST(TEST_SUITE_NAME, global_array_new_delete_operator) {
 /// 并通过 `operator delete[](void*, const std::nothrow_t)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_nothrow_array_new_delete_operator) {
     int* ps = new (std::nothrow) int[] {1, 2, 3, 4};
-    EXPECT_EQ(ps[0], 1);
-    EXPECT_EQ(ps[1], 2);
-    EXPECT_EQ(ps[2], 3);
-    EXPECT_EQ(ps[3], 4);
+    ASSERT_EQ(ps[0], 1);
+    ASSERT_EQ(ps[1], 2);
+    ASSERT_EQ(ps[2], 3);
+    ASSERT_EQ(ps[3], 4);
 
     ::operator delete[](ps, std::nothrow);
 }

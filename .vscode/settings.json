@@ -80,7 +80,8 @@
         "__hash_table": "cpp",
         "__tree": "cpp",
         "hash_map": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "*.ipp": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "search.exclude": {

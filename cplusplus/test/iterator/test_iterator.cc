@@ -213,14 +213,14 @@ TEST(TEST_SUITE_NAME, iterator_movement) {
     decltype(da.begin()) it1, it2;
 
     it1 = da.begin();
-    ASSERT_TRUE(it1.valid());
+    ASSERT_TRUE(it1);
 
     // 执行移动赋值运算
     it2 = std::move(it1);
 
     // 迭代器内部指针已经从 `it1` 移动到 `it2`
-    ASSERT_FALSE(it1.valid());
-    ASSERT_TRUE(it2.valid());
+    ASSERT_FALSE(it1);
+    ASSERT_TRUE(it2);
 
     ASSERT_EQ(*it2, 1);
 }

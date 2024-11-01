@@ -111,11 +111,6 @@ namespace cxx::iterator {
 
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
-		/// @return 当前指针指向的值的只读引用
-		const reference operator*() const { return *_ptr; }
-
-		/// @brief 解引运算符重载, 获取指针指向的值
-		///
 		/// @return 当前指针指向的值的可变引用
 		reference operator*() { return *_ptr; }
 
@@ -125,16 +120,12 @@ namespace cxx::iterator {
 		/// @return 对应下标的元素引用
 		reference operator[](difference_type n) { return *(_ptr + n); }
 
-		/// @brief 重载下标运算符, 根据索引值获取对应元素只读引用
+		/// @brief 重载布尔运算符
 		///
-		/// @param n 下标值
-		/// @return 对应下标的元素只读引用
-		const reference operator[](difference_type n) const { return *(_ptr + n); }
-
-		/// @brief 判断迭代器是否有效
+		/// 为防止迭代器被隐式转换为 `bool` 类型, 参与其它运算, 需要加上 `explicit` 关键字
 		///
 		/// @return 迭代器是否有效
-		bool valid() const { return _ptr != nullptr; }
+		explicit operator bool() const { return _ptr != nullptr; }
 	};
 
 	/// @brief 定义正向迭代器类
@@ -293,7 +284,7 @@ namespace cxx::iterator {
 		friend __self operator-(difference_type left, const __self& right) noexcept {
 			return __self(right._ptr - left);
 		}
-};
+	};
 
 	/// @brief 定义反向迭代器类
 	///

@@ -111,14 +111,18 @@ namespace cxx::iterator {
 
 		/// @brief 解引运算符重载, 获取指针指向的值
 		///
+		/// clang++ 要求 input 迭代器可以返回当前迭代元素的引用, 且必须修饰为 `const` 方法
+		///
 		/// @return 当前指针指向的值的可变引用
-		reference operator*() { return *_ptr; }
+		reference operator*() const { return *_ptr; }
 
 		/// @brief 重载下标运算符, 根据索引值获取对应元素引用
 		///
+		/// clang++ 要求要求随机迭代器具备通过下标返回任意位置元素引用, 且必须修饰为 `const` 方法
+		///
 		/// @param n 下标值
 		/// @return 对应下标的元素引用
-		reference operator[](difference_type n) { return *(_ptr + n); }
+		reference operator[](difference_type n) const { return *(_ptr + n); }
 
 		/// @brief 重载布尔运算符
 		///

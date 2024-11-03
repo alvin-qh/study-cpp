@@ -4,7 +4,10 @@
 
 #include <string>
 
+#include "oop/const.h"
+
 using namespace std;
+using namespace cxx::oop;
 
 /// @brief 测试 `const` 修饰值变量
 ///
@@ -106,81 +109,6 @@ TEST(TEST_SUITE_NAME, const_pointer) {
     // 无法改变指针指向的变量值
     // *p4 = 10000;
 }
-
-/// @brief 测试类成员方法的 `const` 修饰符
-///
-/// 当使用 `const` 修饰类成员方法时, 其表示的是当前对象的状态, 即方法后修饰了 `const`, 
-/// 则在方法内部, 相当于当前对象被修饰了 `const`:
-/// - 无 `const` 修饰或修饰为 `&` 时, 表示该方法可用于可读写对象 (及引用), 无法用于只读对象 (及引用);
-/// - 修饰为 `const` 或修饰为 `const&` 时, 表示该方法可用于可读写对象 (及引用) 以及只读对象 (及引用);
-///
-/// 修饰为 `const` 的方法表示在方法内部不会对当前对象进行修改
-///
-/// 对于两个同名, 同参数的方法, 在方法后修饰了 `const` 和未修饰 `const` 的互为重载关系
-class Constant {
-private:
-    string _val, _ref, _ptr;
-public:
-    /// @brief 参数构造器
-    Constant(const string& value) :
-        _val(value),
-        _ref(value + "-r"),
-        _ptr(value + "-p") {
-    }
-
-    /// @brief 将当前对象转为字符串
-    ///
-    /// 方法修饰为 `const`, 表示无论当前对象或其引用 (或指针) 是否只读, 都可以调用
-    string to_string() const { return "Constant(" + _val + ")"; }
-
-    /// @brief 重新设置对象字段值
-    ///
-    /// 该方法未修饰为 `const`, 故仅可被非只读状态的对象调用
-    Constant& set(const string& value) {
-        _val = value;
-        _ref = value + "-r";
-        _ptr = value + "-p";
-        return *this;
-    }
-
-    /// @brief 获取当前对象所存储的值
-    ///
-    /// 该方法未修饰 `const`, 故无法通过只读对象及其引用 (或指针) 进行调用
-    string value() { return _val; }
-
-    /// @brief 获取当前对象所存储的只读值
-    ///
-    /// 方法修饰为 `const`, 表示无论当前对象或其引用 (或指针) 是否只读, 都可以调用
-    ///
-    /// 一般情况下, 对于值类型返回值, 无需将返回值修饰为 `const`, 并未实际意义
-    const string value() const { return _val; }
-
-    /// @brief 获取当前对象所存储值的指针
-    ///
-    /// 该方法未修饰 `const`, 故无法通过只读对象及其引用 (或指针) 进行调用
-    string* ptr() { return &_ptr; }
-
-    /// @brief 获取当前对象所存储值的只读指针
-    ///
-    /// 方法修饰为 `const`, 表示无论当前对象或其引用 (或指针) 是否只读, 都可以调用
-    ///
-    /// 修饰为 `const` 的方法返回的指针类型也必须为 `const`, 表示外部调用此方法时, 
-    /// 无法通过返回值对当前对象进行修改
-    const string* ptr() const { return &_ptr; }
-
-    /// @brief 获取当前对象所存储值的引用
-    ///
-    /// 该方法未修饰 `const`, 故无法通过只读对象及其引用 (或指针) 进行调用
-    string& ref()& { return _ref; }
-
-    /// @brief 获取当前对象所存储值的只读引用
-    ///
-    /// 方法修饰为 `const`, 表示无论当前对象或其引用 (或指针) 是否只读, 都可以调用
-    ///
-    /// 修饰为 `const` 的方法返回的引用类型也必须为 `const`, 表示外部调用此方法时, 
-    /// 无法通过返回值对当前对象进行修改
-    const string& ref() const& { return _ref; }
-};
 
 /// @brief 测试对象在非只读状态下的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_non_const_object) {

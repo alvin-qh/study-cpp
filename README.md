@@ -112,3 +112,44 @@ VSCode 中用于支持 C/C++ 开发的插件包括:
 ### 5.2. 环境配置
 
 通过命令面板的 "CMake: Scan for Kits" 以及 "CMake: Select a Kit" 命令, 即可扫描本机上的所有工具链并选择其中的一个 (例如: LLVM Clang)
+
+## 6. LLVM & Clang
+
+常见的 Linux 发行版本软件源中一般都会提供 LLVM 按照, 只是版本往往较低, 如果需要安装最新版本的 LLVM 以及 Clang, 可以直接通过 <llvm.org> 提供的源来进行
+
+> 国内可以使用清华大学的镜像源, 参见 <https://mirrors.tuna.tsinghua.edu.cn/help/llvm-apt/>
+
+现以清华源为例, 在 Ubuntu 系统中安装 LLVM 软件源, 其它系统方式与之类似
+
+### 6.1. 安装 PGP 公钥
+
+由于 Ubuntu 20 以上版本已经废弃了 `apt-key` 命令, 故需要用如下方法安装 PGP 公钥
+
+```bash
+curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm.gpg
+```
+
+上述命令在 `/usr/share/keyrings` 路径下创建了名为 `llvm.gpg` 文件, 里面存储 `llvm` 软件源的 PGP 公钥
+
+### 6.2. 设置软件源
+
+创建 `/etc/apt/sources.list.d/llvm-apt.list` 文件并进行编辑
+
+```bash
+sudo vi /etc/apt/sources.list.d/llvm-apt.list
+```
+
+在文件中填入如下内容
+
+```plaintext
+deb [arch=amd64 signed-by=/usr/share/keyrings/llvm.gpg] https://mirrors.tuna.tsinghua.edu.cn/llvm-apt/jammy llvm-toolchain-jammy main
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/llvm-apt/jammy/ llvm-toolchain-jammy main
+```
+
+### 6.3. 安装 Clang
+
+完成上述步骤后, 即可通过 apt 包管理器安装 clang, 同时会将 LLVM 作为依赖一并安装
+
+```bash
+sudo apt install clang
+```

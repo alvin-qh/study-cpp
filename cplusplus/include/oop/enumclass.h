@@ -10,68 +10,114 @@
 namespace cxx::oop {
 	using namespace std;
 
+	/// @brief 定义枚举类
+	///
+	/// 枚举类区别于 C 语音的枚举 (`enum`), 后者的枚举项在当前命名空间内为全局定义,
+	/// 有可能会污染命名空间内的其它全局名称定义, 而前者则将定义范围限定在了枚举类型中,
+	/// 避免污染命名空间内的全局其它全局名称定义;
+	///
+	/// 和 C 枚举类似, 枚举类的枚举项类型为整型, 默认情况下, 枚举类的第一项的值为 `0`,
+	/// 依次递增; 也可以通过 `=` 为枚举项指定整数值;
+	///
+	/// 枚举类的枚举项类型默认为能涵盖最大枚举项值的最小整数类型, 例如:
+	/// 如果枚举项的最大值不超过 `128`, 则枚举项的类型为 `char` 类型
+	///
+	/// 枚举类的枚举项不能隐式的转为整型, 需要通过 `static_cast` 进行强制转换
 	enum class Color {
 		Red,
 		Green,
 		Blue
 	};
 
-	std::optional<std::string> color_to_rgb(Color c) {
-		switch (c) {
-		case Color::Red:
-			return "#f00";
-		case Color::Green:
-			return "#0f0";
-		case Color::Blue:
-			return "#00f";
-		default:
-			return std::nullopt;
-		}
-	}
+	/// @brief 定义一组字符串常量, 用于对应 `Color` 枚举的每一项名称
+	constexpr const char
+		* COLOR_RED = "#f00",
+		* COLOR_GREEN = "#0f0",
+		* COLOR_BLUE = "#00f";
 
+	/// @brief 将 `Color` 枚举项转为对应的字符串
+	///
+	/// @param c `Color` 枚举项
+	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
+	optional<string> color_to_rgb(Color c);
+
+	/// @brief 定义指定整数类型的枚举类
+	///
+	/// 可为枚举类强制指定枚举项的整数类型 (本例指定为 `uint8_t`), 并通过 `=` 为枚举项指定整数值,
+	/// 如果指定的整数值超出枚举定义的整型范围, 则编译错误
 	enum class Gender : uint8_t {
 		Male = 1,
 		Female = 2
 	};
 
-	std::optional<std::string> gender_to_string(Gender g) {
-		switch (g) {
-		case Gender::Male:
-			return "Male";
-		case Gender::Female:
-			return "Female";
-		default:
-			return std::nullopt;
-		}
-	}
+	/// @brief 定义一组字符串常量, 用于对应 `Gender` 枚举的每一项名称
+	constexpr const char
+		* GENDER_MALE = "Male",
+		* GENDER_FEMALE = "Female";
+
+	/// @brief 将 `Gender` 枚举项转为对应的字符串
+	///
+	/// @param g `Gender` 枚举项
+	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
+	optional<string> gender_to_string(Gender g);
+
+	/// @brief 将 `Gender` 枚举项转为对应的字符串
+	///
+	/// @param g `Gender` 枚举项
+	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
+	optional<Gender> string_to_gender(const string& s);
 
 	/// @brief 模拟枚举类型
 	///
-	/// 由于 C++ 原生的枚举 (或枚举类) 存在诸多不方便之处, 故也可以通过模板类模拟枚举
+	/// 由于 C++ 原生的枚举 (或枚举类) 存在诸多不方便之处, 故也可以通过类的静态常量字段来模拟枚举
 	///
-	/// 借助 C++ 模板常量参数以及常量表达式, 可以模拟枚举的具体使用
+	/// 这种方式定义的 "仿枚举" 使用时较为方便, 但定义较为繁琐
 	class ImitationEnum {
 	private:
 		/// @brief 定义枚举项类型
-		///
-		/// @tparam NAME 枚举项名称
-		/// @tparam VALUE 枚举项值
-		template<const char* NAME, int VALUE>
-		struct __enum_value {
-			constexpr const char* name() const { return NAME; }
-			constexpr const char* value() const { return VALUE; }
+		class __enum_value {
+		private:
+			// 枚举项名称
+			string _name;
 
-			constexpr operator const char* () const { return NAME; }
-			constexpr operator int() const { return VALUE; }
+			// 枚举项值
+			int _value;
+		public:
+			/// @brief 参数构造器
+			__enum_value(const string& name, int value);
+
+			/// @brief 获取枚举项名称
+			const string& name() const;
+
+			/// @brief 获取枚举项值
+			int value() const;
+
+			/// @brief 重载类型转换运算符, 当枚举项转为 `int` 时返回枚举项值
+			operator int() const;
+
+			/// @brief 重载类型转换运算符, 当枚举项转为 `string` 时返回枚举项名称
+			operator string() const;
+
+			/// @brief 重载类型转换运算符, 当枚举项转为 `const string&`
+			/// 时返回枚举项名称的引用
+			operator const string& () const;
+
+			/// @brief 重载类型转换运算符, 当枚举项转为 `const char*`
+			/// 时返回枚举项名称的指针
+			operator const char* () const;
 		};
-
-		constexpr static char _A[] = "A";
-		constexpr static char _B[] = "B";
-		constexpr static char _C[] = "C";
 	public:
-		constexpr static __enum_value<_A, 1> A = __enum_value<_A, 1>();
-		constexpr static __enum_value<_B, 2> B = __enum_value<_B, 2>();
-		constexpr static __enum_value<_C, 3> C = __enum_value<_C, 3>();
+		/// @brief 定义枚举项常量 `A`
+		const static __enum_value A;
+
+		/// @brief 定义枚举项常量 `B`
+		const static __enum_value B;
+
+		/// @brief 定义枚举项常量 `C`
+		const static __enum_value C;
+
+		/// @brief 将字符串转为特定枚举项
+		static optional<__enum_value> from_string(const string& name);
 	};
 
 } // ! namespace cxx::oop

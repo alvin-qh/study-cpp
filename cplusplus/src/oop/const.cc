@@ -2,31 +2,31 @@
 
 namespace cxx::oop {
 
-    Constant::Constant(const string& value) :
+    ConstMethod::ConstMethod(const string& value) :
         _val(value),
         _ref(value + "-r"),
         _ptr(value + "-p") {
     }
 
-    string Constant::to_string() const { return "Constant(" + _val + ")"; }
+    string ConstMethod::to_string() const { return "Constant(" + _val + ")"; }
 
-    Constant& Constant::set(const string& value) {
+    ConstMethod& ConstMethod::set(const string& value) {
         _val = value;
         _ref = value + "-r";
         _ptr = value + "-p";
         return *this;
     }
 
-    string Constant::value() { return _val; }
+    string ConstMethod::value() { return _val; }
 
-    const string Constant::value() const { return _val; }
+    const string ConstMethod::value() const { return _val; }
 
-    string* Constant::ptr() { return &_ptr; }
+    string* ConstMethod::ptr() { return &_ptr; }
 
-    const string* Constant::ptr() const { return &_ptr; }
+    const string* ConstMethod::ptr() const { return &_ptr; }
 
-    string& Constant::ref()& { return _ref; }
+    string& ConstMethod::ref()& { return _ref; }
 
-    const string& Constant::ref() const& { return _ref; }
+    const string& ConstMethod::ref() const& { return _ref; }
 
 } // ! namespace cxx::oop

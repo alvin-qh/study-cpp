@@ -112,7 +112,7 @@ TEST(TEST_SUITE_NAME, const_pointer) {
 
 /// @brief 测试对象在非只读状态下的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_non_const_object) {
-    Constant c = Constant("TEST");
+    ConstMethod c = ConstMethod("TEST");
 
     // 对于修饰为 `const` 的方法, 非只读状态的对象可以正常调用
     ASSERT_EQ(c.to_string(), "Constant(TEST)");
@@ -128,7 +128,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object) {
     // 对于未修饰为 `const` 的方法, 非只读状态的对象可以正常调用
     ASSERT_EQ(c.ref(), "TEST-r");
 
-    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是引用, 
+    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是引用,
     // 故修改会影响到对象本身
     c.ref() += "-new";
     ASSERT_EQ(c.ref(), "TEST-r-new");
@@ -136,7 +136,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object) {
     // 对于未修饰为 `const` 的方法, 非只读状态的对象可以正常调用
     ASSERT_EQ(*c.ptr(), "TEST-p");
 
-    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是指针, 
+    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是指针,
     // 故修改会影响到对象本身
     *c.ptr() += "-new";
     ASSERT_EQ(*c.ptr(), "TEST-p-new");
@@ -148,7 +148,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object) {
 
 /// @brief 测试对象在只读状态下的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_const_object) {
-    const Constant c = Constant("CTEST");
+    const ConstMethod c = ConstMethod("CTEST");
 
     // 对于修饰为 `const` 的方法, 只读状态的对象可以正常调用
     ASSERT_EQ(c.to_string(), "Constant(CTEST)");
@@ -177,10 +177,10 @@ TEST(TEST_SUITE_NAME, methods_with_const_object) {
 
 /// @brief 测试通过对象的非只读引用进行的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_non_const_object_ref) {
-    Constant c = Constant("TEST");
+    ConstMethod c = ConstMethod("TEST");
 
     // 产生对象的非只读引用
-    Constant& r = c;
+    ConstMethod& r = c;
 
     // 对于修饰为 `const` 的方法, 非只读状态的对象引用可以正常调用
     ASSERT_EQ(r.to_string(), "Constant(TEST)");
@@ -196,7 +196,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object_ref) {
     // 对于未修饰为 `const` 的方法, 非只读状态的对象引用可以正常调用
     ASSERT_EQ(r.ref(), "TEST-r");
 
-    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是引用, 
+    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是引用,
     // 故修改会影响到对象本身
     r.ref() += "-new";
     ASSERT_EQ(c.ref(), "TEST-r-new");
@@ -204,7 +204,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object_ref) {
     // 对于未修饰为 `const` 的方法, 非只读状态的对象引用可以正常调用
     ASSERT_EQ(*r.ptr(), "TEST-p");
 
-    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是指针, 
+    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是指针,
     // 故修改会影响到对象本身
     *r.ptr() += "-new";
     ASSERT_EQ(*c.ptr(), "TEST-p-new");
@@ -216,13 +216,13 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object_ref) {
 
 /// @brief 测试通过对象的只读引用进行的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_const_object_ref) {
-    const Constant c = Constant("CTEST");
+    const ConstMethod c = ConstMethod("CTEST");
 
     // 不能用非只读引用引用一个只读对象
     // Constant& r = c;
 
     // 产生对象的只读引用
-    const Constant& r = c;
+    const ConstMethod& r = c;
 
     // 对于修饰为 `const` 的方法, 只读状态的对象引用可以正常调用
     ASSERT_EQ(r.to_string(), "Constant(CTEST)");
@@ -251,10 +251,10 @@ TEST(TEST_SUITE_NAME, methods_with_const_object_ref) {
 
 /// @brief 测试通过对象的非只读指针进行的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_non_const_object_ptr) {
-    Constant c = Constant("TEST");
+    ConstMethod c = ConstMethod("TEST");
 
     // 产生对象的非只读指针
-    Constant* p = &c;
+    ConstMethod* p = &c;
 
     // 对于修饰为 `const` 的方法, 非只读状态的对象指针可以正常调用
     ASSERT_EQ(p->to_string(), "Constant(TEST)");
@@ -270,7 +270,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object_ptr) {
     // 对于未修饰为 `const` 的方法, 非只读状态的对象指针可以正常调用
     ASSERT_EQ(p->ref(), "TEST-r");
 
-    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是引用, 
+    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是引用,
     // 故修改会影响到对象本身
     p->ref() += "-new";
     ASSERT_EQ(c.ref(), "TEST-r-new");
@@ -278,7 +278,7 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object_ptr) {
     // 对于未修饰为 `const` 的方法, 非只读状态的对象指针可以正常调用
     ASSERT_EQ(*p->ptr(), "TEST-p");
 
-    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是指针, 
+    // 返回值非只读状态, 可以对其进行修改, 且由于返回的是指针,
     // 故修改会影响到对象本身
     *p->ptr() += "-new";
     ASSERT_EQ(*c.ptr(), "TEST-p-new");
@@ -290,13 +290,13 @@ TEST(TEST_SUITE_NAME, methods_with_non_const_object_ptr) {
 
 /// @brief 测试通过对象的只读指针进行的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_const_object_ptr) {
-    const Constant c = Constant("CTEST");
+    const ConstMethod c = ConstMethod("CTEST");
 
     // 不能用非只读指针指向一个只读对象
     // Constant* p = &c;
 
     // 产生对象的只读指针
-    const Constant* p = &c;
+    const ConstMethod* p = &c;
 
     // 对于修饰为 `const` 的方法, 只读状态的对象指针可以正常调用
     ASSERT_EQ(p->to_string(), "Constant(CTEST)");

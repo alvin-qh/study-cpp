@@ -8,6 +8,34 @@
 namespace cxx::oop {
 	using namespace std;
 
+	class ConstClass {
+	private:
+	};
+
+	/// @brief 类中的 `const` 成员
+	class ConstField {
+		struct struct_value {
+			const char* name;
+			int value;
+		};
+
+		class class_value {
+		private:
+			const char* name;
+			int value;
+		public:
+			constexpr class_value(const char* name, int value) :
+				name(name), value(value) {
+			}
+		};
+	public:
+		constexpr static const char C_CSTR[] = "Alvin";
+
+		constexpr static string C_STR = "hello";
+
+		constexpr static struct_value C_STRUCT = { .name = "Alvin", .value = 20 };
+	};
+
 	/// @brief 测试类成员方法的 `const` 修饰符
 	///
 	/// 当使用 `const` 修饰类成员方法时, 其表示的是当前对象的状态, 即方法后修饰了 `const`,
@@ -18,12 +46,12 @@ namespace cxx::oop {
 	/// 修饰为 `const` 的方法表示在方法内部不会对当前对象进行修改
 	///
 	/// 对于两个同名, 同参数的方法, 在方法后修饰了 `const` 和未修饰 `const` 的互为重载关系
-	class Constant {
+	class ConstMethod {
 	private:
 		string _val, _ref, _ptr;
 	public:
 		/// @brief 参数构造器
-		Constant(const string& value);
+		ConstMethod(const string& value);
 
 		/// @brief 将当前对象转为字符串
 		///
@@ -33,7 +61,7 @@ namespace cxx::oop {
 		/// @brief 重新设置对象字段值
 		///
 		/// 该方法未修饰为 `const`, 故仅可被非只读状态的对象调用
-		Constant& set(const string& value);
+		ConstMethod& set(const string& value);
 
 		/// @brief 获取当前对象所存储的值
 		///

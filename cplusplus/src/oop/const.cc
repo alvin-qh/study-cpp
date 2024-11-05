@@ -2,6 +2,8 @@
 
 namespace cxx::oop {
 
+    // ------------------------------------------------------------------------------------------------------------
+
     ConstMethod::ConstMethod(const string& value) :
         _val(value),
         _ref(value + "-r"),

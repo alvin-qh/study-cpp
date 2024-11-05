@@ -110,6 +110,68 @@ TEST(TEST_SUITE_NAME, const_pointer) {
     // *p4 = 10000;
 }
 
+/// @brief 测试 `constexpr` 函数作为模板常量参数
+///
+/// @tparam N 模板常量参数
+/// @param n 待比较的参数
+/// @return `N` 和 `n` 的值是否相同
+template <uint64_t N>
+bool check_value(const uint64_t n) {
+    // 常量 `N` 无法和变量 `n` 在编译期 (`static_assert`) 进行比较
+    // static_assert(N == n);
+
+    // 常量 `N` 无法和变量 `n` 只能在运行期进行比较
+    return N == n;
+}
+
+/// @brief 测试 `constexpr` 函数在编译期的调用
+TEST(TEST_SUITE_NAME, const_function) {
+    // 调用常量函数, 返回的结果也是常量, 该函数在编译期完成调用
+    constexpr uint64_t cr = const_fib(25);
+    static_assert(cr == 75025);
+
+    // 常量函数的结果可以作为模板常量参数
+    uint64_t r = check_value<const_fib(10)>(55);
+    ASSERT_TRUE(r);
+
+    // 对于过于复杂的调用 (函数内部复杂或者函数递归调用),
+    // 则无法在编译期处理为常量
+    // constexpr uint64_t cr = const_fib(30);
+
+    // 过于复杂的常量函数, 只能在运行期调用, 不在作为常量函数
+    uint64_t rr = const_fib(30);
+    ASSERT_EQ(rr, 832040);
+}
+
+/// @brief 测试常量类
+TEST(TEST_SUITE_NAME, const_class) {
+    constexpr static string a = "AAA";
+    // 实例后常量类对象, 该对象为一个常量值
+    // 常量类对象的实例化在编译期进行
+    constexpr ConstClass c = ConstClass("TEST", 100, a);
+
+    // 调用常量类对象的方法, 这些方法均为常量方法, 可以在编译期调用执行
+    static_assert(static_str_cmp(c.name(), "TEST") == 0);
+    static_assert(c.value() == 100);
+
+    // 在运行期也可以调用常量类型对象的方法, 这些方法将被编译为常量值
+    ASSERT_STREQ(c.name(), "TEST");
+    ASSERT_EQ(c.value(), 100);
+}
+
+/// @brief 测试类中的常量成员字段
+TEST(TEST_SUITE_NAME, const_class_field) {
+    static_assert(static_str_cmp(ConstField::CES_CSTR, "A") == 0);
+
+    static_assert(ConstField::CES_STR == "B");
+
+    static_assert(ConstField::CES_STRUCT.name == "C");
+    static_assert(ConstField::CES_STRUCT.value == 20);
+
+    static_assert(static_str_cmp(ConstField::CES_CLASS.name(), "D") == 0);
+    static_assert(ConstField::CES_CLASS.value() == 100);
+}
+
 /// @brief 测试对象在非只读状态下的方法调用情况
 TEST(TEST_SUITE_NAME, methods_with_non_const_object) {
     ConstMethod c = ConstMethod("TEST");

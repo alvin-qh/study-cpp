@@ -4,37 +4,124 @@
 #define __CPLUSPLUS_OOP__CONST_H
 
 #include <string>
+#include <sstream>
 
 namespace cxx::oop {
 	using namespace std;
 
+	// ------------------------------------------------------------------------------------------------------------
+
+	// 定义常量
+	constexpr uint64_t MAX_N = 50;
+
+	/// @brief 常量函数, 在编译期计算斐波那契数列第 `n` 项的值
+	///
+	/// 通过 `constexpr` 关键字修饰的函数为一个常量函数, 在编译期运行, 将函数返回值作为常量值进行编译;
+	///
+	/// 常量函数有一定的使用限制, 包括:
+	/// - 函数内部只能引用函数外部的常量;
+	/// - 函数内部只能调用同为 `constexpr` 修饰的函数;
+	/// - 函数必须返回值, 且返回值将作为常量进行编译;
+	///
+	/// @param n 要计算数列的下标
+	/// @return 斐波那契数列第 `n` 项的值
+	constexpr uint64_t const_fib(uint32_t n) {
+		// 在常量函数中可以使用外部定义的常量
+		if (n > MAX_N) {
+			throw runtime_error("n must be less than or equal to 50");
+		}
+		// 在常量函数中, 只允许调用同为常量函数的其它函数
+		// 常量函数必须具备返回值
+		return n <= 1 ? n : const_fib(n - 1) + const_fib(n - 2);
+	}
+
+	/// @brief 常量函数, 用于在编译器确认两个常量字符串是否相等
+	///
+	/// @param s1 常量字符串 1
+	/// @param s2 常量字符串 2
+	/// @return 两个字符串是否相等
+	constexpr int static_str_cmp(const char* s1, const char* s2) {
+		int r = 0;
+		for (; (r = *s1 - *s2) == 0; s1++, s2++) {
+			if (!*s1) {
+				break;
+			}
+		}
+		return r;
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	/// @brief 定义一个常量类
+	///
+	/// 常量类可以通过 `constexpr` 来产生对象, 该对象本身也是一个常量
+	///
+	/// 常量类的成员字段都为常量, 所以常量类对象不能以任何方式修改自身
+	///
+	/// 常量类的方法都必须修饰 `constexpr` 关键字, 也即都必须为常量方法, 要求同常量函数
 	class ConstClass {
 	private:
+		const char* _name;
+		int _value;
+		string _xxx;
+	public:
+		/// @brief 构造器
+		///
+		/// 构造器必须用 `constexpr` 关键字修饰, 在编译期执行
+		constexpr ConstClass(const char* name, int value) :
+			_name(name), _value(value) {
+		}
+
+		/// @brief 构造器
+		///
+		/// 构造器必须用 `constexpr` 关键字修饰, 在编译期执行
+		constexpr ConstClass(const char* name, int value, string xxx) :
+			_name(name), _value(value), _xxx(string(xxx)) {
+		}
+
+
+		/// @brief 定义方法
+		///
+		/// 方法也必须通过 `constexpr` 关键字修饰, 且必须具备返回值
+		constexpr const char* name() const { return _name; }
+
+		/// @brief 定义方法
+		///
+		/// 方法也必须通过 `constexpr` 关键字修饰, 且必须具备返回值
+		constexpr int value() const { return _value; }
 	};
+
+	// ------------------------------------------------------------------------------------------------------------
+
+	/// @brief 定义结构体
+	struct CStruct { string name; int value; };
 
 	/// @brief 类中的 `const` 成员
 	class ConstField {
-		struct struct_value {
-			const char* name;
-			int value;
-		};
-
-		class class_value {
-		private:
-			const char* name;
-			int value;
-		public:
-			constexpr class_value(const char* name, int value) :
-				name(name), value(value) {
-			}
-		};
 	public:
-		constexpr static const char C_CSTR[] = "Alvin";
+		/// @brief 通过 `constexpr` 关键字定义数组类型常量成员字段
+		///
+		/// 通过 `constexpr` 关键字修饰的类字段, 必须和 `static` 关键字配合使用,
+		/// 表示一个静态的全局常量
+		constexpr static const char CES_CSTR[] = "A";
 
-		constexpr static string C_STR = "hello";
+		/// @brief 通过 `constexpr` 关键字定义字符串类型常量成员字段
+		///
+		/// 因为 `std::string` 类型具备修饰了 `constexpr` 关键字的构造器,
+		/// 故可以产生常量对象
+		constexpr static string CES_STR = "B";
 
-		constexpr static struct_value C_STRUCT = { .name = "Alvin", .value = 20 };
+		/// @brief 通过 `constexpr` 关键字定义结构体类型常量成员字段
+		constexpr static CStruct CES_STRUCT = { .name = "C", .value = 20 };
+
+		/// @brief 通过 `constexpr` 关键字定义对象类型常量成员字段
+		///
+		/// 因为 `ConstClass` 类型具备修饰了 `constexpr` 关键字的构造器,
+		/// 故可以产生常量对象
+		constexpr static ConstClass CES_CLASS = ConstClass("D", 100);
 	};
+
+	// ------------------------------------------------------------------------------------------------------------
 
 	/// @brief 测试类成员方法的 `const` 修饰符
 	///

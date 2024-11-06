@@ -41,40 +41,6 @@ namespace cxx::oop {
 
     // -------------------------------------------------------------------
 
-    const ImitationEnum::__enum_value ImitationEnum::A("A", 1);
-
-    const ImitationEnum::__enum_value ImitationEnum::B("B", 2);
-
-    const ImitationEnum::__enum_value ImitationEnum::C("C", 3);
-
-    ImitationEnum::__enum_value::__enum_value(const string& name, int value) :
-        _name(name), _value(value) {
-    }
-
-    const string& ImitationEnum::__enum_value::name() const {
-        return _name;
-    }
-
-    int ImitationEnum::__enum_value::value() const {
-        return _value;
-    }
-
-    ImitationEnum::__enum_value::operator int() const {
-        return _value;
-    }
-
-    ImitationEnum::__enum_value::operator string() const {
-        return _name;
-    }
-
-    ImitationEnum::__enum_value::operator const string& () const {
-        return _name;
-    }
-
-    ImitationEnum::__enum_value::operator const char* () const {
-        return _name.c_str();
-    }
-
     optional<ImitationEnum::__enum_value>
         ImitationEnum::from_string(const string& name) {
         if (name == A.name()) {

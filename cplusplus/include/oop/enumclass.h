@@ -84,34 +84,34 @@ namespace cxx::oop {
 			int _value;
 		public:
 			/// @brief 参数构造器
-			__enum_value(const string& name, int value);
+			constexpr __enum_value(const string& name, int value) : _name(name), _value(value) {}
 
 			/// @brief 获取枚举项名称
-			const string& name() const;
+			constexpr const string& name() const { return _name; }
 
 			/// @brief 获取枚举项值
-			int value() const;
+			constexpr int value() const { return _value; }
 
 			/// @brief 重载类型转换运算符, 当枚举项转为 `int` 时返回枚举项值
-			operator int() const;
+			constexpr operator int() const { return _value; }
 
 			/// @brief 重载类型转换运算符, 当枚举项转为 `string` 时返回枚举项名称
-			operator string() const;
+			constexpr operator string() const { return _name; }
 
 			/// @brief 重载类型转换运算符, 当枚举项转为 `const string&`
 			/// 时返回枚举项名称的引用
-			operator const string& () const;
+			constexpr operator const string& () const { return _name; }
 
 			/// @brief 重载类型转换运算符, 当枚举项转为 `const char*`
 			/// 时返回枚举项名称的指针
-			operator const char* () const;
+			constexpr operator const char* () const { return _name.c_str(); }
 		};
 	public:
 		/// @brief 定义枚举项常量 `A`
-		const static __enum_value A;
+		static constexpr __enum_value A = { "A", 1 };
 
 		/// @brief 定义枚举项常量 `B`
-		const static __enum_value B;
+		static __enum_value B;
 
 		/// @brief 定义枚举项常量 `C`
 		const static __enum_value C;

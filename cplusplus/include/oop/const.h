@@ -11,8 +11,24 @@ namespace cxx::oop {
 
 	// ------------------------------------------------------------------------------------------------------------
 
-	// 定义常量
-	constexpr uint64_t MAX_N = 50;
+	// 定义全局常量
+	constexpr uint64_t CE_MAX_N = 50;
+
+	// 定义内联全局常量
+	inline constexpr uint64_t CE_MAX_M = 150;
+
+	// 定义静态全局常量
+	// 在全局范围中, `static` 并不起到明确的作用, 但在函数内部,
+	// `constexpr` 和 `static constexpr` 表示的作用域范围不同
+	static constexpr string CE_STR_1 = "Alvin";
+
+	// 定义全局静态只读变量
+	//
+	// `const` 关键字表示变量为只读, 但仍可通过 `const_cast` 将其转为可读写,
+	// 故 `const` 修饰的变量不能认为是常量
+	static const string CE_STR_2 = "Emma";
+
+	// ------------------------------------------------------------------------------------------------------------
 
 	/// @brief 常量函数, 在编译期计算斐波那契数列第 `n` 项的值
 	///
@@ -27,7 +43,7 @@ namespace cxx::oop {
 	/// @return 斐波那契数列第 `n` 项的值
 	constexpr uint64_t const_fib(uint32_t n) {
 		// 在常量函数中可以使用外部定义的常量
-		if (n > MAX_N) {
+		if (n > CE_MAX_N) {
 			throw runtime_error("n must be less than or equal to 50");
 		}
 		// 在常量函数中, 只允许调用同为常量函数的其它函数
@@ -54,40 +70,46 @@ namespace cxx::oop {
 
 	/// @brief 定义一个常量类
 	///
-	/// 常量类可以通过 `constexpr` 来产生对象, 该对象本身也是一个常量
+	/// 常量类可以通过 `constexpr static` 来产生对象, 该对象本身也是一个常量
 	///
 	/// 常量类的成员字段都为常量, 所以常量类对象不能以任何方式修改自身
 	///
-	/// 常量类的方法都必须修饰 `constexpr` 关键字, 也即都必须为常量方法, 要求同常量函数
+	/// 常量类的方法都必须修饰 `constexpr static` 关键字, 也即都必须为常量方法, 要求同常量函数
+	///
+	/// 如果常量类型没有修饰为 `constexpr static`, 则常量类的实例不会再编译期创建, 而是和正常类对象一样,
+	/// 在运行期进行创建
 	class ConstClass {
 	private:
-		const char* _name;
+		string _name;
 		int _value;
-		string _xxx;
 	public:
 		/// @brief 构造器
 		///
-		/// 构造器必须用 `constexpr` 关键字修饰, 在编译期执行
-		constexpr ConstClass(const char* name, int value) :
+		/// 构造器使用 `constexpr` 关键字修饰时, 表示可以在编译期通过该构造器实例化对象,
+		/// 此时对象的变量必须修饰为 `constexpr static` 关键字
+		///
+		/// 如果对象的变量未修饰为 `constexpr static` 关键字, 则该构造器和未修饰 `constexpr`
+		/// 关键字的作用一致
+		constexpr ConstClass(const string& name, int value) :
 			_name(name), _value(value) {
 		}
 
-		/// @brief 构造器
+		/// @brief 定义方法
 		///
-		/// 构造器必须用 `constexpr` 关键字修饰, 在编译期执行
-		constexpr ConstClass(const char* name, int value, string xxx) :
-			_name(name), _value(value), _xxx(string(xxx)) {
-		}
-
+		/// 修饰了 `constexpr` 的方法表示期可以通过修饰了 `constexpr static` 关键字的对象变量调用,
+		/// 即在编译期调用;
+		///
+		/// 当对象变量未修饰 `constexpr static` 关键字, 则此方法的调用将发生在运行期, 方法上修饰的
+		/// `constexpr` 关键字被忽略
+		constexpr const string& name() const { return _name; }
 
 		/// @brief 定义方法
 		///
-		/// 方法也必须通过 `constexpr` 关键字修饰, 且必须具备返回值
-		constexpr const char* name() const { return _name; }
-
-		/// @brief 定义方法
+		/// 修饰了 `constexpr` 的方法表示期可以通过修饰了 `constexpr static` 关键字的对象变量调用,
+		/// 即在编译期调用;
 		///
-		/// 方法也必须通过 `constexpr` 关键字修饰, 且必须具备返回值
+		/// 当对象变量未修饰 `constexpr static` 关键字, 则此方法的调用将发生在运行期, 方法上修饰的
+		/// `constexpr` 关键字被忽略
 		constexpr int value() const { return _value; }
 	};
 
@@ -99,6 +121,10 @@ namespace cxx::oop {
 	/// @brief 类中的 `const` 成员
 	class ConstField {
 	public:
+		constexpr ConstField() {}
+
+		ConstField(int&) {}
+
 		/// @brief 通过 `constexpr` 关键字定义数组类型常量成员字段
 		///
 		/// 通过 `constexpr` 关键字修饰的类字段, 必须和 `static` 关键字配合使用,
@@ -118,7 +144,10 @@ namespace cxx::oop {
 		///
 		/// 因为 `ConstClass` 类型具备修饰了 `constexpr` 关键字的构造器,
 		/// 故可以产生常量对象
-		constexpr static ConstClass CES_CLASS = ConstClass("D", 100);
+		constexpr static ConstClass CES_CLASS = { "D", 100 };
+
+		// 定义只读字段
+		const string c_str = "AA";
 	};
 
 	// ------------------------------------------------------------------------------------------------------------

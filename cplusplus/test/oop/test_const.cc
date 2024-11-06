@@ -20,6 +20,25 @@ TEST(TEST_SUITE_NAME, const_value) {
     // a = 1000;
 }
 
+TEST(TEST_SUITE_NAME, global_const_value) {
+    // 1. 测试 `constexpr` 修饰的变量
+    static_assert(CE_MAX_N == 50);
+    static_assert(CE_MAX_M == 150);
+    static_assert(CE_STR_1 == "Alvin");
+
+    // 2. 测试 `const` 修饰的变量
+
+    // static_assert(NAME_2 == "Emma");
+    ASSERT_EQ(CE_STR_2, "Emma");
+
+    // 一般情况下, 无法修改只读全局变量的值
+    // CE_STR_2 = "Lucy";
+
+    // 将只读变量的引用转为可读写变量引用, 并修改变量的值
+    const_cast<string&>(CE_STR_2) = "Lucy";
+    ASSERT_EQ(CE_STR_2, "Lucy");
+}
+
 /// @brief 测试 `const` 修饰引用变量
 ///
 /// 当使用 `const` 修饰引用变量时, 表示该引用为只读引用,
@@ -145,18 +164,23 @@ TEST(TEST_SUITE_NAME, const_function) {
 
 /// @brief 测试常量类
 TEST(TEST_SUITE_NAME, const_class) {
-    constexpr static string a = "AAA";
     // 实例后常量类对象, 该对象为一个常量值
     // 常量类对象的实例化在编译期进行
-    constexpr ConstClass c = ConstClass("TEST", 100, a);
+    // 常量类对象的实例化需要配合 `static`
+    static constexpr ConstClass c1 = ConstClass("A", 100);
 
     // 调用常量类对象的方法, 这些方法均为常量方法, 可以在编译期调用执行
-    static_assert(static_str_cmp(c.name(), "TEST") == 0);
-    static_assert(c.value() == 100);
+    static_assert(c1.name() == "A");
+    static_assert(c1.value() == 100);
 
     // 在运行期也可以调用常量类型对象的方法, 这些方法将被编译为常量值
-    ASSERT_STREQ(c.name(), "TEST");
-    ASSERT_EQ(c.value(), 100);
+    ASSERT_EQ(c1.name(), "A");
+    ASSERT_EQ(c1.value(), 100);
+
+    ConstClass c2 = ConstClass("B", 200);
+    // static_assert(c2.name() == "B");
+    ASSERT_EQ(c2.name(), "B");
+    ASSERT_EQ(c2.value(), 200);
 }
 
 /// @brief 测试类中的常量成员字段
@@ -168,8 +192,17 @@ TEST(TEST_SUITE_NAME, const_class_field) {
     static_assert(ConstField::CES_STRUCT.name == "C");
     static_assert(ConstField::CES_STRUCT.value == 20);
 
-    static_assert(static_str_cmp(ConstField::CES_CLASS.name(), "D") == 0);
+    static_assert(ConstField::CES_CLASS.name() == "D");
     static_assert(ConstField::CES_CLASS.value() == 100);
+
+    ConstField cf;
+    ASSERT_EQ(cf.c_str, "AA");
+
+    // 一般情况下, 无法修改只读字段的值
+    // cf.c_str = "AAA";
+
+    const_cast<string&>(cf.c_str) = "AAA";
+    ASSERT_EQ(cf.c_str, "AAA");
 }
 
 /// @brief 测试对象在非只读状态下的方法调用情况

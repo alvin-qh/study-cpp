@@ -67,54 +67,54 @@ namespace cxx::oop {
 	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
 	optional<Gender> string_to_gender(const string& s);
 
+	/// @brief 定义枚举项类型
+	class __enum_value {
+	private:
+		// 枚举项名称
+		string _name;
+
+		// 枚举项值
+		int _value;
+	public:
+		/// @brief 参数构造器
+		constexpr __enum_value(const string& name, int value) : _name(name), _value(value) {}
+
+		/// @brief 获取枚举项名称
+		constexpr const string& name() const { return _name; }
+
+		/// @brief 获取枚举项值
+		constexpr int value() const { return _value; }
+
+		/// @brief 重载类型转换运算符, 当枚举项转为 `int` 时返回枚举项值
+		constexpr operator int() const { return _value; }
+
+		/// @brief 重载类型转换运算符, 当枚举项转为 `string` 时返回枚举项名称
+		constexpr operator string() const { return _name; }
+
+		/// @brief 重载类型转换运算符, 当枚举项转为 `const string&`
+		/// 时返回枚举项名称的引用
+		constexpr operator const string& () const { return _name; }
+
+		/// @brief 重载类型转换运算符, 当枚举项转为 `const char*`
+		/// 时返回枚举项名称的指针
+		constexpr operator const char* () const { return _name.c_str(); }
+	};
+
 	/// @brief 模拟枚举类型
 	///
 	/// 由于 C++ 原生的枚举 (或枚举类) 存在诸多不方便之处, 故也可以通过类的静态常量字段来模拟枚举
 	///
 	/// 这种方式定义的 "仿枚举" 使用时较为方便, 但定义较为繁琐
 	class ImitationEnum {
-	private:
-		/// @brief 定义枚举项类型
-		class __enum_value {
-		private:
-			// 枚举项名称
-			string _name;
-
-			// 枚举项值
-			int _value;
-		public:
-			/// @brief 参数构造器
-			constexpr __enum_value(const string& name, int value) : _name(name), _value(value) {}
-
-			/// @brief 获取枚举项名称
-			constexpr const string& name() const { return _name; }
-
-			/// @brief 获取枚举项值
-			constexpr int value() const { return _value; }
-
-			/// @brief 重载类型转换运算符, 当枚举项转为 `int` 时返回枚举项值
-			constexpr operator int() const { return _value; }
-
-			/// @brief 重载类型转换运算符, 当枚举项转为 `string` 时返回枚举项名称
-			constexpr operator string() const { return _name; }
-
-			/// @brief 重载类型转换运算符, 当枚举项转为 `const string&`
-			/// 时返回枚举项名称的引用
-			constexpr operator const string& () const { return _name; }
-
-			/// @brief 重载类型转换运算符, 当枚举项转为 `const char*`
-			/// 时返回枚举项名称的指针
-			constexpr operator const char* () const { return _name.c_str(); }
-		};
 	public:
 		/// @brief 定义枚举项常量 `A`
 		static constexpr __enum_value A = { "A", 1 };
 
 		/// @brief 定义枚举项常量 `B`
-		static __enum_value B;
+		static constexpr __enum_value B = { "B", 2 };
 
 		/// @brief 定义枚举项常量 `C`
-		const static __enum_value C;
+		static constexpr __enum_value C = { "B", 2 };
 
 		/// @brief 将字符串转为特定枚举项
 		static optional<__enum_value> from_string(const string& name);

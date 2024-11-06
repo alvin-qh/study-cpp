@@ -3,6 +3,8 @@
 namespace cxx::oop {
     using namespace std;
 
+    // -------------------------------------------------------------------
+
     optional<string> color_to_rgb(Color c) {
         switch (c) {
         case Color::Red:
@@ -41,8 +43,7 @@ namespace cxx::oop {
 
     // -------------------------------------------------------------------
 
-    optional<ImitationEnum::__enum_value>
-        ImitationEnum::from_string(const string& name) {
+    optional<__enum_value> ImitationEnum::from_string(const string& name) {
         if (name == A.name()) {
             return A;
         }

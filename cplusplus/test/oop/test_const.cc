@@ -185,24 +185,46 @@ TEST(TEST_SUITE_NAME, const_class) {
 
 /// @brief 测试类中的常量成员字段
 TEST(TEST_SUITE_NAME, const_class_field) {
+    // 1. 测试 `constexpr static` 类成员字段
+
+    // 修饰为 `constexpr static` 的类成员字段表示一个常量, 可在编译期访问
+    // 测试数组类型常量成员字段
     static_assert(static_str_cmp(ConstField::CES_CSTR, "A") == 0);
 
+    // 测试字符串类型常量成员字段
     static_assert(ConstField::CES_STR == "B");
 
+    // 测试结构体类型常量成员字段
     static_assert(ConstField::CES_STRUCT.name == "C");
     static_assert(ConstField::CES_STRUCT.value == 20);
 
+    // 测试对象类型常量成员字段
     static_assert(ConstField::CES_CLASS.name() == "D");
     static_assert(ConstField::CES_CLASS.value() == 100);
 
+    // 2. 测试 `const` 类成员字段
+
     ConstField cf;
-    ASSERT_EQ(cf.c_str, "AA");
+
+    // 类的只读字段必须通过对应的类对象访问, 且只能在运行期访问
+    // static_assert(cf.c_str_1 == "BB");
+    ASSERT_EQ(cf.c_str_1, "AA");
 
     // 一般情况下, 无法修改只读字段的值
     // cf.c_str = "AAA";
 
-    const_cast<string&>(cf.c_str) = "AAA";
-    ASSERT_EQ(cf.c_str, "AAA");
+    // 可通过类型转化将只读字段 (的引用) 转为可读写字段 (的引用)
+    // 通过转换后的结果, 即可为只读字段重新赋值
+    const_cast<string&>(cf.c_str_1) = "AAA";
+    ASSERT_EQ(cf.c_str_1, "AAA");
+
+    // 3. 测试 `const static` 类成员字段
+
+    // static_assert(ConstField::c_str_2 == "BB");
+    ASSERT_EQ(ConstField::CS_STR_2, "BB");
+
+    const_cast<string&>(ConstField::CS_STR_2) = "BBB";
+    ASSERT_EQ(ConstField::CS_STR_2, "BBB");
 }
 
 /// @brief 测试对象在非只读状态下的方法调用情况

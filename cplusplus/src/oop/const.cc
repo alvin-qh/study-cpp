@@ -1,9 +1,12 @@
 #include "oop/const.h"
 
 namespace cxx::oop {
-
+    using namespace std;
 
     // ------------------------------------------------------------------------------------------------------------
+
+    // 对头文件中 `ConstField` 类的静态只读字段进行初始化;
+    const string ConstField::CS_STR_2 = "BB";
 
     // ------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +16,9 @@ namespace cxx::oop {
         _ptr(value + "-p") {
     }
 
-    string ConstMethod::to_string() const { return "Constant(" + _val + ")"; }
+    string ConstMethod::to_string() const {
+        return "Constant(" + _val + ")";
+    }
 
     ConstMethod& ConstMethod::set(const string& value) {
         _val = value;

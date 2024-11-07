@@ -39,6 +39,55 @@ TEST(TEST_SUITE_NAME, global_const_value) {
     ASSERT_EQ(CE_STR_2, "Lucy");
 }
 
+/// @brief 判断类型是否为整数类型
+///
+/// 测试常量条件判断, 也即条件分支在编译期就已经确认
+///
+/// @tparam T 任意类型
+template <typename T>
+struct integer_test {
+
+    /// @brief 常量函数, 判断 `T` 类型是否为整型
+    constexpr static bool test() {
+        // 常量分支, 通过 `constexpr` 关键字修饰条件分支,
+        // 则条件分支将在编译期进行判断
+        if constexpr (
+            is_same_v<T, short> ||
+            is_same_v<T, int> ||
+            is_same_v<T, long> ||
+            is_same_v<T, long long> ||
+            is_same_v<T, unsigned short> ||
+            is_same_v<T, unsigned int> ||
+            is_same_v<T, unsigned long> ||
+            is_same_v<T, unsigned long long> ||
+            is_same_v<T, char> ||
+            is_same_v<T, unsigned char>
+            ) {
+            return true;
+        }
+        return false;
+    }
+};
+
+/// @brief 测试常量条件分支
+TEST(TEST_SUITE_NAME, const_condition) {
+    constexpr int a = 100;
+
+    // 常量分支, 通过 `constexpr` 关键字修饰条件分支,
+    // 则条件分支将在编译期进行判断
+    if constexpr (a > 50) {
+        static_assert(a > 50);
+    }
+    else {
+        // static_assert(a <= 50);
+        FAIL();
+    }
+
+    int x = 0;
+    // 测试模板中使用常量条件分支
+    static_assert(integer_test<decltype(x)>().test());
+}
+
 /// @brief 测试 `const` 修饰引用变量
 ///
 /// 当使用 `const` 修饰引用变量时, 表示该引用为只读引用,

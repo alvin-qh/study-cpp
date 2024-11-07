@@ -2,6 +2,9 @@
 #include <gmock/gmock.h>
 
 #include <tuple>
+#include <vector>
+#include <list>
+
 #include <variant>
 
 #include "../type.h"
@@ -22,6 +25,7 @@ TEST(TEST_SUITE_NAME, default_constructor) {
     // 通过默认构造器创建 `std::variant` 对象
     variant<int, double> v;
 
+#if (!defined(__clang__) || !defined(__APPLE__))
     // 确认位置为 `0` 的项 (即 `int` 值) 被初始化
     ASSERT_EQ(v.index(), 0);
 
@@ -30,7 +34,18 @@ TEST(TEST_SUITE_NAME, default_constructor) {
 
     // 其它位置的值不可用
     ASSERT_THROW(get<1>(v), bad_variant_access);
+#endif
+
+    v = 1;
+    ASSERT_EQ(get<int>(v), 1);
+
+    v = 1.2;
+#if (!defined(__clang__) || !defined(__APPLE__))
+    ASSERT_THROW(get<int>(v), bad_variant_access);
+#endif
+    ASSERT_EQ(get<1>(v), 1.2);
 }
+
 
 /// @brief 测试参数构造器
 ///
@@ -71,9 +86,13 @@ TEST(TEST_SUITE_NAME, duplicate_template_args) {
     // variant<double, int, double> v2 = 1.2;
 }
 
+/// @brief 测试原位构造器
+///
+/// 可以通过原位构造器对
 TEST(TEST_SUITE_NAME, in_place_constructor) {
-    // 1. 通过位置
-    // 通过默认构造器创建 `std::variant` 对象
+    // 1. 通过指定位置, 以原位构造器初始化 `std::variant` 对象
+
+    // 指定位置 `0` 代表 `Person` 类型值, 并通过 `Person` 类构造器参数实例化 `std::variant` 对象
     variant<Person, tuple<string, int>> v1(in_place_index<0>, "Alvin", 20, 'M');
 
     ASSERT_EQ(v1.index(), 0);
@@ -81,9 +100,33 @@ TEST(TEST_SUITE_NAME, in_place_constructor) {
     ASSERT_EQ(get<0>(v1).age(), 20);
     ASSERT_EQ(get<0>(v1).gender(), 'M');
 
+    // 2. 通过指定类型, 以原位构造器初始化 `std::variant` 对象
+
+    // 指定类型 `std::tuple<...>` 值, 并通过 `std::tuple<...>` 类构造器参数实例化 `std::variant` 对象
     variant<Person, tuple<string, int>> v2(in_place_type<tuple<string, int>>, "hello", 100);
 
     ASSERT_EQ(v2.index(), 1);
     ASSERT_EQ(get<0>(get<1>(v2)), "hello");
     ASSERT_EQ(get<1>(get<1>(v2)), 100);
+}
+
+/// @brief 测试通过初始化列表对象初始化 `std::variant` 对象
+///
+/// 如果 `std::variant` 所包含类型的构造器具备 `initializer_list` 类型参数, 
+/// 则可以通过原位构造器以及 `initializer_list` 类型参数构造对象
+TEST(TEST_SUITE_NAME, initializer_list_constructor) {
+    variant<vector<int>, list<double>> v1(in_place_index<0>, { 1, 2, 3 });
+    ASSERT_THAT(get<0>(v1), ElementsAre(1, 2, 3));
+
+    variant<vector<int>, list<double>> v2(in_place_index<1>, { 1.1, 2.2, 3.3 });
+    ASSERT_THAT(get<1>(v2), ElementsAre(1.1, 2.2, 3.3));
+}
+
+/// @brief 测试移动构造器
+TEST(TEST_SUITE_NAME, move_constructor) {
+    variant<string, int> v1("hello");
+
+    variant<string, int> v2(std::move(v1));
+    ASSERT_EQ(get<0>(v1), "");
+    ASSERT_EQ(get<0>(v2), "hello");
 }

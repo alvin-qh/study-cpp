@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -40,3 +42,5 @@ TEST(TEST_SUITE_NAME, make_any_by_initialized_list) {
     a = make_any<vector<int>>({ 1, 2, 3, 4, 5 });
     ASSERT_THAT(any_cast<vector<int>>(a), ElementsAre(1, 2, 3, 4, 5));
 }
+
+#endif // ! (__cplusplus >= 201703L)

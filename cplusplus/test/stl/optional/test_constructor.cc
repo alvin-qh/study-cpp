@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -78,3 +80,5 @@ TEST(TEST_SUITE_NAME, move_constructor) {
     // `o1` 变量中存储的字符串被移动到 `o2` 对象中
     ASSERT_EQ(*o2, "hello");
 }
+
+#endif // ! (__cplusplus >= 201703L)

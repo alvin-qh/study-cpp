@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -50,7 +52,7 @@ TEST(TEST_SUITE_NAME, value) {
 
 /// @brief 测试 `bad_optional_access` 异常
 ///
-/// 当 `optional` 对象不包含有效值时, 通过 `*` 运算符访问失效, 
+/// 当 `optional` 对象不包含有效值时, 通过 `*` 运算符访问失效,
 /// 而通过 `value` 方法访问时会抛出 `bad_optional_access` 异常
 TEST(TEST_SUITE_NAME, bad_optional_access) {
     optional<string> o1 = nullopt;
@@ -141,3 +143,5 @@ TEST(TEST_SUITE_NAME, value_or) {
     n = check_even_number(3).value_or(-1);
     ASSERT_EQ(n, -1);
 }
+
+#endif // ! (__cplusplus >= 201703L)

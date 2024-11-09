@@ -37,9 +37,17 @@ namespace cxx::templated {
 
 		/// @brief 销毁当前指针
 		void _free() {
+#if (__cplusplus >= 201703L)
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
 				// 为数组各元素调用析构函数, 释放数组内存
 				std::destroy_n(ptr, _len);
+#else
+			T* ptr = std::exchange(_ptr, nullptr);
+			if (ptr) {
+				for (size_t i = 0; i < _len; ++i) {
+					ptr[i].~T();
+				}
+#endif
 				_alloc.deallocate(ptr, _len);
 
 				_len = 0;
@@ -55,7 +63,7 @@ namespace cxx::templated {
 		///
 		/// @param value 所给的值
 		/// @param len 元素个数
-		Box(const T& value, size_t len = 1) { _allocate(value, len); }
+		Box(const T & value, size_t len = 1) { _allocate(value, len); }
 
 		/// @brief 参数构造器
 		///
@@ -63,7 +71,7 @@ namespace cxx::templated {
 		///
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
-		Box(T* ptr, size_t len = 1) : _ptr(ptr), _len(len) {}
+		Box(T * ptr, size_t len = 1) : _ptr(ptr), _len(len) {}
 
 		/// @brief 禁用拷贝构造函数
 		Box(const Self&) = delete;
@@ -71,7 +79,7 @@ namespace cxx::templated {
 		/// @brief 移动构造器
 		///
 		/// @param o 被移动对象
-		Box(Self&& o) noexcept :
+		Box(Self && o) noexcept :
 			_ptr(std::exchange(o._ptr, nullptr)),
 			_len(std::exchange(o._len, 0)) {
 		}
@@ -86,8 +94,13 @@ namespace cxx::templated {
 		///
 		/// @param o 被移动对象
 		/// @return 当前对象引用
-		Self& operator=(Self&& o) noexcept {
+		Self& operator=(Self && o) noexcept {
+#if (__cplusplus >= 201703L)
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr != nullptr) {
+#else
+			T* ptr = std::exchange(_ptr, nullptr);
+			if (ptr) {
+#endif
 				_alloc.deallocate(ptr, _len);
 			}
 
@@ -132,7 +145,7 @@ namespace cxx::templated {
 		///
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
-		void attach(T* ptr, size_t len = 1) {
+		void attach(T * ptr, size_t len = 1) {
 			_free();
 
 			_ptr = ptr;
@@ -145,7 +158,7 @@ namespace cxx::templated {
 		/// @param begin 起始位置迭代器
 		/// @param end 结束位置迭代器
 		template<typename _Iter>
-		static Self from_iter(const _Iter& begin, const _Iter& end) {
+		static Self from_iter(const _Iter & begin, const _Iter & end) {
 			// 计算数组长度
 			size_t len = std::distance(begin, end);
 

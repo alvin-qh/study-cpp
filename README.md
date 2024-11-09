@@ -109,6 +109,26 @@ VSCode 中用于支持 C/C++ 开发的插件包括:
   - C++ TestMate;
   - CMake Test Explorer
 
+其中, CodeLLDB 插件可以简化代码的 Debug 配置, 只需要在 `.vscode` 目录中创建 `launch.json` 配置文件, 加入如下内容即可对代码进行 Debug
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug",
+            "program": "${workspaceFolder}/<executable file>",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
+```
+
+> 也可以通过 VSCode 本身的功能, 在 `Run and Debug` 面板中, 通过 `create a launch.json file` 链接, 以 `LLDB` 选项自动生成 `launch.json` 文件
+
 ### 5.2. 环境配置
 
 通过命令面板的 "CMake: Scan for Kits" 以及 "CMake: Select a Kit" 命令, 即可扫描本机上的所有工具链并选择其中的一个 (例如: LLVM Clang)

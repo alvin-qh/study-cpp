@@ -3,6 +3,8 @@
 #ifndef __CPLUSPLUS_TEMPLATE__CONCEPT_H
 #define __CPLUSPLUS_TEMPLATE__CONCEPT_H
 
+#if (__cplusplus >= 201703L)
+
 #include <type_traits>
 #include <concepts>
 
@@ -114,5 +116,7 @@ namespace cxx::templated {
 	T add6(T a, T b) { return a + b; }
 
 } // ! namespace cxx::templated
+
+#endif // ! (__cplusplus >= 201703L)
 
 #endif // ! __CPLUSPLUS_TEMPLATE__CONCEPT_H

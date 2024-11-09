@@ -47,7 +47,12 @@ namespace cxx::reference {
 
 		/// @brief 析构函数
 		virtual ~Moveable() {
+#if (__cplusplus >= 201703L)
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
+#else
+			T* ptr = std::exchange(_ptr, nullptr);
+			if (ptr) {
+#endif
 				delete ptr;
 			}
 		}
@@ -59,7 +64,7 @@ namespace cxx::reference {
 		///
 		/// @param o 被移动对象
 		/// @return 当前对象的引用
-		Self& operator=(Self&& o) noexcept {
+		Self& operator=(Self && o) noexcept {
 			// 调用析构函数必须通过 `this` 指针
 			this->~Moveable();
 			_ptr = std::exchange(o._ptr, nullptr);

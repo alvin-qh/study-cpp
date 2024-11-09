@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 
 #include <any>
@@ -75,3 +77,5 @@ TEST(TEST_SUITE_NAME, swap) {
     ASSERT_EQ(any_cast<string>(n1), "hello");
     ASSERT_EQ(any_cast<int>(n2), 100);
 }
+
+#endif // ! (__cplusplus >= 201703L)

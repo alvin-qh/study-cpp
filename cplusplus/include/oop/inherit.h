@@ -101,6 +101,11 @@ namespace cxx::oop {
 		/// @return 两个对象是否相同
 		bool operator==(const ChildClass& o) const;
 
+#if (__cplusplus < 201703L)
+		/// @brief 重载不等于运算符, 对于 C++ 17 以下版本, 编译器不会自动生成该重载
+		bool operator!=(const ChildClass& o) const;
+#endif
+
 		/// @brief 令 `ChildClass` 实例和 `BaseClass` 不相等
 		///
 		/// @return 不相等

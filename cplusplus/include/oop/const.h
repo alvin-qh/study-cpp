@@ -14,6 +14,7 @@ namespace cxx::oop {
 	// 定义全局常量
 	constexpr uint64_t CE_MAX_N = 50;
 
+#if (__cplusplus >= 201703L)
 	// 定义内联全局常量
 	inline constexpr uint64_t CE_MAX_M = 150;
 
@@ -21,6 +22,7 @@ namespace cxx::oop {
 	// 在全局范围中, `static` 并不起到明确的作用, 但在函数内部,
 	// `constexpr` 和 `static constexpr` 表示的作用域范围不同
 	static constexpr string CE_STR_1 = "Alvin";
+#endif
 
 	// 定义全局静态只读变量
 	//
@@ -80,7 +82,11 @@ namespace cxx::oop {
 	/// 在运行期进行创建
 	class ConstClass {
 	private:
+#if (__cplusplus >= 201703L)
 		string _name;
+#else
+		const char* _name;
+#endif
 		int _value;
 	public:
 		/// @brief 构造器
@@ -90,9 +96,15 @@ namespace cxx::oop {
 		///
 		/// 如果对象的变量未修饰为 `constexpr static` 关键字, 则该构造器和未修饰 `constexpr`
 		/// 关键字的作用一致
+#if (__cplusplus >= 201703L)
 		constexpr ConstClass(const string& name, int value) :
 			_name(name), _value(value) {
 		}
+#else
+		constexpr ConstClass(const char* name, int value) :
+			_name(name), _value(value) {
+		}
+#endif
 
 		/// @brief 定义方法
 		///
@@ -101,7 +113,11 @@ namespace cxx::oop {
 		///
 		/// 当对象变量未修饰 `constexpr static` 关键字, 则此方法的调用将发生在运行期, 方法上修饰的
 		/// `constexpr` 关键字被忽略
+#if (__cplusplus >= 201703L)
 		constexpr const string& name() const { return _name; }
+#else
+		constexpr const char* name() const { return _name; }
+#endif
 
 		/// @brief 定义方法
 		///
@@ -116,7 +132,11 @@ namespace cxx::oop {
 	// ------------------------------------------------------------------------------------------------------------
 
 	/// @brief 定义结构体
+#if (__cplusplus >= 201703L)
 	struct CStruct { string name; int value; };
+#else
+	struct CStruct { const char* name; int value; };
+#endif
 
 	/// @brief 类中的 `const` 成员
 	class ConstField {
@@ -131,12 +151,13 @@ namespace cxx::oop {
 		/// 表示一个静态的全局常量
 		constexpr static const char CES_CSTR[] = "A";
 
+#if (__cplusplus >= 201703L)
 		/// @brief 通过 `constexpr` 关键字定义字符串类型常量成员字段
 		///
 		/// 因为 `std::string` 类型具备修饰了 `constexpr` 关键字的构造器,
 		/// 故可以产生常量对象
 		constexpr static string CES_STR = "B";
-
+#endif
 		/// @brief 通过 `constexpr` 关键字定义结构体类型常量成员字段
 		constexpr static CStruct CES_STRUCT = { .name = "C", .value = 20 };
 
@@ -149,8 +170,11 @@ namespace cxx::oop {
 		/// @brief 定义只读成员字段
 		///
 		/// C++ 要求非静态只读字段必须在声明时进行初始化
+#if (__cplusplus >= 201703L)
 		const string c_str_1 = "AA";
-
+#else
+		const char* c_str_1 = "AA";
+#endif
 		/// @brief 定义静态只读成员字段
 		///
 		/// C++ 要求静态只读字段必须在头文件 (`.h` 文件) 中声明, 在代码文件中初始化 (`.cc` 文件),

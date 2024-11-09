@@ -8,6 +8,7 @@
 namespace cxx::templated {
 	using namespace std;
 
+#if (__cplusplus >= 201703L)
 	/// @brief 定义模板约束, 表示改模板参数必须具备 `+` 运算符
 	///
 	/// @tparam T 待检测类型
@@ -15,14 +16,23 @@ namespace cxx::templated {
 	concept addition_type = requires(T n) {
 		{ n + n } -> std::same_as<T>;
 	};
+#endif
 
 	/// @brief 定义仿函数类型
 	///
 	/// 所谓的仿函数, 即一个重载了 `()` 运算符的类型
 	///
 	/// @tparam T 数值类型泛型参数
-	template<addition_type T>
+#if (__cplusplus >= 201703L)
+	template <addition_type T>
 	class AffineFunc {
+#else
+	template <typename T, typename = void>
+	class AffineFunc;
+
+	template <typename T>
+	class AffineFunc<T, typename std::enable_if_t<std::is_arithmetic<T>::value>> {
+#endif
 	private:
 		T _x;
 	public:

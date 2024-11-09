@@ -73,7 +73,13 @@ namespace cxx::pointer {
 
 		/// @brief 析构函数
 		virtual ~LargeObject() {
+#if (__cplusplus >= 201703L)
 			std::destroy_n(_data, SIZE);
+#else
+			for (size_t i = 0; i < SIZE; ++i) {
+				_data[i].~T();
+			}
+#endif
 		}
 
 		/// @brief 赋值构造器

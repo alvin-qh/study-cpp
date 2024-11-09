@@ -40,14 +40,24 @@ namespace cxx::iterator {
 		///
 		/// @param o 另一个对象的右值引用
 		void __move(__self&& o) noexcept {
+#if (__cplusplus >= 201703L)
 			if (_size = std::exchange(o._size, 0); _size > 0) {
+#else
+			_size = std::exchange(o._size, 0);
+			if (_size > 0) {
+#endif
 				_data = std::exchange(o._data, nullptr);
 			}
 		}
 
 		/// @brief 销毁当前数据指针
 		void __free() {
+#if (__cplusplus >= 201703L)
 			if (T* data = std::exchange(_data, nullptr); data) {
+#else
+			T* data = std::exchange(_data, nullptr);
+			if (data) {
+#endif
 				_alloc.deallocate(data, _size);
 				_data = nullptr;
 				_size = 0;
@@ -60,7 +70,7 @@ namespace cxx::iterator {
 		/// @brief 初始化数组
 		///
 		/// @param size 数据长度
-		dynamic_array(size_t size, const T& val = T()) {
+		dynamic_array(size_t size, const T & val = T()) {
 			std::uninitialized_fill_n(__alloc_n(size), size, val);
 		}
 
@@ -68,7 +78,7 @@ namespace cxx::iterator {
 		///
 		/// @param data 数据指针
 		/// @param size 数据长度
-		dynamic_array(const T* data, size_t size) {
+		dynamic_array(const T * data, size_t size) {
 			std::uninitialized_copy_n(data, size, __alloc_n(size));
 		}
 
@@ -83,7 +93,7 @@ namespace cxx::iterator {
 		///
 		/// @param arr `array` 数组对象
 		template <size_t N>
-		dynamic_array(const std::array<T, N>& arr) {
+		dynamic_array(const std::array<T, N>&arr) {
 			std::uninitialized_copy_n(arr.begin(), N, __alloc_n(N));
 		}
 
@@ -99,14 +109,14 @@ namespace cxx::iterator {
 		/// @brief 拷贝构造器
 		///
 		/// @param o 另一个对象
-		dynamic_array(const __self& o) {
+		dynamic_array(const __self & o) {
 			std::uninitialized_copy_n(o._data, o._size, __alloc_n(o._size));
 		}
 
 		/// @brief 移动构造器
 		///
 		/// @param o 其它对象右值引用
-		dynamic_array(__self&& o) noexcept { __move(std::forward(o)); }
+		dynamic_array(__self && o) noexcept { __move(std::forward(o)); }
 
 		/// @brief 析构函数
 		virtual ~dynamic_array() { __free(); }
@@ -115,7 +125,7 @@ namespace cxx::iterator {
 		///
 		/// @param o 其它对象引用
 		/// @return 当前对象引用
-		__self& operator=(const __self& o) {
+		__self& operator=(const __self & o) {
 			if (this != &o) {
 				__free();
 				std::uninitialized_copy_n(o._data, o._size, __alloc_n(o._size));
@@ -127,7 +137,7 @@ namespace cxx::iterator {
 		///
 		/// @param o 其它对象右值引用
 		/// @return 当前对象引用
-		__self& operator=(__self&& o) noexcept {
+		__self& operator=(__self && o) noexcept {
 			if (this != &o) {
 				__free();
 				__move(std::forward(o));

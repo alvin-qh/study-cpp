@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 
 #include <any>
@@ -71,3 +73,5 @@ TEST(TEST_SUITE_NAME, cast_to_right_reference) {
     // 变量 `a` 已经被移动
     ASSERT_EQ(any_cast<string>(a), "");
 }
+
+#endif // ! (__cplusplus >= 201703L)

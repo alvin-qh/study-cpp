@@ -9,7 +9,7 @@ namespace cxx::oop {
 
 	struct nothing_t {};
 
-	inline constexpr nothing_t nothing{};
+	constexpr nothing_t nothing{};
 
 	/// @brief 用于测试构造器的类
 	class Constructor {

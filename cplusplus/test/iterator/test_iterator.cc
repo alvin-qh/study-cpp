@@ -131,51 +131,94 @@ TEST(TEST_SUITE_NAME, for_in_statement) {
 TEST(TEST_SUITE_NAME, iterator_traits) {
     using iterator_type = dynamic_array<int>::iterator;
 
+#if (__cplusplus >= 201703L)
     ASSERT_TRUE((std::is_same_v<iterator_type, ptr_based_iterator<int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::value_type, int>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::iterator_category, std::random_access_iterator_tag>));
+#else
+    ASSERT_TRUE((std::is_same<iterator_type, ptr_based_iterator<int>>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<iterator_type>::difference_type, std::ptrdiff_t>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<iterator_type>::value_type, int>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<iterator_type>::pointer, int*>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<iterator_type>::reference, int&>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<iterator_type>::iterator_category, std::random_access_iterator_tag>::value));
+#endif
 
     using const_iterator_type = dynamic_array<int>::const_iterator;
 
+#if __cplusplus >= 201703L
     ASSERT_TRUE((std::is_same_v<const_iterator_type, ptr_based_iterator<const int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::value_type, const int>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::pointer, const int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::reference, const int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::iterator_category, std::random_access_iterator_tag>));
+#else
+    ASSERT_TRUE((std::is_same<const_iterator_type, ptr_based_iterator<const int>>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_iterator_type>::difference_type, std::ptrdiff_t>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_iterator_type>::value_type, const int>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_iterator_type>::pointer, const int*>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_iterator_type>::reference, const int&>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_iterator_type>::iterator_category, std::random_access_iterator_tag>::value));
+#endif
 
     using reverse_iterator_type = dynamic_array<int>::reverse_iterator;
 
+#if (__cplusplus >= 201703L)
     ASSERT_TRUE((std::is_same_v<reverse_iterator_type, ptr_based_reverse_iterator<int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::value_type, int>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::iterator_category, std::random_access_iterator_tag>));
+#else
+    ASSERT_TRUE((std::is_same<reverse_iterator_type, ptr_based_reverse_iterator<int>>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<reverse_iterator_type>::difference_type, std::ptrdiff_t>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<reverse_iterator_type>::value_type, int>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<reverse_iterator_type>::pointer, int*>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<reverse_iterator_type>::reference, int&>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<reverse_iterator_type>::iterator_category, std::random_access_iterator_tag>::value));
+#endif
 
     using const_reverse_iterator_type = dynamic_array<int>::const_reverse_iterator;
 
+#if (__cplusplus >= 201703L)
     ASSERT_TRUE((std::is_same_v<const_reverse_iterator_type, ptr_based_reverse_iterator<const int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::value_type, const int>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::pointer, const int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::reference, const int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::iterator_category, std::random_access_iterator_tag>));
+#else
+    ASSERT_TRUE((std::is_same<const_reverse_iterator_type, ptr_based_reverse_iterator<const int>>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_reverse_iterator_type>::difference_type, std::ptrdiff_t>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_reverse_iterator_type>::value_type, const int>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_reverse_iterator_type>::pointer, const int*>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_reverse_iterator_type>::reference, const int&>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<const_reverse_iterator_type>::iterator_category, std::random_access_iterator_tag>::value));
+#endif
 
     // 当使用原生指针作为迭代器类型时, 测试 `std::iterator_traits` 中定义的类型
     using pointer_iterator_type = int*;
 
+#if (__cplusplus >= 201703L)
     ASSERT_TRUE((std::is_same_v<pointer_iterator_type, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::value_type, int>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_category, std::random_access_iterator_tag>));
-#if (__new_iterator)
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_concept, std::contiguous_iterator_tag>));
+#else
+    ASSERT_TRUE((std::is_same<pointer_iterator_type, int*>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<pointer_iterator_type>::difference_type, std::ptrdiff_t>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<pointer_iterator_type>::value_type, int>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<pointer_iterator_type>::pointer, int*>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<pointer_iterator_type>::reference, int&>::value));
+    ASSERT_TRUE((std::is_same<std::iterator_traits<pointer_iterator_type>::iterator_category, std::random_access_iterator_tag>::value));
 #endif
 }
 

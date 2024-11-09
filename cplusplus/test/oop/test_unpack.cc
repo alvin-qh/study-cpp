@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 
 #include "oop/unpack.h"
@@ -11,39 +13,41 @@ using namespace cxx::oop;
 ///
 /// 在结构体 (或数组) 展开到变量时, 变量的数量必须和结构体字段数量 (或数组元素数量) 相同
 TEST(TEST_SUITE_NAME, unpack_object) {
-	// 定义一个具备三个字段的结构体实例
-	Unpack obj = Unpack{ 1, 2, 3, { -1, -2, -3 } };
+    // 定义一个具备三个字段的结构体实例
+    Unpack obj = Unpack{ 1, 2, 3, { -1, -2, -3 } };
 
-	// 将结构体实例的字段按顺序展开到 4 个变量中
-	auto [x, y, z, data] = obj;
+    // 将结构体实例的字段按顺序展开到 4 个变量中
+    auto [x, y, z, data] = obj;
 
-	// 将数组元素展开到变量
-	auto [a, b, c] = data;
+    // 将数组元素展开到变量
+    auto [a, b, c] = data;
 
-	ASSERT_EQ(x, 1);
-	ASSERT_EQ(y, 2);
-	ASSERT_EQ(z, 3);
-	ASSERT_EQ(a, -1);
-	ASSERT_EQ(b, -2);
-	ASSERT_EQ(c, -3);
+    ASSERT_EQ(x, 1);
+    ASSERT_EQ(y, 2);
+    ASSERT_EQ(z, 3);
+    ASSERT_EQ(a, -1);
+    ASSERT_EQ(b, -2);
+    ASSERT_EQ(c, -3);
 
-	// 将实例字段的引用按顺序展开到 3 个变量中
-	auto& [rx, ry, rz, rdata] = obj;
+    // 将实例字段的引用按顺序展开到 3 个变量中
+    auto& [rx, ry, rz, rdata] = obj;
 
-	// 将数组元素的引用展开到变量
-	auto& [ra, rb, rc] = rdata;
+    // 将数组元素的引用展开到变量
+    auto& [ra, rb, rc] = rdata;
 
-	rx = 100;
-	ry = 200;
-	rz = 300;
-	ra = -100;
-	rb = -200;
-	rc = -300;
+    rx = 100;
+    ry = 200;
+    rz = 300;
+    ra = -100;
+    rb = -200;
+    rc = -300;
 
-	ASSERT_EQ(obj.x, 100);
-	ASSERT_EQ(obj.y, 200);
-	ASSERT_EQ(obj.z, 300);
-	ASSERT_EQ(obj.data[0], -100);
-	ASSERT_EQ(obj.data[1], -200);
-	ASSERT_EQ(obj.data[2], -300);
+    ASSERT_EQ(obj.x, 100);
+    ASSERT_EQ(obj.y, 200);
+    ASSERT_EQ(obj.z, 300);
+    ASSERT_EQ(obj.data[0], -100);
+    ASSERT_EQ(obj.data[1], -200);
+    ASSERT_EQ(obj.data[2], -300);
 }
+
+#endif

@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -55,3 +57,5 @@ TEST(TEST_SUITE_NAME, make_optional_from_initializer_list) {
     auto opt = make_optional<vector<int>>({ 1, 2, 3, 4, 5 });
     ASSERT_THAT(*opt, ElementsAre(1, 2, 3, 4, 5));
 }
+
+#endif // ! (__cplusplus >= 201703L)

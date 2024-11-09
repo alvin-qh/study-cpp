@@ -96,15 +96,24 @@ namespace cxx::templated {
 		static constexpr bool value = is_same_type<decltype(test<T>(nullptr)), std::true_type>::value;
 	};
 
+#if (__cplusplus < 201703L)
+	// 当 C++ 版本低于 17, 模板类中定义的 `static` 类型变量需要在类之外进行声明
+	template <typename T>
+	constexpr bool is_default_constructible<T>::value;
+#endif
 	// --------------------------------------------------------------------------
 
+
+#if (__cplusplus >= 201703L)
+	template <typename..._Args> using __void_t = std::void_t<_Args...>;
+#else
 	/// @brief 定义模板类型, 无论模板参数为何, 其 `make_void<T>::type` 都为 `void` 类型
 	///
 	/// @tparam ...T 任意模板参数
-	// template<typename...T>
-	// struct make_void {
-	//     using type = void;
-	// };
+	template<typename...T>
+	struct make_void {
+		using type = void;
+	};
 
 	/// @brief 定义 `void_t` 类型
 	///
@@ -113,8 +122,9 @@ namespace cxx::templated {
 	/// `template<typename...> using void_t = void;`
 	///
 	/// @tparam ...T 任意模板参数列表
-	// template<typename...T>
-	// using void_t = typename make_void<T...>::type;
+	template<typename...T>
+	using __void_t = typename make_void<T...>::type;
+#endif
 
 	/// @brief 用于检测指定类型是否包含 `-` 运算符
 	///
@@ -152,7 +162,7 @@ namespace cxx::templated {
 	template<typename T>
 	struct has_operator_sub<
 		T,
-		std::void_t<decltype(std::declval<T>() - std::declval<const T&>())>
+		__void_t<decltype(std::declval<T>() - std::declval<const T&>())>
 	> : std::true_type {
 	};
 
@@ -165,7 +175,7 @@ namespace cxx::templated {
 	template<typename T>
 	struct has_operator_add<
 		T,
-		std::void_t<decltype(std::declval<T>() + std::declval<const T&>())>
+		__void_t<decltype(std::declval<T>() + std::declval<const T&>())>
 	> : std::true_type {
 	};
 

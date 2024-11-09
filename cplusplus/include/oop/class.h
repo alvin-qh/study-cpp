@@ -44,6 +44,13 @@ namespace cxx::oop {
 		/// @return 两个对象是否相同
 		bool operator==(const AClass& o) const;
 
+#if (__cplusplus < 201703L)  // C++ 17 以前版本适用
+
+		/// @brief 在 C++ 17 版本以前, 编译器无法根据 `==` 重载自动产生 `!=` 重载, 需要自行定义
+		bool operator!=(const AClass& o) const;
+
+#endif // ! (__cplusplus < 201703L)
+
 		/// @brief 设置 `_value` 字段的值
 		///
 		/// @param value 参数值

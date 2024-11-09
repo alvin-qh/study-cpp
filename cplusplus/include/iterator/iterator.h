@@ -7,9 +7,7 @@
 #include <memory>
 #include <utility>
 
-#define __new_iterator (__cplusplus >= 201703L)
-
-#if (!__new_iterator)
+#if (__cplusplus < 201703L)
 #include <iterator>
 #endif
 
@@ -141,9 +139,9 @@ namespace cxx::iterator {
 		typename _difference_type = ptrdiff_t
 	>
 	class ptr_based_iterator : public __iterator_type_define<T, _category, _difference_type>
-#if (!__new_iterator)
+#if (__cplusplus < 201703L)
 		// C++ 17 前, 需要继承 `std::iterator` 类型
-		, std::iterator<typename __iterator_type_define<T>::iterator_category, T>
+		, std::iterator<typename __iterator_type_define<T, _category, _difference_type>::iterator_category, T>
 #endif
 	{
 		template <typename, typename> friend class dynamic_array;
@@ -263,6 +261,7 @@ namespace cxx::iterator {
 			return *this;
 		}
 
+#if (__cplusplus >= 201703L)
 		/// @brief 重载三路比较运算符
 		///
 		/// @param o 其它对象引用
@@ -270,6 +269,17 @@ namespace cxx::iterator {
 		std::strong_ordering operator<=>(const __self& o) const noexcept {
 			return __base::_ptr <=> o._ptr;
 		}
+#else
+		bool operator!=(const __self& o) const noexcept { return __base::_ptr != o._ptr; }
+
+		bool operator<(const __self& o) const noexcept { return __base::_ptr < o._ptr; }
+
+		bool operator<=(const __self& o) const noexcept { return __base::_ptr <= o._ptr; }
+
+		bool operator>(const __self& o) const noexcept { return __base::_ptr > o._ptr; }
+
+		bool operator>=(const __self& o) const noexcept { return __base::_ptr >= o._ptr; }
+#endif
 
 		/// @brief 重载加号运算符, 将一个偏移量值和迭代器对象相加
 		///
@@ -300,9 +310,9 @@ namespace cxx::iterator {
 	>
 	class ptr_based_reverse_iterator :
 		public __iterator_type_define<T, _category, _difference_type>
-#if (!__new_iterator)
+#if (__cplusplus < 201703L)
 		// C++ 17 前, 需要继承 `std::iterator` 类型
-		, public std::iterator<typename __iterator_type_define<T>::iterator_category, T>
+		, public std::iterator<typename __iterator_type_define<T, _category, _difference_type>::iterator_category, T>
 #endif
 	{
 		template <typename, typename> friend class dynamic_array;
@@ -422,6 +432,7 @@ namespace cxx::iterator {
 			return *this;
 		}
 
+#if (__cplusplus >= 201703L)
 		/// @brief 重载三路比较运算符
 		///
 		/// @param o 其它对象引用
@@ -429,6 +440,17 @@ namespace cxx::iterator {
 		std::strong_ordering operator<=>(const __self& o) const {
 			return o._ptr <=> __base::_ptr;
 		}
+#else
+		bool operator!=(const __self& o) const noexcept { return o._ptr != __base::_ptr; }
+
+		bool operator<(const __self& o) const noexcept { return o._ptr < __base::_ptr; }
+
+		bool operator<=(const __self& o) const noexcept { return o._ptr <= __base::_ptr; }
+
+		bool operator>(const __self& o) const noexcept { return o._ptr > __base::_ptr; }
+
+		bool operator>=(const __self& o) const noexcept { return o._ptr >= __base::_ptr; }
+#endif
 
 		/// @brief 重载加号运算符, 将一个偏移量值和迭代器对象相加
 		///

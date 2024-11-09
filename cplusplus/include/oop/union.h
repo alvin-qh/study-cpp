@@ -68,8 +68,16 @@ namespace cxx::oop {
 		/// @brief 判等运算符重载
 		bool operator==(const UnionData& o) const;
 
+#if (__cplusplus >= 201703L)
 		/// @brief 三路比较运算符重载
 		std::strong_ordering operator<=>(const UnionData& o) const;
+#else
+		bool operator!=(const UnionData& o) const;
+		bool operator<(const UnionData& o) const;
+		bool operator>(const UnionData& o) const;
+		bool operator<=(const UnionData& o) const;
+		bool operator>=(const UnionData& o) const;
+#endif // ! (__cplusplus >= 201703L)
 	};
 
 } // ! namespace cxx::oop

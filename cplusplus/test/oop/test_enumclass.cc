@@ -34,39 +34,69 @@ TEST(TEST_SUITE_NAME, gender) {
 
     // 测试字符串无法转为枚举项的情况
     gender = string_to_gender("Unknown");
+
+#if (__cplusplus >= 201703L)
     ASSERT_FALSE(gender.has_value());
+#else
+    ASSERT_EQ(gender, Gender::Unknown);
+#endif
 }
 
 /// @brief 测试 "仿枚举" 类的使用
 TEST(TEST_SUITE_NAME, imitation_enum) {
     // 1. 获取仿枚举的枚举项 (即类的静态只读成员字段)
-    auto e = ImitationEnum::A;
 
     // 通过枚举项的 `operator int` 获取枚举项的整数值
-    ASSERT_EQ(e, 1);
+    ASSERT_EQ(ImitationEnum::A, 1);
 
     // 通过枚举项的 `operator const char*` 获取枚举项的名称
-    ASSERT_STREQ(e, "A");
+    ASSERT_STREQ(ImitationEnum::A, "A");
 
     // 2. 测试从字符串转为枚举项
-    auto opt_e = ImitationEnum::from_string("B");
+#if (__cplusplus >= 201703L)
+    auto e = ImitationEnum::from_string("B");
+#else
+    auto e = ImitationEnum::from_cstr("B");
+#endif
 
+#if (__cplusplus >= 201703L)
     // 确认转换成功
-    ASSERT_TRUE(opt_e.has_value());
+    ASSERT_TRUE(e.has_value());
 
     // 获取枚举项的名称
-    ASSERT_EQ(opt_e->name(), "B");
+    ASSERT_EQ(e->name(), "B");
 
     // 通过 `optional` 对象的 `*` 运算符获取值, 并通过枚举项的 `operator const char*` 获取枚举项的整数值
-    ASSERT_STREQ(*opt_e, "B");
+    ASSERT_STREQ(*e, "B");
 
     // 获取枚举项的值
-    ASSERT_EQ(opt_e->value(), 2);
+    ASSERT_EQ(e->value(), 2);
 
     // 通过 `optional` 对象的 `*` 运算符获取值, 并通过枚举项的 `operator int` 获取枚举项的整数值
-    ASSERT_EQ(*opt_e, 2);
+    ASSERT_EQ(*e, 2);
+#else
+    // 确认转换成功
+    ASSERT_NE(e, ImitationEnum::None);
+
+    // 获取枚举项的名称
+    ASSERT_STREQ(e.name(), "B");
+
+    // 通过枚举项的 `operator const char*` 获取枚举项的整数值
+    ASSERT_STREQ(e, "B");
+
+    // 获取枚举项的值
+    ASSERT_EQ(e.value(), 2);
+
+    // 通过枚举项的 `operator int` 获取枚举项的整数值
+    ASSERT_EQ(e, 2);
+#endif
 
     // 测试字符串转枚举项失败的情况
-    opt_e = ImitationEnum::from_string("X");
-    ASSERT_FALSE(opt_e.has_value());
+#if (__cplusplus >= 201703L)
+    e = ImitationEnum::from_string("X");
+    ASSERT_FALSE(e.has_value());
+#else
+    e = ImitationEnum::from_cstr("X");
+    ASSERT_EQ(e, ImitationEnum::None);
+#endif
 }

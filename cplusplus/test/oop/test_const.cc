@@ -23,8 +23,10 @@ TEST(TEST_SUITE_NAME, const_value) {
 TEST(TEST_SUITE_NAME, global_const_value) {
     // 1. 测试 `constexpr` 修饰的变量
     static_assert(CE_MAX_N == 50);
+#if (__cplusplus >= 201703L)
     static_assert(CE_MAX_M == 150);
     static_assert(CE_STR_1 == "Alvin");
+#endif
 
     // 2. 测试 `const` 修饰的变量
 
@@ -41,6 +43,8 @@ TEST(TEST_SUITE_NAME, global_const_value) {
 #endif
 }
 
+#if (__cplusplus >= 201703L)
+
 /// @brief 判断类型是否为整数类型
 ///
 /// 测试常量条件判断, 也即条件分支在编译期就已经确认
@@ -48,7 +52,6 @@ TEST(TEST_SUITE_NAME, global_const_value) {
 /// @tparam T 任意类型
 template <typename T>
 struct integer_test {
-
     /// @brief 常量函数, 判断 `T` 类型是否为整型
     constexpr static bool test() {
         // 常量分支, 通过 `constexpr` 关键字修饰条件分支,
@@ -71,6 +74,10 @@ struct integer_test {
     }
 };
 
+#endif
+
+#if (__cplusplus >= 201703L)
+
 /// @brief 测试常量条件分支
 TEST(TEST_SUITE_NAME, const_condition) {
     constexpr int a = 100;
@@ -89,6 +96,8 @@ TEST(TEST_SUITE_NAME, const_condition) {
     // 测试模板中使用常量条件分支
     static_assert(integer_test<decltype(x)>().test());
 }
+
+#endif
 
 /// @brief 测试 `const` 修饰引用变量
 ///
@@ -242,8 +251,10 @@ TEST(TEST_SUITE_NAME, const_class_field) {
     // 测试数组类型常量成员字段
     static_assert(static_str_cmp(ConstField::CES_CSTR, "A") == 0);
 
+#if (__cplusplus >= 201703L)
     // 测试字符串类型常量成员字段
     static_assert(ConstField::CES_STR == "B");
+#endif
 
     // 测试结构体类型常量成员字段
     static_assert(ConstField::CES_STRUCT.name == "C");
@@ -264,10 +275,14 @@ TEST(TEST_SUITE_NAME, const_class_field) {
     // 一般情况下, 无法修改只读字段的值
     // cf.c_str = "AAA";
 
+#if (__cplusplus >= 201703L)
     // 可通过类型转化将只读字段 (的引用) 转为可读写字段 (的引用)
     // 通过转换后的结果, 即可为只读字段重新赋值
     const_cast<string&>(cf.c_str_1) = "AAA";
     ASSERT_EQ(cf.c_str_1, "AAA");
+#else
+    ASSERT_STREQ(cf.c_str_1, "AA");
+#endif
 
     // 3. 测试 `const static` 类成员字段
 

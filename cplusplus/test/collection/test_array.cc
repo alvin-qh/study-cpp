@@ -24,9 +24,11 @@ TEST(TEST_SUITE_NAME, create_array) {
     arr = array<int, 5>{ 1, 2, 3, 4, 5 };
     ASSERT_THAT(arr, ElementsAre(1, 2, 3, 4, 5));
 
+#if (__cplusplus >= 202002L)
     // 通过匿名原生数组生成数组对象
-    arr = to_array((int[]) { 1, 2, 3, 4, 5 });
+    arr = std::to_array((int[]) { 1, 2, 3, 4, 5 });
     ASSERT_THAT(arr, ElementsAre(1, 2, 3, 4, 5));
+#endif
 }
 
 /// @brief 测试对 `array` 对象中的元素访问

@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -133,3 +135,5 @@ TEST(TEST_SUITE_NAME, move_constructor) {
     ASSERT_EQ(get<0>(v1), "");
     ASSERT_EQ(get<0>(v2), "hello");
 }
+
+#endif // ! (__cplusplus >= 201703L)

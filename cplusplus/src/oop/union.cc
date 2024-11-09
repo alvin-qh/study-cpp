@@ -9,9 +9,7 @@ namespace cxx::oop {
 
     UnionData::UnionData(uint64_t v) : u64(v) {}
 
-    UnionData::UnionData(uint32_t v1, uint32_t v2) :
-        u32{ v1, v2 } {
-    }
+    UnionData::UnionData(uint32_t v1, uint32_t v2) : u32{ v1, v2 } {}
 
     UnionData::UnionData(
         uint16_t v1,
@@ -46,6 +44,14 @@ namespace cxx::oop {
 
     bool UnionData::operator==(const UnionData& o) const { return u64 == o.u64; }
 
+#if (__cplusplus >= 201703L)
     strong_ordering UnionData::operator<=>(const UnionData& o) const { return u64 <=> o.u64; }
+#else
+    bool UnionData::operator!=(const UnionData& o) const { return !(*this == o); }
+    bool UnionData::operator<(const UnionData& o) const { return u64 < o.u64; }
+    bool UnionData::operator>(const UnionData& o) const { return u64 > o.u64; }
+    bool UnionData::operator<=(const UnionData& o) const { return u64 <= o.u64; }
+    bool UnionData::operator>=(const UnionData& o) const { return u64 >= o.u64; }
+#endif // ! (__cplusplus >= 201703L)
 
 } // ! namespace cxx::oop

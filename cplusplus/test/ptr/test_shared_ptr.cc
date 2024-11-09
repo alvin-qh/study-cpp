@@ -103,7 +103,8 @@ TEST(TEST_SUITE_NAME, assign_shared_ptr) {
 /// @brief 测试 `shared_ptr` 智能指针的移动赋值
 TEST(TEST_SUITE_NAME, move_shared_ptr) {
     shared_ptr<LargeObject<int, 10>> ptr1 = make_shared<LargeObject<int, 10>>(
-        initializer_list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+        initializer_list<int>{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+    );
 
     // `ptr1` 变量为 `true` 表示 `unique_ptr` 对象有效
     ASSERT_TRUE(ptr1);
@@ -251,6 +252,7 @@ TEST(TEST_SUITE_NAME, make_shared_ptr_object_for_array) {
     ASSERT_EQ(ptr[4][1], 41);
     ASSERT_EQ(ptr[4][2], 42);
 
+#if (__cplusplus >= 201703L)
     // 通过 `shared_ptr` 类构造器创建
     ptr = make_shared<LargeObject<int, 3>[]>(5);
     fn_fill(ptr, 5, 3);
@@ -265,4 +267,5 @@ TEST(TEST_SUITE_NAME, make_shared_ptr_object_for_array) {
     ASSERT_EQ(ptr[4][0], 40);
     ASSERT_EQ(ptr[4][1], 41);
     ASSERT_EQ(ptr[4][2], 42);
+#endif
 }

@@ -1,3 +1,5 @@
+#if (__cplusplus >= 201703L)
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -78,3 +80,5 @@ TEST(TEST_SUITE_NAME, move_constructor) {
     // 变量 `a1` 的值已经被移动
     ASSERT_FALSE(a1.has_value());
 }
+
+#endif // ! (__cplusplus >= 201703L)

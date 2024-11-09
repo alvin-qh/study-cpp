@@ -25,7 +25,11 @@ TEST(TEST_SUITE_NAME, tuple_size) {
     ASSERT_EQ(tuple_size<decltype(t)>::value, 3);
 
     // 对于 C++ 17 版本以上, 可以通过下列常量表达式获取 `tuple` 类型中定义的值个数
+#if (__cplusplus >= 201703L)
     ASSERT_EQ(tuple_size_v<decltype(t)>, 3);
+#else
+    ASSERT_EQ(tuple_size<decltype(t)>::value, 3);
+#endif
 }
 
 /// @brief 测试获取 `tuple` 类型中指定位置值的类型
@@ -35,9 +39,15 @@ TEST(TEST_SUITE_NAME, tuple_size) {
 TEST(TEST_SUITE_NAME, tuple_element) {
     auto t = make_tuple<int, float, string>(1, 1.0f, "hello");
 
+#if (__cplusplus >= 201703L)
     ASSERT_TRUE((std::is_same_v<tuple_element<0, decltype(t)>::type, int>));
     ASSERT_TRUE((std::is_same_v<tuple_element<1, decltype(t)>::type, float>));
     ASSERT_TRUE((std::is_same_v<tuple_element<2, decltype(t)>::type, string>));
+#else
+    ASSERT_TRUE((std::is_same<tuple_element<0, decltype(t)>::type, int>::value));
+    ASSERT_TRUE((std::is_same<tuple_element<1, decltype(t)>::type, float>::value));
+    ASSERT_TRUE((std::is_same<tuple_element<2, decltype(t)>::type, string>::value));
+#endif
 }
 
 /// @brief 测试将两个 `tuple` 对象合并为新的 `tuple` 对象
@@ -51,7 +61,11 @@ TEST(TEST_SUITE_NAME, tuple_cat) {
 
     // 将两个 `tuple` 对象合并, 返回新类型的 `tuple` 对象, 包含被合并的两个 `tuple` 对象的所有值
     auto t_cat = tuple_cat(t1, t2);
+#if (__cplusplus >= 201703L)
     ASSERT_EQ(tuple_size_v<decltype(t_cat)>, 4);
+#else
+    ASSERT_EQ(tuple_size<decltype(t_cat)>::value, 4);
+#endif
 
     ASSERT_EQ(std::get<0>(t_cat), 1);
     ASSERT_EQ(std::get<1>(t_cat), 1.0f);
@@ -115,6 +129,23 @@ TEST(TEST_SUITE_NAME, tuple_get) {
     ASSERT_EQ(std::get<2>(t), "world");
 }
 
+/// @brief 测试在元组中包含可忽略字段
+TEST(TEST_SUITE_NAME, ignore_field) {
+    // `std::ignore` 对象可以被赋予任何值, 且不会有任何实质性操作
+    std::ignore = 100;
+    std::ignore = "hello";
+
+    string s;
+
+    // 本例中, 原本需要一个 `std::tuple<bool&, string&>`
+    // 类型元组来接收 `std::pair<bool, string>` 对象, 但通过
+    // `std::ignore` 对象占位, 可以不接收 `bool` 值
+    std::tie(std::ignore, s) = make_pair(true, "hello");
+    ASSERT_EQ(s, "hello");
+}
+
+#if (__cplusplus >= 201703L)
+
 /// @brief 测试通过 `tuple` 对象作为函数参数
 ///
 /// 通过 `std::apply` 函数, 可以将一个 `tuple` 对象的值按顺序展开并作为参数传递给指定函数
@@ -156,18 +187,4 @@ TEST(TEST_SUITE_NAME, unpack_tuple) {
     ASSERT_EQ(b, 1.0f);
     ASSERT_EQ(c, "hello");
 }
-
-/// @brief 测试在元组中包含可忽略字段
-TEST(TEST_SUITE_NAME, ignore_field) {
-    // `std::ignore` 对象可以被赋予任何值, 且不会有任何实质性操作
-    std::ignore = 100;
-    std::ignore = "hello";
-
-    string s;
-
-    // 本例中, 原本需要一个 `std::tuple<bool&, string&>`
-    // 类型元组来接收 `std::pair<bool, string>` 对象, 但通过
-    // `std::ignore` 对象占位, 可以不接收 `bool` 值
-    std::tie(std::ignore, s) = make_pair(true, "hello");
-    ASSERT_EQ(s, "hello");
-}
+#endif // ! (__cplusplus >= 201703L)

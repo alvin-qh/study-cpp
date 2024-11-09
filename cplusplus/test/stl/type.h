@@ -4,6 +4,7 @@
 #define __CPLUSPLUS_STL_OPTIONAL__PERSON_H
 
 #include <string>
+#include <memory>
 #include <utility>
 #include <stdexcept>
 
@@ -18,6 +19,14 @@ namespace cxx::stl {
 			string name;
 			uint8_t age;
 			char gender;
+
+			__person_data(const string& name, uint8_t age, char gender) :
+				name(name), age(age), gender(gender) {
+			}
+
+			__person_data(string&& name, uint8_t age, char gender) :
+				name(std::move(name)), age(age), gender(gender) {
+			}
 		};
 
 		// 定义指针类型

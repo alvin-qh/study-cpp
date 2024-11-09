@@ -32,7 +32,13 @@ TEST(TEST_SUITE_NAME, global_nothrow_new_delete_operator) {
 /// @brief 测试通过 `operator new[](size_t)` 操作分配内存,
 /// 并通过 `operator delete[](void*)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_array_new_delete_operator) {
-    int* ps = new int[] {1, 2, 3, 4};
+    int* ps =
+#if (__cplusplus >= 201703L)
+        new int[] {1, 2, 3, 4};
+#else
+        new int[4] {1, 2, 3, 4};
+#endif
+
     ASSERT_EQ(ps[0], 1);
     ASSERT_EQ(ps[1], 2);
     ASSERT_EQ(ps[2], 3);
@@ -44,7 +50,13 @@ TEST(TEST_SUITE_NAME, global_array_new_delete_operator) {
 /// @brief 测试通过 `operator new[](size_t, std::nothrow_t)` 操作分配内存,
 /// 并通过 `operator delete[](void*, const std::nothrow_t)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_nothrow_array_new_delete_operator) {
-    int* ps = new (std::nothrow) int[] {1, 2, 3, 4};
+    int* ps =
+#if (__cplusplus >= 201703L)
+        new (std::nothrow) int[] {1, 2, 3, 4};
+#else
+        new (std::nothrow) int[4] {1, 2, 3, 4};
+#endif
+
     ASSERT_EQ(ps[0], 1);
     ASSERT_EQ(ps[1], 2);
     ASSERT_EQ(ps[2], 3);
@@ -72,8 +84,11 @@ public:
 /// 使用 `placement new` 操作符, 需要: 1. 手动分配内存; 2. 手动执行对象的析构函数;
 /// 3. 手动释放内存;
 TEST(TEST_SUITE_NAME, placement_new) {
+#if (__cplusplus >= 201703L)
     std::byte buf[sizeof(A) * 10];
-
+#else
+    uint8_t buf[sizeof(A) * 10];
+#endif
     A* pa = reinterpret_cast<A*>(buf);
 
     for (std::size_t i = 0; i < sizeof(buf) / sizeof(A); ++i) {
@@ -98,7 +113,13 @@ TEST(TEST_SUITE_NAME, class_override_new_delete_operator) {
 
     delete po;
 
-    NewDelete* pos = new NewDelete[]{ NewDelete("object-1"), NewDelete("object-2") };
+    NewDelete* pos =
+#if (__cplusplus >= 201703L)
+        new NewDelete[]{ NewDelete("object-1"), NewDelete("object-2") };
+#else
+        new NewDelete[2]{ NewDelete("object-1"), NewDelete("object-2") };
+#endif
+
     ASSERT_EQ(pos[0].name(), "object-1");
     ASSERT_EQ(pos[1].name(), "object-2");
 

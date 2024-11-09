@@ -76,21 +76,20 @@ namespace cxx::oop {
         return nullopt;
     }
 #else
-
     // 当 C++ 版本低于 17, 类中定义的 `static` 类型变量需要代码文件中进行声明
     constexpr __enum_value ImitationEnum::A;
     constexpr __enum_value ImitationEnum::B;
     constexpr __enum_value ImitationEnum::C;
     constexpr __enum_value ImitationEnum::None;
 
-    __enum_value ImitationEnum::from_cstr(const char* name) {
-        if (strcmp(name, A.name()) == 0) {
+    __enum_value ImitationEnum::from_string(const string & name) {
+        if (name == A.name()) {
             return A;
         }
-        if (strcmp(name, B.name()) == 0) {
+        if (name == B.name()) {
             return B;
         }
-        if (strcmp(name, C.name()) == 0) {
+        if (name == C.name()) {
             return C;
         }
         return None;

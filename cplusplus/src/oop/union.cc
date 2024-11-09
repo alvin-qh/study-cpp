@@ -44,7 +44,7 @@ namespace cxx::oop {
 
     bool UnionData::operator==(const UnionData& o) const { return u64 == o.u64; }
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
     strong_ordering UnionData::operator<=>(const UnionData& o) const { return u64 <=> o.u64; }
 #else
     bool UnionData::operator!=(const UnionData& o) const { return !(*this == o); }

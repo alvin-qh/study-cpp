@@ -211,7 +211,9 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_category, std::random_access_iterator_tag>));
+#if (__cplusplus >= 202002L)
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_concept, std::contiguous_iterator_tag>));
+#endif
 #else
     ASSERT_TRUE((std::is_same<pointer_iterator_type, int*>::value));
     ASSERT_TRUE((std::is_same<std::iterator_traits<pointer_iterator_type>::difference_type, std::ptrdiff_t>::value));

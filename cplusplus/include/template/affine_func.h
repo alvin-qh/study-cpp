@@ -8,7 +8,7 @@
 namespace cxx::templated {
 	using namespace std;
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 	/// @brief 定义模板约束, 表示改模板参数必须具备 `+` 运算符
 	///
 	/// @tparam T 待检测类型
@@ -23,7 +23,7 @@ namespace cxx::templated {
 	/// 所谓的仿函数, 即一个重载了 `()` 运算符的类型
 	///
 	/// @tparam T 数值类型泛型参数
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 	template <addition_type T>
 	class AffineFunc {
 #else

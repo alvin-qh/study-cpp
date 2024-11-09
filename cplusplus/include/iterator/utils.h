@@ -17,7 +17,7 @@ namespace cxx::iterator {
 	/// @param end2 第二组迭代器终止对象
 	/// @return 出现差异的位置 (从 1 开始)
 	template<typename _Iter1, typename _Iter2>
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		requires std::input_iterator<_Iter1>&& std::input_iterator<_Iter2>
 #endif
 	ptrdiff_t compare_iterators(_Iter1 begin1, _Iter1 end1, _Iter2 begin2, _Iter2 end2) noexcept {

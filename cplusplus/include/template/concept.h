@@ -3,7 +3,7 @@
 #ifndef __CPLUSPLUS_TEMPLATE__CONCEPT_H
 #define __CPLUSPLUS_TEMPLATE__CONCEPT_H
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 
 #include <type_traits>
 #include <concepts>
@@ -117,6 +117,6 @@ namespace cxx::templated {
 
 } // ! namespace cxx::templated
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // ! (__cplusplus >= 202002L)
 
 #endif // ! __CPLUSPLUS_TEMPLATE__CONCEPT_H

@@ -91,8 +91,8 @@ namespace cxx::oop {
 	/// @brief 定义枚举项类型
 	class __enum_value {
 	private:
-#if (__cplusplus >= 201703L)
 		// 枚举项名称
+#if (__cplusplus >= 202002L)
 		string _name;
 #else
 		const char* _name;
@@ -102,48 +102,53 @@ namespace cxx::oop {
 		int _value;
 	public:
 		/// @brief 参数构造器
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		constexpr __enum_value(const string& name, int value) : _name(name), _value(value) {}
 #else
 		constexpr __enum_value(const char* name, int value) : _name(name), _value(value) {}
 #endif
+
 		/// @brief 获取枚举项名称
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		constexpr const string& name() const { return _name; }
 #else
 		constexpr const char* name() const { return _name; }
 #endif
+
 		/// @brief 获取枚举项值
 		constexpr int value() const { return _value; }
 
+		/// @brief 重载判等运算符
 		bool operator==(const __enum_value& o) const {
 			if (this == &o) {
 				return true;
 			}
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 			return _name == o._name && _value == o._value;
 #else
 			return strcmp(_name, o._name) == 0 && _value == o._value;
 #endif
 		}
 
+#if (__cplusplus < 202002L)
+		/// @brief 重载不等比较运算符, C++ 20 以下版本不会自动生成该重载
 		bool operator!=(const __enum_value& o) const { return !(*this == o); }
+#endif
 
 		/// @brief 重载类型转换运算符, 当枚举项转为 `int` 时返回枚举项值
 		constexpr operator int() const { return _value; }
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		/// @brief 重载类型转换运算符, 当枚举项转为 `string` 时返回枚举项名称
 		constexpr operator string() const { return _name; }
 
-		/// @brief 重载类型转换运算符, 当枚举项转为 `const string&`
-		/// 时返回枚举项名称的引用
+		/// @brief 重载类型转换运算符, 当枚举项转为 `const string&` 时返回枚举项名称的引用
 		constexpr operator const string& () const { return _name; }
 #endif
 
 		/// @brief 重载类型转换运算符, 当枚举项转为 `const char*`
 		/// 时返回枚举项名称的指针
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		constexpr operator const char* () const { return _name.c_str(); }
 #else
 		constexpr operator const char* () const { return _name; }
@@ -175,7 +180,7 @@ namespace cxx::oop {
 		/// @brief 将字符串转为特定枚举项
 		static optional<__enum_value> from_string(const string& name);
 #else
-		static __enum_value from_cstr(const char* name);
+		static __enum_value from_string(const string& name);
 #endif
 	};
 } // ! namespace cxx::oop

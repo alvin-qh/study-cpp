@@ -252,8 +252,8 @@ TEST(TEST_SUITE_NAME, make_shared_ptr_object_for_array) {
     ASSERT_EQ(ptr[4][1], 41);
     ASSERT_EQ(ptr[4][2], 42);
 
-#if (__cplusplus >= 201703L)
-    // 通过 `shared_ptr` 类构造器创建
+#if (__cplusplus >= 202002L)
+    // 通过 `shared_ptr` 类构造器创建数组, 参数为数组长度, C++ 20 以上版本有效
     ptr = make_shared<LargeObject<int, 3>[]>(5);
     fn_fill(ptr, 5, 3);
 

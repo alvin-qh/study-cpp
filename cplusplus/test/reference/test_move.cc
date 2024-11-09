@@ -152,10 +152,10 @@ TEST(TEST_SUITE_NAME, moveable_class) {
     // 需要将 `m1` 转为 "右值引用" 后, 即可进行传参
     // 完成移动操作后, `m1` 对象失效, 内容被移动到 `m3` 对象中
     m3 =
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
         [](Moveable<int>&& m) { return m; }(std::move(m1));
 #else
-        // 低于 C++ 17 版本, 返回值需要通过 `std::forward` 函数进行一次转发, 方能返回右值
+        // 低于 C++ 20 版本, 返回值需要通过 `std::forward` 函数进行一次转发, 方能返回右值
         [](Moveable<int>&& m) { return std::forward<Moveable<int>>(m); }(std::move(m1));
 #endif
     ASSERT_TRUE(m3);

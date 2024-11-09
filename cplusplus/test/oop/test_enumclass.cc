@@ -56,7 +56,7 @@ TEST(TEST_SUITE_NAME, imitation_enum) {
 #if (__cplusplus >= 201703L)
     auto e = ImitationEnum::from_string("B");
 #else
-    auto e = ImitationEnum::from_cstr("B");
+    auto e = ImitationEnum::from_string("B");
 #endif
 
 #if (__cplusplus >= 201703L)
@@ -64,7 +64,11 @@ TEST(TEST_SUITE_NAME, imitation_enum) {
     ASSERT_TRUE(e.has_value());
 
     // 获取枚举项的名称
+#if (__cplusplus >= 202002L)
     ASSERT_EQ(e->name(), "B");
+#else
+    ASSERT_STREQ(e->name(), "B");
+#endif
 
     // 通过 `optional` 对象的 `*` 运算符获取值, 并通过枚举项的 `operator const char*` 获取枚举项的整数值
     ASSERT_STREQ(*e, "B");
@@ -96,7 +100,7 @@ TEST(TEST_SUITE_NAME, imitation_enum) {
     e = ImitationEnum::from_string("X");
     ASSERT_FALSE(e.has_value());
 #else
-    e = ImitationEnum::from_cstr("X");
+    e = ImitationEnum::from_string("X");
     ASSERT_EQ(e, ImitationEnum::None);
 #endif
 }

@@ -23,8 +23,12 @@ TEST(TEST_SUITE_NAME, const_value) {
 TEST(TEST_SUITE_NAME, global_const_value) {
     // 1. 测试 `constexpr` 修饰的变量
     static_assert(CE_MAX_N == 50);
+
 #if (__cplusplus >= 201703L)
     static_assert(CE_MAX_M == 150);
+#endif
+
+#if (__cplusplus >= 202002L)
     static_assert(CE_STR_1 == "Alvin");
 #endif
 
@@ -251,7 +255,7 @@ TEST(TEST_SUITE_NAME, const_class_field) {
     // 测试数组类型常量成员字段
     static_assert(static_str_cmp(ConstField::CES_CSTR, "A") == 0);
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
     // 测试字符串类型常量成员字段
     static_assert(ConstField::CES_STR == "B");
 #endif
@@ -275,7 +279,7 @@ TEST(TEST_SUITE_NAME, const_class_field) {
     // 一般情况下, 无法修改只读字段的值
     // cf.c_str = "AAA";
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
     // 可通过类型转化将只读字段 (的引用) 转为可读写字段 (的引用)
     // 通过转换后的结果, 即可为只读字段重新赋值
     const_cast<string&>(cf.c_str_1) = "AAA";

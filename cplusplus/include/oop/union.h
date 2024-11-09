@@ -68,7 +68,7 @@ namespace cxx::oop {
 		/// @brief 判等运算符重载
 		bool operator==(const UnionData& o) const;
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		/// @brief 三路比较运算符重载
 		std::strong_ordering operator<=>(const UnionData& o) const;
 #else

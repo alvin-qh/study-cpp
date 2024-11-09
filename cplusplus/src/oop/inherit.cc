@@ -62,7 +62,7 @@ namespace cxx::oop {
         return _b == o._b;
     }
 
-#if (__cplusplus < 201703L)
+#if (__cplusplus < 202002L)
     bool ChildClass::operator!=(const ChildClass& o) const { return !(*this == o); }
 #endif
 

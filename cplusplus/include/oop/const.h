@@ -17,6 +17,9 @@ namespace cxx::oop {
 #if (__cplusplus >= 201703L)
 	// 定义内联全局常量
 	inline constexpr uint64_t CE_MAX_M = 150;
+#endif
+
+#if (__cplusplus >= 202002L)
 
 	// 定义静态全局常量
 	// 在全局范围中, `static` 并不起到明确的作用, 但在函数内部,
@@ -82,7 +85,7 @@ namespace cxx::oop {
 	/// 在运行期进行创建
 	class ConstClass {
 	private:
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		string _name;
 #else
 		const char* _name;
@@ -96,7 +99,7 @@ namespace cxx::oop {
 		///
 		/// 如果对象的变量未修饰为 `constexpr static` 关键字, 则该构造器和未修饰 `constexpr`
 		/// 关键字的作用一致
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		constexpr ConstClass(const string& name, int value) :
 			_name(name), _value(value) {
 		}
@@ -113,7 +116,7 @@ namespace cxx::oop {
 		///
 		/// 当对象变量未修饰 `constexpr static` 关键字, 则此方法的调用将发生在运行期, 方法上修饰的
 		/// `constexpr` 关键字被忽略
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		constexpr const string& name() const { return _name; }
 #else
 		constexpr const char* name() const { return _name; }
@@ -132,7 +135,7 @@ namespace cxx::oop {
 	// ------------------------------------------------------------------------------------------------------------
 
 	/// @brief 定义结构体
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 	struct CStruct { string name; int value; };
 #else
 	struct CStruct { const char* name; int value; };
@@ -143,15 +146,13 @@ namespace cxx::oop {
 	public:
 		constexpr ConstField() {}
 
-		ConstField(int&) {}
-
 		/// @brief 通过 `constexpr` 关键字定义数组类型常量成员字段
 		///
 		/// 通过 `constexpr` 关键字修饰的类字段, 必须和 `static` 关键字配合使用,
 		/// 表示一个静态的全局常量
 		constexpr static const char CES_CSTR[] = "A";
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		/// @brief 通过 `constexpr` 关键字定义字符串类型常量成员字段
 		///
 		/// 因为 `std::string` 类型具备修饰了 `constexpr` 关键字的构造器,
@@ -170,7 +171,7 @@ namespace cxx::oop {
 		/// @brief 定义只读成员字段
 		///
 		/// C++ 要求非静态只读字段必须在声明时进行初始化
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		const string c_str_1 = "AA";
 #else
 		const char* c_str_1 = "AA";

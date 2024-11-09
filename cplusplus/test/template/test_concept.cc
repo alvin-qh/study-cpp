@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 
 #include <gtest/gtest.h>
 

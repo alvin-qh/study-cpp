@@ -261,7 +261,7 @@ namespace cxx::iterator {
 			return *this;
 		}
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		/// @brief 重载三路比较运算符
 		///
 		/// @param o 其它对象引用
@@ -432,7 +432,7 @@ namespace cxx::iterator {
 			return *this;
 		}
 
-#if (__cplusplus >= 201703L)
+#if (__cplusplus >= 202002L)
 		/// @brief 重载三路比较运算符
 		///
 		/// @param o 其它对象引用

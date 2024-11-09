@@ -24,11 +24,9 @@ namespace cxx::oop {
 
     bool AClass::operator==(const AClass& o) const { return _value == o._value; }
 
-#if (__cplusplus < 201703L)  // C++ 17 以前版本适用
-
+#if (__cplusplus < 202002L)
     bool AClass::operator!=(const AClass& o) const { return !(*this == o); }
-
-#endif // ! (__cplusplus < 201703L)
+#endif
 
     void AClass::set_value(int value) { _value = value; }
 

@@ -13,7 +13,7 @@ using testing::ElementsAre;
 
 /// @brief 测试通过定义项的值创建 `tuple` 对象
 TEST(TEST_SUITE_NAME, make_tuple) {
-    // 创建包含 `std::string` 以及 `std::vector` 两项的 `tuple` 对象, 
+    // 创建包含 `std::string` 以及 `std::vector` 两项的 `tuple` 对象,
     // 并用这两项的值进行创建
     auto t = make_tuple<string, vector<int>>("hello", { 1, 2, 3 });
 

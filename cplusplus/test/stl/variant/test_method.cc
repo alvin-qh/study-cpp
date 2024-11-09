@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include <tuple>
+#include <variant>
 
 #include "../type.h"
 
@@ -12,32 +12,51 @@ using testing::ElementsAre;
 
 using cxx::stl::Person;
 
-#define TEST_SUITE_NAME test_cplusplus_stl_tuple__tuple
+#define TEST_SUITE_NAME test_cplusplus_stl_variant__method
 
-/// @brief 测试获取 `tuple` 类型中定义的值个数
+/// @brief 测试获取 `std::variant` 对象中值的位置
 ///
-/// 通过 `tuple_size` 函数, 根据 `tuple` 类型, 可以获取一个 `tuple` 类型中定义的值个数,
-/// 该计算结果是在编译器完成
-TEST(TEST_SUITE_NAME, tuple_size) {
-    auto t = make_tuple<int, float, string>(1, 1.0f, "hello");
+/// `std::variant` 对象中所存储值的位置和其声明时的模板参数位置一一对应，
+/// 例如对于 `std::variant<int, string>` 类型来说, 其 `0` 位置对应的即为 `int`
+/// 类型值, `1` 位置对应的即为 `string` 类型值, 与模板参数位置对应
+TEST(TEST_SUITE_NAME, index) {
+    // 实例化对象, 位置 `0` 为 `std::string` 类型, 位置 `1` 为 `int` 类型,
+    // 并为 `int` 类型设置值
+    variant<string, int> v = 10;
 
-    // 通过 `decltype` 操作符计算 `t` 变量的类型, 并获取该 `tuple` 类型中定义的值个数
-    ASSERT_EQ(tuple_size<decltype(t)>::value, 3);
+    // 确认目前 `1` 位置有值, 类型为 `int`
+    ASSERT_EQ(v.index(), 1);
+    ASSERT_TRUE(holds_alternative<int>(v));
 
-    // 对于 C++ 17 版本以上, 可以通过下列常量表达式获取 `tuple` 类型中定义的值个数
-    ASSERT_EQ(tuple_size_v<decltype(t)>, 3);
+    // 为 `std::string` 类型设置值
+    v = "hello";
+
+    // 确认目前 `0` 位置有值, 类型为 `std::string`
+    ASSERT_EQ(v.index(), 0);
+    ASSERT_TRUE(holds_alternative<string>(v));
 }
 
 /// @brief 测试获取 `tuple` 类型中指定位置值的类型
 ///
 /// 通过 `tuple_element` 函数, 根据 `tuple` 类型和值位置, 可获取对应值的类型,
 /// 该计算结果是在编译器完成
-TEST(TEST_SUITE_NAME, tuple_element) {
-    auto t = make_tuple<int, float, string>(1, 1.0f, "hello");
+TEST(TEST_SUITE_NAME, valueless_by_exception) {
+    variant<Person, int> v = 10;
 
-    ASSERT_TRUE((std::is_same_v<tuple_element<0, decltype(t)>::type, int>));
-    ASSERT_TRUE((std::is_same_v<tuple_element<1, decltype(t)>::type, float>));
-    ASSERT_TRUE((std::is_same_v<tuple_element<2, decltype(t)>::type, string>));
+    try {
+        // 在 `std::variant` 对象中构造 `Person` 对象值时抛出异常,
+        // 令构造值失败
+        v.emplace<0>(std::domain_error("error"));
+        FAIL();
+    }
+    catch (const std::domain_error& e) {
+        ASSERT_STREQ(e.what(), "error");
+    }
+
+    // 对于构建失败的 `std::variant` 对象, 其 `index` 方法返回 `std::variant_npos` 值;
+    // 其 `valueless_by_exception` 方法返回 `true`
+    ASSERT_EQ(v.index(), variant_npos);
+    ASSERT_TRUE(v.valueless_by_exception());
 }
 
 /// @brief 测试将两个 `tuple` 对象合并为新的 `tuple` 对象

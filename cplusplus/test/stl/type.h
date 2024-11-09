@@ -5,6 +5,7 @@
 
 #include <string>
 #include <utility>
+#include <stdexcept>
 
 namespace cxx::stl {
 	using namespace std;
@@ -50,6 +51,11 @@ namespace cxx::stl {
 		///
 		/// @param o 被移动对象的右值引用
 		Person(Person&& o) : _ptr(std::move(o._ptr)) {}
+
+		/// @brief 会造成对象构造失败的构造器
+		/// @param e 异常对象引用
+		template <typename _Err>
+		Person(const _Err& e) { throw e; }
 
 		/// @brief 重载赋值运算符
 		Person& operator=(const Person&) = default;

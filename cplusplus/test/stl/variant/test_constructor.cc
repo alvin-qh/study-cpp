@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include <tuple>
+#include <string>
 #include <vector>
 #include <list>
+#include <tuple>
 
 #include <variant>
 
@@ -88,7 +89,7 @@ TEST(TEST_SUITE_NAME, duplicate_template_args) {
 
 /// @brief 测试原位构造器
 ///
-/// 可以通过原位构造器对
+/// 可以通过原位构造器对 `std::variant` 中指定位置或制定类型的数据通过其构造器参数直接初始化
 TEST(TEST_SUITE_NAME, in_place_constructor) {
     // 1. 通过指定位置, 以原位构造器初始化 `std::variant` 对象
 
@@ -112,7 +113,7 @@ TEST(TEST_SUITE_NAME, in_place_constructor) {
 
 /// @brief 测试通过初始化列表对象初始化 `std::variant` 对象
 ///
-/// 如果 `std::variant` 所包含类型的构造器具备 `initializer_list` 类型参数, 
+/// 如果 `std::variant` 所包含类型的构造器具备 `initializer_list` 类型参数,
 /// 则可以通过原位构造器以及 `initializer_list` 类型参数构造对象
 TEST(TEST_SUITE_NAME, initializer_list_constructor) {
     variant<vector<int>, list<double>> v1(in_place_index<0>, { 1, 2, 3 });
@@ -123,6 +124,8 @@ TEST(TEST_SUITE_NAME, initializer_list_constructor) {
 }
 
 /// @brief 测试移动构造器
+///
+/// `std::variant` 对象的移动会将其存储的值一并进行移动
 TEST(TEST_SUITE_NAME, move_constructor) {
     variant<string, int> v1("hello");
 

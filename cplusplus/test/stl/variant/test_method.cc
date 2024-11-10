@@ -5,6 +5,8 @@
 
 #include <variant>
 
+#include "stl/variant/overloaded.h"
+
 #include "../type.h"
 
 using namespace std;
@@ -110,6 +112,101 @@ TEST(TEST_SUITE_NAME, swap) {
     // 确认交换结果
     ASSERT_EQ(get<1>(v1), 1);
     ASSERT_EQ(get<0>(v2), Person("Alvin", 20, 'M'));
+}
+
+/// @brief 测试为 `std::variant` 对象中包含的值进行重新构造
+///
+/// 当 `std::variant` 对象已存在, 需要改变其包含的对象值时, 可以通过 `emplace` 方法,
+/// 直接通过该对象类型的构造器参数构造该对象
+TEST(TEST_SUITE_NAME, emplace) {
+    variant<Person, int> v = 100;
+
+    ASSERT_EQ(v.index(), 1);
+    ASSERT_EQ(get<1>(v), 100);
+
+    // 指定要设置 `Person` 类型对象, 并传递 `Person` 类构造器参数
+    v.emplace<Person>("Alvin", 20, 'M');
+
+    // 确认 `std::variant` 对象位置 `0` 包含值, 且为 `Person` 对象值
+    ASSERT_EQ(v.index(), 0);
+    ASSERT_EQ(get<0>(v), Person("Alvin", 20, 'M'));
+}
+
+/// @brief 测试为 `std::variant` 对象的可比较性
+TEST(TEST_SUITE_NAME, comparable) {
+    variant<string, int> v1 = "hello", v2 = 10;
+
+#if __ge_cxx20
+    ASSERT_EQ(v1 <=> v2, std::strong_ordering::less);
+#endif
+
+    ASSERT_TRUE(v1 < v2);
+    ASSERT_TRUE(v1 <= v2);
+    ASSERT_FALSE(v1 > v2);
+    ASSERT_FALSE(v1 >= v2);
+    ASSERT_FALSE(v1 == v2);
+    ASSERT_TRUE(v1 != v2);
+}
+
+/// @brief 测试通过 `std::visit` 函数访问 `std::variant` 对象
+///
+/// `std::visit` 函数可以通过一个回调函数 (或 Lambda 表达式) 访问 `std::variant` 对象中存储的值,
+/// 并且以右值引用方式进行访问
+TEST(TEST_SUITE_NAME, visit) {
+    variant<string, int> v = "hello";
+
+    bool visited = false;
+
+    // 1. 测试 `std::visit` 函数配合 Lambda 表达式 (或回调函数) 使用
+
+    // 通过 `std::visit` 函数访问 `v` 变量中存储的值, 通过 Lambda 表达式进行访问,
+    // `v` 变量存储的值将作为参数传递给 Lambda 表达式参数
+    std::visit([&visited](auto&& arg)
+        {
+            // 获取 `arg` 参数的实际类型
+            using T = std::decay_t<decltype(arg)>;
+
+            // 根据参数实际类型对参数进行处理
+            if constexpr (std::is_same_v<T, string>) {
+                ASSERT_EQ(arg, "hello");
+                visited = true;
+            }
+            else if constexpr (std::is_same_v<T, int>) {
+                ASSERT_EQ(arg, 10);
+                visited = true;
+            }
+            else {
+                FAIL();
+            }
+        }, v);
+
+    // 确认正确的类型被处理
+    ASSERT_TRUE(visited);
+
+    visited = true;
+
+    // 2. 测试 `std::visit` 函数配合 `overloaded` 仿函数类型使用
+
+    // 通过 `overloaded` 类型生成实例, 并令 `std::visit` 调用其 `operator()` 重载
+    // 构造 `overloaded` 类型实例需要传入多个函数类型对象 (即包括 `operator()` 重载的类型对象),
+    // 和方式 1 相比, 无需在回调函数内部通过 `if` 进行类型判断
+    std::visit(overloaded
+        {
+            [](auto arg) {
+                FAIL();
+            },
+            [&visited](int n) {
+                ASSERT_EQ(n, 10);
+                visited = true;
+            },
+            [&visited](string& s) {
+                ASSERT_EQ(s, "hello");
+                visited = true;
+            }
+        }, v);
+
+    // 确认正确的类型被处理
+    ASSERT_TRUE(visited);
 }
 
 #endif // __ge_cxx17

@@ -13,7 +13,7 @@ using namespace cxx::templated;
 
 using testing::ElementsAre;
 
-/// @brief 测试不定模板参数的类
+/// @brief 用于测试不定模板参数的类
 ///
 /// 通过不定模板参数向该类型传递构造器参数
 class TestClass {
@@ -106,4 +106,37 @@ TEST(TEST_SUITE_NAME, recursive_args) {
     // 通过对可变模板参数的递归访问参数列表
     string r2 = recursive_args(string("A"), "B", "C", "D");
     ASSERT_EQ(r2, "ABCD");
+}
+
+/// @brief 具备 `add` 方法的类, 用于测试类的不定模板参数
+///
+/// @tparam T 任意类型
+template <typename T>
+class _Test {
+private:
+    T _val;
+public:
+    _Test(const T& value) : _val(value) {}
+
+    /// @brief 该方法将继承给 `Addition` 类, 并形成重载
+    ///
+    /// @param val 相加数
+    /// @return 加法和
+    T add(const T& val) { return _val + val; }
+};
+
+/// @brief 测试类的不定参数模板
+TEST(TEST_SUITE_NAME, class_template_args) {
+    // 实例化 `Addition` 类型, 通过类型推导指引, 产生 `Addition<_Test<int>, _Test<double>, _Test<std::string>>` 类型实例
+    Addition a{ _Test(1), _Test(1.1), _Test(string("hello")) };
+
+    // `Addition<_Test<int>, _Test<double>, _Test<std::string>>` 类型自动产生了 `add` 方法的三个重载, 继承自三个 `_Test<...>` 类型
+    int rn = a.add(2);
+    ASSERT_EQ(rn, 3);
+
+    double rf = a.add(2.1);
+    ASSERT_EQ(rf, 3.2);
+
+    string rs = a.add(string(" world"));
+    ASSERT_EQ(rs, "hello world");
 }

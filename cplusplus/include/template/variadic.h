@@ -29,6 +29,8 @@ namespace cxx::templated {
 	template<typename R, typename Fn, typename ...Args>
 	R callback(Fn fn, Args...args) { return fn(args...); }
 
+	// -------------------------------------------------------------------------------------------------------
+
 	/// @brief 递归停止函数
 	///
 	/// 当 `recursive_args` 模板函数的 `Args` 可变模板参数递归到数量为 `1` 时,
@@ -66,6 +68,25 @@ namespace cxx::templated {
 	/// @return 不定参数两两相加的结果
 	template<typename R, typename ...Args>
 	vector<R> expand_args(Args...args) { return vector<R> { _double_args<R>(args)... }; }
+
+	// -------------------------------------------------------------------------------------------------------
+
+	/// @brief 定义类的不定模板参数
+	///
+	/// 本类具备不定模板参数, 并令本类从所有的模板类进行继承, 并将父类的 `add` 方法置于本类中形成重载函数
+	///
+	/// `struct Addition : Ts...` 语句表示从模板参数定义的类展开并继承
+	///
+	/// @tparam ...Ts 不定模板参数
+	template<typename ...Ts>
+	struct Addition : Ts... {
+		// 在本类中使用父类的 `add` 方法并展开形成重载
+		using Ts::add...;
+	};
+
+	// 指定模板推导指引, 当构造器参数为 `Ts...` 时, 模板参数为 `<Ts...>`
+	template <typename... Ts>
+	Addition(Ts...) -> Addition<Ts...>;
 
 } // namespace cxx::templated
 

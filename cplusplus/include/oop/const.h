@@ -19,7 +19,7 @@ namespace cxx::oop {
 	inline constexpr uint64_t CE_MAX_M = 150;
 #endif
 
-#if __ge_cxx17
+#if __ge_cxx20
 	// 定义静态全局常量
 	// 在全局范围中, `static` 并不起到明确的作用, 但在函数内部,
 	// `constexpr` 和 `static constexpr` 表示的作用域范围不同

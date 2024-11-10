@@ -11,6 +11,6 @@ namespace cxx::oop {
 		int data[3];
 	};
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OPP__UNPACK_H
+#endif // __CPLUSPLUS_OPP__UNPACK_H

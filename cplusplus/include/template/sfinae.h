@@ -70,7 +70,7 @@ namespace cxx::templated {
 		///
 		/// @tparam U 要检测的目标类型
 		/// @param 该参数仅用于占位, 并无实际意义, 任何类型均可, 其目的是: 令两个 `test` 方法既可以形成重载, 又可以传递同样的参数,
-		///        可以为一个 `test` 方法定义任意类型参数, 另一个 `test` 方法定义 `...` 参数 (表示任意参数)
+		///       可以为一个 `test` 方法定义任意类型参数, 另一个 `test` 方法定义 `...` 参数 (表示任意参数)
 		/// @return `std::true_type` 类型实例
 		template<typename U, typename = decltype(U())>
 		static auto test(void*) { return std::true_type(); }
@@ -82,7 +82,7 @@ namespace cxx::templated {
 		///
 		/// @tparam U 要检测的目标类型
 		/// @param 该参数仅用于占位, 并无实际意义, 任何类型均可, 其目的是: 令两个 `test` 方法既可以形成重载, 又可以传递同样的参数,
-		///        可以为一个 `test` 方法定义任意类型参数, 另一个 `test` 方法定义 `...` 参数 (表示任意参数)
+		///       可以为一个 `test` 方法定义任意类型参数, 另一个 `test` 方法定义 `...` 参数 (表示任意参数)
 		/// @return `std::false_type` 类型实例
 		template<typename U>
 		static auto test(...) { return std::false_type(); }
@@ -96,15 +96,15 @@ namespace cxx::templated {
 		static constexpr bool value = is_same_type<decltype(test<T>(nullptr)), std::true_type>::value;
 	};
 
-#if (__cplusplus < 201703L)
+#if !__ge_cxx17
 	// 当 C++ 版本低于 17, 模板类中定义的 `static` 类型变量需要在类之外进行声明
 	template <typename T>
 	constexpr bool is_default_constructible<T>::value;
 #endif
+
 	// --------------------------------------------------------------------------
 
-
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 	template <typename..._Args> using __void_t = std::void_t<_Args...>;
 #else
 	/// @brief 定义模板类型, 无论模板参数为何, 其 `make_void<T>::type` 都为 `void` 类型
@@ -133,12 +133,12 @@ namespace cxx::templated {
 	/// `has_operator_sub` 类型的基本原理是:
 	///
 	/// 1. `has_operator_sub` 类型具备两个模板参数, 默认继承自 `std::false_type`,
-	///    其中 `T` 参数表示要检测的目标类型;
+	///   其中 `T` 参数表示要检测的目标类型;
 	///
 	/// 2. 对 `has_operator_sub` 进行偏特化, 令其第二个模板参数为
-	///    `void_t<decltype(declval<T>() - declval<const T&>())>` 类型,
-	///    如果第二个模板参数偏特化成功 (即类型 `T` 具备 `-` 运算符), 则 `has_operator_sub`
-	///    将继承自 `std::true_type`;
+	///   `void_t<decltype(declval<T>() - declval<const T&>())>` 类型,
+	///   如果第二个模板参数偏特化成功 (即类型 `T` 具备 `-` 运算符), 则 `has_operator_sub`
+	///   将继承自 `std::true_type`;
 	///
 	/// 整体借助了 C++ 的 SFINAE 特性, 即所给类型导致模板参数无效时, 不会立即编译失败,
 	/// 而是尝试模板参数的其它展开方式
@@ -215,7 +215,7 @@ namespace cxx::templated {
 	/// 1. 定义模板类, 且除了所需模板参数 `T` 外, 额外增加 `void` 类型匿名模板参数;
 	///
 	/// 2. 定义类型的偏特化模板, 将匿名模板参数特化为
-	///    `std::enable_if_t<has_operator_sub<T>::value>` 类型;
+	///   `std::enable_if_t<has_operator_sub<T>::value>` 类型;
 	///
 	/// `std::enable_if_t` 模板的参数为一个 `bool` 常量值, 如果该值为 `true`,
 	/// 则 `std::enable_if_t` 类型生效, 否则 `std::enable_if_t` 类型无效,
@@ -282,6 +282,6 @@ namespace cxx::templated {
 		const T& value() const { return _val; }
 	};
 
-} // ! namespace cxx::templated
+} // namespace cxx::templated
 
-#endif // ! __CPLUSPLUS_TEMPLATE__SFINAE_H
+#endif // __CPLUSPLUS_TEMPLATE__SFINAE_H

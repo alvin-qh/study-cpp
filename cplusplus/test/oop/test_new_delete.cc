@@ -33,7 +33,7 @@ TEST(TEST_SUITE_NAME, global_nothrow_new_delete_operator) {
 /// 并通过 `operator delete[](void*)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_array_new_delete_operator) {
     int* ps =
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
         new int[] {1, 2, 3, 4};
 #else
         new int[4] {1, 2, 3, 4};
@@ -51,7 +51,7 @@ TEST(TEST_SUITE_NAME, global_array_new_delete_operator) {
 /// 并通过 `operator delete[](void*, const std::nothrow_t)` 操作进行回收
 TEST(TEST_SUITE_NAME, global_nothrow_array_new_delete_operator) {
     int* ps =
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
         new (std::nothrow) int[] {1, 2, 3, 4};
 #else
         new (std::nothrow) int[4] {1, 2, 3, 4};
@@ -84,7 +84,7 @@ public:
 /// 使用 `placement new` 操作符, 需要: 1. 手动分配内存; 2. 手动执行对象的析构函数;
 /// 3. 手动释放内存;
 TEST(TEST_SUITE_NAME, placement_new) {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     std::byte buf[sizeof(A) * 10];
 #else
     uint8_t buf[sizeof(A) * 10];
@@ -114,7 +114,7 @@ TEST(TEST_SUITE_NAME, class_override_new_delete_operator) {
     delete po;
 
     NewDelete* pos =
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
         new NewDelete[]{ NewDelete("object-1"), NewDelete("object-2") };
 #else
         new NewDelete[2]{ NewDelete("object-1"), NewDelete("object-2") };

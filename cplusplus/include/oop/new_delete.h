@@ -132,6 +132,6 @@ namespace cxx::oop {
 		void operator delete[](void* ptr) noexcept;
 	};
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OPP__NEW_DELETE_H
+#endif // __CPLUSPLUS_OPP__NEW_DELETE_H

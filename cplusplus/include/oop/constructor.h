@@ -7,8 +7,10 @@
 
 namespace cxx::oop {
 
+	/// @brief 定义表示 "什么都不是" 的类型
 	struct nothing_t {};
 
+	/// @brief 定义 `nothing_t` 类型常量实例
 	constexpr nothing_t nothing{};
 
 	/// @brief 用于测试构造器的类
@@ -110,6 +112,6 @@ namespace cxx::oop {
 	Constructor make_constructor(std::string&& s);
 	Constructor make_constructor(const std::string& s);
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OOP__CONSTRUCTOR_H
+#endif // __CPLUSPLUS_OOP__CONSTRUCTOR_H

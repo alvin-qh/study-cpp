@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -144,4 +144,4 @@ TEST(TEST_SUITE_NAME, value_or) {
     ASSERT_EQ(n, -1);
 }
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17

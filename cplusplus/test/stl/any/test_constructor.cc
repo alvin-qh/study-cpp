@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -81,4 +81,4 @@ TEST(TEST_SUITE_NAME, move_constructor) {
     ASSERT_FALSE(a1.has_value());
 }
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17

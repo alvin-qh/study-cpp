@@ -109,8 +109,7 @@ namespace cxx::oop {
             _z == right._z;
     }
 
-#if __cplusplus >= 202002L
-
+#if __ge_cxx20
     partial_ordering Operator::operator<=>(const Operator& right) const noexcept {
         partial_ordering ord = _x <=> right._x;
 
@@ -122,9 +121,7 @@ namespace cxx::oop {
         }
         return ord;
     }
-
 #else
-
     bool Operator::operator<(const Operator& right) const noexcept {
         return
             _x < right._x ||
@@ -149,9 +146,8 @@ namespace cxx::oop {
 
     bool Operator::operator!=(const Operator& right) const noexcept {
         return !(*this == right);
-}
-
-#endif // ! __cplusplus >= 202002L
+    }
+#endif // __ge_cxx20
 
     Operator operator-(const Operator& left, const Operator& right) {
         return Operator(
@@ -181,4 +177,4 @@ namespace cxx::oop {
 
     OperatorChild::OperatorChild(double x, double y, double z) : Operator(x, y, z) {}
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

@@ -38,6 +38,6 @@ namespace convert {
 	/// @return `0` 表示成功, 非 `0` 表示缓冲区长度不足
 	int to_excel_column(int num, char* buf, size_t buflen);
 
-} // ! namespace convert
+} // namespace convert
 
-#endif // !__CONVERT_NUMSYS_H
+#endif // __CONVERT_NUMSYS_H

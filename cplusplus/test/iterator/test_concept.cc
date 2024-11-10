@@ -1,3 +1,5 @@
+#if __ge_cxx20
+
 #include <gtest/gtest.h>
 
 #include <vector>
@@ -25,8 +27,6 @@ using namespace cxx::iterator;
 /// 对于 C++20 以上版本, 提供了 concept 功能对泛型参数进行约束, 故
 ///
 /// 迭代器会提供一个 "类型" 标记, 用于体现迭代器的特性, C++
-#if __cplusplus >= 202002L
-
 TEST(TEST_SUITE_NAME, iterator_type_concept) {
     // 对于 `random_access_iterator` 类型迭代器, 其特性包含全部迭代器特性
     vector<int> v;
@@ -59,4 +59,4 @@ TEST(TEST_SUITE_NAME, iterator_type_concept) {
     ASSERT_TRUE(is_random_access_iterator(da.begin()));
 }
 
-#endif
+#endif // __ge_cxx20

@@ -2,12 +2,13 @@
 
 namespace cxx::stl {
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     optional<int> check_even_number(int n) {
         if (n % 2 == 0) {
             return n;
         }
         return std::nullopt;
     }
-#endif // ! (__cplusplus >= 201703L)
-}
+#endif
+
+} // namespace cxx::stl

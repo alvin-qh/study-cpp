@@ -19,18 +19,21 @@ add_executable(cplusplus_test
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 include_directories(
     include
+    ${CMAKE_SOURCE_DIR}/common
+    ${CMAKE_SOURCE_DIR}/vendor/format
 )
 
 # 为测试执行文件设置头文件路径
-target_include_directories(cplusplus_test
-    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format
-)
+# target_include_directories(cplusplus_test
+    # PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format
+# )
 
 # 指定需要预编译的头文件
 target_precompile_headers(cplusplus_test
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/googletest/googlemock/include/gmock/gmock.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/common/cxxver.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googlemock/include/gmock/gmock.h
 )
 
 # 增加本项目使用的链接库

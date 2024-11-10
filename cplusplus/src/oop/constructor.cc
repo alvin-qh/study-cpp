@@ -25,7 +25,7 @@ namespace cxx::oop {
     }
 
     Constructor::Constructor(std::string&& val) {
-        // 本代码仅为演示参数 `val` 被移动, 
+        // 本代码仅为演示参数 `val` 被移动,
         // 正常情况下字符串转数值无需使用移动语意
         std::string s(std::move(val));
         _val = std::stod(s);
@@ -63,4 +63,5 @@ namespace cxx::oop {
         // 必须显式调用构造器构造返回值对象
         return Constructor(s);
     }
-} // ! namespace cxx::oop
+
+} // namespace cxx::oop

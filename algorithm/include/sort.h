@@ -77,4 +77,4 @@ namespace algorithm {
 
 } // namespace algorithm
 
-#endif //__ALGORITHM__SORT_H
+#endif // __ALGORITHM__SORT_H

@@ -187,6 +187,6 @@ namespace algorithm {
 		return ret;
 	}
 
-} // ! namespace algorithm
+} // namespace algorithm
 
-#endif // ! __ALGORITHM__HEAP_H
+#endif // __ALGORITHM__HEAP_H

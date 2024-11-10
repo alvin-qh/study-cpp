@@ -47,7 +47,7 @@ namespace cxx::reference {
 
 		/// @brief 析构函数
 		virtual ~Moveable() {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
 #else
 			T* ptr = std::exchange(_ptr, nullptr);
@@ -88,6 +88,6 @@ namespace cxx::reference {
 		operator bool() const { return _ptr != nullptr; }
 	};
 
-} // ! namespace cxx::reference
+} // namespace cxx::reference
 
-#endif // ! __CPLUSPLUS_REFERENCE__MOVE_H
+#endif // __CPLUSPLUS_REFERENCE__MOVE_H

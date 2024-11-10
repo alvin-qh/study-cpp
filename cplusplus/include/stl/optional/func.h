@@ -3,7 +3,7 @@
 #ifndef __CPLUSPLUS_STL_OPTIONAL__OPTIONAL_H
 #define __CPLUSPLUS_STL_OPTIONAL__OPTIONAL_H
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <optional>
 
@@ -19,8 +19,8 @@ namespace cxx::stl {
 	/// @return `optional<int>` 类对象
 	optional<int> check_even_number(int n);
 
-} // ! namespace cxx::std
+} // namespace cxx::std
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17
 
-#endif // ! __CPLUSPLUS_STL_OPTIONAL__OPTIONAL_H
+#endif // __CPLUSPLUS_STL_OPTIONAL__OPTIONAL_H

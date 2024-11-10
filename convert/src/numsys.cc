@@ -137,4 +137,4 @@ namespace convert {
         return 0;
     }
 
-} // ! namespace convert
+} // namespace convert

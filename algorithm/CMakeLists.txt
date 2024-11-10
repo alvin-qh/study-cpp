@@ -18,8 +18,8 @@ add_executable(algorithm_test
 
 # 指定需要预编译的头文件
 target_precompile_headers(algorithm_test
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
 )
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置

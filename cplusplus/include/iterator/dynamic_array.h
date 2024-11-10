@@ -40,7 +40,7 @@ namespace cxx::iterator {
 		///
 		/// @param o 另一个对象的右值引用
 		void __move(__self&& o) noexcept {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 			if (_size = std::exchange(o._size, 0); _size > 0) {
 #else
 			_size = std::exchange(o._size, 0);
@@ -52,7 +52,7 @@ namespace cxx::iterator {
 
 		/// @brief 销毁当前数据指针
 		void __free() {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 			if (T* data = std::exchange(_data, nullptr); data) {
 #else
 			T* data = std::exchange(_data, nullptr);
@@ -192,6 +192,6 @@ namespace cxx::iterator {
 		const_reverse_iterator rend() const { return const_reverse_iterator(_data - 1); }
 	};
 
-} // ! namespace cxx::iterator
+} // namespace cxx::iterator
 
-#endif // ! __CPLUSPLUS_ITERATOR__DYNAMIC_ARRAY_H
+#endif // __CPLUSPLUS_ITERATOR__DYNAMIC_ARRAY_H

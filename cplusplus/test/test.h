@@ -13,6 +13,6 @@ namespace cxx {
 	/// @return 保留小数后的结果
 	double number_to_fixed(double n, uint32_t fixed);
 
-} // ! namespace cxx
+} // namespace cxx
 
-#endif // ! __CPLUSPLUS__TEST_H
+#endif // __CPLUSPLUS__TEST_H

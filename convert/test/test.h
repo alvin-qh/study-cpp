@@ -5,6 +5,6 @@
 #define __CONVERT__TEST_H
 
 namespace convert {
-} // ! namespace convert
+} // namespace convert
 
-#endif // ! __CONVERT_TEST_H
+#endif // __CONVERT_TEST_H

@@ -94,5 +94,5 @@ namespace cxx::stl {
 
 }
 
-#endif // !__CPLUSPLUS_STL_OPTIONAL__PERSON.H
+#endif // __CPLUSPLUS_STL_OPTIONAL__PERSON.H
 

@@ -3,7 +3,7 @@
 #ifndef __CPLUSPLUS_TEMPLATE__CONCEPT_H
 #define __CPLUSPLUS_TEMPLATE__CONCEPT_H
 
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 
 #include <type_traits>
 #include <concepts>
@@ -115,8 +115,7 @@ namespace cxx::templated {
 	template <can_add_type_v3 T>
 	T add6(T a, T b) { return a + b; }
 
-} // ! namespace cxx::templated
+} // namespace cxx::templated
 
-#endif // ! (__cplusplus >= 202002L)
-
-#endif // ! __CPLUSPLUS_TEMPLATE__CONCEPT_H
+#endif // __ge_cxx20
+#endif // __CPLUSPLUS_TEMPLATE__CONCEPT_H

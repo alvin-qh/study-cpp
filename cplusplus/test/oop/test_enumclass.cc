@@ -35,7 +35,7 @@ TEST(TEST_SUITE_NAME, gender) {
     // 测试字符串无法转为枚举项的情况
     gender = string_to_gender("Unknown");
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_FALSE(gender.has_value());
 #else
     ASSERT_EQ(gender, Gender::Unknown);
@@ -53,18 +53,18 @@ TEST(TEST_SUITE_NAME, imitation_enum) {
     ASSERT_STREQ(ImitationEnum::A, "A");
 
     // 2. 测试从字符串转为枚举项
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     auto e = ImitationEnum::from_string("B");
 #else
     auto e = ImitationEnum::from_string("B");
 #endif
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     // 确认转换成功
     ASSERT_TRUE(e.has_value());
 
     // 获取枚举项的名称
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
     ASSERT_EQ(e->name(), "B");
 #else
     ASSERT_STREQ(e->name(), "B");
@@ -96,7 +96,7 @@ TEST(TEST_SUITE_NAME, imitation_enum) {
 #endif
 
     // 测试字符串转枚举项失败的情况
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     e = ImitationEnum::from_string("X");
     ASSERT_FALSE(e.has_value());
 #else

@@ -37,9 +37,9 @@ namespace cxx::templated {
 
 		/// @brief 销毁当前指针
 		void _free() {
-#if (__cplusplus >= 201703L)
+			// 为数组各元素调用析构函数, 释放数组内存
+#if __ge_cxx17
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
-				// 为数组各元素调用析构函数, 释放数组内存
 				std::destroy_n(ptr, _len);
 #else
 			T* ptr = std::exchange(_ptr, nullptr);
@@ -49,7 +49,6 @@ namespace cxx::templated {
 				}
 #endif
 				_alloc.deallocate(ptr, _len);
-
 				_len = 0;
 			}
 		}
@@ -95,7 +94,7 @@ namespace cxx::templated {
 		/// @param o 被移动对象
 		/// @return 当前对象引用
 		Self& operator=(Self && o) noexcept {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr != nullptr) {
 #else
 			T* ptr = std::exchange(_ptr, nullptr);
@@ -170,6 +169,6 @@ namespace cxx::templated {
 		}
 	};
 
-} // ! namespace cxx::templated
+} // namespace cxx::templated
 
-#endif // ! __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H
+#endif // __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H

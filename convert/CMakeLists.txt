@@ -21,8 +21,8 @@ add_executable(convert_test
 
 # 指定需要预编译的头文件
 target_precompile_headers(convert_test
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
-    PUBLIC ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
 )
 
 # 增加本项目使用的链接库

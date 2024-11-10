@@ -4,6 +4,7 @@
   "words": [
     "CMakeList",
     "ctest",
+    "CXXVER",
     "gmock",
     "googlemock",
     "googletest",

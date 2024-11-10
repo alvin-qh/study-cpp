@@ -52,4 +52,4 @@ namespace cxx::oop {
 
     void NewDelete::operator delete[](void* ptr) noexcept { return ::free(ptr); }
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

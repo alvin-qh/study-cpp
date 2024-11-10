@@ -41,6 +41,6 @@ namespace algorithm {
 	/// @return 两个数组是否相等
 	bool is_int_array_eq(const int* left, const int* right, size_t len);
 
-} // ! namespace algorithm
+} // namespace algorithm
 
-#endif // ! __ALGORITHM_TEST_H
+#endif // __ALGORITHM_TEST_H

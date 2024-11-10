@@ -7,7 +7,7 @@
 
 namespace cxx::iterator {
 
-#if __cplusplus >= 202002L
+#if __ge_cxx20
 
 	/// @brief 检测迭代器是否为 `input iterator` 或 `output iterator` 迭代器
 	template <typename _Iter>
@@ -47,8 +47,8 @@ namespace cxx::iterator {
 		requires std::random_access_iterator<_Iter>
 	constexpr bool is_random_access_iterator(_Iter) noexcept { return true; }
 
-#endif
+#endif // __ge_cxx20
 
-} // ! namespace cxx::iterator
+} // namespace cxx::iterator
 
-#endif // ! __CPLUSPLUS_ITERATOR__CONCEPT_H
+#endif // __CPLUSPLUS_ITERATOR__CONCEPT_H

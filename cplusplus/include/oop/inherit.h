@@ -101,7 +101,7 @@ namespace cxx::oop {
 		/// @return 两个对象是否相同
 		bool operator==(const ChildClass& o) const;
 
-#if (__cplusplus < 202002L)
+#if !__ge_cxx20
 		/// @brief 对于 C++ 20 以下版本, 编译器不会自动生成不等号运算符重载
 		bool operator!=(const ChildClass& o) const;
 #endif
@@ -129,6 +129,6 @@ namespace cxx::oop {
 		virtual std::string to_string() const override;
 	};
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OOP_INHERIT_H
+#endif // __CPLUSPLUS_OOP_INHERIT_H

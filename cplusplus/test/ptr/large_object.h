@@ -73,7 +73,7 @@ namespace cxx::pointer {
 
 		/// @brief 析构函数
 		virtual ~LargeObject() {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 			std::destroy_n(_data, SIZE);
 #else
 			for (size_t i = 0; i < SIZE; ++i) {
@@ -118,6 +118,6 @@ namespace cxx::pointer {
 		constexpr size_t size() const { return SIZE; }
 	};
 
-} // ! namespace cxx::pointer
+} // namespace cxx::pointer
 
-#endif // !__CPLUSPLUS_PTR__SHARED_PTR_H
+#endif // __CPLUSPLUS_PTR__SHARED_PTR_H

@@ -29,10 +29,10 @@ namespace cxx::reference {
 	/// 在不同情况下表达为左值引用或右值引用:
 	///
 	/// - 当为 `ref` 传递变量时, 相当于传递变量的引用, 即 `&` 引用, 则
-	///   `ref` 参数类型为 `T&& &`, 折叠后为 `T&`;
+	///  `ref` 参数类型为 `T&& &`, 折叠后为 `T&`;
 	///
 	/// - 当为 `ref` 传递右值引用时, 相对于传递 `&&` 引用, 则 `ref`
-	///   参数类型为 `T&& &&`, 折叠后为 `T&&`;
+	///  参数类型为 `T&& &&`, 折叠后为 `T&&`;
 	///
 	/// 简言之, 将函数参数定义为 `T&& ref` 表示, `ref` 既可以是一个左值引用,
 	/// 也可以是一个右值引用, 这一点和类的 "移动拷贝构造器" 以及 "移动赋值操作符"
@@ -51,6 +51,6 @@ namespace cxx::reference {
 	template <typename T>
 	ARGUMENT_TYPE do_forward(T&& ref) { return __what_kind_of_ref(std::forward<T>(ref)); }
 
-} // ! namespace cxx::reference
+} // namespace cxx::reference
 
-#endif // ! __CPLUSPLUS_REFERENCE__FORWARD_H
+#endif // __CPLUSPLUS_REFERENCE__FORWARD_H

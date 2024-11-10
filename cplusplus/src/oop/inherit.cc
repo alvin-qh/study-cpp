@@ -62,7 +62,7 @@ namespace cxx::oop {
         return _b == o._b;
     }
 
-#if (__cplusplus < 202002L)
+#if !__ge_cxx20
     bool ChildClass::operator!=(const ChildClass& o) const { return !(*this == o); }
 #endif
 
@@ -74,4 +74,4 @@ namespace cxx::oop {
         return util::Format("ChildClass({0}, {1})", _a, _b);
     }
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

@@ -131,7 +131,7 @@ TEST(TEST_SUITE_NAME, for_in_statement) {
 TEST(TEST_SUITE_NAME, iterator_traits) {
     using iterator_type = dynamic_array<int>::iterator;
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<iterator_type, ptr_based_iterator<int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<iterator_type>::value_type, int>));
@@ -149,7 +149,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 
     using const_iterator_type = dynamic_array<int>::const_iterator;
 
-#if __cplusplus >= 201703L
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<const_iterator_type, ptr_based_iterator<const int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_iterator_type>::value_type, const int>));
@@ -167,7 +167,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 
     using reverse_iterator_type = dynamic_array<int>::reverse_iterator;
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<reverse_iterator_type, ptr_based_reverse_iterator<int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<reverse_iterator_type>::value_type, int>));
@@ -185,7 +185,7 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
 
     using const_reverse_iterator_type = dynamic_array<int>::const_reverse_iterator;
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<const_reverse_iterator_type, ptr_based_reverse_iterator<const int>>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<const_reverse_iterator_type>::value_type, const int>));
@@ -204,14 +204,14 @@ TEST(TEST_SUITE_NAME, iterator_traits) {
     // 当使用原生指针作为迭代器类型时, 测试 `std::iterator_traits` 中定义的类型
     using pointer_iterator_type = int*;
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<pointer_iterator_type, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::difference_type, std::ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::value_type, int>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_category, std::random_access_iterator_tag>));
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
     ASSERT_TRUE((std::is_same_v<std::iterator_traits<pointer_iterator_type>::iterator_concept, std::contiguous_iterator_tag>));
 #endif
 #else

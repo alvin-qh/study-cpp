@@ -1,18 +1,11 @@
 #include "oop/enumclass.h"
 
-
-#if (__cplusplus >= 201703L)
-#define NULLOPT_OR(val) nullopt
-#else
-#define NULLOPT_OR(val) (val)
-#endif
-
 namespace cxx::oop {
     using namespace std;
 
     // -------------------------------------------------------------------
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     optional<string> color_to_rgb(Color c) {
 #else
     string color_to_rgb(Color c) {
@@ -25,13 +18,13 @@ namespace cxx::oop {
         case Color::Blue:
             return COLOR_BLUE;
         default:
-            return NULLOPT_OR("");
+            return nullopt_or("");
         }
     }
 
     // -------------------------------------------------------------------
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     optional<string> gender_to_string(Gender g) {
 #else
     string gender_to_string(Gender g) {
@@ -42,11 +35,11 @@ namespace cxx::oop {
         case Gender::Female:
             return GENDER_FEMALE;
         default:
-            return NULLOPT_OR("");
+            return nullopt_or("");
         }
     }
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     optional<Gender> string_to_gender(const string & s) {
 #else
     Gender string_to_gender(const string & s) {
@@ -57,12 +50,12 @@ namespace cxx::oop {
         if (s == GENDER_FEMALE) {
             return Gender::Female;
         }
-        return NULLOPT_OR(Gender::Unknown);
+        return nullopt_or(Gender::Unknown);
     }
 
     // -------------------------------------------------------------------
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     optional<__enum_value> ImitationEnum::from_string(const string & name) {
         if (name == A.name()) {
             return A;
@@ -96,4 +89,4 @@ namespace cxx::oop {
     }
 #endif
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

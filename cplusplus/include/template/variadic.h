@@ -67,6 +67,6 @@ namespace cxx::templated {
 	template<typename R, typename ...Args>
 	vector<R> expand_args(Args...args) { return vector<R> { _double_args<R>(args)... }; }
 
-} // ! namespace cxx::templated
+} // namespace cxx::templated
 
-#endif // ! __CPLUSPLUS_TEMPLATE__VARIADIC_H
+#endif // __CPLUSPLUS_TEMPLATE__VARIADIC_H

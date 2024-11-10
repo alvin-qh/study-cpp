@@ -10,4 +10,4 @@ int main(int argc, char* argv[]) {
 }
 
 namespace convert {
-} // ! namespace convert
+} // namespace convert

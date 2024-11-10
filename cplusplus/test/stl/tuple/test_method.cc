@@ -25,7 +25,7 @@ TEST(TEST_SUITE_NAME, tuple_size) {
     ASSERT_EQ(tuple_size<decltype(t)>::value, 3);
 
     // 对于 C++ 17 版本以上, 可以通过下列常量表达式获取 `tuple` 类型中定义的值个数
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_EQ(tuple_size_v<decltype(t)>, 3);
 #else
     ASSERT_EQ(tuple_size<decltype(t)>::value, 3);
@@ -39,7 +39,7 @@ TEST(TEST_SUITE_NAME, tuple_size) {
 TEST(TEST_SUITE_NAME, tuple_element) {
     auto t = make_tuple<int, float, string>(1, 1.0f, "hello");
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<tuple_element<0, decltype(t)>::type, int>));
     ASSERT_TRUE((std::is_same_v<tuple_element<1, decltype(t)>::type, float>));
     ASSERT_TRUE((std::is_same_v<tuple_element<2, decltype(t)>::type, string>));
@@ -61,7 +61,7 @@ TEST(TEST_SUITE_NAME, tuple_cat) {
 
     // 将两个 `tuple` 对象合并, 返回新类型的 `tuple` 对象, 包含被合并的两个 `tuple` 对象的所有值
     auto t_cat = tuple_cat(t1, t2);
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_EQ(tuple_size_v<decltype(t_cat)>, 4);
 #else
     ASSERT_EQ(tuple_size<decltype(t_cat)>::value, 4);
@@ -144,7 +144,7 @@ TEST(TEST_SUITE_NAME, ignore_field) {
     ASSERT_EQ(s, "hello");
 }
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 /// @brief 测试通过 `tuple` 对象作为函数参数
 ///
@@ -187,4 +187,4 @@ TEST(TEST_SUITE_NAME, unpack_tuple) {
     ASSERT_EQ(b, 1.0f);
     ASSERT_EQ(c, "hello");
 }
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17

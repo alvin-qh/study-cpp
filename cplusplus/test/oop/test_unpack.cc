@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <gtest/gtest.h>
 
@@ -50,4 +50,4 @@ TEST(TEST_SUITE_NAME, unpack_object) {
     ASSERT_EQ(obj.data[2], -300);
 }
 
-#endif
+#endif // __ge_cxx17

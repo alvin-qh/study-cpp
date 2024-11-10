@@ -45,6 +45,6 @@ namespace cxx::reference {
 		left.insert(left.end(), right.begin(), right.end());
 		return left;
 	}
-} // ! namespace cxx::reference
+} // namespace cxx::reference
 
-#endif // ! __CPLUSPLUS_REFERENCE__LEFT_REF_H
+#endif // __CPLUSPLUS_REFERENCE__LEFT_REF_H

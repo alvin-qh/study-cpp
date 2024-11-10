@@ -23,4 +23,4 @@ namespace cxx {
         return -round(-n * p) / p;
     }
 
-} // ! namespace cxx
+} // namespace cxx

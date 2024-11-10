@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -58,4 +58,4 @@ TEST(TEST_SUITE_NAME, make_optional_from_initializer_list) {
     ASSERT_THAT(*opt, ElementsAre(1, 2, 3, 4, 5));
 }
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17

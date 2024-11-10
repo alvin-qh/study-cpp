@@ -55,6 +55,6 @@ namespace cxx::oop {
 		const std::string& name() const;
 	};
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // !__CPLUSPLUS_OPP_DEFAULT_H
+#endif // __CPLUSPLUS_OPP_DEFAULT_H

@@ -31,6 +31,6 @@ namespace cxx::reference {
 		static constexpr bool test(const T&) { return false; }
 	};
 
-} // ! namespace cxx::reference
+} // namespace cxx::reference
 
-#endif // ! __CPLUSPLUS_REFERENCE__RIGHT_REF_H
+#endif // __CPLUSPLUS_REFERENCE__RIGHT_REF_H

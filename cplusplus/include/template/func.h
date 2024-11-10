@@ -30,6 +30,6 @@ namespace cxx::templated {
 		return a + sp + b;
 	}
 
-} // ! namespace cxx::templated
+} // namespace cxx::templated
 
-#endif // ! __CPLUSPLUS_TEMPLATE__FUNC_H
+#endif // __CPLUSPLUS_TEMPLATE__FUNC_H

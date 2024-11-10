@@ -1,4 +1,4 @@
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 
 #include <gtest/gtest.h>
 
@@ -68,4 +68,4 @@ TEST(TEST_SUITE_NAME, concept_with_requires_specified_return) {
     // add6("A", "B");
 }
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx20

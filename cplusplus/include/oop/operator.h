@@ -140,7 +140,7 @@ namespace cxx::oop {
 		/// @return 是否相等
 		bool operator==(const Operator& right) const noexcept;
 
-#if __cplusplus >= 202002L
+#if __ge_cxx20
 
 		/// @brief 重载三路比较运算符
 		///
@@ -190,8 +190,7 @@ namespace cxx::oop {
 		/// @param right 待比较的对象引用
 		/// @return 是否不等于
 		bool operator!=(const Operator& right) const noexcept;
-
-#endif // ! __cplusplus >= 202002L
+#endif
 
 		double x() const;
 		double y() const;
@@ -258,6 +257,6 @@ namespace cxx::oop {
 		OperatorChild& operator=(OperatorChild&&) noexcept = default;
 	};
 
-	} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OPP__OPERATOR_H
+#endif // __CPLUSPLUS_OPP__OPERATOR_H

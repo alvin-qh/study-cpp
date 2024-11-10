@@ -21,6 +21,6 @@ namespace cxx::stl {
 	template <typename T>
 	inline constexpr void only_const_reference(T&) = delete;
 
-} // ! namespace cxx::utility
+} // namespace cxx::utility
 
-#endif // ! __CPLUSPLUS_STD_UTILITY__FUNCTIONS_H
+#endif // __CPLUSPLUS_STD_UTILITY__FUNCTIONS_H

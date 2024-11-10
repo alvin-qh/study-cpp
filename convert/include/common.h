@@ -5,4 +5,4 @@
 
 #include <stdlib.h>
 
-#endif // ! __CONVERT__COMMON_H
+#endif // __CONVERT__COMMON_H

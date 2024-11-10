@@ -23,8 +23,8 @@ using namespace cxx::iterator;
 /// 对于一个标准的 C++ 迭代器类型, 可通过 `iterator_traits` 类获取迭代器相关的类型信息, 包括:
 ///
 /// - `iterator_traits<T>::iterator_category`, 获取迭代器类型枚举, 包括: `input_iterator_tag`,
-///   `output_iterator_tag`, `forward_iterator_tag`, `bidirectional_iterator_tag`,
-///   `random_access_iterator_tag`
+///  `output_iterator_tag`, `forward_iterator_tag`, `bidirectional_iterator_tag`,
+///  `random_access_iterator_tag`
 /// - `iterator_traits<T>::difference_type`, 获取迭代器偏移量数值类型
 /// - `iterator_traits<T>::pointer`, 获取迭代器元素的指针类型
 /// - `iterator_traits<T>::reference`, 获取迭代器元素的引用类型
@@ -32,7 +32,7 @@ using namespace cxx::iterator;
 
 /// @brief 测试 `iterator_traits<T>::iterator_category`, 获取迭代器类型
 TEST(TEST_SUITE_NAME, iterator_category) {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<iterator_traits<int*>::iterator_category, random_access_iterator_tag>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<vector<int>::iterator>::iterator_category, random_access_iterator_tag>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<list<int>::iterator>::iterator_category, bidirectional_iterator_tag>));
@@ -59,7 +59,7 @@ TEST(TEST_SUITE_NAME, iterator_category) {
 
 /// @brief 测试 `iterator_traits<T>::difference_type`, 获取迭代器偏移量数值类型
 TEST(TEST_SUITE_NAME, difference_type) {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<iterator_traits<int*>::difference_type, ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<vector<int>::iterator>::difference_type, ptrdiff_t>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<list<int>::iterator>::difference_type, ptrdiff_t>));
@@ -86,7 +86,7 @@ TEST(TEST_SUITE_NAME, difference_type) {
 
 /// @brief 测试 `iterator_traits<T>::pointer`, 获取迭代器元素的指针类型
 TEST(TEST_SUITE_NAME, pointer) {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<iterator_traits<int*>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<vector<int>::iterator>::pointer, int*>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<list<int>::iterator>::pointer, int*>));
@@ -113,7 +113,7 @@ TEST(TEST_SUITE_NAME, pointer) {
 
 /// @brief 测试 `iterator_traits<T>::reference`, 获取迭代器元素的引用类型
 TEST(TEST_SUITE_NAME, reference) {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<iterator_traits<int*>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<vector<int>::iterator>::reference, int&>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<list<int>::iterator>::reference, int&>));
@@ -140,7 +140,7 @@ TEST(TEST_SUITE_NAME, reference) {
 
 /// @brief 测试 `iterator_traits<T>::value_type`, 获取迭代器迭代的元素值的类型
 TEST(TEST_SUITE_NAME, value_type) {
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     ASSERT_TRUE((std::is_same_v<iterator_traits<int*>::value_type, int>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<vector<int>::iterator>::value_type, int>));
     ASSERT_TRUE((std::is_same_v<iterator_traits<list<int>::iterator>::value_type, int>));

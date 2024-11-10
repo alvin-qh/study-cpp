@@ -24,7 +24,7 @@ namespace cxx::oop {
 
     bool AClass::operator==(const AClass& o) const { return _value == o._value; }
 
-#if (__cplusplus < 202002L)
+#if !__ge_cxx20
     bool AClass::operator!=(const AClass& o) const { return !(*this == o); }
 #endif
 
@@ -32,4 +32,4 @@ namespace cxx::oop {
 
     double AClass::value() const { return _value; }
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

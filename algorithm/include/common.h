@@ -86,6 +86,6 @@ namespace algorithm {
 		return array;
 	}
 
-} // ! namespace algorithm
+} // namespace algorithm
 
-#endif // ! __ALGORITHM__COMMON_H
+#endif // __ALGORITHM__COMMON_H

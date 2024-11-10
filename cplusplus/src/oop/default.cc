@@ -11,4 +11,4 @@ namespace cxx::oop {
 
     const string& Default::name() const { return _name; }
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

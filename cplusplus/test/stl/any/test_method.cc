@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <gtest/gtest.h>
 
@@ -78,4 +78,4 @@ TEST(TEST_SUITE_NAME, swap) {
     ASSERT_EQ(any_cast<int>(n2), 100);
 }
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17

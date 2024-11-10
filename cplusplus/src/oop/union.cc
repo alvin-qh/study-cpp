@@ -44,7 +44,7 @@ namespace cxx::oop {
 
     bool UnionData::operator==(const UnionData& o) const { return u64 == o.u64; }
 
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
     strong_ordering UnionData::operator<=>(const UnionData& o) const { return u64 <=> o.u64; }
 #else
     bool UnionData::operator!=(const UnionData& o) const { return !(*this == o); }
@@ -52,6 +52,6 @@ namespace cxx::oop {
     bool UnionData::operator>(const UnionData& o) const { return u64 > o.u64; }
     bool UnionData::operator<=(const UnionData& o) const { return u64 <= o.u64; }
     bool UnionData::operator>=(const UnionData& o) const { return u64 >= o.u64; }
-#endif // ! (__cplusplus >= 201703L)
+#endif
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

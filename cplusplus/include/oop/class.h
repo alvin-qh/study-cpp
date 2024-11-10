@@ -44,7 +44,7 @@ namespace cxx::oop {
 		/// @return 两个对象是否相同
 		bool operator==(const AClass& o) const;
 
-#if (__cplusplus < 202002L)
+#if !__ge_cxx20
 		/// @brief 在 C++ 20 版本以前, 编译器无法根据 `==` 重载自动产生 `!=` 重载, 需要自行定义
 		bool operator!=(const AClass& o) const;
 #endif
@@ -60,6 +60,6 @@ namespace cxx::oop {
 		double value() const;
 	};
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OOP__CLASS_H
+#endif // __CPLUSPLUS_OOP__CLASS_H

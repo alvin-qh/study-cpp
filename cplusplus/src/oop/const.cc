@@ -39,4 +39,4 @@ namespace cxx::oop {
 
     const string& ConstMethod::ref() const& { return _ref; }
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop

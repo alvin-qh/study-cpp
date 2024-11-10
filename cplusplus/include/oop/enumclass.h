@@ -41,11 +41,11 @@ namespace cxx::oop {
 	///
 	/// @param c `Color` 枚举项
 	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 	optional<string> color_to_rgb(Color c);
 #else
 	string color_to_rgb(Color c);
-#endif // ! (__cplusplus >= 201703L)
+#endif
 
 	// -------------------------------------------------------------------
 
@@ -54,11 +54,13 @@ namespace cxx::oop {
 	/// 可为枚举类强制指定枚举项的整数类型 (本例指定为 `uint8_t`), 并通过 `=` 为枚举项指定整数值,
 	/// 如果指定的整数值超出枚举定义的整型范围, 则编译错误
 	enum class Gender : uint8_t {
-#if (__cplusplus < 201703L)
-		Unknown = 0,
-#endif
 		Male = 1,
 		Female = 2
+
+#if !__ge_cxx17
+		,
+		Unknown = 0
+#endif
 	};
 
 	/// @brief 定义一组字符串常量, 用于对应 `Gender` 枚举的每一项名称
@@ -70,21 +72,21 @@ namespace cxx::oop {
 	///
 	/// @param g `Gender` 枚举项
 	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 	optional<string> gender_to_string(Gender g);
 #else
 	string gender_to_string(Gender g);
-#endif // ! (__cplusplus >= 201703L)
+#endif
 
 	/// @brief 将 `Gender` 枚举项转为对应的字符串
 	///
 	/// @param g `Gender` 枚举项
 	/// @return 通过 `std::optional` 包装的字符串结果, 转换失败返回 `std::nullopt`
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 	optional<Gender> string_to_gender(const string& s);
 #else
 	Gender string_to_gender(const string& s);
-#endif // ! (__cplusplus >= 201703L)
+#endif
 
 	// -------------------------------------------------------------------
 
@@ -92,7 +94,7 @@ namespace cxx::oop {
 	class __enum_value {
 	private:
 		// 枚举项名称
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 		string _name;
 #else
 		const char* _name;
@@ -102,14 +104,14 @@ namespace cxx::oop {
 		int _value;
 	public:
 		/// @brief 参数构造器
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 		constexpr __enum_value(const string& name, int value) : _name(name), _value(value) {}
 #else
 		constexpr __enum_value(const char* name, int value) : _name(name), _value(value) {}
 #endif
 
 		/// @brief 获取枚举项名称
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 		constexpr const string& name() const { return _name; }
 #else
 		constexpr const char* name() const { return _name; }
@@ -123,14 +125,14 @@ namespace cxx::oop {
 			if (this == &o) {
 				return true;
 			}
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 			return _name == o._name && _value == o._value;
 #else
 			return strcmp(_name, o._name) == 0 && _value == o._value;
 #endif
 		}
 
-#if (__cplusplus < 202002L)
+#if __ge_cxx20
 		/// @brief 重载不等比较运算符, C++ 20 以下版本不会自动生成该重载
 		bool operator!=(const __enum_value& o) const { return !(*this == o); }
 #endif
@@ -138,7 +140,7 @@ namespace cxx::oop {
 		/// @brief 重载类型转换运算符, 当枚举项转为 `int` 时返回枚举项值
 		constexpr operator int() const { return _value; }
 
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 		/// @brief 重载类型转换运算符, 当枚举项转为 `string` 时返回枚举项名称
 		constexpr operator string() const { return _name; }
 
@@ -148,7 +150,7 @@ namespace cxx::oop {
 
 		/// @brief 重载类型转换运算符, 当枚举项转为 `const char*`
 		/// 时返回枚举项名称的指针
-#if (__cplusplus >= 202002L)
+#if __ge_cxx20
 		constexpr operator const char* () const { return _name.c_str(); }
 #else
 		constexpr operator const char* () const { return _name; }
@@ -171,18 +173,19 @@ namespace cxx::oop {
 		/// @brief 定义枚举项常量 `C`
 		static constexpr __enum_value C = { "B", 2 };
 
-#if (__cplusplus < 201703L)
+#if __ge_cxx17
 		/// @brief 定义枚举项常量 `C`
 		static constexpr __enum_value None = { "", 0 };
 #endif
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 		/// @brief 将字符串转为特定枚举项
 		static optional<__enum_value> from_string(const string& name);
 #else
 		static __enum_value from_string(const string& name);
 #endif
 	};
-} // ! namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OPP__ENUM_CLASS_H
+} // namespace cxx::oop
+
+#endif // __CPLUSPLUS_OPP__ENUM_CLASS_H

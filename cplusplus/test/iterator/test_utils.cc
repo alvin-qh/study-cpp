@@ -171,7 +171,7 @@ TEST(TEST_SUITE_NAME, make_reverse_iterator) {
     ASSERT_EQ(res, 0);
 }
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 TEST(TEST_SUITE_NAME, size) {
     ASSERT_EQ(std::size(vector<int>{1, 2, 3, 4, 5}), 5);
@@ -179,4 +179,4 @@ TEST(TEST_SUITE_NAME, size) {
     ASSERT_EQ(std::size(set<int>{1, 2, 3, 4, 5}), 5);
 }
 
-#endif
+#endif // __ge_cxx17

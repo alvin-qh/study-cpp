@@ -1,4 +1,4 @@
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 
 #include <gtest/gtest.h>
 
@@ -74,4 +74,4 @@ TEST(TEST_SUITE_NAME, cast_to_right_reference) {
     ASSERT_EQ(any_cast<string>(a), "");
 }
 
-#endif // ! (__cplusplus >= 201703L)
+#endif // __ge_cxx17

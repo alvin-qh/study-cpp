@@ -37,7 +37,7 @@ TEST(TEST_SUITE_NAME, as_const) {
     only_const_reference(static_cast<add_const_t<remove_reference_t<decltype(n)>>&>(n));
 
     // 通过 `std::as_const` 将 `n` 变量转为 `const` 引用, 可通过编译
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
     only_const_reference(std::as_const<int>(n));
 #else
     only_const_reference(const_cast<const int&>(n));

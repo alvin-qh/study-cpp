@@ -166,6 +166,6 @@ namespace cxx::templated {
 		}
 	};
 
-} // ! namespace cxx::templated
+} // namespace cxx::templated
 
-#endif // ! __CPLUSPLUS_TEMPLATE__SPECIALIZATION_H
+#endif // __CPLUSPLUS_TEMPLATE__SPECIALIZATION_H

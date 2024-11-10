@@ -63,7 +63,7 @@ namespace cxx::oop {
 				T* data = std::exchange(_data, nullptr);
 				size_t size = std::exchange(_size, 0);
 
-#if (__cplusplus >= 201703L)
+#if __ge_cxx17
 				std::destroy_n(data, size);
 #else
 				for (size_t i = 0; i < size; ++i) {
@@ -171,6 +171,6 @@ namespace cxx::oop {
 		const T* data() const { return _data; }
 	};
 
-} // ! namespace cxx::oop
+} // namespace cxx::oop
 
-#endif // ! __CPLUSPLUS_OOP__INITIALIZE_LIST_H
+#endif // __CPLUSPLUS_OOP__INITIALIZE_LIST_H

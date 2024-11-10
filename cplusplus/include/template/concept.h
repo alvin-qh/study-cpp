@@ -1,3 +1,4 @@
+/// C++ 20 版本为模板增加了 "概念" (`concept`) 特性, 用于更精确的模板类型推导和模板类型约束
 #pragma once
 
 #ifndef __CPLUSPLUS_TEMPLATE__CONCEPT_H

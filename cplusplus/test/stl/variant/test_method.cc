@@ -209,4 +209,137 @@ TEST(TEST_SUITE_NAME, visit) {
     ASSERT_TRUE(visited);
 }
 
+/// @brief 判断指定类型的值在 `std::variant` 对象中是否存在
+///
+/// `holds_alternative` 函数可以获取 `std::variant` 对象中指定类型的值是否存在,
+/// 返回 `bool` 类型
+TEST(TEST_SUITE_NAME, holds_alternative) {
+    variant<string, int> v = 10;
+
+    // 判断 `int` 类型是否存在, 应返回 `true`
+    ASSERT_TRUE(holds_alternative<int>(v));
+
+    // 判断 `string` 类型是否存在, 应返回 `false`
+    ASSERT_FALSE(holds_alternative<string>(v));
+
+    v = "hello";
+
+    // 判断 `int` 类型是否存在, 应返回 `false`
+    ASSERT_FALSE(holds_alternative<int>(v));
+
+    // 判断 `string` 类型是否存在, 应返回 `true`
+    ASSERT_TRUE(holds_alternative<string>(v));
+}
+
+/// @brief 获取指定位置或指定类型的值的引用
+///
+/// `get` 函数可以根据索引位置或类型获取 `std::variant` 对象中对应的值的引用,
+/// 如果指定位置或类型无法对应值, 则会抛出 `bad_variant_access` 异常
+///
+/// 要修改 `std::variant` 中存储的值, 也需要通过 `get` 函数获取的引用
+TEST(TEST_SUITE_NAME, get) {
+    variant<string, int> v = 10;
+
+    // 1. 获取值的引用
+
+    // 获取 `0` 位置 (或 `string` 类型) 的值, 抛出 `bad_variant_access` 异常, 表示值不存在
+    ASSERT_THROW(get<0>(v), bad_variant_access);
+    ASSERT_THROW(get<string>(v), bad_variant_access);
+
+    // 获取 `1` 位置 (或 `int` 类型) 的值, 类型为 `int`, 值为 `10`
+    ASSERT_EQ(get<1>(v), 10);
+    ASSERT_EQ(get<int>(v), 10);
+
+    v = "hello";
+
+    // 获取 `0` 位置 (或 `string` 类型) 的值, 类型为 `string`, 值为 `hello`
+    ASSERT_EQ(get<0>(v), "hello");
+    ASSERT_EQ(get<string>(v), "hello");
+
+    // 获取 `1` 位置 (或 `int` 类型) 的值, 抛出 `bad_variant_access` 异常, 表示值不存在
+    ASSERT_THROW(get<1>(v), bad_variant_access);
+    ASSERT_THROW(get<int>(v), bad_variant_access);
+
+    // 2. 通过获取的引用设置值
+
+    // 根据位置 (或类型) 获取值的引用, 通过引用修改值
+    get<0>(v) = "world";
+    ASSERT_EQ(get<0>(v), "world");
+
+    get<string>(v) = "OK";
+    ASSERT_EQ(get<0>(v), "OK");
+}
+
+/// @brief 在指定类型值存在时, 获取其指针, 否则返回 `nullptr`
+///
+/// `get_if` 函数能够根据类型获取 `std::variant` 对象中对应值的指针,
+/// 如果没有对应类型的值, 则返回 `nullptr` 表示值不存在
+///
+/// `get_if` 函数的参数必须为 `std::variant` 对象的指针
+TEST(TEST_SUITE_NAME, get_if) {
+    variant<string, int> v = 10;
+
+    // 1. 获取值的指针
+
+    // 获取位置 `0` (或 `string` 类型) 值的指针, 返回 `nullptr` 表示值不存在
+    ASSERT_EQ(get_if<0>(&v), nullptr);
+    ASSERT_EQ(get_if<string>(&v), nullptr);
+
+    // 获取位置 `1` (或 `int` 类型) 值的指针, 确认指针指向的值为 `10`
+    ASSERT_EQ(*get_if<1>(&v), 10);
+    ASSERT_EQ(*get_if<int>(&v), 10);
+
+    v = "hello";
+
+    // 获取位置 `0` (或 `string` 类型) 值的指针, 确认指针指向的值为 `hello`
+    ASSERT_EQ(*get_if<0>(&v), "hello");
+    ASSERT_EQ(*get_if<string>(&v), "hello");
+
+    // 获取位置 `1` (或 `int` 类型) 值的指针, 返回 `nullptr` 表示值不存在
+    ASSERT_EQ(get_if<1>(&v), nullptr);
+    ASSERT_EQ(get_if<int>(&v), nullptr);
+
+    // 2. 通过值的指针修改值
+
+    // 根据位置 (或类型) 获取值的指针后, 通过指针修改值
+    *get_if<0>(&v) = "world";
+    ASSERT_EQ(get<0>(v), "world");
+
+    *get_if<string>(&v) = "OK";
+    ASSERT_EQ(get<0>(v), "OK");
+}
+
+/// @brief 定义无默认构造器的类型
+class A {
+private:
+    string _name;
+public:
+    A(const string& name) noexcept : _name(name) {}
+    string& name() noexcept { return _name; }
+    const string& name() const noexcept { return _name; }
+};
+
+/// @brief 测试 `monostate` 占位符
+///
+/// 通过 `std::monostate` 占位符可以在 `std::variant` 模板参数中进行占位,
+/// 表示该位置空, 不能设置值
+///
+/// 如果 `std::variant` 模板类型都不具备默认构造器, 则该 `std::variant`
+/// 类型也无法默认构造, 则将第一个模板参数设置为 `std::monostate` 就可以解决该
+/// `std::variant` 类型的默认构造问题
+TEST(TEST_SUITE_NAME, monostate) {
+    // `A` 类型无默认构造器, 故可以通过在模板列表的第一项加入 `monostate` 类型
+    // 以解决 `std::variant` 默认构造问题
+    variant<monostate, A> v;
+
+    ASSERT_EQ(v.index(), 0);
+    ASSERT_EQ(get<0>(v), monostate());
+    ASSERT_EQ(get<monostate>(v), monostate());
+
+    v.emplace<A>("hello");
+
+    ASSERT_EQ(v.index(), 1);
+    ASSERT_EQ(get<1>(v).name(), "hello");
+}
+
 #endif // __ge_cxx17

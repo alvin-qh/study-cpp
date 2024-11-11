@@ -342,4 +342,49 @@ TEST(TEST_SUITE_NAME, monostate) {
     ASSERT_EQ(get<1>(v).name(), "hello");
 }
 
+/// @brief 获取 `std::variant` 对象类型的模板参数数量
+///
+/// 通过 `std::variant_size::value` 静态字段可以获取某个 `std::variant`
+/// 类型模板参数列表的参数个数, 也即该 `std::variant` 对象总共可存储值的类型数量
+///
+/// `std::variant_size` 函数是一个常量函数, 在编译期执行
+TEST(TEST_SUITE_NAME, variant_size) {
+    static_assert(variant_size<variant<>>::value == 0);
+    static_assert(variant_size<variant<int>>::value == 1);
+    static_assert(variant_size<variant<int, string>>::value == 2);
+    static_assert(variant_size<variant<int, string, Person>>::value == 3);
+
+    static_assert(variant_size_v<variant<>> == 0);
+    static_assert(variant_size_v<variant<int>> == 1);
+    static_assert(variant_size_v<variant<int, string>> == 2);
+    static_assert(variant_size_v<variant<int, string, Person>> == 3);
+}
+
+/// @brief 获取 `std::variant` 类型指定位置值的类型
+TEST(TEST_SUITE_NAME, variant_alternative) {
+    using V = variant<int, string, Person>;
+
+    static_assert(std::is_same_v<variant_alternative<0, V>::type, int>);
+    static_assert(std::is_same_v<variant_alternative<1, V>::type, string>);
+    static_assert(std::is_same_v<variant_alternative<2, V>::type, Person>);
+
+    static_assert(std::is_same_v<variant_alternative<0, const V>::type, const int>);
+    static_assert(std::is_same_v<variant_alternative<2, const V>::type, const Person>);
+
+    static_assert(std::is_same_v<variant_alternative<0, variant<int, string, Person>>::type, int>);
+    static_assert(std::is_same_v<variant_alternative<1, variant<int, string, Person>>::type, string>);
+    static_assert(std::is_same_v<variant_alternative<2, variant<int, string, Person>>::type, Person>);
+
+    static_assert(std::is_same_v<variant_alternative_t<0, V>, int>);
+    static_assert(std::is_same_v<variant_alternative_t<1, V>, string>);
+    static_assert(std::is_same_v<variant_alternative_t<2, V>, Person>);
+
+    static_assert(std::is_same_v<variant_alternative_t<0, const V>, const int>);
+    static_assert(std::is_same_v<variant_alternative_t<2, const V>, const Person>);
+
+    static_assert(std::is_same_v<variant_alternative_t<0, variant<int, string, Person>>, int>);
+    static_assert(std::is_same_v<variant_alternative_t<1, variant<int, string, Person>>, string>);
+    static_assert(std::is_same_v<variant_alternative_t<2, variant<int, string, Person>>, Person>);
+}
+
 #endif // __ge_cxx17

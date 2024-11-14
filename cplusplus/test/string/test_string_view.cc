@@ -1,6 +1,19 @@
+/// `std::string_view`
+///
+/// 对于 C++ 的 `std::string` 类型来说, 其内容可变, 且每次对象的每次赋值都会发生内存拷贝,
+/// 产生新的对象, 这就导致在很多场景下 (只对字符串进行读操作, 且需要在变量间进行复制),
+/// `std::string` 会带来效率的损失;
+///
+/// `std::string_view` 类型则不存在此问题, 其存储一个只读字符串的引用,
+/// 且在变量中赋值不会进行实质性的内存拷贝, 适合解决上述 `std::string` 类型带来的性能问题
+
+#if __ge_cxx17
+
 #include <gtest/gtest.h>
 
 #include <vector>
+#include <list>
+#include <array>
 #include <string_view>
 
 #define TEST_SUITE_NAME test_cplusplus_string__string_view
@@ -24,8 +37,56 @@ TEST(TEST_SUITE_NAME, constructor) {
 
     // 4. 通过迭代器创建对象
     vector<char> vec = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
+
     string_view sv5(vec.begin(), vec.end());
     ASSERT_EQ(sv5, "hello world");
+
+    list<char> lst = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
+    string_view sv6(lst.begin(), lst.end());
+}
+
+/// @brief 测试
+/// @param
+/// @param
+TEST(TEST_SUITE_NAME, reference) {
+    // 1. 测试对 `std::string` 对象的引用情况
+    string str = "hello world";
+
+    string_view sv1(str);
+    ASSERT_EQ(sv1.data(), str.c_str());
+
+    str.clear();
+    ASSERT_EQ(sv1.data(), str.c_str());
+    ASSERT_STREQ(sv1.data(), "");
+
+    // 2. 测试对 `const char*` 的引用情况
+    char* ps = new char[] {"hello world"};
+
+    string_view sv2(ps);
+    ASSERT_EQ(sv2.data(), ps);
+    ASSERT_EQ(sv2, "hello world");
+
+    ps[0] = 'H';
+    ASSERT_EQ(sv2.data(), ps);
+    ASSERT_EQ(sv2, "Hello world");
+
+    delete[] ps;
+
+    // 3. 测试对数组的引用
+    auto arr = to_array({ 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' });
+
+    string_view sv3(arr.data(), arr.size());
+    ASSERT_EQ(sv3.data(), arr.data());
+    ASSERT_EQ(sv3, "hello world");
+
+    arr[0] = 'H';
+    ASSERT_EQ(sv3.data(), arr.data());
+    ASSERT_EQ(sv3, "Hello world");
+
+    // 4. 测试通过迭代器对原集合的引用
+    vector<char> vec = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
+
+    string_view sv4(vec.begin(), vec.end());
 }
 
 /// @brief 测试迭代器
@@ -79,3 +140,5 @@ TEST(TEST_SUITE_NAME, iterator) {
         ASSERT_EQ(sv[i++], c);
     }
 }
+
+#endif // __ge_cxx17

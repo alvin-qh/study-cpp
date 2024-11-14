@@ -40,3 +40,42 @@ add_subdirectory(vendor/googletest)
 add_subdirectory(cplusplus)
 add_subdirectory(algorithm)
 add_subdirectory(convert)
+
+# CPack 打包配置
+
+# 包含必要的系统库
+include (InstallRequiredSystemLibraries)
+
+# 设置生成的安装包名字
+set(CPACK_PACKAGE_NAME "study-cpp")
+# 设置打包生成的包文件名
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
+# 设置支持指定安装目录的控制为 ON
+set(CPACK_SET_DESTDIR ON)
+# 设置安装到的目录路径
+set(CPACK_INSTALL_PREFIX "$ENV{HOME}/bin/study-cpp")
+# 版本号
+set(CPACK_PACKAGE_VERSION "1.0.0")
+# set (CPACK_PACKAGE_VERSION_MAJOR "${${PROJECT_NAME}_VERSION_MAJOR}")
+# set (CPACK_PACKAGE_VERSION_MINOR "${${PROJECT_NAME}_VERSION_MINOR}")
+# 设置 license 信息
+# set(CPACK_RESOURCE_FILE_LICENSE  "Apache 2.0 + Common Clause 1.0")
+# 设置打包形式, 包含如下格式, 也可以在 CPack 命令行指定 (例如: `cpack -G RPM`)
+# - 7Z (7-Zip file format)
+# - DEB (Debian packages)
+# - External (CPack External packages)
+# - IFW (Qt Installer Framework)
+# - NSIS (Null Soft Installer)
+# - NSIS64 (Null Soft Installer (64-bit))
+# - NuGet (NuGet packages)
+# - RPM (RPM packages)
+# - STGZ (Self extracting Tar GZip compression
+# - TBZ2 (Tar GZip compression)
+# - TXZ (Tar XZ compression)
+# - TZ (Tar Compress compression)
+# - ZIP (ZIP file format)
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
+# set(CPACK_RPM_PACKAGE_REQUIRES "MyLibrary1 >= 1.0; MyLibrary2 >= 2.0")
+# set(CPACK_DEBIAN_PACKAGE_DEPENDS "libmylibrary1-dev, libmylibrary2-dev")
+include(CPack)

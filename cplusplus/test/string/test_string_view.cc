@@ -28,6 +28,7 @@ TEST(TEST_SUITE_NAME, constructor) {
 
     // 2. 通过字符串常量指针以及指定长度创建对象
     const char* ps = "hello world";
+
     string_view sv2(ps, 5);
     ASSERT_EQ(sv2, "hello");
 
@@ -41,33 +42,51 @@ TEST(TEST_SUITE_NAME, constructor) {
     string_view sv5(vec.begin(), vec.end());
     ASSERT_EQ(sv5, "hello world");
 
-    list<char> lst = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
-    string_view sv6(lst.begin(), lst.end());
+    // 对于非 `random_iterator`, 无法用于初始化 `string_view` 对象
+    // list<char> lst = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
+    // string_view sv6(lst.begin(), lst.end());
 }
 
-/// @brief 测试
-/// @param
-/// @param
+/// @brief 测试 `std::string_view` 对象内部字符串引用情况
+///
+/// `std::string_view` 之所以在赋值时具备更好的效率, 源于其并未真正分配内存存储字符串数据,
+/// 而是保存了原始存放字符串内存的地址
+///
+/// 所以, 当传递给 `std::string_view` 对象地址指向的内容发生变化, 则 `std::string_view`
+/// 所表示的字符串内容也会相应变化
+///
+/// 另外, `std::string_view` 对象存储的字符串指针指向的内存一旦被销毁, 则 `std::string_view`
+/// 对象表示的字符串也将失效, 故而 `std::string_view`
+/// 对象的生命周期不得大于传递给其的字符串指针的生命周期, 所以 `std::string_view`
+/// 不适合作为长期对象, 只适合在局部范围内 (例如一个函数参数) 短期存在
 TEST(TEST_SUITE_NAME, reference) {
     // 1. 测试对 `std::string` 对象的引用情况
     string str = "hello world";
 
+    // 通过 `std::string` 字符串构建对象
     string_view sv1(str);
+
+    // 确认 `std::string_view` 内部字符串地址和 `std::string`
+    // 的内部字符串指针地址一致
     ASSERT_EQ(sv1.data(), str.c_str());
 
+    // 改变 `std::string` 字符串的内容, 确认 `std::string_view`
+    // 内部字符串指针指向的内容同样发生变化
     str.clear();
-    ASSERT_EQ(sv1.data(), str.c_str());
     ASSERT_STREQ(sv1.data(), "");
 
-    // 2. 测试对 `const char*` 的引用情况
+    // 2. 测试对 `char*` 的引用情况
     char* ps = new char[] {"hello world"};
 
+    // 通过 `char*` 字符串指针构建对象
     string_view sv2(ps);
+
+    // 确认 `std::string_view` 内部字符串地址和字符串指针地址一致
     ASSERT_EQ(sv2.data(), ps);
     ASSERT_EQ(sv2, "hello world");
 
+    // 改变字符串指针指向字符串的内容, 确认 `std::string_view` 对象的内容随之改变
     ps[0] = 'H';
-    ASSERT_EQ(sv2.data(), ps);
     ASSERT_EQ(sv2, "Hello world");
 
     delete[] ps;
@@ -75,26 +94,38 @@ TEST(TEST_SUITE_NAME, reference) {
     // 3. 测试对数组的引用
     auto arr = to_array({ 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' });
 
+    // 通过数组构建对象
     string_view sv3(arr.data(), arr.size());
+
+    // 确认 `std::string_view` 内部字符串地址和数组的指针一致
     ASSERT_EQ(sv3.data(), arr.data());
     ASSERT_EQ(sv3, "hello world");
 
+    // 改变数组内容, 确认 `std::string_view` 对象的内容随之改变
     arr[0] = 'H';
-    ASSERT_EQ(sv3.data(), arr.data());
     ASSERT_EQ(sv3, "Hello world");
 
     // 4. 测试通过迭代器对原集合的引用
     vector<char> vec = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
 
+    // 通过向量对象迭代器创建对象
     string_view sv4(vec.begin(), vec.end());
+
+    // 确认 `std::string_view` 内部字符串地址和向量对象内部数据指针地址一致
+    ASSERT_EQ(sv4.data(), vec.data());
+    ASSERT_EQ(sv4, "hello world");
+
+    // 改变向量内容, 确认 `std::string_view` 对象的内容随之改变
+    vec[0] = 'H';
+    ASSERT_EQ(sv4, "Hello world");
 }
 
 /// @brief 测试迭代器
 ///
-/// `string_view` 和 `string` 类型的迭代器方法一致, 包括 `begin` 与 `end` 方法,
+/// `std::string_view` 和 `std::string` 类型的迭代器方法一致, 包括 `begin` 与 `end` 方法,
 /// `cbegin` 与 `cend` 方法, `regin` 与 `rend` 方法以及 `crbegin` 与 `crend` 方法;
 ///
-/// 由于 `string_view` 的不可变特性, 故只能获取到只读迭代器, 所以 `begin` 及 `cbegin` 方法一致,
+/// 由于 `std::string_view` 的不可变特性, 故只能获取到只读迭代器, 所以 `begin` 及 `cbegin` 方法一致,
 /// `end` 及 `cend` 方法一致, `rbegin` 及 `crbegin` 方法一致, `rend` 及 `crend` 方法一致
 TEST(TEST_SUITE_NAME, iterator) {
     string_view sv("hello world");

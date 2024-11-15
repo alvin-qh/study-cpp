@@ -14,6 +14,7 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <climits>
 #include <string_view>
 
 #include "string/string_view.h"
@@ -158,7 +159,7 @@ TEST(TEST_SUITE_NAME, reference) {
 
 /// @brief 测试对象的生命周期
 ///
-/// `std::string_view` 对象存储的字符串指针指向的内存一旦被销毁, 则 `std::string_view`
+/// `std::string_view` 对象引用的字符串指针指向的内存一旦被销毁, 则 `std::string_view`
 /// 对象表示的字符串也将失效, 故而 `std::string_view`
 /// 对象的生命周期不得大于传递给其的字符串指针的生命周期, 所以 `std::string_view`
 /// 不适合作为长期对象, 只适合在局部范围内 (例如一个函数参数) 短期存在
@@ -230,6 +231,93 @@ TEST(TEST_SUITE_NAME, iterator) {
     for (auto c : sv) {
         ASSERT_EQ(sv[i++], c);
     }
+}
+
+/// @brief 获取指定位置的字符值
+///
+/// 通过 `std::string_view` 对象的 `at` 方法或 `operator[]` 操作符用于获取指定位置的字符
+TEST(TEST_SUITE_NAME, character_at) {
+    string_view sv("hello world");
+
+    ASSERT_EQ(sv.at(0), 'h');
+    ASSERT_EQ(sv.at(sv.length() - 1), 'd');
+
+    ASSERT_EQ(sv[0], 'h');
+    ASSERT_EQ(sv[sv.length() - 1], 'd');
+}
+
+/// @brief 获取第一个以及最后一个字符
+TEST(TEST_SUITE_NAME, front_back) {
+    string_view sv("hello world");
+
+    ASSERT_EQ(sv.front(), 'h');
+    ASSERT_EQ(sv.back(), 'd');
+}
+
+/// @brief 获取对象内部指向字符串的指针
+TEST(TEST_SUITE_NAME, data) {
+    const char* ps = "hello world";
+
+    string_view sv(ps);
+    ASSERT_EQ(sv.data(), ps);
+    ASSERT_STREQ(sv.data(), "hello world");
+}
+
+/// @brief 获取对象引用的字符串是否为空
+TEST(TEST_SUITE_NAME, empty) {
+    string_view sv = "hello world";
+    ASSERT_FALSE(sv.empty());
+
+    sv = "";
+    ASSERT_TRUE(sv.empty());
+}
+
+/// @brief 获取字符串长度
+///
+/// 通过 `length` 以及 `size` 方法可以获取 `std::string_view` 对象引用的字符串的长度,
+/// 两个方法的作用一致;
+///
+/// 而 `max_size` 方法返回一个常量, 表示当前对象可以引用字符串的最长长度
+TEST(TEST_SUITE_NAME, size_and_length) {
+    string_view sv = "hello world";
+
+    ASSERT_EQ(sv.length(), sv.size());
+    ASSERT_EQ(sv.length(), 11);
+    ASSERT_EQ(sv.size(), 11);
+
+    static_assert(sv.max_size() == 4611686018427387899L);
+}
+
+/// @brief 移除字符串前或后指定长度的内容
+///
+/// `std::string_view` 对象通过移动内部的字符串指针值以达到从前或后移除指定长度字符的目标
+///
+/// 如果删除的字符数大于字符串本身的长度, 则会在导致 `std::string_view` 对象失效
+TEST(TEST_SUITE_NAME, remove_prefix_or_suffix) {
+    const char* ps = "+++A---";
+
+    string_view sv(ps);
+    ASSERT_EQ(sv.size(), 7);
+
+    // 1. 从前面删除 3 个字符
+    sv.remove_prefix(3);
+    ASSERT_EQ(sv.size(), 4);
+
+    // 相当于将内部头指针向后移动 3 个单位
+    ASSERT_EQ(sv.data() - 3, ps);
+    ASSERT_EQ(sv, "A---");
+
+    // 2. 从后面删除 3 个字符
+    sv.remove_suffix(3);
+    ASSERT_EQ(sv.size(), 1);
+
+    // 相当于将内部尾指针向前移动 3 个字节
+    ASSERT_EQ(sv.data() - 3, ps);
+    ASSERT_EQ(sv, "A");
+
+
+    sv.remove_prefix(2);
+    ASSERT_EQ(sv, "");
 }
 
 #endif // __ge_cxx17

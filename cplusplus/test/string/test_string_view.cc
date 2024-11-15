@@ -47,6 +47,44 @@ TEST(TEST_SUITE_NAME, constructor) {
     // string_view sv6(lst.begin(), lst.end());
 }
 
+/// @brief 测试赋值运算符
+///
+/// `std::string_view` 的一个优势即可以低成本的进行赋值:
+/// 1. 当 `std::string_view` 的赋值发生时, 仅是内部指向字符串的指针值发生了复制,
+///    字符串内容并未发生复制;
+/// 2. `std::string_view` 对象内部的字符串指针可以指向任意字符的任意部分,
+///    产生新的 `std::string_view` 对象
+TEST(TEST_SUITE_NAME, assignment) {
+    string_view sv1("hello world"), sv2;
+
+    // 对象赋值
+    sv2 = sv1;
+
+    // 确认赋值前后两个对象保存着相同的字符串指针
+    ASSERT_EQ(sv1.data(), sv2.data());
+    ASSERT_EQ(sv2, "hello world");
+
+    // 令 `std::string_view` 内部指针指向其自身 6 字节后,
+    // 确认 `std::string_view` 对象的内容发生变化
+    sv2 = sv2.substr(6);
+    ASSERT_EQ(sv1.data() + 6, sv2.data());
+    ASSERT_EQ(sv2, "world");
+
+    // `std::string_view` 的赋值运算符仅接受同为 `std::string_view` 类型对象作为参数,
+    // 所以当赋值运算符的参数不为 `std::string_view` 类型时,
+    // 则编译期会自动将参数类型转为 `std::string_view` 类型
+
+    // 自动将参数类型从 `const char*` 类型转为 `std::string_view` 类型后进行赋值
+    sv2 = "Hello";
+    ASSERT_EQ(sv2, "Hello");
+
+    // 自动将参数类型从 `std::string` 类型转为 `std::string_view` 类型后进行赋值,
+    // 但由于 `std::string` 对象的生命周期很短, 导致`std::string_view`
+    // 对象完成赋值后失效, 无法使用
+    sv2 = static_cast<string>("Hello");
+    // ASSERT_EQ(sv2, "Hello");
+}
+
 /// @brief 测试 `std::string_view` 对象内部字符串引用情况
 ///
 /// `std::string_view` 之所以在赋值时具备更好的效率, 源于其并未真正分配内存存储字符串数据,
@@ -54,11 +92,6 @@ TEST(TEST_SUITE_NAME, constructor) {
 ///
 /// 所以, 当传递给 `std::string_view` 对象地址指向的内容发生变化, 则 `std::string_view`
 /// 所表示的字符串内容也会相应变化
-///
-/// 另外, `std::string_view` 对象存储的字符串指针指向的内存一旦被销毁, 则 `std::string_view`
-/// 对象表示的字符串也将失效, 故而 `std::string_view`
-/// 对象的生命周期不得大于传递给其的字符串指针的生命周期, 所以 `std::string_view`
-/// 不适合作为长期对象, 只适合在局部范围内 (例如一个函数参数) 短期存在
 TEST(TEST_SUITE_NAME, reference) {
     // 1. 测试对 `std::string` 对象的引用情况
     string str = "hello world";
@@ -118,6 +151,15 @@ TEST(TEST_SUITE_NAME, reference) {
     // 改变向量内容, 确认 `std::string_view` 对象的内容随之改变
     vec[0] = 'H';
     ASSERT_EQ(sv4, "Hello world");
+}
+
+/// @brief 测试对象的生命周期
+///
+/// `std::string_view` 对象存储的字符串指针指向的内存一旦被销毁, 则 `std::string_view`
+/// 对象表示的字符串也将失效, 故而 `std::string_view`
+/// 对象的生命周期不得大于传递给其的字符串指针的生命周期, 所以 `std::string_view`
+/// 不适合作为长期对象, 只适合在局部范围内 (例如一个函数参数) 短期存在
+TEST(TEST_SUITE_NAME, lifecycle) {
 }
 
 /// @brief 测试迭代器

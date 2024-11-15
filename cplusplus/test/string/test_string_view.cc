@@ -16,9 +16,12 @@
 #include <array>
 #include <string_view>
 
+#include "string/string_view.h"
+
 #define TEST_SUITE_NAME test_cplusplus_string__string_view
 
 using namespace std;
+using namespace cxx::string;
 
 /// @brief 测试构造器
 TEST(TEST_SUITE_NAME, constructor) {
@@ -160,6 +163,21 @@ TEST(TEST_SUITE_NAME, reference) {
 /// 对象的生命周期不得大于传递给其的字符串指针的生命周期, 所以 `std::string_view`
 /// 不适合作为长期对象, 只适合在局部范围内 (例如一个函数参数) 短期存在
 TEST(TEST_SUITE_NAME, lifecycle) {
+    // 测试使用临时变量构建 `std::string_view` 对象, 得到无效对象
+    string_view sv(static_cast<string>("hello world"));
+    // ASSERT_EQ(sv, "hello world");
+
+    // 测试使用临时内存构建 `std::string_view` 对象, 当临时内存回收后, `std::string_view` 对象失效
+    char* p = new char[] {"hello world"};
+    sv = p;
+    // ASSERT_EQ(sv, "hello world");
+    delete[] p;
+
+    // 在有限的作用域范围内使用 `std::string_view` 对象
+    auto r = string_compare("Hello", string("hello"));
+    ASSERT_EQ(get<0>(r), "Hello");
+    ASSERT_EQ(get<1>(r), "hello");
+    ASSERT_FALSE(get<2>(r));
 }
 
 /// @brief 测试迭代器

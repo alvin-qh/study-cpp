@@ -11,9 +11,9 @@
 namespace cxx::string {
 	using namespace std;
 
-	tuple<string_view, string_view, bool> string_compare(const string_view& s1, const string_view& s2) {
+	tuple<bool, string_view, string_view> string_compare(const string_view& s1, const string_view& s2) {
 		auto r = s1.compare(s2) == 0;
-		return make_tuple(s1, s2, r);
+		return make_tuple(r, s1, s2);
 	}
 }
 

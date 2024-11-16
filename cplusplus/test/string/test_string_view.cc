@@ -174,11 +174,14 @@ TEST(TEST_SUITE_NAME, lifecycle) {
     // ASSERT_EQ(sv, "hello world");
     delete[] p;
 
-    // 在有限的作用域范围内使用 `std::string_view` 对象
+    // 在有限的作用域范围内使用 `std::string_view` 对象,
+    // 对于 `string_compare` 函数的两个 `std::string_view` 类型参数, 第一个参数引用了字符串常量,
+    // 第二个参数引用了临时字符串对象, 故 `string_compare` 函数返回的第二个 `std::string_view`
+    // 对象无效
     auto r = string_compare("Hello", string("hello"));
-    ASSERT_EQ(get<0>(r), "Hello");
-    ASSERT_EQ(get<1>(r), "hello");
-    ASSERT_FALSE(get<2>(r));
+    ASSERT_FALSE(get<0>(r));
+    ASSERT_EQ(get<1>(r), "Hello");
+    // ASSERT_EQ(get<2>(r), "hello");
 }
 
 /// @brief 测试迭代器
@@ -315,9 +318,10 @@ TEST(TEST_SUITE_NAME, remove_prefix_or_suffix) {
     ASSERT_EQ(sv.data() - 3, ps);
     ASSERT_EQ(sv, "A");
 
-
+    // 当 `remove_prefix` 和 `remove_suffix` 方法参数值大于字符串本身长度,
+    // 则会令 `std::string_view` 对象失效
     sv.remove_prefix(2);
-    ASSERT_EQ(sv, "");
+    // ASSERT_EQ(sv, "");
 }
 
 #endif // __ge_cxx17

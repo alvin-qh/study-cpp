@@ -12,7 +12,7 @@ using testing::ElementsAre;
 ///
 /// `std::array` 对象用于包装 C++ 的原生数组, 并为数组提供诸如 "迭代器", "长度属性",
 /// "下标检查" 等特性
-TEST(TEST_SUITE_NAME, create_array) {
+TEST(TEST_SUITE_NAME, create) {
     // 创建长度为 5, 元素未初始化的 `array` 对象
     array<int, 5> arr;
     ASSERT_FALSE(arr.empty());
@@ -32,7 +32,7 @@ TEST(TEST_SUITE_NAME, create_array) {
 }
 
 /// @brief 测试对 `array` 对象中的元素访问
-TEST(TEST_SUITE_NAME, array_element_access) {
+TEST(TEST_SUITE_NAME, at) {
     array<int, 5> arr{ 1, 2, 3, 4, 5 };
 
     // 通过下标运算符获取数组元素值的引用
@@ -51,7 +51,7 @@ TEST(TEST_SUITE_NAME, array_element_access) {
 }
 
 /// @brief 测试 `array` 对象的迭代器
-TEST(TEST_SUITE_NAME, array_front_and_back) {
+TEST(TEST_SUITE_NAME, iterator) {
     array<int, 5> arr{ 1, 2, 3, 4, 5 };
 
     // 获取数组第一个元素的引用
@@ -74,7 +74,7 @@ TEST(TEST_SUITE_NAME, array_front_and_back) {
 }
 
 /// @brief 获取 `array` 对象内部的原生数组指针
-TEST(TEST_SUITE_NAME, array_data) {
+TEST(TEST_SUITE_NAME, data) {
     array<int, 5> arr{ 1, 2, 3, 4, 5 };
 
     // 获取数组指针
@@ -91,7 +91,7 @@ TEST(TEST_SUITE_NAME, array_data) {
 /// @brief 交换两个 `array` 对象的内容
 ///
 /// 两个被交换数组对象, 必须具备相同的元素类型和长度定义, 否则不认为是同类型数组
-TEST(TEST_SUITE_NAME, array_swap) {
+TEST(TEST_SUITE_NAME, swap) {
     array<int, 5> arr1{ 1, 2, 3, 4, 5 };
     array<int, 5> arr2{ 6, 7, 8, 9, 10 };
 
@@ -103,7 +103,7 @@ TEST(TEST_SUITE_NAME, array_swap) {
 }
 
 /// @brief 为 `array` 对象填充值
-TEST(TEST_SUITE_NAME, array_fill) {
+TEST(TEST_SUITE_NAME, fill) {
     array<int, 5> arr;
 
     // 为数组填充元素值

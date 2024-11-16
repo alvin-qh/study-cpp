@@ -293,7 +293,12 @@ TEST(TEST_SUITE_NAME, size_and_length) {
 
 /// @brief 移除字符串前或后指定长度的内容
 ///
-/// `std::string_view` 对象通过移动内部的字符串指针值以达到从前或后移除指定长度字符的目标
+/// 通过 `remove_prefix` 和 `remove_suffix` 方法可以移除 `std::string_view`
+/// 对象所引用字符串的前端或末尾的指定长度字符
+///
+/// `remove_prefix` 和 `remove_suffix` 方法并不会改变 `std::string_view`
+/// 对象所引用字符串, 但会改变 `std::string_view` 对象本身存储的指针,
+/// 其操作是通过移动内部的字符串指针值以达到前后字符移除的目的
 ///
 /// 如果删除的字符数大于字符串本身的长度, 则会在导致 `std::string_view` 对象失效
 TEST(TEST_SUITE_NAME, remove_prefix_or_suffix) {
@@ -322,6 +327,184 @@ TEST(TEST_SUITE_NAME, remove_prefix_or_suffix) {
     // 则会令 `std::string_view` 对象失效
     sv.remove_prefix(2);
     // ASSERT_EQ(sv, "");
+
+    sv = ps;
+
+    // 故在调用 `remove_prefix` 或 `remove_suffix` 方法时, 要保证参数值不超过字符串长度值
+    sv.remove_prefix(std::min(sv.size(), 3UL));
+    ASSERT_EQ(sv, "A---");
+
+    sv.remove_suffix(std::min(sv.size(), 3UL));
+    ASSERT_EQ(sv, "A");
+
+    sv.remove_suffix(std::min(sv.size(), 10UL));
+    ASSERT_EQ(sv, "");
 }
+
+/// @brief 交换两个对象所引用的字符串
+TEST(TEST_SUITE_NAME, swap) {
+    string_view sv1("hello"), sv2("world");
+
+    sv1.swap(sv2);
+
+    ASSERT_EQ(sv1, "world");
+    ASSERT_EQ(sv2, "hello");
+}
+
+/// @brief 测试对象比较
+TEST(TEST_SUITE_NAME, compare) {
+    string_view sv1("abc"), sv2("ABC");
+
+    // 1. 测试三路比较运算符
+#if __ge_cxx20
+    strong_ordering so = sv1 <=> sv2;
+    ASSERT_EQ(so, strong_ordering::greater);
+#endif
+
+    // 2. 通过 `compare` 方法进行比较
+    int cr = sv1.compare(sv2);
+    ASSERT_GT(cr, 0);
+
+    // 3. 测试比较运算符
+    ASSERT_TRUE(sv1 > sv2);
+    ASSERT_TRUE(sv1 >= sv2);
+    ASSERT_FALSE(sv1 < sv2);
+    ASSERT_FALSE(sv1 <= sv2);
+    ASSERT_FALSE(sv1 == sv2);
+    ASSERT_TRUE(sv1 != sv2);
+}
+
+/// @brief 通过 `std::string_view` 对象, 将字符串的一部分进行拷贝
+///
+/// 拷贝的目标是一个 `char*` 指针指向的内存空间, 所以要事先分配内存空间
+TEST(TEST_SUITE_NAME, copy) {
+    string_view sv("hello world");
+
+    // 分配长度为 `6` 的 `char` 数组 (实际存储 `5` 个字符, 最后一个位置存储 `\0` 字符作为字符串结尾)
+    // 将 `std::string_view` 所引用字符串从第 `6` 个位置拷贝 `5` 个字符拷贝到数组中
+    array<char, 6> data;
+    sv.copy(data.data(), 5, 6);
+
+    ASSERT_STREQ(data.data(), "world");
+
+    // 分配长度为 `6` 的 `char` 向量 (实际存储 `5` 个字符, 最后一个位置存储 `\0` 字符作为字符串结尾)
+    // 将 `std::string_view` 所引用字符串从第 `6` 个位置拷贝 `5` 个字符拷贝到向量中
+    vector<char> vec(6);
+    sv.copy(vec.data(), 5, 6);
+
+    ASSERT_STREQ(vec.data(), "world");
+
+    // 分配长度为 `6` 的字符串
+    // 将 `std::string_view` 所引用字符串从第 `6` 个位置拷贝 `5` 个字符拷贝到字符串中
+    string str(5, '\0');
+    sv.copy(str.data(), 5, 6);
+
+    ASSERT_EQ(str, "world");
+}
+
+/// @brief 测试在字符串中查找内容
+TEST(TEST_SUITE_NAME, find) {
+    string_view sv("hello world");
+
+    // 1. 从字符串起始位置进行查找
+
+    // 从起始位置查找字符串
+    ASSERT_EQ(sv.find("o"), 4);
+
+    // 从起始位置向后跳过指定个数字符后开始查找
+    ASSERT_EQ(sv.find("o", 5), 7);
+
+    // 查找失败返回 `npos` 值
+    ASSERT_EQ(sv.find("o", 8), string_view::npos);
+
+    // 2. 从字符串末尾位置进行查找
+
+    // 从末尾位置查找字符串
+    ASSERT_EQ(sv.rfind("o"), 7);
+
+    // 从末尾位置向前跳过指定个数字符后开始查找
+    ASSERT_EQ(sv.rfind("o", 6), 4);
+
+    // 查找失败返回 `npos` 值
+    ASSERT_EQ(sv.rfind("o", 3), string_view::npos);
+
+    // 3. 查找子字符串第一次出现的位置
+
+    // 查找子字符串第一次出现的位置
+    ASSERT_EQ(sv.find_first_of("o"), 4);
+
+    // 查找指定个数字符之后子字符串第一次出现的位置
+    ASSERT_EQ(sv.find_first_of("o", 5), 7);
+
+    // 查找失败返回 `npos` 值
+    ASSERT_EQ(sv.find_first_of("o", 8), string_view::npos);
+
+    // 4. 查找字符串最后一次出现的位置
+
+    // 查找子字符串最后一次出现的位置
+    ASSERT_EQ(sv.find_last_of("o"), 7);
+
+    // 查找指定个数字符之前子字符串最后一次出现的位置
+    ASSERT_EQ(sv.find_last_of("o", 6), 4);
+
+    // 查找失败返回 `npos` 值
+    ASSERT_EQ(sv.find_last_of("o", 3), string_view::npos);
+
+    // 5. 查找与指定字符串不同的子字符串第一次出现的位置
+
+    // 查找和指定字符串不同的子字符串第一次出现的位置
+    ASSERT_EQ(sv.find_first_not_of("h"), 1);
+
+    // 查找指定个数字符之后, 和指定字符串不同的子字符串第一次出现的位置
+    ASSERT_EQ(sv.find_first_not_of("w", 6), 7);
+
+    // 6. 查找与指定字符串不同的子字符串第一次出现的位置
+
+    // 查找和指定字符串不同的子字符串最后一次出现的位置
+    ASSERT_EQ(sv.find_last_not_of("d"), 9);
+
+    // 查找指定个数字符之前, 和指定字符串不同的子字符串最后一次出现的位置
+    ASSERT_EQ(sv.find_last_not_of("o", 4), 3);
+}
+
+/// @brief 测试 `operator ""sv` 运算符
+///
+/// 在字符串后加后缀 `sv`, 即可将其实例化为 `std::string_view` 类型
+TEST(TEST_SUITE_NAME, operator_sv) {
+    auto sv = "hello world"sv;
+
+    // 确认 `sv` 变量的类型为 `std::string_view`
+    static_assert(std::is_same<decltype(sv), string_view>::value);
+    ASSERT_EQ(sv, "hello world");
+}
+
+/// @brief 测试 `std::string_view` 类型的常量对象
+///
+/// `std::string_view` 类支持常量对象, 其方法也都可以作为常量方法调用
+TEST(TEST_SUITE_NAME, constant) {
+    constexpr string_view sv = "hello world";
+
+    static_assert(sv.size() == 11UL);
+    static_assert(sv == "hello world");
+
+    static_assert(sv.substr(6) == "world");
+}
+
+#if __ge_cxx20
+
+/// @brief 测试获取子字符串
+///
+/// 通过 `substr` 方法可以返回一个新的 `std::string_view` 对象, 其包含指向子字符串的指针
+TEST(TEST_SUITE_NAME, starts_ends_with) {
+    string_view sv("hello world");
+
+    ASSERT_TRUE(sv.starts_with("hel"));
+    ASSERT_TRUE(sv.starts_with(""));
+
+    ASSERT_TRUE(sv.ends_with("rld"));
+    ASSERT_TRUE(sv.ends_with(""));
+}
+
+#endif // __ge_cxx20
 
 #endif // __ge_cxx17

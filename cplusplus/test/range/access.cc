@@ -101,9 +101,10 @@ TEST(TEST_SUITE_NAME, empty) {
     ASSERT_TRUE(ranges::empty(l));
 }
 
-/// @brief 测试判断集合是否为 "空"
+/// @brief 获取指向集合存储空间的指针
 ///
-/// 通过 `std::ranges::empty` 函数可以返回指定集合是否为 "空" 的布尔值
+/// 通过 `std::ranges::data` 函数可以获取一个指向集合存储空间的指针,
+/// 要求集合的存储空间为连续空间 (包括 `std::array`, `std::vector`, `std::basic_string` 等类型)
 TEST(TEST_SUITE_NAME, data) {
     std::vector<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     std::list<int> l(v.begin(), v.end());
@@ -118,6 +119,9 @@ TEST(TEST_SUITE_NAME, data) {
 
     // 对于非随机迭代集合, 无法获取数据存储地址
     // auto ptr_l = ranges::data(l);
+
+    ptr_v[0] *= 10;
+    ASSERT_EQ(v[0], 10);
 
     // 获取向量对象的数据存储地址指针, 确认指针为 `const int*` 类型
     auto cptr_v = ranges::cdata(v);

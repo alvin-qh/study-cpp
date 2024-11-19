@@ -120,7 +120,6 @@ TEST(TEST_SUITE_NAME, custom_view_factory) {
     vector<int> result;
 
     auto v = odd_number<int>(vec);
-    ranges::begin(v);
 
     ranges::copy(v, back_inserter(result));
 }

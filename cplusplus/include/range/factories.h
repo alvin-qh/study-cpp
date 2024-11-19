@@ -11,7 +11,7 @@ namespace cxx::range {
 	using namespace std;
 
 	template <typename _Iter>
-	concept __integral_iterator = input_iterator<_Iter> && std::is_integral<typename _Iter::value_type>::value;
+	concept __integral_iterator = forward_iterator<_Iter> && std::is_integral<typename _Iter::value_type>::value;
 
 	/// @brief 定义一个视图, 只包含奇数值
 	/// @tparam _N
@@ -20,18 +20,19 @@ namespace cxx::range {
 		requires __integral_iterator<_Iter>
 	class odd_number_view : public ranges::view_interface<odd_number_view<_Iter>> {
 	public:
-		using value_type = typename _Iter::value_type;
-	private:
 		struct __iterator {
+		private:
 			_Iter _iter, _end;
+		public:
+			using iterator_concept = forward_iterator_tag;
+			using difference_type = ptrdiff_t;
+			using value_type = typename _Iter::value_type;
+			using const_value_type = const typename _Iter::value_type;
 
 			__iterator() = default;
-
-			__iterator(const _Iter& iter, const _Iter& end) :
-				_iter(iter), _end(end) {
-			}
-
-			const value_type& operator*() const { return *_iter; }
+			__iterator(const _Iter& iter, const _Iter& end) : _iter(iter), _end(end) {}
+			__iterator(const __iterator&) = default;
+			__iterator(__iterator&&) = default;
 
 			__iterator& operator++() {
 				while (_iter != _end) {
@@ -49,20 +50,22 @@ namespace cxx::range {
 				return iter;
 			}
 
+			value_type& operator*() { return *_iter; }
+			const_value_type& operator*() const { return *_iter; }
+
 			bool operator==(const __iterator& o) const { return _iter == o._iter; }
+
+			__iterator& operator=(const __iterator&) = default;
 		};
 
-		__iterator _begin, _end;
+	private:
+		_Iter _begin, _end;
 	public:
 		odd_number_view() = default;
+		odd_number_view(const _Iter& begin, const _Iter& end) : _begin(begin), _end(end) {}
 
-		odd_number_view(const _Iter& begin, const _Iter& end) :
-			_begin(begin, end), _end(end, end) {
-		}
-
-		__iterator begin() const { return _begin; }
-
-		__iterator end() const { return _end; }
+		__iterator begin() const { return __iterator(_begin, _end); }
+		__iterator end() const { return __iterator(_end, _end); }
 	};
 
 	template <typename _N>

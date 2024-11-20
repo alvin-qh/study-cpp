@@ -116,7 +116,7 @@ TEST(TEST_SUITE_NAME, basic_istream_view) {
     ASSERT_THAT(i_vec, ElementsAre(1, 2, 3, 4, 5, 6, 7));
 }
 
-/// @brief 测试自定义视图以及视图迭代
+/// @brief 测试自定义视图以及视图工厂
 TEST(TEST_SUITE_NAME, custom_view_factory) {
     list<int> lst = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     vector<int> r;

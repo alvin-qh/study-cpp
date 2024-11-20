@@ -129,7 +129,7 @@ TEST(TEST_SUITE_NAME, dynamic_casting_for_reference) {
     ASSERT_EQ(rb.id(), 200);
     ASSERT_EQ(rb.tag(), 10);
 
-#if (!defined(__clang__) || !defined(__APPLE__))
+#ifndef _SANITIZE_LEAK
     A a;
 
     // `A&` => `B&`

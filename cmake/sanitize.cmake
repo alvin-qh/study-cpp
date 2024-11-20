@@ -3,26 +3,29 @@
 function(enable_sanitize target)
     message(STATUS "Enable sanitize for ${target}")
 
-    set(_sanitize_comile_opt address)
+    set(_sanitize_compile_opt address)
     set(_sanitize_link_opt address)
+    add_compile_definitions(_SANITIZE_ADDRESS)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-            set(_sanitize_comile_opt leak)
+            set(_sanitize_compile_opt leak)
             set(_sanitize_link_opt leak)
+
+            add_compile_definitions(_SANITIZE_LEAK)
         endif()
     elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-            unset(_sanitize_comile_opt)
+            unset(_sanitize_compile_opt)
             unset(_sanitize_link_opt)
         endif()
     elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
     elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     endif()
 
-    if (DEFINED _sanitize_comile_opt)
+    if (DEFINED _sanitize_compile_opt)
         target_compile_options(${target}
-            PRIVATE -fsanitize=${_sanitize_comile_opt} -fsanitize-recover=${_sanitize_comile_opt}
+            PRIVATE -fsanitize=${_sanitize_compile_opt} -fsanitize-recover=${_sanitize_compile_opt}
         )
     endif()
 

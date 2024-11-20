@@ -28,7 +28,7 @@ TEST(TEST_SUITE_NAME, default_constructor) {
     // 通过默认构造器创建 `std::variant` 对象
     variant<int, double> v;
 
-#if (!defined(__clang__) || !defined(__APPLE__))
+#ifndef _SANITIZE_LEAK
     // 确认位置为 `0` 的项 (即 `int` 值) 被初始化
     ASSERT_EQ(v.index(), 0);
 
@@ -43,7 +43,7 @@ TEST(TEST_SUITE_NAME, default_constructor) {
     ASSERT_EQ(get<int>(v), 1);
 
     v = 1.2;
-#if (!defined(__clang__) || !defined(__APPLE__))
+#ifndef _SANITIZE_LEAK
     ASSERT_THROW(get<int>(v), bad_variant_access);
 #endif
     ASSERT_EQ(get<1>(v), 1.2);

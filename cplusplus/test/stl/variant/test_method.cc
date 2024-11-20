@@ -40,6 +40,8 @@ TEST(TEST_SUITE_NAME, index) {
     ASSERT_TRUE(holds_alternative<string>(v));
 }
 
+#ifndef _SANITIZE_LEAK
+
 /// @brief 测试包含无效值的 `std::variant` 对象及 `valueless_by_exception` 方法
 ///
 /// 当 `std::variant` 对象在构造内部值的时候发生异常, 则会令 `std::variant` 包含一个无效值,
@@ -62,6 +64,8 @@ TEST(TEST_SUITE_NAME, valueless_by_exception) {
     ASSERT_EQ(v.index(), variant_npos);
     ASSERT_TRUE(v.valueless_by_exception());
 }
+
+#endif
 
 /// @brief 测试 `std::variant` 对象的赋值
 ///
@@ -242,9 +246,11 @@ TEST(TEST_SUITE_NAME, get) {
 
     // 1. 获取值的引用
 
+#ifndef _SANITIZE_LEAK
     // 获取 `0` 位置 (或 `string` 类型) 的值, 抛出 `bad_variant_access` 异常, 表示值不存在
     ASSERT_THROW(get<0>(v), bad_variant_access);
     ASSERT_THROW(get<string>(v), bad_variant_access);
+#endif
 
     // 获取 `1` 位置 (或 `int` 类型) 的值, 类型为 `int`, 值为 `10`
     ASSERT_EQ(get<1>(v), 10);
@@ -256,9 +262,11 @@ TEST(TEST_SUITE_NAME, get) {
     ASSERT_EQ(get<0>(v), "hello");
     ASSERT_EQ(get<string>(v), "hello");
 
+#ifndef _SANITIZE_LEAK
     // 获取 `1` 位置 (或 `int` 类型) 的值, 抛出 `bad_variant_access` 异常, 表示值不存在
     ASSERT_THROW(get<1>(v), bad_variant_access);
     ASSERT_THROW(get<int>(v), bad_variant_access);
+#endif
 
     // 2. 通过获取的引用设置值
 

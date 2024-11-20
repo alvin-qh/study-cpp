@@ -40,7 +40,7 @@ TEST(TEST_SUITE_NAME, global_const_value) {
     // 一般情况下, 无法修改只读全局变量的值
     // CE_STR_2 = "Lucy";
 
-#if (!defined(__clang__) || !defined(__APPLE__))
+#ifndef _SANITIZE_LEAK
     // 将只读变量的引用转为可读写变量引用, 并修改变量的值
     const_cast<string&>(CE_STR_2) = "Lucy";
     ASSERT_EQ(CE_STR_2, "Lucy");
@@ -289,10 +289,10 @@ TEST(TEST_SUITE_NAME, const_class_field) {
     // static_assert(ConstField::c_str_2 == "BB");
     ASSERT_EQ(ConstField::CS_STR_2, "BB");
 
-#if (!defined(__clang__) || !defined(__APPLE__))
+#ifndef _SANITIZE_LEAK
     // 通过 `const_cast` 将只读变量转为可读引用
-    // const_cast<string&>(ConstField::CS_STR_2) = "BBB";
-    // ASSERT_EQ(ConstField::CS_STR_2, "BBB");
+    const_cast<string&>(ConstField::CS_STR_2) = "BBB";
+    ASSERT_EQ(ConstField::CS_STR_2, "BBB");
 #endif
 }
 

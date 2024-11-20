@@ -3,6 +3,7 @@
   "language": "en",
   "words": [
     "CMakeList",
+    "cplusplus",
     "ctest",
     "CXXVER",
     "gmock",

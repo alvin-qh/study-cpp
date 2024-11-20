@@ -92,7 +92,8 @@
     "locale": "cpp",
     "print": "cpp",
     "format": "cpp",
-    "ranges": "cpp"
+    "ranges": "cpp",
+    "__config": "cpp"
   },
   "search.exclude": {
     ".history/**": true,

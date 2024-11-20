@@ -76,8 +76,13 @@ TEST(TEST_SUITE_NAME, size) {
     ASSERT_EQ(ranges::size(l), 10);
 
     // 确认 `std::ranges::ssize` 函数返回有符号整数
+#ifdef _SANITIZE_LEAK
+    static_assert(std::is_same<decltype(ranges::ssize(v)), long>::value);
+    static_assert(std::is_same<decltype(ranges::ssize(l)), long>::value);
+#else
     static_assert(std::is_same<decltype(ranges::ssize(v)), int64_t>::value);
     static_assert(std::is_same<decltype(ranges::ssize(l)), int64_t>::value);
+#endif
 
     // 测试获取集合元素个数
     ASSERT_EQ(ranges::ssize(v), 10);

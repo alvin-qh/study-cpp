@@ -288,7 +288,11 @@ TEST(TEST_SUITE_NAME, size_and_length) {
     ASSERT_EQ(sv.length(), 11);
     ASSERT_EQ(sv.size(), 11);
 
-    static_assert(sv.max_size() == 4611686018427387899L);
+#ifdef _SANITIZE_LEAK
+    static_assert(sv.max_size() == 18446744073709551615UL);
+#else
+    static_assert(sv.max_size() == 4611686018427387899UL);
+#endif
 }
 
 /// @brief 移除字符串前或后指定长度的内容
@@ -506,5 +510,4 @@ TEST(TEST_SUITE_NAME, starts_ends_with) {
 }
 
 #endif // __ge_cxx20
-
 #endif // __ge_cxx17

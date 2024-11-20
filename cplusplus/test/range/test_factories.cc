@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <vector>
+#include <list>
 #include <ranges>
 #include <type_traits>
 #include <algorithm>
@@ -115,13 +116,17 @@ TEST(TEST_SUITE_NAME, basic_istream_view) {
     ASSERT_THAT(i_vec, ElementsAre(1, 2, 3, 4, 5, 6, 7));
 }
 
+/// @brief 测试自定义视图以及视图迭代
 TEST(TEST_SUITE_NAME, custom_view_factory) {
-    vector<int> vec = { 1, 2, 3 };
-    vector<int> result;
+    list<int> lst = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    vector<int> r;
 
-    auto v = odd_number<int>(vec);
+    // 通过链表集合对象创建视图对象
+    auto v = odd_number(lst);
 
-    ranges::copy(v, back_inserter(result));
+    // 迭代视图对象, 并将迭代结果存入向量集合中, 确认结果
+    ranges::copy(v, back_inserter(r));
+    ASSERT_THAT(r, ElementsAre(1, 3, 5, 7, 9));
 }
 
 #endif // __ge_cxx20

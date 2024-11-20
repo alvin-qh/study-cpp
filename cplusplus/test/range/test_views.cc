@@ -22,8 +22,7 @@ template <typename T, typename _Alloc>
 class vector_view : public ranges::view_interface<vector_view<T, _Alloc>> {
     using vector_type = typename std::vector<T, _Alloc>;
     using const_iterator_type = typename std::vector<T, _Alloc>::const_iterator;
-private:
-    const_iterator_type _begin, _end;
+
 public:
     vector_view() = default;
     vector_view(const vector_type& v) : _begin(v.begin()), _end(v.end()) {}
@@ -32,6 +31,9 @@ public:
 
     const_iterator_type begin() const { return _begin; }
     const_iterator_type end() const { return _end; }
+
+private:
+    const_iterator_type _begin, _end;
 };
 
 /// @brief 测试视图类型

@@ -51,7 +51,6 @@ namespace cxx::iterator {
 		using pointer = T*;
 		using reference = T&;
 		using iterator_category = _category;
-	private:
 		using __self = __iterator_type_define<T, _category, _difference_type>;
 	protected:
 		/// @brief 表示位置的指针

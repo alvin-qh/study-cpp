@@ -19,39 +19,7 @@ namespace cxx::templated {
 	template<typename T, typename _Alloc = allocator<T>>
 	class Box {
 		typedef Box<T, _Alloc> Self;
-	private:
-		T* _ptr;
-		size_t _len;
 
-		_Alloc _alloc;
-
-		/// @brief 根据所给值创建指向单个对象的指针
-		///
-		/// @param val 所给值
-		void _allocate(const T& val, size_t len) {
-			// 分配内存, 为内存的每个元素调用 `T` 类型的构造函数
-			_ptr = _alloc.allocate(len);
-			std::uninitialized_fill_n(_ptr, len, val);
-			_len = len;
-		}
-
-		/// @brief 销毁当前指针
-		void _free() {
-			// 为数组各元素调用析构函数, 释放数组内存
-#if __ge_cxx17
-			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
-				std::destroy_n(ptr, _len);
-#else
-			T* ptr = std::exchange(_ptr, nullptr);
-			if (ptr) {
-				for (size_t i = 0; i < _len; ++i) {
-					ptr[i].~T();
-				}
-#endif
-				_alloc.deallocate(ptr, _len);
-				_len = 0;
-			}
-		}
 	public:
 		/// @brief 默认构造函数
 		Box() : Box(nullptr, 0) {}
@@ -62,7 +30,7 @@ namespace cxx::templated {
 		///
 		/// @param value 所给的值
 		/// @param len 元素个数
-		Box(const T & value, size_t len = 1) { _allocate(value, len); }
+		Box(const T& value, size_t len = 1) { _allocate(value, len); }
 
 		/// @brief 参数构造器
 		///
@@ -70,7 +38,7 @@ namespace cxx::templated {
 		///
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
-		Box(T * ptr, size_t len = 1) : _ptr(ptr), _len(len) {}
+		Box(T* ptr, size_t len = 1) : _ptr(ptr), _len(len) {}
 
 		/// @brief 禁用拷贝构造函数
 		Box(const Self&) = delete;
@@ -78,7 +46,7 @@ namespace cxx::templated {
 		/// @brief 移动构造器
 		///
 		/// @param o 被移动对象
-		Box(Self && o) noexcept :
+		Box(Self&& o) noexcept :
 			_ptr(std::exchange(o._ptr, nullptr)),
 			_len(std::exchange(o._len, 0)) {
 		}
@@ -93,7 +61,7 @@ namespace cxx::templated {
 		///
 		/// @param o 被移动对象
 		/// @return 当前对象引用
-		Self& operator=(Self && o) noexcept {
+		Self& operator=(Self&& o) noexcept {
 #if __ge_cxx17
 			if (T* ptr = std::exchange(_ptr, nullptr); ptr != nullptr) {
 #else
@@ -167,8 +135,42 @@ namespace cxx::templated {
 
 			return Box(ptr, len);
 		}
-	};
 
-} // namespace cxx::templated
+	private:
+		T* _ptr;
+		size_t _len;
+
+		_Alloc _alloc;
+
+		/// @brief 根据所给值创建指向单个对象的指针
+		///
+		/// @param val 所给值
+		void _allocate(const T & val, size_t len) {
+			// 分配内存, 为内存的每个元素调用 `T` 类型的构造函数
+			_ptr = _alloc.allocate(len);
+			std::uninitialized_fill_n(_ptr, len, val);
+			_len = len;
+		}
+
+		/// @brief 销毁当前指针
+		void _free() {
+			// 为数组各元素调用析构函数, 释放数组内存
+#if __ge_cxx17
+			if (T* ptr = std::exchange(_ptr, nullptr); ptr) {
+				std::destroy_n(ptr, _len);
+#else
+			T* ptr = std::exchange(_ptr, nullptr);
+			if (ptr) {
+				for (size_t i = 0; i < _len; ++i) {
+					ptr[i].~T();
+				}
+#endif
+				_alloc.deallocate(ptr, _len);
+				_len = 0;
+			}
+			}
+		};
+
+	} // namespace cxx::templated
 
 #endif // __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H

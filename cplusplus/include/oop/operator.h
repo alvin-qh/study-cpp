@@ -9,8 +9,6 @@ namespace cxx::oop {
 
 	/// @brief 定义类, 演示运算符重载
 	class Operator {
-	private:
-		double _x, _y, _z;
 	public:
 		/// @brief 默认构造器
 		Operator();
@@ -195,6 +193,9 @@ namespace cxx::oop {
 		double x() const;
 		double y() const;
 		double z() const;
+
+	private:
+		double _x, _y, _z;
 	};
 
 	/// @brief 全局运算符重载, 重载 `Vector3D` 类型的 `-` 运算符

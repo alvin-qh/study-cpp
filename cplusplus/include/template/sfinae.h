@@ -86,6 +86,7 @@ namespace cxx::templated {
 		/// @return `std::false_type` 类型实例
 		template<typename U>
 		static auto test(...) { return std::false_type(); }
+
 	public:
 		/// @brief 常量值
 		///

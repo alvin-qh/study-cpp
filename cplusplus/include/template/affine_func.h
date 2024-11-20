@@ -31,8 +31,6 @@ namespace cxx::templated {
 	template <typename T>
 	class AffineFunc<T, typename std::enable_if_t<std::is_arithmetic<T>::value>> {
 #endif
-	private:
-		T _x;
 	public:
 		/// @brief 构造函数
 		///
@@ -67,6 +65,9 @@ namespace cxx::templated {
 		///
 		/// @return 当前值
 		T value() const { return _x; }
+
+	private:
+		T _x;
 	};
 
 } // namespace cxx::templated

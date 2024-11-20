@@ -92,16 +92,6 @@ namespace cxx::oop {
 
 	/// @brief 定义枚举项类型
 	class __enum_value {
-	private:
-		// 枚举项名称
-#if __ge_cxx20
-		string _name;
-#else
-		const char* _name;
-#endif
-
-		// 枚举项值
-		int _value;
 	public:
 		/// @brief 参数构造器
 #if __ge_cxx20
@@ -155,6 +145,17 @@ namespace cxx::oop {
 #else
 		constexpr operator const char* () const { return _name; }
 #endif
+
+	private:
+		// 枚举项名称
+#if __ge_cxx20
+		string _name;
+#else
+		const char* _name;
+#endif
+
+		// 枚举项值
+		int _value;
 	};
 
 	/// @brief 模拟枚举类型

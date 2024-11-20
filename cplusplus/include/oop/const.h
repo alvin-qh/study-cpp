@@ -83,13 +83,6 @@ namespace cxx::oop {
 	/// 如果常量类型没有修饰为 `constexpr static`, 则常量类的实例不会再编译期创建, 而是和正常类对象一样,
 	/// 在运行期进行创建
 	class ConstClass {
-	private:
-#if __ge_cxx20
-		string _name;
-#else
-		const char* _name;
-#endif
-		int _value;
 	public:
 		/// @brief 构造器
 		///
@@ -129,6 +122,14 @@ namespace cxx::oop {
 		/// 当对象变量未修饰 `constexpr static` 关键字, 则此方法的调用将发生在运行期, 方法上修饰的
 		/// `constexpr` 关键字被忽略
 		constexpr int value() const { return _value; }
+
+	private:
+#if __ge_cxx20
+		string _name;
+#else
+		const char* _name;
+#endif
+		int _value;
 	};
 
 	// ------------------------------------------------------------------------------------------------------------
@@ -198,8 +199,6 @@ namespace cxx::oop {
 	///
 	/// 对于两个同名, 同参数的方法, 在方法后修饰了 `const` 和未修饰 `const` 的互为重载关系
 	class ConstMethod {
-	private:
-		string _val, _ref, _ptr;
 	public:
 		/// @brief 参数构造器
 		ConstMethod(const string& value);
@@ -251,6 +250,9 @@ namespace cxx::oop {
 		/// 修饰为 `const` 的方法返回的引用类型也必须为 `const`, 表示外部调用此方法时,
 		/// 无法通过返回值对当前对象进行修改
 		const string& ref() const&;
+
+	private:
+		string _val, _ref, _ptr;
 	};
 
 } // namespace cxx::oop

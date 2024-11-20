@@ -20,9 +20,6 @@ namespace cxx::templated {
 	/// @tparam T 模板参数
 	template <typename T1, typename T2>
 	class CTAD {
-	private:
-		T1 _v1;
-		T2 _v2;
 	public:
 		/// @brief 参数构造器
 		///
@@ -57,6 +54,10 @@ namespace cxx::templated {
 		constexpr bool is_same_type() const noexcept {
 			return (std::is_same_v<T1, U1>) && (std::is_same_v<T2, U2>);
 		}
+
+	private:
+		T1 _v1;
+		T2 _v2;
 	};
 
 	// 当构造器参数为 `const char*` 时, 将模板 `T` 推到为 `std::string` 类型

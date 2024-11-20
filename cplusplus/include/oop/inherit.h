@@ -67,8 +67,6 @@ namespace cxx::oop {
 
 	/// @brief 定义子类
 	class ChildClass : public BaseClass {
-	private:
-		double _b;
 	public:
 		/// @brief 默认构造器
 		ChildClass();
@@ -127,6 +125,9 @@ namespace cxx::oop {
 		///
 		/// @return 字符串对象
 		virtual std::string to_string() const override;
+
+	private:
+		double _b;
 	};
 
 } // namespace cxx::oop

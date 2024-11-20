@@ -22,58 +22,7 @@ namespace cxx::oop {
 		using const_iterator = ptr_based_iterator<const T>;
 		using reverse_iterator = ptr_based_reverse_iterator<T>;
 		using const_reverse_iterator = ptr_based_reverse_iterator<const T>;
-	private:
-		T* _data;
-		size_t _size;
 
-		_Alloc __alloc;
-
-		/// @brief 按所需数组长度分配内存
-		///
-		/// @param size 数组长度
-		/// @return 分配内存地址的指针
-		T* __allocate_me(size_t size) {
-			_data = __alloc.allocate(size);
-			_size = size;
-			return _data;
-		}
-
-		/// @brief 在内存中复制数据
-		///
-		/// @param data 数据指针
-		/// @param size 数组长度
-		void __copy(T* data, size_t size) {
-			std::vector<int>::iterator
-				_data = __alloc.allocate(_size);
-			std::uninitialized_copy(data, data + size, __alloc.allocate(size));
-			_size = size;
-		}
-
-		/// @brief 将另一个对象的内容移动到当前对象
-		///
-		/// @param o 另一个对象引用
-		void __move(Sequence& o) noexcept {
-			_data = std::exchange(o._data, nullptr);
-			_size = std::exchange(o._size, 0);
-		}
-
-		/// @brief 销毁当前指针内存
-		void __free() {
-			if (_data) {
-				T* data = std::exchange(_data, nullptr);
-				size_t size = std::exchange(_size, 0);
-
-#if __ge_cxx17
-				std::destroy_n(data, size);
-#else
-				for (size_t i = 0; i < size; ++i) {
-					data[i].~T();
-				}
-#endif
-				__alloc.deallocate(data, size);
-			}
-		}
-	public:
 		/// @brief 默认构造器
 		Sequence() : _data(nullptr), _size(0) {}
 
@@ -166,10 +115,68 @@ namespace cxx::oop {
 		/// @return 只读迭代器对象
 		const_iterator end() const { return const_iterator(_data + _size); }
 
+		/// @brief 返回指向数据地址的指针
+		///
+		/// @return 数据指针
 		T* data() { return _data; }
 
+		/// @brief 返回指向数据地址的只读指针
+		///
+		/// @return 数据只读指针
 		const T* data() const { return _data; }
-	};
+
+	private:
+		T* _data;
+		size_t _size;
+
+		_Alloc __alloc;
+
+		/// @brief 按所需数组长度分配内存
+		///
+		/// @param size 数组长度
+		/// @return 分配内存地址的指针
+		T* __allocate_me(size_t size) {
+			_data = __alloc.allocate(size);
+			_size = size;
+			return _data;
+		}
+
+		/// @brief 在内存中复制数据
+		///
+		/// @param data 数据指针
+		/// @param size 数组长度
+		void __copy(T* data, size_t size) {
+			std::vector<int>::iterator
+				_data = __alloc.allocate(_size);
+			std::uninitialized_copy(data, data + size, __alloc.allocate(size));
+			_size = size;
+		}
+
+		/// @brief 将另一个对象的内容移动到当前对象
+		///
+		/// @param o 另一个对象引用
+		void __move(Sequence& o) noexcept {
+			_data = std::exchange(o._data, nullptr);
+			_size = std::exchange(o._size, 0);
+		}
+
+		/// @brief 销毁当前指针内存
+		void __free() {
+			if (_data) {
+				T* data = std::exchange(_data, nullptr);
+				size_t size = std::exchange(_size, 0);
+
+#if __ge_cxx17
+				std::destroy_n(data, size);
+#else
+				for (size_t i = 0; i < size; ++i) {
+					data[i].~T();
+			}
+#endif
+				__alloc.deallocate(data, size);
+		}
+	}
+};
 
 } // namespace cxx::oop
 

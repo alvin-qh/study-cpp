@@ -311,12 +311,13 @@ TEST(TEST_SUITE_NAME, get_if) {
 
 /// @brief 定义无默认构造器的类型
 class A {
-private:
-    string _name;
 public:
     A(const string& name) noexcept : _name(name) {}
     string& name() noexcept { return _name; }
     const string& name() const noexcept { return _name; }
+
+private:
+    string _name;
 };
 
 /// @brief 测试 `monostate` 占位符

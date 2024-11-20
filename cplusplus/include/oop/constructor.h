@@ -15,8 +15,6 @@ namespace cxx::oop {
 
 	/// @brief 用于测试构造器的类
 	class Constructor {
-	private:
-		double _val;
 	public:
 		/// @brief 默认构造器
 		///
@@ -81,6 +79,9 @@ namespace cxx::oop {
 		virtual ~Constructor() noexcept;
 
 		double value() const noexcept;
+
+	private:
+		double _val;
 	};
 
 	/// @brief 测试通过函数返回值作为参数构造返回对象

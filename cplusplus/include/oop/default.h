@@ -12,8 +12,6 @@ namespace cxx::oop {
 	/// C++ 编译器可以为包括 “默认构造器”, "拷贝构造器", "析构函数",
 	/// 赋值运算符, 判等运算符等类方法自动生成默认实现
 	class Default {
-	private:
-		std::string _name;
 	public:
 		/// @brief 默认构造器
 		Default();
@@ -53,6 +51,9 @@ namespace cxx::oop {
 		///
 		/// @return `_name` 字段值
 		const std::string& name() const;
+
+	private:
+		std::string _name;
 	};
 
 } // namespace cxx::oop

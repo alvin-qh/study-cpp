@@ -17,8 +17,6 @@ using testing::ElementsAre;
 ///
 /// 通过不定模板参数向该类型传递构造器参数
 class TestClass {
-private:
-    double _x, _y, _z;
 public:
     TestClass() : TestClass(0) {}
     TestClass(double val) : TestClass(val, val, val) {}
@@ -29,6 +27,9 @@ public:
     double x() const { return _x; }
     double y() const { return _y; }
     double z() const { return _z; }
+
+private:
+    double _x, _y, _z;
 };
 
 /// @brief 测试通过不定模板参数调用不同重载的构造器
@@ -113,8 +114,6 @@ TEST(TEST_SUITE_NAME, recursive_args) {
 /// @tparam T 任意类型
 template <typename T>
 class _Test {
-private:
-    T _val;
 public:
     _Test(const T& value) : _val(value) {}
 
@@ -123,6 +122,9 @@ public:
     /// @param val 相加数
     /// @return 加法和
     T add(const T& val) { return _val + val; }
+
+private:
+    T _val;
 };
 
 /// @brief 测试类的不定参数模板

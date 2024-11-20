@@ -17,8 +17,7 @@ namespace cxx::reference {
 	template<typename T>
 	class Moveable {
 		typedef Moveable<T> Self;
-	private:
-		T* _ptr;
+
 	public:
 		/// @brief 默认构造器
 		Moveable() : _ptr(nullptr) {}
@@ -86,6 +85,9 @@ namespace cxx::reference {
 		///
 		/// @return 指针是否有效
 		operator bool() const { return _ptr != nullptr; }
+
+	private:
+		T* _ptr;
 	};
 
 } // namespace cxx::reference

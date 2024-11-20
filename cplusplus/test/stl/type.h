@@ -13,33 +13,6 @@ namespace cxx::stl {
 
 	/// @brief 定义类型用于测试
 	class Person {
-	private:
-		/// @brief 存储实际数据的结构体
-		struct __person_data {
-			string name;
-			uint8_t age;
-			char gender;
-
-			__person_data(const string& name, uint8_t age, char gender) :
-				name(name), age(age), gender(gender) {
-			}
-
-			__person_data(string&& name, uint8_t age, char gender) :
-				name(std::move(name)), age(age), gender(gender) {
-			}
-		};
-
-		// 定义指针类型
-		using __person_data_ptr = typename std::shared_ptr<__person_data>;
-
-		// 定义指向结构体对象的智能指针
-		__person_data_ptr _ptr;
-
-		/// @brief 构建指针类型
-		template<typename _S>
-		__person_data_ptr _make_data_ptr(_S&& name, uint8_t age, char gender) {
-			return std::make_shared<__person_data>(std::forward<_S>(name), age, gender);
-		}
 	public:
 		/// @brief 参数构造器
 		Person(const string& name, uint8_t age, char gender) :
@@ -90,6 +63,34 @@ namespace cxx::stl {
 		///
 		/// 通过 `explicit` 避免隐式转换
 		explicit operator bool() const { return static_cast<bool>(_ptr); }
+
+	private:
+		/// @brief 存储实际数据的结构体
+		struct __person_data {
+			string name;
+			uint8_t age;
+			char gender;
+
+			__person_data(const string& name, uint8_t age, char gender) :
+				name(name), age(age), gender(gender) {
+			}
+
+			__person_data(string&& name, uint8_t age, char gender) :
+				name(std::move(name)), age(age), gender(gender) {
+			}
+		};
+
+		// 定义指针类型
+		using __person_data_ptr = typename std::shared_ptr<__person_data>;
+
+		// 定义指向结构体对象的智能指针
+		__person_data_ptr _ptr;
+
+		/// @brief 构建指针类型
+		template<typename _S>
+		__person_data_ptr _make_data_ptr(_S&& name, uint8_t age, char gender) {
+			return std::make_shared<__person_data>(std::forward<_S>(name), age, gender);
+		}
 	};
 
 }

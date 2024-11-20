@@ -67,13 +67,14 @@ TEST(TEST_SUITE_NAME, global_nothrow_array_new_delete_operator) {
 
 /// @brief 定义测试类, 用于测试
 class A {
-private:
-    int _val;
 public:
     A(int val) : _val(val) {}
     virtual ~A() {}
     int value() { return _val; }
     int value() const { return _val; }
+
+private:
+    int _val;
 };
 
 /// @brief 测试 `placement new` 运算符

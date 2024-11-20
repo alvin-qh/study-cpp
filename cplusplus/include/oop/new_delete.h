@@ -79,8 +79,6 @@ namespace cxx::oop {
 	/// 则在通过 `new` 创建对象以及通过 `delete` 销毁对象时,
 	/// 将不再调用全局操作符, 而是调用当前类型重载的操作符
 	class NewDelete {
-	private:
-		std::string _name;
 	public:
 		/// @brief 默认构造器
 		NewDelete();
@@ -97,7 +95,7 @@ namespace cxx::oop {
 
 		/// @brief 析构函数
 		virtual ~NewDelete() = default;
-	public:
+
 		/// @brief 重载赋值运算符
 		///
 		/// @param 另一个对象引用
@@ -130,6 +128,9 @@ namespace cxx::oop {
 		///
 		/// @param ptr 指向要回收内存地址的指针
 		void operator delete[](void* ptr) noexcept;
+
+	private:
+		std::string _name;
 	};
 
 } // namespace cxx::oop

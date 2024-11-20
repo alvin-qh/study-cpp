@@ -34,22 +34,6 @@ namespace cxx::pointer {
 	/// @tparam SIZE 数组大小
 	template<typename T, size_t SIZE>
 	class LargeObject {
-	private:
-		// 保存数据的数组
-		T _data[SIZE];
-
-		/// @brief 向数组填充数据
-		///
-		/// @tparam _Iter 原数据的迭代器类型
-		/// @param begin 原数据的起始迭代器实例
-		/// @param end 原数据的结束迭代器实例
-		template <typename _Iter>
-		void _fill(_Iter begin, _Iter end) {
-			size_t i = 0;
-			for (_Iter it = begin; it != end; ++it) {
-				_data[i++] = *it;
-			}
-		}
 	public:
 		/// @brief 默认构造器
 		LargeObject() : LargeObject(T()) {}
@@ -116,6 +100,23 @@ namespace cxx::pointer {
 		///
 		/// @return 数组长度
 		constexpr size_t size() const { return SIZE; }
+
+	private:
+		// 保存数据的数组
+		T _data[SIZE];
+
+		/// @brief 向数组填充数据
+		///
+		/// @tparam _Iter 原数据的迭代器类型
+		/// @param begin 原数据的起始迭代器实例
+		/// @param end 原数据的结束迭代器实例
+		template <typename _Iter>
+		void _fill(_Iter begin, _Iter end) {
+			size_t i = 0;
+			for (_Iter it = begin; it != end; ++it) {
+				_data[i++] = *it;
+			}
+		}
 	};
 
 } // namespace cxx::pointer

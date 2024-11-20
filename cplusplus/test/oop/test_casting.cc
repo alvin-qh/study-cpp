@@ -16,12 +16,13 @@ public:
 
 /// @brief 用于测试指针转换的子类
 class B : public A {
-private:
-    int _tag;
 public:
     B() : A(200), _tag(10) {}
     virtual const char* who_am_i() const noexcept override { return "class B"; }
     virtual int tag() const { return _tag; }
+
+private:
+    int _tag;
 };
 
 /// @brief 测试静态类型转换

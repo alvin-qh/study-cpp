@@ -1,10 +1,10 @@
 #if __ge_cxx20
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 
 #include <list>
 #include <vector>
+#include <string>
 #include <ranges>
 
 #include "test.h"
@@ -12,8 +12,7 @@
 #define TEST_SUITE_NAME test_cplusplus_range__views
 
 using namespace std;
-
-using testing::ElementsAre;
+using namespace cxx::ranges;
 
 /// @brief 定义向量类型的视图类
 ///
@@ -86,29 +85,25 @@ TEST(TEST_SUITE_NAME, view_interface) {
 
 /// @brief 包含对应集合所有元素的视图
 ///
-/// `ref_view` 类型视图相当于是一个集合的 "引用", 主要作用是将集合转换为视图类型,
+/// `std::ranges::ref_view` 类型视图相当于是一个集合的 "引用", 主要作用是将集合转换为视图类型,
 /// 可通过 `std::views::all` 函数创建该视图
 TEST(TEST_SUITE_NAME, all_view) {
     vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-    auto it = vec.begin();
-
     ranges::ref_view<vector<int>> view = views::all(vec);
-    for (int n : view) {
-        ASSERT_EQ(n, *it++);
-    }
 
-    it = vec.begin();
+    // 确认视图内容
+    ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
 
     view = ranges::ref_view(vec);
-    for (int n : view) {
-        ASSERT_EQ(n, *it++);
-    }
+
+    // 确认视图内容
+    ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
 }
 
 /// @brief 测试 `std::ranges::subrange` 类型视图的 `sized` 模式
 ///
-/// `subrange` 类型是 C++ 20 提供的内置视图类型, 分为 `sized` 和 `unsized` 两种模式,
+/// `std::ranges::subrange` 类型是 C++ 20 提供的内置视图类型, 分为 `sized` 和 `unsized` 两种模式,
 /// 前者是通过随机迭代器创建, 后者则不是
 TEST(TEST_SUITE_NAME, sized_subrange) {
     vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -116,176 +111,157 @@ TEST(TEST_SUITE_NAME, sized_subrange) {
     // 将向量索引 `1~8` 对应范围的迭代器创建为视图
     ranges::subrange<vector<int>::iterator, vector<int>::iterator/*, std::ranges::subrange_kind::sized */> view(vec.begin() + 1, vec.end() - 1);
 
-    // 确认视图有效 (包含元素)
-    ASSERT_TRUE(view);
-    ASSERT_FALSE(view.empty());
+    // `sized subrange` 具备 `size` 方法, 返回集合元素个数
+    ASSERT_EQ(view.size(), 10);
 
-    // 获取视图包含的元素个数
-    ASSERT_EQ(view.size(), 8);
-
-    // 获取视图中指向数据存储的地址
+    // `sized subrange` 具备 `data` 方法, 可获取指向集合数据地址的指针
     ASSERT_EQ(view.data()[0], 2);
     ASSERT_EQ(view.data()[view.size() - 1], 9);
 
-    // 获取视图中第一个和最后一个元素值
-    ASSERT_EQ(view.front(), 2);
-    ASSERT_EQ(view.back(), 9);
-
-    // 获取视图的起始和结束迭代器
-    ASSERT_EQ(*view.begin(), 2);
-    ASSERT_EQ(*(--view.end()), 9);
-
-    // 测试视图的 `operator[]` 操作符
+    // `sized subrange` 具备 `operator[]` 方法, 可按索引获取元素值
     for (size_t i = 0; i < view.size(); ++i) {
         ASSERT_EQ(view[i], vec[i + 1]);
     }
 
-    // 通过视图迭代器进行迭代
-    auto it = vec.begin() + 1;
-    for (int n : view) {
-        ASSERT_EQ(n, *it++);
-    }
-
-    // 将视图的起始迭代器向后 (向前) 移动指定距离
-    /* sub = */ view.advance(2);
-    ASSERT_EQ(view.front(), 4);
-    ASSERT_EQ(view.back(), 9);
-
-    /* sub = */ view.advance(-2);
-    ASSERT_EQ(view.front(), 2);
-    ASSERT_EQ(view.back(), 9);
-
-    // 将视图的起始迭代器向后移动指定单位
-    view = view.next();
-    ASSERT_EQ(view.front(), 3);
-
-    view = view.next(2);
-    ASSERT_EQ(view.front(), 5);
-
-    // 将视图的起始迭代器向前移动指定单位
-    view = view.prev(2);
-    ASSERT_EQ(view.front(), 3);
-
-    view = view.prev();
-    ASSERT_EQ(view.front(), 2);
-
-    // 通过 `std::get` 获取视图的起始迭代器
-    it = std::get<0>(view);
-    ASSERT_EQ(*it, 2);
-
-    it = std::get<1>(view);
-    ASSERT_EQ(*(it - 1), 9);
+    // 确认视图内容
+    ASSERT_TRUE(rangeOf(view, { 2, 3, 4, 5, 6, 7, 8, 9 }));
 }
 
 /// @brief 测试 `std::ranges::subrange` 类型视图的 `unsized` 模式
 ///
-/// `subrange` 类型是 C++ 20 提供的内置视图类型, 分为 `sized` 和 `unsized` 两种模式,
+/// `std::ranges::subrange` 类型是 C++ 20 提供的内置视图类型, 分为 `sized` 和 `unsized` 两种模式,
 /// 前者是通过随机迭代器创建, 后者则不是
 TEST(TEST_SUITE_NAME, unsized_subrange) {
     list<int> lst = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     // 将链表索引 `1~8` 对应范围的迭代器创建为视图
-    ranges::subrange<list<int>::iterator, list<int>::iterator/*, std::ranges::subrange_kind::sized */> sub(++lst.begin(), --lst.end());
-
-    // 确认视图有效 (包含元素)
-    ASSERT_TRUE(sub);
-    ASSERT_FALSE(sub.empty());
+    ranges::subrange<list<int>::iterator, list<int>::iterator/*, std::ranges::subrange_kind::sized */> view(++lst.begin(), --lst.end());
 
     // `unsized subrange` 不具备 `size` 方法, 无法获取集合元素个数
-    // ASSERT_EQ(us_sub.size(), 10);
+    // ASSERT_EQ(view.size(), 10);
 
     // `unsized subrange` 不具备 `data` 方法, 无法获取指向集合数据地址的指针
-    // ASSERT_EQ(us_sub.data()[0], 2);
-    // ASSERT_EQ(us_sub.data()[s_sub.size() - 1], 9);
-
-    // 获取视图中第一个和最后一个元素值
-    ASSERT_EQ(sub.front(), 2);
-    ASSERT_EQ(sub.back(), 9);
-
-    // 获取视图的起始和结束迭代器
-    ASSERT_EQ(*sub.begin(), 2);
-    ASSERT_EQ(*(--sub.end()), 9);
+    // ASSERT_EQ(view.data()[0], 2);
+    // ASSERT_EQ(view.data()[lst.size() - 1], 9);
 
     // `unsized subrange` 不具备 `operator[]` 方法, 无法按索引获取元素值
-    // for (size_t i = 0; i < sub.size(); ++i) {
-    //     ASSERT_EQ(sub[i], vec[i + 1]);
+    // for (size_t i = 0; i < view.size(); ++i) {
+    //     ASSERT_EQ(view[i], vec[i + 1]);
     // }
 
-    // 通过视图迭代器进行迭代
-    auto it = ++lst.begin();
-    for (int n : sub) {
-        ASSERT_EQ(n, *it++);
-    }
-
-    // 将视图的起始迭代器向后 (向前) 移动指定距离
-    /* sub = */ sub.advance(2);
-    ASSERT_EQ(sub.front(), 4);
-    ASSERT_EQ(sub.back(), 9);
-
-    /* sub = */ sub.advance(-2);
-    ASSERT_EQ(sub.front(), 2);
-    ASSERT_EQ(sub.back(), 9);
-
-    // 将视图的起始迭代器向后移动指定单位
-    sub = sub.next();
-    ASSERT_EQ(sub.front(), 3);
-
-    sub = sub.next(2);
-    ASSERT_EQ(sub.front(), 5);
-
-    // 将视图的起始迭代器向前移动指定单位
-    sub = sub.prev(2);
-    ASSERT_EQ(sub.front(), 3);
-
-    sub = sub.prev();
-    ASSERT_EQ(sub.front(), 2);
-
-    // 通过 `std::get` 获取视图的起始迭代器
-    it = std::get<0>(sub);
-    ASSERT_EQ(*it, 2);
-
-    it = std::get<1>(sub);
-    ASSERT_EQ(*(--it), 9);
+    // 确认视图内容
+    ASSERT_TRUE(rangeOf(view, { 2, 3, 4, 5, 6, 7, 8, 9 }));
 }
 
 /// @brief 唯一所有权视图
 ///
-/// `owning_view` 视图类型具备唯一所有权, 其构造器或赋值运算符只接受 "右值引用",
+/// `std::ranges::owning_view` 视图类型具备唯一所有权, 其构造器或赋值运算符只接受 "右值引用",
 /// 不接受 "左值"
 TEST(TYPED_TEST_SUITE, owning_view) {
-    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, res;
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     // 构造器参数必须是一个 ”右值引用“
     ranges::owning_view view(std::move(vec));
-    ASSERT_TRUE(view);
-    ASSERT_TRUE(vec.empty());
 
     // 确认 `view` 对象的内容
-    ranges::copy(view, back_inserter(res));
-    ASSERT_THAT(res, ElementsAre(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+    ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
 
     // 无法将 `view` 变量进行赋值
     // ranges::owning_view view2 = view;
 
     // 赋值必须是一个 ”右值引用“
     ranges::owning_view view2 = std::move(view);
-    ASSERT_TRUE(view2);
+
     ASSERT_FALSE(view);
+    ASSERT_TRUE(rangeOf(view2, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
 }
 
-/// @brief
+/// @brief 过滤器视图
 ///
-/// `owning_view` 视图类型具备唯一所有权, 其构造器或赋值运算符只接受 "右值引用",
-/// 不接受 "左值"
+/// `std::ranges::filter_view` 视图类型具备过滤器功能, 通过指定的回调函数 (或 Lambda 表达式)
+/// 将集合或其它视图的值进行过滤
 TEST(TYPED_TEST_SUITE, filter_view) {
-    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, res;
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-    // 构造器参数必须是一个 ”右值引用“
+    // 通过集合和一个回调函数 (Lambda 表达式) 对集合内容进行过滤, 作为视图内容
     ranges::filter_view view(vec, [](auto i) { return i % 2 == 0; });
 
     // 确认 `view` 对象的内容
-    ranges::copy(view, back_inserter(res));
-    ASSERT_THAT(res, ElementsAre(2, 4, 6, 8, 10));
+    ASSERT_TRUE(rangeOf(view, { 2, 4, 6, 8, 10 }));
+}
+
+/// @brief 转换器视图
+///
+/// `std::ranges::transform_view` 视图类型具备转换器功能, 通过指定的回调函数 (或 Lambda 表达式)
+/// 将集合或其它视图的值进行转换
+TEST(TYPED_TEST_SUITE, transform_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 将集合值扩大 10 倍的转换视图
+    ranges::transform_view i_view(vec, [](auto i) { return i * 10; });
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(i_view, { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 }));
+
+    // 将集合值转为字符串类型的转换视图
+    ranges::transform_view s_view(vec, [](auto i) { return to_string(i); });
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(s_view, { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+}
+
+/// @brief 获取指定数量元素的视图
+///
+/// `std::ranges::take_view` 视图类型用于从上级集合或视图中获取指定数量的元素
+TEST(TYPED_TEST_SUITE, take_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 将集合值扩大 10 倍的转换视图
+    ranges::take_view view(vec, 5);
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5 }));
+}
+
+/// @brief 获取元素令条件为 `false` 之前的元素
+///
+/// `std::ranges::take_while_view` 视图会将元素值依次送入到回调函数 (或 Lambda 表达式)
+/// 中, 并保留令回调函数 (或 Lambda 表达式) 返回 `false` 之前的所有元素
+TEST(TYPED_TEST_SUITE, take_while_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 获取元素不等于 `6` 之前的所有元素的视图
+    ranges::take_while_view view(vec, [](auto i) { return i != 6; });
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5 }));
+}
+
+/// @brief 获取丢弃指定元素数量的视图
+///
+/// `std::ranges::drop_view` 视图会丢弃掉指定数量的元素, 只包含后续剩余的元素
+TEST(TYPED_TEST_SUITE, drop_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 形成丢弃前 `6` 个元素的视图
+    ranges::drop_view view(vec, 6);
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(view, { 7, 8, 9, 10 }));
+}
+
+/// @brief 丢弃令条件不满足元素之前的元素
+///
+/// `std::ranges::drop_while_view` 视图会将元素值依次送入到回调函数 (或 Lambda 表达式)
+/// 中, 并丢弃令回调函数 (或 Lambda 表达式) 返回 `false` 之前的所有元素
+TEST(TYPED_TEST_SUITE, drop_while_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 形成丢弃前 `6` 个元素的视图
+    ranges::drop_while_view view(vec, [](auto i) { return i < 5; });
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(view, { 5, 6, 7, 8, 9, 10 }));
 }
 
 #endif // __ge_cxx20

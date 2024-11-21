@@ -12,13 +12,16 @@
 namespace cxx::ranges {
 
 	template <typename _R, typename _T>
-	testing::AssertionResult rangeOf(const _R& r, std::initializer_list<_T>&& vals) {
+	testing::AssertionResult rangeOf(_R& r, std::initializer_list<_T>&& vals) {
 		auto it = vals.begin();
 		for (auto v : r) {
-			if (v != *it) {
-				return testing::AssertionFailure() << "rangeOf: " << v << " != " << *it;
+			if (it == vals.end()) {
+				return testing::AssertionFailure() << "rangeOf: too many values, ";
 			}
-			++it;
+
+			if (v != *it++) {
+				return testing::AssertionFailure() << "rangeOf: " << v << " != " << *(--it);
+			}
 		}
 		return testing::AssertionSuccess();
 	}

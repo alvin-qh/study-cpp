@@ -7,12 +7,11 @@
 
 #include <iterator>
 
-namespace cxx::range {
-	using namespace std;
+namespace cxx::ranges {
 
 	/// @brief 定义用于约束类型为整型或整型引用的 concept
 	template <typename _T>
-	concept is_integral = is_integral_v<remove_reference_t<_T>>;
+	concept is_integral = std::is_integral_v<std::remove_reference_t<_T>>;
 
 	/// @brief 用于约束类型包含 `begin` 方法, 且方法返回类型的 `*` 操作符返回整型类型
 	template <typename _C>
@@ -26,7 +25,7 @@ namespace cxx::range {
 	/// @tparam _C 集合类型, 该类型被约束为必须包含返回整型的迭代器
 	template <typename _C>
 		requires __integral_element<_C>
-	class odd_number_view : public ranges::view_interface<odd_number_view<_C>> {
+	class odd_number_view : public std::ranges::view_interface<odd_number_view<_C>> {
 	public:
 		using _c_iterator = typename _C::iterator;
 
@@ -39,7 +38,7 @@ namespace cxx::range {
 
 			using iterator = typename _C::iterator;
 			using value_type = typename iterator::value_type;
-			using iterator_concept = forward_iterator_tag;
+			using iterator_concept = std::forward_iterator_tag;
 
 			// 该定义必须存在, 否则视图无法成功检测当前类型为迭代器类型
 			using difference_type = ptrdiff_t;

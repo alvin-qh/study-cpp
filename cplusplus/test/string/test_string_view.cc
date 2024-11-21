@@ -386,7 +386,7 @@ TEST(TEST_SUITE_NAME, copy) {
 
     // 分配长度为 `6` 的 `char` 数组 (实际存储 `5` 个字符, 最后一个位置存储 `\0` 字符作为字符串结尾)
     // 将 `std::string_view` 所引用字符串从第 `6` 个位置拷贝 `5` 个字符拷贝到数组中
-    array<char, 6> data;
+    array<char, 6> data = { 0 };
     sv.copy(data.data(), 5, 6);
 
     ASSERT_STREQ(data.data(), "world");

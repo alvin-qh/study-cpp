@@ -105,6 +105,9 @@ namespace cxx::range {
 		/// @brief 获取视图的终止迭代器对象
 		__iterator end() const { return __iterator(this, _c->end()); }
 
+		/// @brief 返回当前视图是否有效
+		operator bool() const { return _c->begin() != _c->end(); }
+
 	private:
 		/// @brief 集合对象
 		_C* _c;

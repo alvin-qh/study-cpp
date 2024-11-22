@@ -250,18 +250,22 @@ TEST(TYPED_TEST_SUITE, drop_view) {
     ASSERT_TRUE(rangeOf(view, { 7, 8, 9, 10 }));
 }
 
-/// @brief 丢弃令条件不满足元素之前的元素
+/// @brief 连接视图
 ///
-/// `std::ranges::drop_while_view` 视图会将元素值依次送入到回调函数 (或 Lambda 表达式)
-/// 中, 并丢弃令回调函数 (或 Lambda 表达式) 返回 `false` 之前的所有元素
+/// `std::ranges::join_view` 视图可以将多个视图 (或集合) 的元素按照既定顺序连接到一起
 TEST(TYPED_TEST_SUITE, drop_while_view) {
-    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    vector<vector<int>> vec = {
+        { 1, 2, 3 },
+        { 4, 5, 6 },
+        { 7, 8, 9 },
+        { 10 },
+    };
 
-    // 形成丢弃前 `6` 个元素的视图
-    ranges::drop_while_view view(vec, [](auto i) { return i < 5; });
+    // 将集合中的集合元素进行连接, 形成一个视图
+    ranges::join_view view(vec);
 
     // 确认 `view` 对象的内容
-    ASSERT_TRUE(rangeOf(view, { 5, 6, 7, 8, 9, 10 }));
+    ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
 }
 
 #endif // __ge_cxx20

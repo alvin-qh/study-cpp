@@ -5,6 +5,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <tuple>
 #include <ranges>
 
 #include "test.h"
@@ -347,17 +348,69 @@ TEST(TYPED_TEST_SUITE, reverse_view) {
     ASSERT_TRUE(rangeOf(view, { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }));
 }
 
-/// @brief 测试逆序视图
+/// @brief 测试由集合中每个元组 (或相似类型) 相同索引的元素组测的视图
 ///
-/// `std::ranges::elements_view` 视图能将其关联的视图 (或集合) 元素逆序
+/// 对于一个元素类型为元组 (或其它相似类型) 的集合, 可以通过 `std::ranges::elements_view`
+/// 视图获取每个元组 (或其它相似类型) 相同索引位置的视图
 TEST(TYPED_TEST_SUITE, elements_view) {
-    vector<pair<int, double>> vec = {
-        {1, 1.1},
-    };
+    // 测试当集合元素类型为 `std::pair` 时的情况
+    {
+        vector<pair<int, double>> vec = {
+            { 1, 1.1 },
+            { 2, 2.2 },
+            { 3, 3.3 },
+        };
 
-    ranges::elements_view<vector<pair<int, double>>,> view
+        // 获取集合元素第 1 项的视图
+        ranges::elements_view<ranges::ref_view<vector<pair<int, double>>>, 0> view_0(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_0, { 1, 2, 3 }));
 
-    auto v = views::elements<0>(vec);
+        // 获取集合元素第 2 项的视图
+        ranges::elements_view<ranges::ref_view<vector<pair<int, double>>>, 1> view_1(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_1, { 1.1, 2.2, 3.3 }));
+    }
+
+    // 测试当集合元素类型为 `std::tuple` 时的情况
+    {
+        vector<tuple<string, short, char>> vec = {
+            { "Alvin", 42, 'M' },
+            { "Emma",  38, 'F' },
+            { "Tom",   28, 'M' },
+        };
+
+        // 获取集合元素第 1 项的视图
+        ranges::elements_view<ranges::ref_view<vector<tuple<string, short, char>>>, 0> view_0(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_0, { "Alvin", "Emma", "Tom" }));
+
+        // 获取集合元素第 2 项的视图
+        ranges::elements_view<ranges::ref_view<vector<tuple<string, short, char>>>, 1> view_1(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_1, { 42, 38, 28 }));
+
+        // 获取集合元素第 3 项的视图
+        ranges::elements_view<ranges::ref_view<vector<tuple<string, short, char>>>, 2> view_2(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_2, { 'M', 'F', 'M' }));
+    }
+
+    // 测试当集合元素类型为 `std::array` 时的情况
+    {
+        vector<array<string, 3>> vec = {
+            { "A", "AA", "AAA" },
+            { "B", "BB", "BBB" },
+            { "C", "CC", "CCC" },
+        };
+
+        // 获取集合元素第 1 项的视图
+        ranges::elements_view<ranges::ref_view<vector<array<string, 3>>>, 0> view_0(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_0, { "A", "B", "C" }));
+
+        // 获取集合元素第 2 项的视图
+        ranges::elements_view<ranges::ref_view<vector<array<string, 3>>>, 1> view_1(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_1, { "AA", "BB", "CC" }));
+
+        // 获取集合元素第 3 项的视图
+        ranges::elements_view<ranges::ref_view<vector<array<string, 3>>>, 2> view_2(views::all(vec));
+        ASSERT_TRUE(rangeOf(view_2, { "AAA", "BBB", "CCC" }));
+    }
 }
 
 #endif // __ge_cxx20

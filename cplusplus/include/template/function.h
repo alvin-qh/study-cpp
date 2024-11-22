@@ -1,12 +1,36 @@
 #pragma once
 
-#ifndef __CPLUSPLUS_TEMPLATE__AFFINE_FUNC_H
-#define __CPLUSPLUS_TEMPLATE__AFFINE_FUNC_H
+#ifndef __CPLUSPLUS_TEMPLATE__FUNC_H
+#define __CPLUSPLUS_TEMPLATE__FUNC_H
 
-#include <type_traits>
+#include <string>
 
 namespace cxx::templated {
 	using namespace std;
+
+	/// @brief 使用 `NumberType` 定义泛型参数, 只接收数值类型参数
+	///
+	/// @tparam T 任意类型
+	/// @param a 被加数
+	/// @param b 加数
+	/// @return 返回和
+	template<typename T>
+	T add(const T& a, const T& b) { return a + b; }
+
+	/// @brief 定义 `add` 函数的特化版本
+	///
+	/// 当 `add` 函数的模板参数 `T` 为 `string` 类型时, 编译器会使用该特化版本
+	///
+	/// @param a 字符串 1
+	/// @param b 字符串 2
+	/// @return 字符串相加的结果
+	template<>
+	string add(const string& a, const string& b) {
+		static const string sp(" ");
+		return a + sp + b;
+	}
+
+	// -------------------------------------------------------------------------
 
 #if __ge_cxx20
 	/// @brief 定义模板约束, 表示改模板参数必须具备 `+` 运算符
@@ -16,12 +40,14 @@ namespace cxx::templated {
 	concept addition_type = requires(T n) {
 		{ n + n } -> std::same_as<T>;
 	};
+#endif
 
 	/// @brief 定义仿函数类型
 	///
 	/// 所谓的仿函数, 即一个重载了 `()` 运算符的类型
 	///
 	/// @tparam T 数值类型泛型参数
+#if __ge_cxx20
 	template <addition_type T>
 	class AffineFunc {
 #else
@@ -72,4 +98,4 @@ namespace cxx::templated {
 
 } // namespace cxx::templated
 
-#endif // __CPLUSPLUS_TEMPLATE__AFFINE_FUNC_H
+#endif // __CPLUSPLUS_TEMPLATE__FUNC_H

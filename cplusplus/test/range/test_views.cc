@@ -153,7 +153,7 @@ TEST(TEST_SUITE_NAME, unsized_subrange) {
     ASSERT_TRUE(rangeOf(view, { 2, 3, 4, 5, 6, 7, 8, 9 }));
 }
 
-/// @brief 唯一所有权视图
+/// @brief 测试唯一所有权视图
 ///
 /// `std::ranges::owning_view` 视图类型具备唯一所有权, 其构造器或赋值运算符只接受 "右值引用",
 /// 不接受 "左值"
@@ -176,7 +176,7 @@ TEST(TYPED_TEST_SUITE, owning_view) {
     ASSERT_TRUE(rangeOf(view2, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
 }
 
-/// @brief 过滤器视图
+/// @brief 测试过滤器视图
 ///
 /// `std::ranges::filter_view` 视图类型具备过滤器功能, 通过指定的回调函数 (或 Lambda 表达式)
 /// 将集合或其它视图的值进行过滤
@@ -190,7 +190,7 @@ TEST(TYPED_TEST_SUITE, filter_view) {
     ASSERT_TRUE(rangeOf(view, { 2, 4, 6, 8, 10 }));
 }
 
-/// @brief 转换器视图
+/// @brief 测试转换器视图
 ///
 /// `std::ranges::transform_view` 视图类型具备转换器功能, 通过指定的回调函数 (或 Lambda 表达式)
 /// 将集合或其它视图的值进行转换
@@ -223,7 +223,7 @@ TEST(TYPED_TEST_SUITE, take_view) {
     ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5 }));
 }
 
-/// @brief 获取元素令条件为 `false` 之前的元素
+/// @brief 测试获取令条件为 `false` 的元素之前的所有元素
 ///
 /// `std::ranges::take_while_view` 视图会将元素值依次送入到回调函数 (或 Lambda 表达式)
 /// 中, 并保留令回调函数 (或 Lambda 表达式) 返回 `false` 之前的所有元素
@@ -250,10 +250,24 @@ TEST(TYPED_TEST_SUITE, drop_view) {
     ASSERT_TRUE(rangeOf(view, { 7, 8, 9, 10 }));
 }
 
-/// @brief 连接视图
+/// @brief 丢弃令条件为 `false` 的元素之前的所有元素
+///
+/// `std::ranges::drop_while_view` 视图会将元素值依次送入到回调函数 (或 Lambda 表达式)
+/// 中, 并丢弃令回调函数 (或 Lambda 表达式) 返回 `false` 之前的所有元素
+TEST(TYPED_TEST_SUITE, drop_while_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 将集合中的集合元素进行连接, 形成一个视图
+    ranges::drop_while_view view(vec, [](auto i) { return i < 5; });
+
+    // 确认 `view` 对象的内容
+    ASSERT_TRUE(rangeOf(view, { 5, 6, 7, 8, 9, 10 }));
+}
+
+/// @brief 测试连接视图 (或集合)
 ///
 /// `std::ranges::join_view` 视图可以将多个视图 (或集合) 的元素按照既定顺序连接到一起
-TEST(TYPED_TEST_SUITE, drop_while_view) {
+TEST(TYPED_TEST_SUITE, join_view) {
     vector<vector<int>> vec = {
         { 1, 2, 3 },
         { 4, 5, 6 },
@@ -266,6 +280,84 @@ TEST(TYPED_TEST_SUITE, drop_while_view) {
 
     // 确认 `view` 对象的内容
     ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
+}
+
+/// @brief 测试分割视图 (或集合) 到多个视图
+///
+/// `std::ranges::split_view` 视图可以将一个视图 (或集合) 中的元素,
+/// 根据指定的分割元素值, 分割为多个视图, 且分割值不包含在结果视图中
+TEST(TYPED_TEST_SUITE, split_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 将集合内容按元素 `5` 的位置分割为两部分, 得到一个包含视图集合的视图
+    ranges::split_view view(vec, 5);
+
+    auto it = view.begin();
+
+    // 确认 `view` 对象的内容, 为元素 `5` 之前的部分
+    auto subview = *it++;
+    ASSERT_TRUE(rangeOf(subview, { 1, 2, 3, 4 }));
+
+    // 确认 `view` 对象的内容, 为元素 `5` 之后的部分
+    subview = *it;
+    ASSERT_TRUE(rangeOf(subview, { 6, 7, 8, 9, 10 }));
+}
+
+/// @brief 测试分割视图 (或集合) 到多个视图 (惰性计算)
+///
+/// `std::ranges::lazy_split_view` 视图的功能和 `std::ranges::split_view` 视图类似,
+/// 区别在于前者基于惰性计算, 及当访问到指定的部分时, 才会计算其中的元素
+TEST(TYPED_TEST_SUITE, lazy_split_view) {
+    vector<int> vec = { 0, 1, 0, 2, 3, 0, 4, 5, 6, 0, 7, 8, 9 };
+
+    // 将集合内容按元素 `0` 的位置分割为两部分, 得到一个包含视图集合的视图
+    ranges::lazy_split_view view(vec, 0);
+
+    auto it = view.begin();
+
+    // 确认第一部分内容, 该部分为空, 不包含任何元素
+    auto subview = *it++;
+    ASSERT_TRUE(subview.empty());
+
+    // 确认第二部分内容
+    subview = *it++;
+    ASSERT_TRUE(rangeOf(subview, { 1 }));
+
+    // 确认第三部分内容
+    subview = *it++;
+    ASSERT_TRUE(rangeOf(subview, { 2, 3 }));
+
+    // 确认第四部分内容
+    subview = *it++;
+    ASSERT_TRUE(rangeOf(subview, { 4, 5, 6 }));
+
+    // 确认第五部分内容
+    subview = *it;
+    ASSERT_TRUE(rangeOf(subview, { 7, 8, 9 }));
+}
+
+/// @brief 测试逆序视图
+///
+/// `std::ranges::reverse_view` 视图能将其关联的视图 (或集合) 元素逆序
+TEST(TYPED_TEST_SUITE, reverse_view) {
+    vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+    // 将集合内容按元素 `0` 的位置分割为两部分, 得到一个包含视图集合的视图
+    ranges::reverse_view view(vec);
+    ASSERT_TRUE(rangeOf(view, { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }));
+}
+
+/// @brief 测试逆序视图
+///
+/// `std::ranges::elements_view` 视图能将其关联的视图 (或集合) 元素逆序
+TEST(TYPED_TEST_SUITE, elements_view) {
+    vector<pair<int, double>> vec = {
+        {1, 1.1},
+    };
+
+    ranges::elements_view<vector<pair<int, double>>,> view
+
+    auto v = views::elements<0>(vec);
 }
 
 #endif // __ge_cxx20

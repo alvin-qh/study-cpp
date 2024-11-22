@@ -1,9 +1,6 @@
 [submodule "vendor/googletest"]
 	path = vendor/googletest
 	url = git@github.com:google/googletest.git
-[submodule "vendor/format"]
-	path = vendor/format
-	url = https://github.com/arajar/format.git
 [submodule "vendor/fmt"]
 	path = vendor/fmt
 	url = https://github.com/fmtlib/fmt.git

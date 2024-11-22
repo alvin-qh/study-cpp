@@ -112,7 +112,7 @@ TEST(TEST_SUITE_NAME, sized_subrange) {
     ranges::subrange<vector<int>::iterator, vector<int>::iterator/*, std::ranges::subrange_kind::sized */> view(vec.begin() + 1, vec.end() - 1);
 
     // `sized subrange` 具备 `size` 方法, 返回集合元素个数
-    ASSERT_EQ(view.size(), 10);
+    ASSERT_EQ(view.size(), 8);
 
     // `sized subrange` 具备 `data` 方法, 可获取指向集合数据地址的指针
     ASSERT_EQ(view.data()[0], 2);

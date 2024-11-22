@@ -1,7 +1,7 @@
 # 设置根项目配置
 
 # 设置支持的 CMake 最低版本
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.20)
 
 # 设置默认的构建类型
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -37,6 +37,7 @@ include(cmake/sanitize.cmake)
 
 # 添加子项目 (vendor 路径下是引入的三方项目)
 add_subdirectory(vendor/googletest)
+add_subdirectory(vendor/fmt)
 add_subdirectory(cplusplus)
 add_subdirectory(algorithm)
 add_subdirectory(convert)
@@ -45,7 +46,6 @@ add_subdirectory(convert)
 
 # 包含必要的系统库
 include (InstallRequiredSystemLibraries)
-
 # 设置生成的安装包名字
 set(CPACK_PACKAGE_NAME "study-cpp")
 # 设置打包生成的包文件名

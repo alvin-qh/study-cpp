@@ -1,7 +1,7 @@
 # 算法演示子项目
 
 # 设置子项目名称
-project(cplusplus)
+project(cplusplus CXX)
 
 # 设置项目源文件集合
 file(GLOB_RECURSE cplusplus_src "src/*.cc" "src/*.c")
@@ -17,10 +17,10 @@ add_executable(cplusplus_test
 )
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
-include_directories(
-    include
-    ${CMAKE_SOURCE_DIR}/common
-    ${CMAKE_SOURCE_DIR}/vendor/format
+# include_directories(include)
+target_include_directories(cplusplus_test
+    PRIVATE include
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/fmt/include
 )
 
 # 为测试执行文件设置头文件路径
@@ -31,7 +31,7 @@ include_directories(
 # 指定需要预编译的头文件
 target_precompile_headers(cplusplus_test
     PRIVATE ${CMAKE_SOURCE_DIR}/common/cxxver.h
-    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/fmt/include/fmt/core.h
     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googlemock/include/gmock/gmock.h
 )
@@ -41,6 +41,7 @@ target_precompile_headers(cplusplus_test
 target_link_libraries(cplusplus_test
     PRIVATE gtest
     PRIVATE gmock
+    PRIVATE fmt
 )
 
 # 启用 sanitize

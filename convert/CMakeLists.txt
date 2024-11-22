@@ -1,16 +1,13 @@
 # 数据转换子目录
 
 # 设置子项目名称
-project(convert)
+project(convert CXX)
 
 # 设置项目源文件集合
 file(GLOB_RECURSE convert_src "src/*.cc" "src/*.c")
 
 # 设置项目测试文件集合
 file(GLOB_RECURSE convert_test_src "test/*.cc" "test/*.c")
-
-# 设置头文件路径, 用于指定在代码中 #include 文件的位置
-include_directories(include)
 
 # 设置生成的执行文件
 # algorithm_test 为执行文件名, 其后为相关的源码文件集
@@ -19,9 +16,14 @@ add_executable(convert_test
     ${convert_test_src}
 )
 
+# 设置头文件路径, 用于指定在代码中 #include 文件的位置
+# include_directories(include)
+target_include_directories(convert_test
+    PRIVATE include
+)
+
 # 指定需要预编译的头文件
 target_precompile_headers(convert_test
-    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/format/Format.h
     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
 )
 

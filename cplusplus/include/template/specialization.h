@@ -19,7 +19,7 @@
 #define __CPLUSPLUS_TEMPLATE__SPECIALIZATION_H
 
 #include <string>
-#include <Format.h>
+#include <fmt/core.h>
 
 namespace cxx::templated {
 	using namespace std;
@@ -60,7 +60,7 @@ namespace cxx::templated {
 
 		/// @brief 将对象转为字符串
 		virtual string to_string() const override {
-			return util::Format("Special<T1, T2>({0}, {1})", this->_v1, this->_v2);
+			return fmt::format("Special<T1, T2>({0}, {1})", this->_v1, this->_v2);
 		}
 	};
 
@@ -84,7 +84,7 @@ namespace cxx::templated {
 
 		/// @brief 将对象转为字符串
 		virtual string to_string() const override {
-			return util::Format("Special<T, string>({0}, {1})", this->_v1, this->_v2);
+			return fmt::format("Special<T, string>({0}, {1})", this->_v1, this->_v2);
 		}
 	};
 
@@ -108,7 +108,7 @@ namespace cxx::templated {
 
 		/// @brief 将对象转为字符串
 		virtual string to_string() const override {
-			return util::Format("Special<T, T>({0}, {1})", this->_v1, this->_v2);
+			return fmt::format("Special<T, T>({0}, {1})", this->_v1, this->_v2);
 		}
 
 		/// @brief 该函数只在 `Special<T, T>` 特化类型下有效
@@ -135,7 +135,7 @@ namespace cxx::templated {
 
 		/// @brief 将对象转为字符串
 		virtual string to_string() const override {
-			return util::Format("Special<string, string>({0}, {1})", this->_v1, this->_v2);
+			return fmt::format("Special<string, string>({0}, {1})", this->_v1, this->_v2);
 		}
 
 		/// @brief 该函数只在 `Special<string, string>` 特化类型下有效
@@ -162,7 +162,7 @@ namespace cxx::templated {
 
 		/// @brief 将对象转为字符串
 		virtual string to_string() const override {
-			return util::Format("Special<T1*, T2*>({0}, {1})", *this->_v1, *this->_v2);
+			return fmt::format("Special<T1*, T2*>({0}, {1})", *this->_v1, *this->_v2);
 		}
 	};
 

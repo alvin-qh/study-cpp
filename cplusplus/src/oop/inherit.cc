@@ -1,6 +1,6 @@
 #include <cmath>
 #include <string>
-#include <Format.h>
+#include <fmt/core.h>
 
 #include "oop/inherit.h"
 
@@ -30,7 +30,7 @@ namespace cxx::oop {
     }
 
     string BaseClass::to_string() const {
-        return util::Format("BaseClass({0})", _a);
+        return fmt::format("BaseClass({0})", _a);
     }
 
     int BaseClass::a() const { return _a; }
@@ -71,7 +71,7 @@ namespace cxx::oop {
     double ChildClass::b() const { return _b; }
 
     string ChildClass::to_string() const {
-        return util::Format("ChildClass({0}, {1})", _a, _b);
+        return fmt::format("ChildClass({0}, {1})", _a, _b);
     }
 
 } // namespace cxx::oop

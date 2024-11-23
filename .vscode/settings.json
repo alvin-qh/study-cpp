@@ -93,7 +93,10 @@
     "print": "cpp",
     "format": "cpp",
     "ranges": "cpp",
-    "__config": "cpp"
+    "__config": "cpp",
+    "codecvt": "cpp",
+    "source_location": "cpp",
+    "text_encoding": "cpp"
   },
   "search.exclude": {
     ".history/**": true,

@@ -71,13 +71,15 @@ namespace cxx::templated {
 
 	// -------------------------------------------------------------------------------------------------------
 
-	/// @brief 定义类的不定模板参数
-	///
-	/// 本类具备不定模板参数, 并令本类从所有的模板类进行继承, 并将父类的 `add` 方法置于本类中形成重载函数
-	///
-	/// `struct Addition : Ts...` 语句表示从模板参数定义的类展开并继承
-	///
-	/// @tparam ...Ts 不定模板参数
+#if __ge_cxx17
+
+/// @brief 定义类的不定模板参数
+///
+/// 本类具备不定模板参数, 并令本类从所有的模板类进行继承, 并将父类的 `add` 方法置于本类中形成重载函数
+///
+/// `struct Addition : Ts...` 语句表示从模板参数定义的类展开并继承
+///
+/// @tparam ...Ts 不定模板参数
 	template<typename ...Ts>
 	struct Addition : Ts... {
 		// 在本类中使用父类的 `add` 方法并展开形成重载
@@ -87,6 +89,8 @@ namespace cxx::templated {
 	// 指定模板推导指引, 当构造器参数为 `Ts...` 时, 模板参数为 `<Ts...>`
 	template <typename... Ts>
 	Addition(Ts...) -> Addition<Ts...>;
+
+#endif
 
 } // namespace cxx::templated
 

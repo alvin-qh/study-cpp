@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <map>
 #include <ranges>
 
 #include "test.h"
@@ -91,7 +92,7 @@ TEST(TEST_SUITE_NAME, view_interface) {
 TEST(TEST_SUITE_NAME, all_view) {
     vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-    ranges::ref_view<vector<int>> view = views::all(vec);
+    ranges::ref_view<vector<int>> view = vec;
 
     // 确认视图内容
     ASSERT_TRUE(rangeOf(view, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
@@ -353,7 +354,7 @@ TEST(TYPED_TEST_SUITE, reverse_view) {
 /// 对于一个元素类型为元组 (或其它相似类型) 的集合, 可以通过 `std::ranges::elements_view`
 /// 视图获取每个元组 (或其它相似类型) 相同索引位置的视图
 TEST(TYPED_TEST_SUITE, elements_view) {
-    // 测试当集合元素类型为 `std::pair` 时的情况
+    // 测试通过 `std::ranges::elements_view` 获取集合中 `std::pair` 对象的两个值形成的视图
     {
         vector<pair<int, double>> vec = {
             { 1, 1.1 },
@@ -361,16 +362,19 @@ TEST(TYPED_TEST_SUITE, elements_view) {
             { 3, 3.3 },
         };
 
+        // 定义视图类型
+        using vector_view_type = ranges::ref_view<decltype(vec)>;
+
         // 获取集合元素第 1 项的视图
-        ranges::elements_view<ranges::ref_view<vector<pair<int, double>>>, 0> view_0(views::all(vec));
+        ranges::elements_view<vector_view_type, 0> view_0(vec);
         ASSERT_TRUE(rangeOf(view_0, { 1, 2, 3 }));
 
         // 获取集合元素第 2 项的视图
-        ranges::elements_view<ranges::ref_view<vector<pair<int, double>>>, 1> view_1(views::all(vec));
+        ranges::elements_view<vector_view_type, 1> view_1(vec);
         ASSERT_TRUE(rangeOf(view_1, { 1.1, 2.2, 3.3 }));
     }
 
-    // 测试当集合元素类型为 `std::tuple` 时的情况
+    // 测试通过 `std::ranges::elements_view` 获取集合中 `std::tuple` 对象的各索引下的值形成的视图
     {
         vector<tuple<string, short, char>> vec = {
             { "Alvin", 42, 'M' },
@@ -378,20 +382,23 @@ TEST(TYPED_TEST_SUITE, elements_view) {
             { "Tom",   28, 'M' },
         };
 
+        // 定义视图类型
+        using vector_view_type = ranges::ref_view<decltype(vec)>;
+
         // 获取集合元素第 1 项的视图
-        ranges::elements_view<ranges::ref_view<vector<tuple<string, short, char>>>, 0> view_0(views::all(vec));
+        ranges::elements_view<vector_view_type, 0> view_0(vec);
         ASSERT_TRUE(rangeOf(view_0, { "Alvin", "Emma", "Tom" }));
 
         // 获取集合元素第 2 项的视图
-        ranges::elements_view<ranges::ref_view<vector<tuple<string, short, char>>>, 1> view_1(views::all(vec));
+        ranges::elements_view<vector_view_type, 1> view_1(vec);
         ASSERT_TRUE(rangeOf(view_1, { 42, 38, 28 }));
 
         // 获取集合元素第 3 项的视图
-        ranges::elements_view<ranges::ref_view<vector<tuple<string, short, char>>>, 2> view_2(views::all(vec));
+        ranges::elements_view<vector_view_type, 2> view_2(vec);
         ASSERT_TRUE(rangeOf(view_2, { 'M', 'F', 'M' }));
     }
 
-    // 测试当集合元素类型为 `std::array` 时的情况
+    // 测试通过 `std::ranges::elements_view` 获取集合中 `std::array` 对象的各索引下的值形成的视图
     {
         vector<array<string, 3>> vec = {
             { "A", "AA", "AAA" },
@@ -399,17 +406,132 @@ TEST(TYPED_TEST_SUITE, elements_view) {
             { "C", "CC", "CCC" },
         };
 
+        // 定义视图类型
+        using vector_view_type = ranges::ref_view<decltype(vec)>;
+
         // 获取集合元素第 1 项的视图
-        ranges::elements_view<ranges::ref_view<vector<array<string, 3>>>, 0> view_0(views::all(vec));
+        ranges::elements_view<vector_view_type, 0> view_0(vec);
         ASSERT_TRUE(rangeOf(view_0, { "A", "B", "C" }));
 
         // 获取集合元素第 2 项的视图
-        ranges::elements_view<ranges::ref_view<vector<array<string, 3>>>, 1> view_1(views::all(vec));
+        ranges::elements_view<vector_view_type, 1> view_1(vec);
         ASSERT_TRUE(rangeOf(view_1, { "AA", "BB", "CC" }));
 
         // 获取集合元素第 3 项的视图
-        ranges::elements_view<ranges::ref_view<vector<array<string, 3>>>, 2> view_2(views::all(vec));
+        ranges::elements_view<vector_view_type, 2> view_2(vec);
         ASSERT_TRUE(rangeOf(view_2, { "AAA", "BBB", "CCC" }));
+    }
+
+    // 测试通过 `std::ranges::elements_view` 获取集合中 `std::map` 键形成的视图以及值形成的视图
+    {
+        std::map<int, string> map = {
+                { 1, "Alvin" },
+                { 2, "Emma" },
+                { 3, "Tom" },
+        };
+
+        // 定义视图类型
+        using map_view_type = ranges::ref_view<decltype(map)>;
+
+        // 获取集合元素第 1 项的视图
+        ranges::elements_view<map_view_type, 0> view_0(views::all(map));
+        ASSERT_TRUE(rangeOf(view_0, { 1, 2, 3 }));
+
+        // 获取集合元素第 1 项的视图
+        ranges::elements_view<map_view_type, 1> view_1(views::all(map));
+        ASSERT_TRUE(rangeOf(view_1, { "Alvin", "Emma", "Tom" }));
+    }
+}
+
+/// @brief 测试键值视图
+///
+/// `std::ranges::keys_view` 视图为 `std::ranges::elements_view<_R, 0>` 类型的别名,
+/// `std::ranges::values_view` 视图为 `std::ranges::elements_view<_R, 1>` 类型的别名
+TEST(TYPED_TEST_SUITE, keys_values_view) {
+    // 测试通过 `std::ranges::keys_view` 获取集合中 `std::pair` 类型元素的第一个值形成的视图,
+    // 以及通过 `std::ranges::values_view` 获取集合中 `std::pair` 类型元素的第二个值形成的视图;
+    {
+        vector<pair<int, string>> vec = {
+            { 1, "Alvin" },
+            { 2, "Emma" },
+            { 3, "Tom" },
+        };
+
+        // 定义视图类型
+        using vector_view_type = ranges::ref_view<decltype(vec)>;
+
+        ranges::keys_view<vector_view_type> k_view(vec);
+        ASSERT_TRUE(rangeOf(k_view, { 1, 2, 3 }));
+
+        ranges::values_view<vector_view_type> v_view(vec);
+        ASSERT_TRUE(rangeOf(v_view, { "Alvin", "Emma", "Tom" }));
+    }
+
+    // 测试通过 `std::ranges::keys_view` 获取集合中 `std::tuple` 类型元素的第一个值形成的视图,
+    // 以及通过 `std::ranges::values_view` 获取集合中 `std::tuple` 类型元素的第二个值形成的视图;
+    {
+        vector<tuple<int, string, char>> vec = {
+            { 1, "Alvin", 'M' },
+            { 2, "Emma", 'F' },
+            { 3, "Tom", 'M' },
+        };
+
+
+        // 定义视图类型
+        using vector_view_type = ranges::ref_view<decltype(vec)>;
+
+        ranges::keys_view<vector_view_type> k_view(vec);
+        ASSERT_TRUE(rangeOf(k_view, { 1, 2, 3 }));
+
+        ranges::values_view<vector_view_type> v_view(vec);
+        ASSERT_TRUE(rangeOf(v_view, { "Alvin", "Emma", "Tom" }));
+
+        ranges::elements_view<vector_view_type, 2> t_view(vec);
+        ASSERT_TRUE(rangeOf(t_view, { 'M', 'F', 'M' }));
+    }
+
+    // 测试通过 `std::ranges::keys_view` 获取集合中 `std::array` 类型元素的第一个值形成的视图,
+    // 以及通过 `std::ranges::values_view` 获取集合中 `std::array` 类型元素的第二个值形成的视图;
+    {
+        vector<array<string, 3>> vec = {
+           { "A", "AA", "AAA" },
+           { "B", "BB", "BBB" },
+           { "C", "CC", "CCC" },
+        };
+
+
+        // 定义视图类型
+        using vector_view_type = ranges::ref_view<decltype(vec)>;
+
+        ranges::keys_view<vector_view_type> k_view(vec);
+        ASSERT_TRUE(rangeOf(k_view, { "A", "B", "C" }));
+
+        ranges::values_view<vector_view_type> v_view(vec);
+        ASSERT_TRUE(rangeOf(v_view, { "AA", "BB", "CC" }));
+
+        ranges::elements_view<vector_view_type, 2> t_view(vec);
+        ASSERT_TRUE(rangeOf(t_view, { "AAA", "BBB", "CCC" }));
+    }
+
+    // 测试通过 `std::ranges::keys_view` 获取集合中 `std::array` 类型元素的第一个值形成的视图,
+    // 以及通过 `std::ranges::values_view` 获取集合中 `std::array` 类型元素的第二个值形成的视图;
+    {
+        std::map<int, string> map = {
+                { 1, "Alvin" },
+                { 2, "Emma" },
+                { 3, "Tom" },
+        };
+
+        // 定义视图类型
+        using map_view_type = ranges::ref_view<decltype(map)>;
+
+        // 获取集合元素第 1 项的视图
+        ranges::keys_view<map_view_type> k_view(map);
+        ASSERT_TRUE(rangeOf(k_view, { 1, 2, 3 }));
+
+        // 获取集合元素第 1 项的视图
+        ranges::values_view<map_view_type> v_view(map);
+        ASSERT_TRUE(rangeOf(v_view, { "Alvin", "Emma", "Tom" }));
     }
 }
 

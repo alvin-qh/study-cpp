@@ -12,7 +12,7 @@ endif()
 project(study-cpp CXX C)
 
 # 设置 CMake 参数
-set(CMAKE_CXX_STANDARD 20) # 设置 C++ 版本及其它配置
+set(CMAKE_CXX_STANDARD 23) # 设置 C++ 版本及其它配置
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_VERBOSE_MAKEFILE ON) # 显示构建命令明细

@@ -109,6 +109,8 @@ TEST(TEST_SUITE_NAME, recursive_args) {
     ASSERT_EQ(r2, "ABCD");
 }
 
+#if __ge_cxx17
+
 /// @brief 具备 `add` 方法的类, 用于测试类的不定模板参数
 ///
 /// @tparam T 任意类型
@@ -142,3 +144,5 @@ TEST(TEST_SUITE_NAME, class_template_args) {
     string rs = a.add(string(" world"));
     ASSERT_EQ(rs, "hello world");
 }
+
+#endif

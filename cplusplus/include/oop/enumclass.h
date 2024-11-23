@@ -122,7 +122,7 @@ namespace cxx::oop {
 #endif
 		}
 
-#if __ge_cxx20
+#if !__ge_cxx20
 		/// @brief 重载不等比较运算符, C++ 20 以下版本不会自动生成该重载
 		bool operator!=(const __enum_value& o) const { return !(*this == o); }
 #endif
@@ -174,7 +174,7 @@ namespace cxx::oop {
 		/// @brief 定义枚举项常量 `C`
 		static constexpr __enum_value C = { "B", 2 };
 
-#if __ge_cxx17
+#if !__ge_cxx17
 		/// @brief 定义枚举项常量 `C`
 		static constexpr __enum_value None = { "", 0 };
 #endif

@@ -11,6 +11,10 @@
 #define __ge_cxx20 (__cplusplus >= 202002L)
 #endif
 
+#ifndef __ge_cxx23
+#define __ge_cxx23 (__cplusplus >= 202302L)
+#endif
+
 #if __ge_cxx17
 #define nullopt_or(val) nullopt
 #else

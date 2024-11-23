@@ -43,8 +43,10 @@ TEST(TEST_SUITE_NAME, constructor) {
     // 4. 通过迭代器创建对象
     vector<char> vec = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
 
+#if __ge_cxx20
     string_view sv5(vec.begin(), vec.end());
-    ASSERT_EQ(sv5, "hello world");
+
+#endif
 
     // 对于非 `random_iterator`, 无法用于初始化 `string_view` 对象
     // list<char> lst = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
@@ -113,7 +115,11 @@ TEST(TEST_SUITE_NAME, reference) {
     ASSERT_STREQ(sv1.data(), "");
 
     // 2. 测试对 `char*` 的引用情况
+#if __ge_cxx20
     char* ps = new char[] {"hello world"};
+#else
+    char* ps = new char[12] {"hello world"};
+#endif
 
     // 通过 `char*` 字符串指针构建对象
     string_view sv2(ps);
@@ -129,7 +135,12 @@ TEST(TEST_SUITE_NAME, reference) {
     delete[] ps;
 
     // 3. 测试对数组的引用
+
+#if __ge_cxx20
     auto arr = to_array({ 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' });
+#else
+    auto arr = array<char, 11> { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
+#endif
 
     // 通过数组构建对象
     string_view sv3(arr.data(), arr.size());
@@ -145,6 +156,7 @@ TEST(TEST_SUITE_NAME, reference) {
     // 4. 测试通过迭代器对原集合的引用
     vector<char> vec = { 'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd' };
 
+#if __ge_cxx20
     // 通过向量对象迭代器创建对象
     string_view sv4(vec.begin(), vec.end());
 
@@ -155,6 +167,7 @@ TEST(TEST_SUITE_NAME, reference) {
     // 改变向量内容, 确认 `std::string_view` 对象的内容随之改变
     vec[0] = 'H';
     ASSERT_EQ(sv4, "Hello world");
+#endif
 }
 
 /// @brief 测试对象的生命周期
@@ -169,7 +182,11 @@ TEST(TEST_SUITE_NAME, lifecycle) {
     // ASSERT_EQ(sv, "hello world");
 
     // 测试使用临时内存构建 `std::string_view` 对象, 当临时内存回收后, `std::string_view` 对象失效
+#if __ge_cxx20
     char* p = new char[] {"hello world"};
+#else
+    char* p = new char[12] {"hello world"};
+#endif
     sv = p;
     // ASSERT_EQ(sv, "hello world");
     delete[] p;

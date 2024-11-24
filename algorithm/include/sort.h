@@ -10,7 +10,7 @@ namespace algorithm {
 
 	/// @brief 对指定数组进行快速排序
 	///
-	/// @tparam T
+	/// @tparam T 数组元素类型
 	/// @param array 要排序的数组指针
 	/// @param size 数组长度
 	/// @param comp_ptr 用于比较元素大小的函数指针
@@ -43,7 +43,7 @@ namespace algorithm {
 
 	/// @brief 检查数组是否有序
 	///
-	/// @tparam T
+	/// @tparam T 数组元素类型
 	/// @param array 要检查的数组指针
 	/// @param size 数组长度
 	/// @param comp_ptr 用于比较元素大小的函数指针

@@ -10,7 +10,7 @@ namespace algorithm {
 
 	/// @brief 定义堆结构体
 	///
-	/// @tparam T
+	/// @tparam T 堆元素类型
 	template <class T>
 	struct heap {
 		// 保存完全二叉树的数组
@@ -28,7 +28,7 @@ namespace algorithm {
 
 	/// @brief 初始化堆结构体对象
 	///
-	/// @tparam T
+	/// @tparam T 堆元素类型
 	/// @param h 堆结构体对象引用
 	/// @param comp_ptr 对堆元素进行比较的函数指针
 	template <typename T>
@@ -48,7 +48,7 @@ namespace algorithm {
 
 	/// @brief 销毁堆结构体对象
 	///
-	/// @tparam T
+	/// @tparam T 堆元素类型
 	/// @param h 堆结构体对象引用
 	template <typename T>
 	void heap_free(heap<T>& h) {
@@ -62,7 +62,7 @@ namespace algorithm {
 
 	/// @brief 重建堆存储区
 	///
-	/// @tparam T
+	/// @tparam T 堆元素类型
 	/// @param h 堆对象引用
 	/// @param new_capacity 新的存储区长度
 	template <typename T>
@@ -83,7 +83,7 @@ namespace algorithm {
 
 	/// @brief 将堆最后一个子节点向父节点方向提升, 形成完全二叉树
 	///
-	/// @tparam T
+	/// @tparam T 堆元素类型
 	/// @param h 堆对象引用
 	template <typename T>
 	void _heap_shiftup(heap<T>& h) {
@@ -110,7 +110,7 @@ namespace algorithm {
 
 	/// @brief 在堆中增加一个元素
 	///
-	/// @tparam T
+	/// @tparam T 堆元素类型
 	/// @param h 堆结构体对象引用
 	/// @param value 要添加的元素值
 	/// @return 堆中元素个数
@@ -134,7 +134,8 @@ namespace algorithm {
 	}
 
 	/// @brief 将堆最后一个子节点向父节点方向提升, 形成完全二叉树
-	/// @tparam T
+	///
+	/// @tparam T 堆元素类型
 	/// @param h 堆结构体对象引用
 	template <typename T>
 	void _heap_shiftdown(heap<T>& h) {
@@ -162,7 +163,8 @@ namespace algorithm {
 	}
 
 	/// @brief 从堆中获取最小的元素
-	/// @tparam T
+	///
+	/// @tparam T 堆元素类型
 	/// @param h 堆结构体对象引用
 	/// @return 堆中值最小的元素
 	template <typename T>

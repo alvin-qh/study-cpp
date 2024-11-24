@@ -10,7 +10,7 @@ namespace algorithm {
 
 	/// @brief 向量集合结构体
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	template <class T>
 	struct vector {
 		/// @brief 存储元素的数组
@@ -25,7 +25,7 @@ namespace algorithm {
 
 	/// @brief 初始化向量结构体对象
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	/// @param v 向量结构体变量引用
 	template <typename T>
 	void vector_init(vector<T>& v) {
@@ -41,7 +41,7 @@ namespace algorithm {
 
 	/// @brief 销毁向量结构体对象
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	/// @param v 向量结构体引用
 	template <typename T>
 	void vector_free(vector<T>& v) {
@@ -54,7 +54,7 @@ namespace algorithm {
 
 	/// @brief 向向量集合中设置一组值
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	/// @param v 向量结构体引用
 	/// @param data 存储要设置值的数组
 	/// @param len `data` 数组长度
@@ -81,7 +81,7 @@ namespace algorithm {
 
 	/// @brief 重建向量存储区
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	/// @param v 向量结构体引用
 	/// @param new_capacity 新设置向量的最大容量
 	template <typename T>
@@ -102,7 +102,7 @@ namespace algorithm {
 
 	/// @brief 向向量中添加一个值
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	/// @param v 向量结构体引用
 	/// @param value 要添加的值
 	/// @return 添加后向量长度
@@ -120,7 +120,7 @@ namespace algorithm {
 
 	/// @brief 向向量中添加一组值
 	///
-	/// @tparam T
+	/// @tparam T 向量元素类型
 	/// @param v 向量结构体引用
 	/// @param data 要添加值的数组指针
 	/// @param len 数组的长度

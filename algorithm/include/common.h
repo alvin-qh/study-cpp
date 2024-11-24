@@ -37,7 +37,7 @@ namespace algorithm {
 	///
 	/// 这里逐个进行元素复制, 主要是为了调用"拷贝构造器"
 	///
-	/// @tparam T
+	/// @tparam T 数组元素类型
 	/// @param src 待复制的数组
 	/// @param dst 复制的目标数组
 	/// @param len 要复制的长度
@@ -51,7 +51,7 @@ namespace algorithm {
 
 	/// @brief 销毁数组, 堆数组元素进行析构, 并释放内存
 	///
-	/// @tparam T
+	/// @tparam T 数组元素类型
 	/// @param array 待销毁的数组指针
 	/// @param size 数组长度
 	template <typename T>
@@ -69,7 +69,7 @@ namespace algorithm {
 
 	/// @brief 分配数组
 	///
-	/// @tparam T
+	/// @tparam T 数组元素类型
 	/// @param size 数组长度
 	/// @param default_value 数值元素默认值
 	/// @return 数组指针

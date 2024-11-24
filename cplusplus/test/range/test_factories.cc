@@ -117,15 +117,31 @@ TEST(TEST_SUITE_NAME, basic_istream_view) {
 TEST(TEST_SUITE_NAME, custom_view_factory) {
     list<int> lst = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-    // 通过链表集合对象创建视图对象
-    auto view = odd_number(views::all(lst));
-    ASSERT_TRUE(view);
+    // 1. 通过 adapter 仿函数, 基于集合对象创建视图对象
+    {
+        // 通过链表集合对象创建视图对象
+        odd_number_view<list<int>&> view = odd_number(lst);
+        ASSERT_TRUE(view);
 
-    // 确认视图结果
-    ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
+        // 确认视图结果
+        ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
+    }
 
-    view = lst | views::all | odd_number();
-    ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
+    // 2. 通过 adapter 仿函数, 基于视图对象创建视图对象
+    {
+        // 通过链表集合对象创建视图对象
+        odd_number_view<ranges::ref_view<list<int>>> view = odd_number(views::all(lst));
+        ASSERT_TRUE(view);
+
+        // 确认视图结果
+        ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
+    }
+
+    // 3. 通过 closure 仿函数创建视图 closure 对象, 并通过 `|` 运算符产生视图对象
+    {
+        odd_number_view<ranges::ref_view<list<int>>> view = lst | views::all | odd_number();
+        ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
+    }
 }
 
 #endif // __ge_cxx20

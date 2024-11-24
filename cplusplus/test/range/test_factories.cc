@@ -118,10 +118,13 @@ TEST(TEST_SUITE_NAME, custom_view_factory) {
     list<int> lst = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     // 通过链表集合对象创建视图对象
-    auto view = odd_number(lst);
+    auto view = odd_number(views::all(lst));
     ASSERT_TRUE(view);
 
     // 确认视图结果
+    ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
+
+    view = lst | views::all | odd_number();
     ASSERT_TRUE(rangeOf(view, { 1, 3, 5, 7, 9 }));
 }
 

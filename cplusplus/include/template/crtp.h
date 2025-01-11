@@ -15,20 +15,33 @@
 namespace cxx::templated {
 	using namespace std;
 
+	/// @brief 定义异常类型, 表示一个 "虚拟" 方法未被子类实现
 	class unsupport : public std::exception {
 	public:
+		/// @brief 返回异常描述信息
+		///
+		/// @return 异常描述信息字符串
 		const char* what() const noexcept override {
 			return "unimplemented";
 		}
 	};
 
+	/// @brief 定义父类类型, 该父类类型方法内部通过 "奇异递归模板" 模式调用继承其子类的对应方法
+	///
+	/// @tparam _Child 表示子类类型的模板参数
+	/// @tparam _VIRTUAL `bool` 类型模板参数, 表示父类方法是否为 "虚函数". "奇异递归模板"
+	///                         模式表示的虚函数并不是真的虚函数 (没有 `VTable‵ 表), 而是当函数无法通过子类型指针调用时,
+	///                         抛出异常
 	template <typename _Child, bool _VIRTUAL = true>
 	class Base {
 	public:
+		/// @brief 定义函数, 通过将当前 `this‵ 指针强制转为 `_Child` 子类型指针, 在函数内部调用子类型的 `_foo_impl` 函数来模拟子类重写
+		///        (`Override`) 父类同名函数的目的
+		///
+		/// @return 返回字符串用于标示具体执行的是父类或子类函数
 		string foo() {
 			return static_cast<_Child*>(this)->_foo_impl();
 		}
-
 	private:
 		/// @brief 定义兜底方法实现
 		///
@@ -60,10 +73,9 @@ namespace cxx::templated {
 	};
 
 	template <bool _VIRTUAL>
-	class Child3 : public Base<Child3, _VIRTUAL> {
-		friend class Base<Child3, _VIRTUAL>;
+	class Child3 : public Base<Child3<_VIRTUAL>, _VIRTUAL> {
+		friend class Base<Child3>;
 	};
-
 
 	template <typename _Child, bool _VIRTUAL>
 	string polymorphism_foo(Base<_Child, _VIRTUAL>* base) {

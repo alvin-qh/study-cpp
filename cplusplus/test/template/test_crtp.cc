@@ -21,8 +21,9 @@ TEST(TEST_SUITE_NAME, crtp) {
     ASSERT_EQ(polymorphism_foo(&c1), "Child1");
     ASSERT_EQ(polymorphism_foo(&c2), "Child2");
 
-    Child3<false> c3;
-    ASSERT_THROW(c3.foo(), "Base");
+    Child3<false> c3_1;
+    ASSERT_EQ(c3_1.foo(), "Base");
 
-    ASSERT_THROW(polymorphism_foo(&c3), unsupport);
+    Child3<true> c3_2;
+    ASSERT_THROW(polymorphism_foo(&c3_2), unsupport);
 }

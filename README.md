@@ -133,6 +133,17 @@ VSCode 中用于支持 C/C++ 开发的插件包括:
 
 通过命令面板的 "CMake: Scan for Kits" 以及 "CMake: Select a Kit" 命令, 即可扫描本机上的所有工具链并选择其中的一个 (例如: LLVM Clang)
 
+### 5.3. 配置 CMake Tools 插件
+
+默认情况下, VSCode 并不是通过 `CMakeLists.txt` 文件来配置当前开发环境 (例如无法正确识别 `CMakeLists.txt` 中配置的头文件), 此时需要在 VSCode 的 `settings.json` 中添加如下内容
+
+```json
+{
+    ...,
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+}
+```
+
 ## 6. LLVM & Clang
 
 常见的 Linux 发行版本软件源中一般都会提供 LLVM 按照, 只是版本往往较低, 如果需要安装最新版本的 LLVM 以及 Clang, 可以直接通过 <llvm.org> 提供的源来进行

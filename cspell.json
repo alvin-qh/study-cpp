@@ -2,6 +2,8 @@
   "version": "0.2",
   "language": "en",
   "words": [
+    "cbindgen",
+    "cdylib",
     "CMakeList",
     "cplusplus",
     "ctest",
@@ -17,6 +19,7 @@
     "NUMSYS",
     "shiftdown",
     "shiftup",
+    "staticlib",
     "STREQ",
     "tparam"
   ],

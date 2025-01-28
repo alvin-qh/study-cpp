@@ -21,6 +21,7 @@
     "shiftup",
     "staticlib",
     "STREQ",
+    "STREQUAL",
     "tparam"
   ],
   "flagWords": [],

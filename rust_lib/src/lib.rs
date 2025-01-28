@@ -1,1 +1,2 @@
-pub mod func;
+//! 编译 Rust 
+pub mod rust;

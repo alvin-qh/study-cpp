@@ -41,6 +41,7 @@ add_subdirectory(vendor/fmt)
 add_subdirectory(cplusplus)
 add_subdirectory(algorithm)
 add_subdirectory(convert)
+add_subdirectory(rust_lib)
 
 # CPack 打包配置
 

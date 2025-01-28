@@ -10,7 +10,7 @@ file(GLOB_RECURSE convert_src "src/*.cc" "src/*.c")
 file(GLOB_RECURSE convert_test_src "test/*.cc" "test/*.c")
 
 # 设置生成的执行文件
-# algorithm_test 为执行文件名, 其后为相关的源码文件集
+# convert_test 为执行文件名, 其后为相关的源码文件集
 add_executable(convert_test
     ${convert_src}
     ${convert_test_src}

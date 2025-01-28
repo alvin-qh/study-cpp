@@ -232,7 +232,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-ilb"
+name = "rust-lib"
 version = "0.1.0"
 dependencies = [
  "cbindgen",

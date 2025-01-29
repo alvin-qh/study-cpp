@@ -40,11 +40,11 @@ target_link_directories(rust_lib_test
 )
 
 # 指定需要预编译的头文件
-# target_precompile_headers(rust_lib_test
-#     # PRIVATE ${CMAKE_SOURCE_DIR}/vendor/fmt/include/fmt/core.h
-#     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
-#     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googlemock/include/gmock/gmock.h
-# )
+target_precompile_headers(rust_lib_test
+    PRIVATE ${PROJECT_SOURCE_DIR}/include/bindings.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
+    PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googlemock/include/gmock/gmock.h
+)
 
 # 增加本项目使用的链接库
 # 链接库会自动在当前路径下的 lib 目录中查找, 无需文件前缀 lib 和后缀 .a 等, gtest => libgtest.a

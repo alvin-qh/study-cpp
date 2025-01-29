@@ -1,19 +1,12 @@
-#pragma once
+//! 通过 Rust 编写函数, 并导出为 C 函数, 以便在 C 语言中调用
+//!
+//! Rust 提供了 `std::ffi` 接口, 用于将 Rust 语言导出为 C/C++ 符合,
+//! 以便在 C/C++ 语言中调用
+//!
+//! Rust 函数需要通过 `extern "C"` 导出 C 语言对应的符号,
+//! 通过 `#[no_mangle]` 禁止 Rust 函数在编译过程中修改符号名称
 
-#ifndef RUST_LIB__BINDINGS_H
-#define RUST_LIB__BINDINGS_H
-
-/* Generated with cbindgen:0.28.0 */
-
-#include <cstdarg>
-#include <cstdint>
-#include <cstdlib>
-#include <ostream>
-#include <new>
-
-namespace rust_lib {
-
-extern "C" {
+use std::ffi;
 
 /// 返回一个 C 字符串
 ///
@@ -25,17 +18,23 @@ extern "C" {
 ///
 /// 通过 `std::ffi::CString::into_raw` 方法, 可以将 `std::ffi::CString`
 /// 类型中的字符串转为 `*const std::ffi::c_char` 类型指针, 即一个 C 字符串指针
-const char *hello_str();
+#[no_mangle]
+pub extern "C" fn hello_str() -> *const ffi::c_char {
+    // 通过 Rust 的 `&str` 值产生一个 `std::ffi::CString` 类型实例
+    let s = ffi::CString::new("Hello Rust FFI").unwrap();
+
+    // 将 `std::ffi::CString` 实例转为 `*const ffi::c_char` 指针
+    s.into_raw()
+}
 
 /// 回收 Rust 产生的 C 字符串指针
 ///
 /// 如果通过 `std::ffi::CString` 类型实例产生了 `*const ffi::c_char` 指针, 则需要在之后回收该指针,
 /// 需要通过 `*const ffi::c_char` 指针重新产生 `std::ffi::CString` 类型实例, 获取该指针的所有权,
 /// 并自动完成内存回收
-void free_str(const char *ptr);
-
-}  // extern "C"
-
-}  // namespace rust_lib
-
-#endif  // RUST_LIB__BINDINGS_H
+#[no_mangle]
+pub extern "C" fn free_str(ptr: *const ffi::c_char) {
+    unsafe {
+        let _ = ffi::CString::from_raw(ptr as *mut _);
+    };
+}

@@ -39,9 +39,9 @@ target_precompile_headers(cplusplus_test
 # 增加本项目使用的链接库
 # 链接库会自动在当前路径下的 lib 目录中查找, 无需文件前缀 lib 和后缀 .a 等, gtest => libgtest.a
 target_link_libraries(cplusplus_test
-    PRIVATE gtest
-    PRIVATE gmock
-    PRIVATE fmt
+    PRIVATE gtest   # 链接 `libgtest.so` 文件
+    PRIVATE gmock   # 链接 `libgmock.so` 文件
+    PRIVATE fmt     # 链接 `libfmt.so` 文件
 )
 
 # 启用 sanitize

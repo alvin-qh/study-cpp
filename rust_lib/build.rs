@@ -21,7 +21,7 @@ fn main() {
         .with_crate(crate_dir) // 设置 Rust 项目路径
         .with_header("#pragma once") // 设置头文件路径
         .with_documentation(true) // 生成文档信息
-        .with_namespace("rust_lib") // 生成命名空间
+        .with_namespace("rust_lib::c") // 生成命名空间
         .with_include_version(true) // 生成版本信息
         .with_include_guard("RUST_LIB__BINDINGS_H") // 生成头文件守卫
         .generate() // 生成头文件
@@ -29,7 +29,6 @@ fn main() {
         .write_to_file("include/bindings.h"); // 写入头文件
 
     cxx_build::bridge("src/cc/func.rs")
-        // .file("src/cc/class.cc")
         .std("c++17")
         .compile("cxxbridge-demo");
 }

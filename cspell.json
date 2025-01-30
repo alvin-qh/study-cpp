@@ -24,7 +24,10 @@
     "staticlib",
     "STREQ",
     "STREQUAL",
-    "tparam"
+    "tparam",
+    "uchar",
+    "ulonglong",
+    "uninit"
   ],
   "flagWords": [],
   "enabled": true

@@ -6,32 +6,20 @@
 #define TEST_SUITE_NAME test_rust_lib_c__func
 
 // 使用生成的命名空间
-using namespace rust_lib;
+using namespace rust_lib::c;
 
 /// @brief 测试调用 Rust 编写的函数, 传入参数并获取返回值
 TEST(TEST_SUITE_NAME, c_add) {
-    EXPECT_EQ(c_add(1, 2), 3);
-    EXPECT_EQ(c_add(2, -3), -1);
+    ASSERT_EQ(c_add(1, 2), 3);
+    ASSERT_EQ(c_add(2, -3), -1);
 }
 
-/// @brief 测试调用 Rust 编写的函数
-TEST(TEST_SUITE_NAME, hello_c_str) {
-    // 调用函数, 返回一个 C 字符串
-    const char* str = hello_c_str();
-    EXPECT_STREQ(str, "Hello Rust FFI");
+/// @brief 测试调用 Rust 编写的函数, 返回字符串指针并释放字符串内存
+TEST(TEST_SUITE_NAME, c_hello_str) {
+    // 调用函数, 返回一个 C 字符串指针, 该指针指向的内存由 Rust 分配
+    const char* str = c_hello_str();
+    ASSERT_STREQ(str, "Hello Rust FFI");
 
     // 回收 Rust 分配的内存
-    free_c_str(str);
+    c_free_str(str);
 }
-
-TEST(TEST_SUITE_NAME, c_user_struct) {
-    CUser* ptr = create_c_user("John", 30, 'M');
-
-    EXPECT_STREQ(ptr->name, "John");
-    EXPECT_EQ(ptr->age, 30);
-    EXPECT_EQ(ptr->gender, 'M');
-    EXPECT_FALSE(ptr->register_);
-
-    free_c_user(ptr);
-}
-

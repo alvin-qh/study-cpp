@@ -95,9 +95,9 @@ namespace cxx::oop {
 	public:
 		/// @brief 参数构造器
 #if __ge_cxx20
-		constexpr __enum_value(const string& name, int value) : _name(name), _value(value) {}
+		constexpr __enum_value(const string& name, int value) : _name(name), _value(value) { }
 #else
-		constexpr __enum_value(const char* name, int value) : _name(name), _value(value) {}
+		constexpr __enum_value(const char* name, int value) : _name(name), _value(value) { }
 #endif
 
 		/// @brief 获取枚举项名称

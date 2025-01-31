@@ -76,8 +76,7 @@ namespace cxx::ranges {
 			/// @param parent 当前 `odd_number_view<_R>` 对象
 			/// @param current 表示当前位置的迭代器对象引用
 			__iterator(const __parent* parent, const iterator& current) :
-				_parent(parent), _cur(current) {
-			}
+				_parent(parent), _cur(current) { }
 
 			/// @brief 默认拷贝构造器
 			__iterator(const __iterator&) = default;
@@ -124,12 +123,12 @@ namespace cxx::ranges {
 		/// @brief 通过其它视图 (或集合) 对象引用创建当前视图对象
 		///
 		/// @param base 其它视图 (或集合) 对象引用
-		odd_number_view(__base_type& base) : _base(base) {}
+		odd_number_view(__base_type& base) : _base(base) { }
 
 		/// @brief 通过其它视图 (或集合) 对象的右值引用创建当前视图对象
 		///
 		/// @param base 其它视图 (或集合) 对象的右值引用
-		odd_number_view(__base_type&& base) : _base(std::move(base)) {}
+		odd_number_view(__base_type&& base) : _base(std::move(base)) { }
 
 		/// @brief 默认赋值运算符, 将其它对象复制到当前对象
 		///

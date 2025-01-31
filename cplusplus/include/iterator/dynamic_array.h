@@ -21,7 +21,7 @@ namespace cxx::iterator {
 		using allocator_type = _Alloc;
 
 		/// @brief 默认构造器
-		dynamic_array() : _data(nullptr), _size(0) {}
+		dynamic_array() : _data(nullptr), _size(0) { }
 
 		/// @brief 初始化数组
 		///
@@ -175,7 +175,7 @@ namespace cxx::iterator {
 #endif
 				_data = std::exchange(o._data, nullptr);
 			}
-			}
+		}
 
 		/// @brief 销毁当前数据指针
 		void __free() {
@@ -189,9 +189,9 @@ namespace cxx::iterator {
 				_data = nullptr;
 				_size = 0;
 			}
-			}
-		};
+		}
+	};
 
-		} // namespace cxx::iterator
+} // namespace cxx::iterator
 
 #endif // __CPLUSPLUS_ITERATOR__DYNAMIC_ARRAY_H

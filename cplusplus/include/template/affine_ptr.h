@@ -22,7 +22,7 @@ namespace cxx::templated {
 
 	public:
 		/// @brief 默认构造函数
-		Box() : Box(nullptr, 0) {}
+		Box() : Box(nullptr, 0) { }
 
 		/// @brief 参数构造器
 		///
@@ -38,7 +38,7 @@ namespace cxx::templated {
 		///
 		/// @param ptr 从另一个对象中分离的指针
 		/// @param len 指针指向的元素个数
-		Box(T* ptr, size_t len = 1) : _ptr(ptr), _len(len) {}
+		Box(T* ptr, size_t len = 1) : _ptr(ptr), _len(len) { }
 
 		/// @brief 禁用拷贝构造函数
 		Box(const Self&) = delete;
@@ -48,8 +48,7 @@ namespace cxx::templated {
 		/// @param o 被移动对象
 		Box(Self&& o) noexcept :
 			_ptr(std::exchange(o._ptr, nullptr)),
-			_len(std::exchange(o._len, 0)) {
-		}
+			_len(std::exchange(o._len, 0)) { }
 
 		/// @brief 析构函数, 销毁当前堆内存
 		virtual ~Box() { _free(); }
@@ -74,7 +73,7 @@ namespace cxx::templated {
 			_ptr = std::exchange(o._ptr, nullptr);
 			_len = std::exchange(o._len, 0);
 			return *this;
-		};
+			};
 
 		/// @brief 重载 `*` (解引) 运算符, 获取当前指针指向的的值的可变引用
 		///
@@ -171,6 +170,6 @@ namespace cxx::templated {
 			}
 		};
 
-	} // namespace cxx::templated
+		} // namespace cxx::templated
 
 #endif // __CPLUSPLUS_TEMPLATE_AFFINE_PTR_H

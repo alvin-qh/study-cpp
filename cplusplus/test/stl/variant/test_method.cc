@@ -166,23 +166,23 @@ TEST(TEST_SUITE_NAME, visit) {
     // 通过 `std::visit` 函数访问 `v` 变量中存储的值, 通过 Lambda 表达式进行访问,
     // `v` 变量存储的值将作为参数传递给 Lambda 表达式参数
     std::visit([&visited](auto&& arg)
-        {
-            // 获取 `arg` 参数的实际类型
-            using T = std::decay_t<decltype(arg)>;
+    {
+        // 获取 `arg` 参数的实际类型
+        using T = std::decay_t<decltype(arg)>;
 
-            // 根据参数实际类型对参数进行处理
-            if constexpr (std::is_same_v<T, string>) {
-                ASSERT_EQ(arg, "hello");
-                visited = true;
-            }
-            else if constexpr (std::is_same_v<T, int>) {
-                ASSERT_EQ(arg, 10);
-                visited = true;
-            }
-            else {
-                FAIL();
-            }
-        }, v);
+        // 根据参数实际类型对参数进行处理
+        if constexpr (std::is_same_v<T, string>) {
+            ASSERT_EQ(arg, "hello");
+            visited = true;
+        }
+        else if constexpr (std::is_same_v<T, int>) {
+            ASSERT_EQ(arg, 10);
+            visited = true;
+        }
+        else {
+            FAIL();
+        }
+    }, v);
 
     // 确认正确的类型被处理
     ASSERT_TRUE(visited);
@@ -320,7 +320,7 @@ TEST(TEST_SUITE_NAME, get_if) {
 /// @brief 定义无默认构造器的类型
 class A {
 public:
-    A(const string& name) noexcept : _name(name) {}
+    A(const string& name) noexcept : _name(name) { }
     string& name() noexcept { return _name; }
     const string& name() const noexcept { return _name; }
 

@@ -42,10 +42,10 @@ namespace cxx::templated {
 
 	/// @brief 用于判断模板参数 `T` 是否具备减法运算的模板类型
 	template<typename T, typename = void>
-	struct has_add_operator : std::false_type {};
+	struct has_add_operator : std::false_type { };
 
 	template<typename T>
-	struct has_add_operator<T, std::void_t<decltype(std::declval<T>() + std::declval<const T&>())>> : std::true_type {};
+	struct has_add_operator<T, std::void_t<decltype(std::declval<T>() + std::declval<const T&>())>> : std::true_type { };
 
 	/// @brief `concept` 关键字后的表达式支持逻辑运算, 包括 `&&`, `||`, `!` 运算
 	///

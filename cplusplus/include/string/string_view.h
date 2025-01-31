@@ -18,4 +18,5 @@ namespace cxx::string {
 }
 
 #endif	// __ge_cxx20
+
 #endif // __CPLUSPLUS_STRING__STRING_VIEW_H

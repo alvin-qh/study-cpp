@@ -41,7 +41,7 @@ namespace cxx::templated {
 	/// @tparam T1 类型 1
 	/// @tparam T2 类型 2
 	template<typename T1, typename T2>
-	struct is_same_type : std::false_type {};
+	struct is_same_type : std::false_type { };
 
 	/// @brief 对 `is_same_type` 类型进行特化, 令两个类型一致
 	///
@@ -50,7 +50,7 @@ namespace cxx::templated {
 	///
 	/// @tparam T1 类型
 	template<typename T1>
-	struct is_same_type<T1, T1> : std::true_type {};
+	struct is_same_type<T1, T1> : std::true_type { };
 
 	/// @brief 检测指定类型是否包含默认构造器
 	///
@@ -155,7 +155,7 @@ namespace cxx::templated {
 	///
 	/// @tparam T 待检测类型
 	template<typename T, typename = void>
-	struct has_operator_sub : std::false_type {};
+	struct has_operator_sub : std::false_type { };
 
 	/// @brief `has_operator_sub` 类型的偏特化定义
 	///
@@ -164,21 +164,19 @@ namespace cxx::templated {
 	struct has_operator_sub<
 		T,
 		__void_t<decltype(std::declval<T>() - std::declval<const T&>())>
-	> : std::true_type {
-	};
+	> : std::true_type { };
 
 	// --------------------------------------------------------------------------
 
 	/// @brief 检测类型是否包含 `+` 运算符
 	template<typename T, typename = void>
-	struct has_operator_add : std::false_type {};
+	struct has_operator_add : std::false_type { };
 
 	template<typename T>
 	struct has_operator_add<
 		T,
 		__void_t<decltype(std::declval<T>() + std::declval<const T&>())>
-	> : std::true_type {
-	};
+	> : std::true_type { };
 
 	/// @brief 定义模板函数, 并通过 `std::enable_if` 对模板参数检测
 	///
@@ -230,7 +228,7 @@ namespace cxx::templated {
 	///
 	/// @tparam T 要检测的模板参数
 	template<typename T, typename = void>
-	struct Subtract {};
+	struct Subtract { };
 
 	/// @brief 对模板参数进行检测
 	///
@@ -248,13 +246,13 @@ namespace cxx::templated {
 		/// @brief 参数构造器
 		///
 		/// @param val `T` 类型参数
-		Subtract(T val) : _val(val) {}
+		Subtract(T val) : _val(val) { }
 
 		/// @brief 拷贝构造器
 		Subtract(const Subtract&) = default;
 
 		/// @brief 析构函数
-		virtual ~Subtract() {}
+		virtual ~Subtract() { }
 
 		/// @brief 重载赋值运算符
 		///

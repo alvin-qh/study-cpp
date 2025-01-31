@@ -89,4 +89,4 @@ namespace cxx::oop {
     }
 #endif
 
-} // namespace cxx::oop
+    } // namespace cxx::oop

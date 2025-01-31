@@ -16,15 +16,13 @@ namespace cxx::stl {
 	public:
 		/// @brief 参数构造器
 		Person(const string& name, uint8_t age, char gender) :
-			_ptr(_make_data_ptr(name, age, gender)) {
-		}
+			_ptr(_make_data_ptr(name, age, gender)) { }
 
 		/// @brief 参数构造器
 		///
 		/// 该构造器第一个参数为右值引用
 		Person(string&& name, uint8_t age, char gender) :
-			_ptr(_make_data_ptr(name, age, gender)) {
-		}
+			_ptr(_make_data_ptr(name, age, gender)) { }
 
 		/// @brief 拷贝构造器
 		Person(const Person&) = default;
@@ -32,7 +30,7 @@ namespace cxx::stl {
 		/// @brief 移动构造器, 将对象内容进行移动
 		///
 		/// @param o 被移动对象的右值引用
-		Person(Person&& o) : _ptr(std::move(o._ptr)) {}
+		Person(Person&& o) : _ptr(std::move(o._ptr)) { }
 
 		/// @brief 会造成对象构造失败的构造器
 		/// @param e 异常对象引用
@@ -72,12 +70,10 @@ namespace cxx::stl {
 			char gender;
 
 			__person_data(const string& name, uint8_t age, char gender) :
-				name(name), age(age), gender(gender) {
-			}
+				name(name), age(age), gender(gender) { }
 
 			__person_data(string&& name, uint8_t age, char gender) :
-				name(std::move(name)), age(age), gender(gender) {
-			}
+				name(std::move(name)), age(age), gender(gender) { }
 		};
 
 		// 定义指针类型

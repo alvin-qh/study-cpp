@@ -38,9 +38,9 @@ void operator delete[](void* ptr, size_t n) noexcept { __free(ptr, n); }
 namespace cxx::oop {
     using namespace std;
 
-    NewDelete::NewDelete() : NewDelete("") {}
+    NewDelete::NewDelete() : NewDelete("") { }
 
-    NewDelete::NewDelete(const string& name) : _name(name) {}
+    NewDelete::NewDelete(const string& name) : _name(name) { }
 
     const string& NewDelete::name() const { return _name; }
 

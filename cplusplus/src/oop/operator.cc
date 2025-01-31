@@ -5,11 +5,10 @@
 namespace cxx::oop {
     using namespace std;
 
-    Operator::Operator() : Operator(0, 0, 0) {}
+    Operator::Operator() : Operator(0, 0, 0) { }
 
     Operator::Operator(double x, double y, double z) :
-        _x(x), _y(y), _z(z) {
-    }
+        _x(x), _y(y), _z(z) { }
 
     Operator& Operator::operator=(Operator&& right) noexcept {
         if (this != &right) {
@@ -173,8 +172,8 @@ namespace cxx::oop {
         );
     }
 
-    OperatorChild::OperatorChild() : Operator() {}
+    OperatorChild::OperatorChild() : Operator() { }
 
-    OperatorChild::OperatorChild(double x, double y, double z) : Operator(x, y, z) {}
+    OperatorChild::OperatorChild(double x, double y, double z) : Operator(x, y, z) { }
 
 } // namespace cxx::oop

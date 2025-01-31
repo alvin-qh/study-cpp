@@ -55,3 +55,15 @@ pub extern "C" fn c_free_str(ptr: *const ffi::c_char) {
         let _ = ffi::CString::from_raw(ptr as *mut _);
     };
 }
+
+#[no_mangle]
+pub extern "C" fn c_callback(
+    cal: extern "C" fn(i32, i32) -> i32,
+    a: i32,
+    b: i32,
+) -> *const ffi::c_char {
+    let n = cal(a, b);
+
+    let s = ffi::CString::new(format!("{} + {} = {}", a, b, n)).unwrap();
+    s.into_raw()
+}

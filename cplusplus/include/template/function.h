@@ -61,7 +61,7 @@ namespace cxx::templated {
 		/// @brief 构造函数
 		///
 		/// @param x 输入值
-		AffineFunc(T x) : _x(x) {}
+		AffineFunc(T x) : _x(x) { }
 
 		/// @brief 拷贝构造器
 		///
@@ -96,6 +96,6 @@ namespace cxx::templated {
 		T _x;
 	};
 
-} // namespace cxx::templated
+	} // namespace cxx::templated
 
 #endif // __CPLUSPLUS_TEMPLATE__FUNC_H

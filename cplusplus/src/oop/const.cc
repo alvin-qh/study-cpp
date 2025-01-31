@@ -13,8 +13,7 @@ namespace cxx::oop {
     ConstMethod::ConstMethod(const string& value) :
         _val(value),
         _ref(value + "-r"),
-        _ptr(value + "-p") {
-    }
+        _ptr(value + "-p") { }
 
     string ConstMethod::to_string() const {
         return "Constant(" + _val + ")";

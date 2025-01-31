@@ -28,7 +28,7 @@ struct X {
 struct Y {
     typedef int type_y;
 
-    Y(int) {}
+    Y(int) { }
 };
 
 /// @brief 测试模板函数的 SFINAE 机制
@@ -70,7 +70,7 @@ struct HasOperatorSub {
 };
 
 /// @brief 定义不具备 `-` 运算符的类型
-struct NoOperatorSub {};
+struct NoOperatorSub { };
 
 /// @brief 测试检测类型是否包含指定方法
 TEST(TEST_SUITE_NAME, detect_type_if_has_operator_sub) {

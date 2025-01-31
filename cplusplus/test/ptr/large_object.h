@@ -36,7 +36,7 @@ namespace cxx::pointer {
 	class LargeObject {
 	public:
 		/// @brief 默认构造器
-		LargeObject() : LargeObject(T()) {}
+		LargeObject() : LargeObject(T()) { }
 
 		/// @brief 参数构造器
 		///

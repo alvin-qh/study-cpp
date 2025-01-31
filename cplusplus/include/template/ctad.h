@@ -24,7 +24,7 @@ namespace cxx::templated {
 		/// @brief 参数构造器
 		///
 		/// @param value 参数值的只读引用
-		CTAD(const T1& v1, const T2& v2) : _v1(v1), _v2(v2) {}
+		CTAD(const T1& v1, const T2& v2) : _v1(v1), _v2(v2) { }
 
 		/// @brief 获取值对象的引用
 		///
@@ -69,4 +69,5 @@ namespace cxx::templated {
 } // namespace cxx :templated
 
 #endif // __ge_cxx17
+
 #endif // __CPLUSPLUS_TEMPLATE__CTAD_H

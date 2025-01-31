@@ -68,8 +68,8 @@ TEST(TEST_SUITE_NAME, global_nothrow_array_new_delete_operator) {
 /// @brief 定义测试类, 用于测试
 class A {
 public:
-    A(int val) : _val(val) {}
-    virtual ~A() {}
+    A(int val) : _val(val) { }
+    virtual ~A() { }
     int value() { return _val; }
     int value() const { return _val; }
 

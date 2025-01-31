@@ -93,12 +93,10 @@ namespace cxx::oop {
 		/// 关键字的作用一致
 #if __ge_cxx20
 		constexpr ConstClass(const string& name, int value) :
-			_name(name), _value(value) {
-		}
+			_name(name), _value(value) { }
 #else
 		constexpr ConstClass(const char* name, int value) :
-			_name(name), _value(value) {
-		}
+			_name(name), _value(value) { }
 #endif
 
 		/// @brief 定义方法
@@ -144,7 +142,7 @@ namespace cxx::oop {
 	/// @brief 类中的 `const` 成员
 	class ConstField {
 	public:
-		constexpr ConstField() {}
+		constexpr ConstField() { }
 
 		/// @brief 通过 `constexpr` 关键字定义数组类型常量成员字段
 		///

@@ -59,21 +59,19 @@ namespace cxx::iterator {
 		/// @brief 参数构造器
 		///
 		/// @param ptr 指针值
-		__iterator_type_define(pointer ptr) noexcept : _ptr(ptr) {}
+		__iterator_type_define(pointer ptr) noexcept : _ptr(ptr) { }
 
 		/// @brief 拷贝构造器
 		///
 		/// @param 其它对象引用
 		__iterator_type_define(const __self& o) noexcept :
-			__iterator_type_define(o._ptr) {
-		}
+			__iterator_type_define(o._ptr) { }
 
 		/// @brief 移动构造器
 		///
 		/// @param o 其它对象右值引用
 		__iterator_type_define(__self&& o) noexcept :
-			_ptr(std::exchange(o._ptr, nullptr)) {
-		}
+			_ptr(std::exchange(o._ptr, nullptr)) { }
 
 		/// @brief 析构函数
 		virtual ~__iterator_type_define() = default;
@@ -156,22 +154,22 @@ namespace cxx::iterator {
 		using iterator_category = typename __base::iterator_category;
 	public:
 		/// @brief 默认构造器
-		ptr_based_iterator() : __base(nullptr) {}
+		ptr_based_iterator() : __base(nullptr) { }
 
 		/// @brief 参数构造器
 		///
 		/// @param ptr 指针值
-		explicit ptr_based_iterator(pointer ptr) : __base(ptr) {}
+		explicit ptr_based_iterator(pointer ptr) : __base(ptr) { }
 
 		/// @brief 拷贝构造器
 		///
 		/// @param 其它对象引用
-		ptr_based_iterator(const __self& o) noexcept : __base(o) {};
+		ptr_based_iterator(const __self& o) noexcept : __base(o) { };
 
 		/// @brief 移动构造器
 		///
 		/// @param o 其它对象右值引用
-		ptr_based_iterator(__self&& o) noexcept : __base(std::move(o)) {}
+		ptr_based_iterator(__self&& o) noexcept : __base(std::move(o)) { }
 
 		/// @brief 析构函数
 		~ptr_based_iterator() = default;
@@ -327,22 +325,22 @@ namespace cxx::iterator {
 		using iterator_category = typename __base::iterator_category;
 	public:
 		/// @brief 默认构造器
-		ptr_based_reverse_iterator() : __base(nullptr) {}
+		ptr_based_reverse_iterator() : __base(nullptr) { }
 
 		/// @brief 参数构造器
 		///
 		/// @param ptr 指针值
-		explicit ptr_based_reverse_iterator(pointer ptr) noexcept : __base(ptr) {}
+		explicit ptr_based_reverse_iterator(pointer ptr) noexcept : __base(ptr) { }
 
 		/// @brief 拷贝构造器
 		///
 		/// @param o 其它对象引用
-		ptr_based_reverse_iterator(const __self& o) noexcept : __base(o) {}
+		ptr_based_reverse_iterator(const __self& o) noexcept : __base(o) { }
 
 		/// @brief 移动构造器
 		///
 		/// @param o 其它对象右值引用
-		ptr_based_reverse_iterator(__self&& o) noexcept : __base(std::move(o)) {}
+		ptr_based_reverse_iterator(__self&& o) noexcept : __base(std::move(o)) { }
 
 		/// @brief 析构函数
 		~ptr_based_reverse_iterator() = default;

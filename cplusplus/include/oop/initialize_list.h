@@ -24,7 +24,7 @@ namespace cxx::oop {
 		using const_reverse_iterator = ptr_based_reverse_iterator<const T>;
 
 		/// @brief 默认构造器
-		Sequence() : _data(nullptr), _size(0) {}
+		Sequence() : _data(nullptr), _size(0) { }
 
 		/// @brief 参数构造器
 		///
@@ -171,12 +171,12 @@ namespace cxx::oop {
 #else
 				for (size_t i = 0; i < size; ++i) {
 					data[i].~T();
-			}
+				}
 #endif
 				__alloc.deallocate(data, size);
+			}
 		}
-	}
-};
+	};
 
 } // namespace cxx::oop
 

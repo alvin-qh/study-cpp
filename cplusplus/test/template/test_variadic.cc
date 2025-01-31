@@ -18,9 +18,9 @@ using testing::ElementsAre;
 /// 通过不定模板参数向该类型传递构造器参数
 class TestClass {
 public:
-    TestClass() : TestClass(0) {}
-    TestClass(double val) : TestClass(val, val, val) {}
-    TestClass(double x, double y, double z) : _x(x), _y(y), _z(z) {}
+    TestClass() : TestClass(0) { }
+    TestClass(double val) : TestClass(val, val, val) { }
+    TestClass(double x, double y, double z) : _x(x), _y(y), _z(z) { }
     TestClass(const TestClass&) = default;
     virtual ~TestClass() = default;
 
@@ -117,7 +117,7 @@ TEST(TEST_SUITE_NAME, recursive_args) {
 template <typename T>
 class _Test {
 public:
-    _Test(const T& value) : _val(value) {}
+    _Test(const T& value) : _val(value) { }
 
     /// @brief 该方法将继承给 `Addition` 类, 并形成重载
     ///

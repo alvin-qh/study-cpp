@@ -229,13 +229,13 @@ TEST(TEST_SUITE_NAME, reset_unique_ptr_object) {
 TEST(TEST_SUITE_NAME, make_shared_ptr_object_for_array) {
     function<void(shared_ptr<LargeObject<int, 3>[]>&, size_t, size_t)> fn_fill
         = [](shared_ptr<LargeObject<int, 3>[]>& ptr, size_t size, size_t n)
-        {
-            for (size_t i = 0; i < size; ++i) {
-                for (size_t j = 0; j < n; ++j) {
-                    ptr[i][j] = i * 10 + j;
-                }
+    {
+        for (size_t i = 0; i < size; ++i) {
+            for (size_t j = 0; j < n; ++j) {
+                ptr[i][j] = i * 10 + j;
             }
-        };
+        }
+    };
 
     // 通过 `shared_ptr` 类构造器创建
     shared_ptr<LargeObject<int, 3>[]> ptr = shared_ptr<LargeObject<int, 3>[]>(new LargeObject<int, 3>[5]);

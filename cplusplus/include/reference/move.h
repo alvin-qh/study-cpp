@@ -20,12 +20,12 @@ namespace cxx::reference {
 
 	public:
 		/// @brief 默认构造器
-		Moveable() : _ptr(nullptr) {}
+		Moveable() : _ptr(nullptr) { }
 
 		/// @brief 参数构造器
 		///
 		/// @param val 所给值
-		Moveable(const T& val) : _ptr(new T(val)) {}
+		Moveable(const T& val) : _ptr(new T(val)) { }
 
 		/// @brief 删除拷贝构造器
 		Moveable(const Moveable&) = delete;
@@ -42,7 +42,7 @@ namespace cxx::reference {
 		/// 并在源对象中将指针设置为 `null` 以避免析构销毁
 		///
 		/// @param o 被复制对象
-		Moveable(Moveable&& o) noexcept : _ptr(std::exchange(o._ptr, nullptr)) {}
+		Moveable(Moveable&& o) noexcept : _ptr(std::exchange(o._ptr, nullptr)) { }
 
 		/// @brief 析构函数
 		virtual ~Moveable() {
@@ -54,7 +54,7 @@ namespace cxx::reference {
 #endif
 				delete ptr;
 			}
-		}
+			}
 
 		/// @brief 删除复制运算符
 		Self& operator=(const Self&) = delete;
@@ -88,8 +88,8 @@ namespace cxx::reference {
 
 	private:
 		T* _ptr;
-	};
+		};
 
-} // namespace cxx::reference
+	} // namespace cxx::reference
 
 #endif // __CPLUSPLUS_REFERENCE__MOVE_H

@@ -2,9 +2,9 @@
 
 namespace cxx::oop {
 
-    Constructor::Constructor() noexcept : Constructor(0) {}
+    Constructor::Constructor() noexcept : Constructor(0) { }
 
-    Constructor::Constructor(double value) noexcept : _val(value) {}
+    Constructor::Constructor(double value) noexcept : _val(value) { }
 
     Constructor::Constructor(int int_part, uint32_t dec_part) noexcept {
         double dec = 0;
@@ -31,15 +31,14 @@ namespace cxx::oop {
         _val = std::stod(s);
     }
 
-    Constructor::Constructor(const std::string& val) :_val(std::stod(val)) {}
+    Constructor::Constructor(const std::string& val) :_val(std::stod(val)) { }
 
-    Constructor::Constructor(const Constructor& o) noexcept : _val(o._val) {}
+    Constructor::Constructor(const Constructor& o) noexcept : _val(o._val) { }
 
     Constructor::Constructor(Constructor&& o) noexcept
-        : _val(std::exchange(o._val, 0)) {
-    }
+        : _val(std::exchange(o._val, 0)) { }
 
-    Constructor::~Constructor() noexcept {}
+    Constructor::~Constructor() noexcept { }
 
     double Constructor::value() const noexcept { return _val; }
 

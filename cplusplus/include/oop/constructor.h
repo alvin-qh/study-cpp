@@ -8,7 +8,7 @@
 namespace cxx::oop {
 
 	/// @brief 定义表示 "什么都不是" 的类型
-	struct nothing_t {};
+	struct nothing_t { };
 
 	/// @brief 定义 `nothing_t` 类型常量实例
 	constexpr nothing_t nothing{};

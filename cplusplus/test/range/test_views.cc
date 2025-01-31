@@ -31,7 +31,7 @@ class vector_view : public ranges::view_interface<vector_view<T, _Alloc>> {
 
 public:
     vector_view() = default;
-    vector_view(const vector_type& v) : _begin(v.begin()), _end(v.end()) {}
+    vector_view(const vector_type& v) : _begin(v.begin()), _end(v.end()) { }
 
     /// 需要提供如下两个方法以保证视图可以正常工作
 

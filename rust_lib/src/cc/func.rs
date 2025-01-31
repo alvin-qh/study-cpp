@@ -16,4 +16,3 @@ pub fn cc_add(a: i32, b: i32) -> i32 {
 pub fn cc_hello_str() -> String {
     "Hello Rust FFI".to_string()
 }
-

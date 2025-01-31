@@ -66,6 +66,7 @@ pub extern "C" fn c_create_array_by_vec(len: usize) -> *mut i32 {
         *val = n as i32;
     }
 
+    // 获取向量中存储元素的切片引用, 并转为 "裸指针" 返回
     arr.leak().as_mut_ptr()
 }
 

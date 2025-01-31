@@ -5,10 +5,10 @@ project(rust_lib CXX)
 
 # 根据构建类型生成 Rust 编译配置项
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CARGO_CMD cargo build)
+    set(CARGO_CMD "cargo" "build" "-v")
     set(TARGET_DIR "debug")
 else ()
-    set(CARGO_CMD cargo build --release)
+    set(CARGO_CMD "cargo" "build" "--release" "-v")
     set(TARGET_DIR "release")
 endif ()
 
@@ -39,6 +39,7 @@ add_custom_command(
     TARGET rust_lib_test
     PRE_LINK
     COMMAND ${CARGO_CMD}
+    COMMENT "Execute Rust cargo build, run \"${CARGO_CMD}\" in \"${PROJECT_SOURCE_DIR}\""
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
 

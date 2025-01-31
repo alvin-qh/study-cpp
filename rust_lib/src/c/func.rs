@@ -56,14 +56,28 @@ pub extern "C" fn c_free_str(ptr: *const ffi::c_char) {
     };
 }
 
+/// 将 C 函数作为参数传递到 Rust 函数内部, 并通过 C 函数指针回调该函数
+///
+/// 回调函数参数类型定义为 `extern "C" fn(...) -> ...`, 即 Rust 函数类型
+/// (需要增加 `extern` 表示该类型会被导出),
+/// 该参数类型会被映射为 C/C++ 的函数指针或 Lambda 表达式
+///
+/// 在 Rust 函数内部, 可以通过该函数类型参数回调 C/C++ 一侧的回调函数或 Lambda 表达式,
+/// 以达到在 Rust 中回调 C/C++ 函数的目的
+///
+/// 本函数返回一个 C 风格字符串指针, 需要通过 `c_free_str` 函数回收字符串内存
 #[no_mangle]
 pub extern "C" fn c_callback(
     cal: extern "C" fn(i32, i32) -> i32,
     a: i32,
     b: i32,
 ) -> *const ffi::c_char {
+    // 调用 C/C++ 回调函数, 返回结果
     let n = cal(a, b);
 
-    let s = ffi::CString::new(format!("{} + {} = {}", a, b, n)).unwrap();
+    // 将回调函数返回结果格式化为字符串, 并转为 C 字符串
+    let s = ffi::CString::new(format!("result is: {}", n)).unwrap();
+
+    // 返回字符串指针
     s.into_raw()
 }

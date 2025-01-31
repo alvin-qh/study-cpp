@@ -24,18 +24,26 @@ TEST(TEST_SUITE_NAME, c_hello_str) {
     c_free_str(str);
 }
 
-int add(int a, int b) {
-    return a + b;
-}
+/// @brief 回调函数, 作为 Rust 函数参数
+///
+/// @param a 参数 1
+/// @param b 参数 2
+/// @return 两个参数和
+int add(int a, int b) { return a + b; }
 
-/// @brief 测试调用 Rust 编写的函数, 返回字符串指针并释放字符串内存
+/// @brief 测试向 Rust 函数传递 C 回调函数, 并获取 Rust 调用回调函数的结果
 TEST(TEST_SUITE_NAME, c_callback) {
+    // 调用 Rust 函数, 并将 C 函数指针作为参数传递
     const char* str = c_callback(add, 10, 20);
-    ASSERT_STREQ(str, "10 + 20 = 30");
 
+    // 确认 Rust 函数返回结果, 确保其内部调用了 C 函数
+    ASSERT_STREQ(str, "result is: 30");
     c_free_str(str);
 
-    str = c_callback([](int a, int b) -> int {
-        return a * b;
-    }, 10, 20);
+    // 调用 Rust 函数, 并将 C++ Lambda 函数作为参数传递
+    str = c_callback([](int a, int b) -> int { return a * b; }, 10, 20);
+
+    // 确认 Rust 函数返回结果, 确保其内部调用了 C++ Lambda 函数
+    ASSERT_STREQ(str, "result is: 200");
+    c_free_str(str);
 }

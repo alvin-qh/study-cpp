@@ -14,6 +14,7 @@
     "googletest",
     "gtest",
     "libgtest",
+    "librust",
     "LLDB",
     "Makefiles",
     "MSVC",
@@ -27,7 +28,8 @@
     "tparam",
     "uchar",
     "ulonglong",
-    "uninit"
+    "uninit",
+    "usize"
   ],
   "flagWords": [],
   "enabled": true

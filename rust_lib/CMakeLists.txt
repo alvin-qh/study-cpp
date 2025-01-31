@@ -43,6 +43,12 @@ add_custom_command(
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
 
+# 在 target 目录下, 查找 cxx 库编译输出静态库 (libcxxbridge1.a) 路径信息
+file(GLOB_RECURSE cxx_lib_file "target/libcxxbridge1.a")
+
+# 获取 cxx 编译输出静态库的路径
+get_filename_component(cxx_lib_dir "${cxx_lib_file}" DIRECTORY CACHE)
+
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 # include_directories(include)
 target_include_directories(rust_lib_test
@@ -51,17 +57,17 @@ target_include_directories(rust_lib_test
     # PRIVATE ${CMAKE_SOURCE_DIR}/vendor/fmt/include
 )
 
-# 设置 Rust 编译后的动态库 (或静态库) 对应的路径, C/C++ 程序将从中查找动态库进行链接
-target_link_directories(rust_lib_test
-    PRIVATE "${PROJECT_SOURCE_DIR}/target/${TARGET_DIR}"
-    PRIVATE "${PROJECT_SOURCE_DIR}/target/${TARGET_DIR}/build/cxx-629735ca2c04dff3/out"
-)
-
 # 指定需要预编译的头文件
 target_precompile_headers(rust_lib_test
     PRIVATE ${PROJECT_SOURCE_DIR}/include/bindings.h
     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include/gtest/gtest.h
     PRIVATE ${CMAKE_SOURCE_DIR}/vendor/googletest/googlemock/include/gmock/gmock.h
+)
+
+# 设置 Rust 编译后的动态库 (或静态库) 对应的路径, C/C++ 程序将从中查找动态库进行链接
+target_link_directories(rust_lib_test
+    PRIVATE "${PROJECT_SOURCE_DIR}/target/${TARGET_DIR}"
+    PRIVATE "${cxx_lib_dir}"
 )
 
 # 增加本项目使用的链接库

@@ -1,16 +1,27 @@
 # C 语言调用 Rust 库
+#
+# 本例中引入了 Rust FFI 以及 CXX 编译依赖, 包括:
+# 1. 通过执行 `cargo build` 产生 Rust 动态库;
+# 2. 将通过 Rust FFI 构建产生的 `include/bindings.h` 头文件设置为当前 C/C++ 项目的依赖头文件;
+#    将 `librust_lib.so` 库设置为设置为当前 C/C++ 项目的依赖链接库;
+# 3. 将通过 Rust CXX 库构建产生的 `target/cxxbridge` 目录下的头文件和 `cc` 文件包含在当前 C/C++ 项目中,
+#    将编译产生的 `libcxxbridge1.a` 静态库设置为当前 C/C++ 项目的依赖;
 
 # 设置子项目名称
 project(rust_lib CXX)
 
 # 根据构建类型生成 Rust 编译配置项
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CARGO_CMD "cargo" "build" "-v")
-    set(TARGET_DIR "debug")
+    set(CARGO_BUILD_CMD "cargo" "build")
+    set(CARGO_TARGET_DIR "debug")
 else ()
-    set(CARGO_CMD "cargo" "build" "--release" "-v")
-    set(TARGET_DIR "release")
+    set(CARGO_BUILD_CMD "cargo" "build" "--release")
+    set(CARGO_TARGET_DIR "release")
 endif ()
+set(CARGO_CLEAN_CMD "cargo" "clean")
+
+# 设置 rust 生成库的目标路径
+set(rust_lib_target "${PROJECT_SOURCE_DIR}/target/${CARGO_TARGET_DIR}")
 
 # 设置项目源文件集合
 file(GLOB_RECURSE
@@ -34,20 +45,29 @@ add_executable(rust_lib_test
     ${rust_lib_test_src}
 )
 
-# 增加自定义命令, 在执行连接前通过 `cargo` 命令执行 Rust 编译
-add_custom_command(
-    TARGET rust_lib_test
-    PRE_LINK
-    COMMAND ${CARGO_CMD}
-    COMMENT "Execute Rust cargo build, run \"${CARGO_CMD}\" in \"${PROJECT_SOURCE_DIR}\""
+# 增加自定义目标, 在执行 C/C++ 构建前执行 Rust 构建
+add_custom_target(rust_lib_build
+    COMMAND ${CARGO_BUILD_CMD}
+    COMMENT "Execute Rust cargo build, run \"${CARGO_BUILD_CMD}\" in \"${PROJECT_SOURCE_DIR}\""
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
 
-# 在 target 目录下, 查找 cxx 库编译输出静态库 (libcxxbridge1.a) 路径信息
-file(GLOB_RECURSE cxx_lib_file "target/libcxxbridge1.a")
+# 增加自定义目标, 在 Rust 构建执行完毕后, 将 cxx 库构建的 `libcxxbridge1.a` 库拷贝到 `rust_lib_target` 目录下
+add_custom_target(rust_lib_copy
+    COMMAND "${CMAKE_COMMAND}" -Drust_lib_target="${rust_lib_target}" -P "${PROJECT_SOURCE_DIR}/cxx-lib-copy.cmake"
+    COMMENT "Copy cxx lib \"libcxxbridge1.a\" into ${rust_lib_target}"
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+)
+
+# 设置编译目标的相互依赖性, 依赖关系为: `rust_lib_test` => `rust_lib_copy` => `rust_lib_build`
+# 令 `rust_lib_test` 目标依赖于 `rust_lib_copy` 目标
+add_dependencies(rust_lib_test rust_lib_copy)
+
+# 令 `rust_lib_copy` 目标依赖于 `rust_lib_build` 目标
+add_dependencies(rust_lib_copy rust_lib_build)
 
 # 获取 cxx 编译输出静态库的路径
-get_filename_component(cxx_lib_dir "${cxx_lib_file}" DIRECTORY CACHE)
+get_filename_component(cxx_lib_target "${cxx_lib_file}" DIRECTORY CACHE)
 
 # 设置头文件路径, 用于指定在代码中 #include 文件的位置
 # include_directories(include)
@@ -66,8 +86,7 @@ target_precompile_headers(rust_lib_test
 
 # 设置 Rust 编译后的动态库 (或静态库) 对应的路径, C/C++ 程序将从中查找动态库进行链接
 target_link_directories(rust_lib_test
-    PRIVATE "${PROJECT_SOURCE_DIR}/target/${TARGET_DIR}"
-    PRIVATE "${cxx_lib_dir}"
+    PRIVATE "${rust_lib_target}"
 )
 
 # 增加本项目使用的链接库
@@ -78,6 +97,14 @@ target_link_libraries(rust_lib_test
     PRIVATE gtest      # 链接 `libgtest.so` 文件
     PRIVATE gmock      # 链接 `libgmock.so` 文件
     # PRIVATE fmt      # 链接 `libfmt.so` 文件
+)
+
+# 为 `make clean` 命令增加目标依赖
+# 在 `cmake` 的构建目标目录中, 执行 `cmake --build . --target=rust_lib_clean` 即可执行
+add_custom_target(rust_lib_clean
+    COMMAND ${CARGO_CLEAN_CMD}
+    COMMENT "Clean cargo build target"
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
 
 # 启用 sanitize

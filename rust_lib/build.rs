@@ -34,6 +34,7 @@ fn main() {
     let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
 
     // 通过 `cbindgen` 模块的 `Builder` 类型构建 FFI 头文件生成规则
+    // 将在当前项目路径的 `include` 目录下生成 `bindings.h` 头文件
     cbindgen::Builder::new()
         .with_language(cbindgen::Language::Cxx) // 设置头文件的语言, C 或 C++
         .with_crate(crate_dir) // 设置 Rust 项目路径
@@ -46,8 +47,13 @@ fn main() {
         .expect("Unable to generate bindings")
         .write_to_file("include/bindings.h"); // 写入头文件
 
+    // 要通过 `cxx` 库构建的 `.rs` 文件集合
+    let source_files = vec!["src/cc/func.rs"];
+
     // 通过 `cxx` 库将 `src/cc/func.rs` Rust 文件编译为 C++ 使用的 `.h` 和 `.cc` 文件
-    cxx_build::bridge("src/cc/func.rs").std("c++17"); // 支持 C++17 标准
+    // 将在当前项目的 `target/cxxbridge` 目录下生成 `rust/cxx.h` 头文件,
+    // 以及 `rust_lib` 目录下生成 `src/cc/func.rs` 编译产生的对应的头文件和 `cc` 文件
+    cxx_build::bridges(source_files).std("c++17"); // 支持 C++17 标准
 
     // 输出构建要求, 当 `src` 目录下的文件修改后可执行一次构建
     println!("cargo:rerun-if-changed=src");

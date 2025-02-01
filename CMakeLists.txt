@@ -26,11 +26,11 @@ add_compile_options(-g -pthread -fopenmp -W -Wno-unknown-pragmas -fno-stack-prot
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     # cmake .. -DCMAKE_BUILD_TYPE=Release
     add_compile_options(-DNDEBUG -O3)
-    message(STATUS "Make release building ...")
+    message(NOTICE "Make release building ...")
 else()
     # cmake .. -DCMAKE_BUILD_TYPE=Debug
     add_compile_options(-DDEBUG)
-    message(STATUS "Make debug building ...")
+    message(NOTICE "Make debug building ...")
 endif()
 
 include(cmake/sanitize.cmake)

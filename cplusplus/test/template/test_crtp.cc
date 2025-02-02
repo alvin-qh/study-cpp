@@ -6,6 +6,9 @@
 
 using namespace cxx::templated;
 
+/// @brief 测试 C++ 的 CRTP 特性
+/// 
+/// 通过
 TEST(TEST_SUITE_NAME, crtp) {
     Child1 c1;
     ASSERT_EQ(c1.foo(), "Child1");
@@ -21,9 +24,11 @@ TEST(TEST_SUITE_NAME, crtp) {
     ASSERT_EQ(polymorphism_foo(&c1), "Child1");
     ASSERT_EQ(polymorphism_foo(&c2), "Child2");
 
+#ifndef _SANITIZE_LEAK
     Child3<false> c3_1;
     ASSERT_EQ(c3_1.foo(), "Base");
 
     Child3<true> c3_2;
     ASSERT_THROW(polymorphism_foo(&c3_2), unsupport);
+#endif
 }

@@ -53,18 +53,18 @@ add_custom_target(rust_lib_build
 )
 
 # 增加自定义目标, 在 Rust 构建执行完毕后, 将 cxx 库构建的 `libcxxbridge1.a` 库拷贝到 `rust_lib_target` 目录下
-add_custom_target(rust_lib_copy
-    COMMAND "${CMAKE_COMMAND}" -Drust_lib_target="${rust_lib_target}" -P "${PROJECT_SOURCE_DIR}/cxx-lib-copy.cmake"
-    COMMENT "Copy cxx lib \"libcxxbridge1.a\" into ${rust_lib_target}"
+add_custom_target(rust_lib_link
+    COMMAND "${CMAKE_COMMAND}" -Drust_lib_target="${rust_lib_target}" -P "${PROJECT_SOURCE_DIR}/cxx-lib-link.cmake"
+    COMMENT "Link cxx lib \"libcxxbridge1.a\" as ${rust_lib_target}/libcxxbridge1.a"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
 
-# 设置编译目标的相互依赖性, 依赖关系为: `rust_lib_test` => `rust_lib_copy` => `rust_lib_build`
-# 令 `rust_lib_test` 目标依赖于 `rust_lib_copy` 目标
-add_dependencies(rust_lib_test rust_lib_copy)
+# 设置编译目标的相互依赖性, 依赖关系为: `rust_lib_test` => `rust_lib_link` => `rust_lib_build`
+# 令 `rust_lib_test` 目标依赖于 `rust_lib_link` 目标
+add_dependencies(rust_lib_test rust_lib_link)
 
-# 令 `rust_lib_copy` 目标依赖于 `rust_lib_build` 目标
-add_dependencies(rust_lib_copy rust_lib_build)
+# 令 `rust_lib_link` 目标依赖于 `rust_lib_build` 目标
+add_dependencies(rust_lib_link rust_lib_build)
 
 # 获取 cxx 编译输出静态库的路径
 get_filename_component(cxx_lib_target "${cxx_lib_file}" DIRECTORY CACHE)

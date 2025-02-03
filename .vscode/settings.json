@@ -1,5 +1,8 @@
 {
   "files.associations": {
+    "*.sqlbook": "sql",
+    "*.ndjson": "jsonl",
+    "*.dbclient-js": "javascript",
     "cmath": "cpp",
     "type_traits": "cpp",
     "cctype": "cpp",
@@ -96,7 +99,8 @@
     "__config": "cpp",
     "codecvt": "cpp",
     "source_location": "cpp",
-    "text_encoding": "cpp"
+    "text_encoding": "cpp",
+    "expected": "cpp"
   },
   "search.exclude": {
     ".history/**": true,

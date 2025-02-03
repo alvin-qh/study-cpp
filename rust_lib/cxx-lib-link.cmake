@@ -5,10 +5,12 @@
 
 cmake_minimum_required(VERSION 3.20)
 
+set(cxx_lib_name "libcxxbridge1.a")
+
 # 在 rust 生成库目标路径下, 查找 cxx 库编译输出静态库 (libcxxbridge1.a) 路径信息
-file(GLOB_RECURSE cxx_lib_file "${rust_lib_target}/build/libcxxbridge1.a")
+file(GLOB_RECURSE cxx_lib_file "${rust_lib_target}/build/${cxx_lib_name}")
 message(NOTICE "Find cxx lib \"${cxx_lib_file}\"")
 
 # 将查找到的文件拷贝到 Rust 构建输出文件
-file(COPY "${cxx_lib_file}" DESTINATION "${rust_lib_target}")
-message(NOTICE "Copy \"${cxx_lib_file}\" into \"${rust_lib_target}\"")
+file(CREATE_LINK "${cxx_lib_file}" "${rust_lib_target}/${cxx_lib_name}" SYMBOLIC)
+message(NOTICE "Link \"${cxx_lib_file}\" as \"${rust_lib_target}\"")

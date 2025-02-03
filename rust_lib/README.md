@@ -483,3 +483,5 @@ target_link_libraries(rust_lib_test
     PRIVATE rust_lib   # 链接 `librust_lib.so` 文件
 )
 ```
+
+## 2. CXX

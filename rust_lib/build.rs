@@ -48,7 +48,7 @@ fn main() {
         .write_to_file("include/bindings.h"); // 写入头文件
 
     // 要通过 `cxx` 库构建的 `.rs` 文件集合
-    let source_files = vec!["src/cc/func.rs"];
+    let source_files = vec!["src/cc/func.rs", "src/cc/struct.rs", "src/cc/enum.rs"];
 
     // 通过 `cxx` 库将 `src/cc/func.rs` Rust 文件编译为 C++ 使用的 `.h` 和 `.cc` 文件
     // 将在当前项目的 `target/cxxbridge` 目录下生成 `rust/cxx.h` 头文件,

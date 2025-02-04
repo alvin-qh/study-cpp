@@ -39,6 +39,7 @@ mod ffi {
     pub enum Gender {
         Male,
         Female,
+        Unknown,
     }
 
     /// 在 `ffi` 模块中定义结构体
@@ -68,7 +69,7 @@ mod ffi {
     extern "Rust" {
         include!("rust/cxx.h");
 
-        /// 定义在 `ffi` 模块以外的结构体
+        /// 定义在 `ffi` 模块以外的结构体类型
         ///
         /// 定义在 `ffi` 模块外的结构体需要在 `extern "Rust"` 代码块中进行声明,
         /// 由此会在 C++ 中生成一个同名的 "不透明" 结构体类型
@@ -101,6 +102,9 @@ mod ffi {
         ///     rust_lib::cc::Gender gender
         /// ) noexcept;
         /// ```
+        ///
+        /// 对于 `User` 这样的非透明类型, 需要通过 `cxx::Box` 指针包装后,
+        /// 方能返回到 C++ 中
         fn cc_create_user(id: String, name: String, age: i32, gender: Gender) -> Box<User>;
 
         /// 通过传递参数, 在 Rust 中修改 `User` 结构体实例的 `register` 字段值
@@ -204,6 +208,13 @@ mod ffi {
 use crate::cc::r#enum::Gender;
 
 /// `ffi` 模块中, `type User` 定义对应的实际结构体类型
+///
+/// 该结构体类型无法直接在 `ffi` 模块中使用, 需要通过在 `ffi` 模块中的
+/// `extern "Rust"` 代码块中内, 通过 `type User;` 进行定义后,
+/// 方能在 `ffi` 模块中作为参数类型或返回值类型使用
+///
+/// 外部结构体类型在 `ffi` 模块中, 必须通过 `Box`, `cxx::SharedPtr`
+/// 或 `cxx::UniquePtr` 类型包装使用
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct User {
     pub id: String,
@@ -256,6 +267,7 @@ pub fn cc_get_user_gender(user: &User) -> ffi::Gender {
     match user.gender {
         Gender::Male => ffi::Gender::Male,
         Gender::Female => ffi::Gender::Female,
+        _ => ffi::Gender::Unknown,
     }
 }
 

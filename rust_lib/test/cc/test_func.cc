@@ -10,13 +10,21 @@ using namespace rust_lib::cc;
 
 /// @brief 测试调用 Rust 编写的函数, 传入参数并获取返回值
 TEST(TEST_SUITE_NAME, cc_add) {
-    ASSERT_EQ(cc_add(1, 2), 3);
+    int r = cc_add(1, 2);
+    ASSERT_EQ(r, 3);
 }
 
+/// @brief 测试调用 Rust 编写的函数, 返回 `rust::String` 类型对象
+///
+/// CXX 库的 `rust::String` 类型和 Rust 的 `String` 类型对应
 TEST(TEST_SUITE_NAME, cc_hello_str) {
-    ASSERT_EQ(static_cast<std::string>(cc_hello_str()), "Hello Rust FFI");
+    rust::String s = cc_hello_str();
+    ASSERT_EQ(static_cast<std::string>(s), "Hello Rust FFI");
 }
 
+/// @brief 测试调用 Rust 编写的函数, 传递 `rust::Str` 类型对象
+///
+/// CXX 库的 `rust::String` 类型和 Rust 的 `String` 类型对应
 TEST(TEST_SUITE_NAME, cc_welcome_str) {
     ASSERT_EQ(static_cast<std::string>(cc_welcome_str("Alvin")), "Welcome Alvin!");
 }

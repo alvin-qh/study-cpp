@@ -190,6 +190,8 @@ const char *c_get_user_name(const CUser *user);
 /// 通常是通过 "裸指针" 创建 `Box` 类型实例, 并等待 `Box` 类型实例自动释放内存即可 (前提是分配时也是通过 `Box` 类型)
 void c_free_user(CUser *user);
 
+int32_t c_unwind_fn(const int32_t *ptr, uintptr_t size);
+
 }  // extern "C"
 
 }  // namespace rust_lib::c

@@ -1,11 +1,23 @@
-//! 在 C/C++ 和 Rust 函数间传递数组
+//! 将 Rust 的 Panic 传递到 C++ 调用堆栈
 //!
-//! Rust 的数组类型和 C/C++ 的数组类型无法直接兼容, 需要通过 "指针" 作为媒介进行, 包括:
-//! - C/C++ 将数组以指针形式参数传递给 Rust 函数;
-//! - Rust 将数组或 `Vec` 实例转为 "裸指针" 返回给 C/C++;
-
+//! 一般情况下, Rust 函数的 Panic 不会传递到 C++ 代码中, 而是直接导致进程结束,
+//! 但可以通过 `extern "C-unwind"` 标记, 令 Rust 函数可以将 Panic 传递到 C++
+//! 的调用栈中, 从而在 C++ 中引发异常
 use core::slice;
 
+/// 定义函数, 该函数可以将内部的 Panic 传递到调用该函数的 C++ 代码的调用堆栈中,
+/// 从而引发 C++ 异常, 即:
+///
+/// ```c++
+/// try {
+///     c_unwind_fn(nullptr, 0);
+/// }
+/// catch (...) {
+///     // 处理异常
+/// }
+/// ```
+///
+/// 要在 C++ 中捕获 Rust 异常, 需要通过 `pub extern "C-unwind"` 修饰函数
 #[no_mangle]
 pub extern "C-unwind" fn c_unwind_fn(ptr: *const i32, size: usize) -> i32 {
     if ptr.is_null() {

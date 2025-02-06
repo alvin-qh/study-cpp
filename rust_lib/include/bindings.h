@@ -190,7 +190,21 @@ const char *c_get_user_name(const CUser *user);
 /// 通常是通过 "裸指针" 创建 `Box` 类型实例, 并等待 `Box` 类型实例自动释放内存即可 (前提是分配时也是通过 `Box` 类型)
 void c_free_user(CUser *user);
 
-int32_t c_unwind_fn(const int32_t *ptr, uintptr_t size);
+/// 定义函数, 该函数可以将内部的 Panic 传递到调用该函数的 C++ 代码的调用堆栈中,
+/// 从而引发 C++ 异常, 即:
+///
+/// ```c++
+/// try {
+///     c_unwind_fn(nullptr, 0);
+/// }
+/// catch (...) {
+///     // 处理异常
+/// }
+/// ```
+///
+/// 要在 C++ 中捕获 Rust 异常, 需要通过 `pub extern "C-unwind"` 修饰函数
+int32_t c_unwind_fn(const int32_t *ptr,
+                    uintptr_t size);
 
 }  // extern "C"
 

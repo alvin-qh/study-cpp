@@ -36,49 +36,49 @@ mod ffi {
 
         /// 定义函数, 返回 Rust 的 `String` 类型字符串
         ///
-        /// Rust 的 `String` 类型会映射为 C++ 的 `rust::String` 类型, 要在 C++ 中正确编译此类型,
+        /// Rust 的 `String` 类型会映射为 C++ 的 `rust::string` 类型, 要在 C++ 中正确编译此类型,
         /// 需引入 `rust/cxx.h` 头文件并引入 `libcxxbridge1.a` 静态库, 参见 `CMakeLists.txt`
         /// 脚本文件
         ///
-        /// `String`/`rust::String` 类型表示一个可变的字符串类型
+        /// `String`/`rust::string` 类型表示一个可变的字符串类型
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// rust::String cc_hello_str() noexcept;
+        /// rust::string cc_hello_str() noexcept;
         /// ```
         fn cc_hello_str() -> String;
 
         /// 定义函数, 传入 Rust 的 `&str` 类型字符串作为参数
         ///
-        /// Rust 的 `&str` 类型会映射为 C++ 的 `rust::Str` 类型, 要在 C++ 中正确编译此类型,
+        /// Rust 的 `&str` 类型会映射为 C++ 的 `rust::str` 类型, 要在 C++ 中正确编译此类型,
         /// 需引入 `rust/cxx.h` 头文件并引入 `libcxxbridge1.a` 静态库, 参见 `CMakeLists.txt`
         /// 脚本文件
         ///
-        /// `&str`/`rust::Str` 类型表示一个只读的字符串类型
+        /// `&str`/`rust::str` 类型表示一个只读的字符串类型
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// rust::String cc_welcome_str(rust::Str name) noexcept;
+        /// rust::String cc_welcome_str(rust::str name) noexcept;
         /// ```
         fn cc_welcome_str(name: &str) -> String;
 
         /// 定义函数, 返回 `Box` 类型实例
         ///
-        /// Rust 的 `Box` 类型会映射为 C++ 的 `rust::Box` 类型, 要在 C++ 中正确编译此类型,
+        /// Rust 的 `Box<T>` 类型会映射为 C++ 的 `rust::box<T>` 类型, 要在 C++ 中正确编译此类型,
         /// 需引入 `rust/cxx.h` 头文件并引入 `libcxxbridge1.a` 静态库, 参见 `CMakeLists.txt`
         /// 脚本文件
         ///
-        /// `Box`/`rust::Box` 类型相当于一个只读智能指针, 无法改变其内部引用的指针值
+        /// `Box<T>`/`rust::box<T>` 类型相当于一个只读智能指针, 无法改变其内部引用的指针值
         ///
-        /// 在 `cxx` 库的定义中, `Box` 类型主要用于包装 Rust 结构体指针, 即 "不透明" 结构体类型,
+        /// Rust 的 `Box` 类型主要用于包装 Rust 结构体指针, 即 "不透明" 结构体类型,
         /// 也即定义在 `ffi` 模块外的结构体类型
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// rust::Box<rust_lib::cc::Value> cc_create_object(rust::String val) noexcept;
+        /// rust::box<rust_lib::cc::Value> cc_create_object(rust::string val) noexcept;
         /// ```
         fn cc_create_box_ptr(value: String) -> Box<Value>;
 
@@ -89,62 +89,62 @@ mod ffi {
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// rust::String cc_get_value_from_box_ptr(rust::Box<rust_lib::cc::Value> const &ptr) noexcept;
+        /// rust::string cc_get_value_from_box_ptr(rust::box<rust_lib::cc::Value> const &ptr) noexcept;
         /// ```
         fn cc_get_value_from_box_ptr(ptr: &Box<Value>) -> String;
 
-        /// 定义函数, 返回 `cxx::SharedPtr` 类型实例
+        /// 定义函数, 返回 `cxx::SharedPtr<T>` 类型实例
         ///
-        /// Rust 的 `cxx::SharedPtr` 类型会映射为 C++ 的 `std::shared_ptr` 类型
+        /// Rust 的 `cxx::SharedPtr<T>` 类型会映射为 C++ 的 `std::shared_ptr<T>` 类型
         ///
-        /// `cxx::SharedPtr`/`std::shared_ptr` 类型表示一个具备引用计数的智能指针
+        /// `cxx::SharedPtr<T>`/`std::shared_ptr<T>` 类型表示一个具备引用计数的智能指针
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
-        /// 在 `cxx` 库的定义中, `SharedPtr` 类型主要用于包装 `cxx` 结构体指针, 即 "透明" 结构体类型,
+        /// 在 `cxx` 库的定义中, `SharedPtr<T>` 类型主要用于包装 `cxx` 结构体指针, 即 "透明" 结构体类型,
         /// 也即定义在 `ffi` 模块内的结构体类型
         ///
         /// ```c++
-        /// std::shared_ptr<rust_lib::cc::Value> cc_create_shared_ptr(rust::String value) noexcept;
+        /// std::shared_ptr<rust_lib::cc::Value> cc_create_shared_ptr(rust::string value) noexcept;
         /// ```
         fn cc_create_shared_ptr(value: String) -> SharedPtr<Value>;
 
         /// 定义函数, 将 `cxx::SharedPtr` 类型的引用作为参数
         ///
-        /// `cxx::SharedPtr` 实例可以进行复制, 复制时增加内部引用计数, 析构时减少内部引用计数, 故作为参数时,
+        /// `cxx::SharedPtr<T>` 实例可以进行复制, 复制时增加内部引用计数, 析构时减少内部引用计数, 故作为参数时,
         /// 可以进行值传递
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// std::shared_ptr<rust_lib::cc::Value> cc_create_shared_ptr(rust::String value) noexcept;
+        /// rust::string cc_get_value_from_shared_ptr(std::shared_ptr<rust_lib::cc::Value> ptr) noexcept;
         /// ```
         fn cc_get_value_from_shared_ptr(ptr: SharedPtr<Value>) -> String;
 
         /// 定义函数, 返回 `cxx::UniquePtr` 类型实例
         ///
-        /// Rust 的 `cxx::UniquePtr` 类型会映射为 C++ 的 `std::unique_ptr` 类型
+        /// Rust 的 `cxx::UniquePtr<T>` 类型会映射为 C++ 的 `std::unique_ptr<T>` 类型
         ///
-        /// `cxx::UniquePtr`/`std::unique_ptr` 类型相当于一个具备唯一性的智能指针, 其实例无法进行复制
+        /// `cxx::UniquePtr<T>`/`std::unique_ptr<T>` 类型相当于一个具备唯一性的智能指针, 其实例无法进行复制
         ///
-        /// 在 `cxx` 库的定义中, `UniquePtr` 类型主要用于包装 `cxx` 结构体指针, 即 "透明" 结构体类型,
+        /// 在 `cxx` 库的定义中, `UniquePtr<T>` 类型主要用于包装 `cxx` 结构体指针, 即 "透明" 结构体类型,
         /// 也即定义在 `ffi` 模块内的结构体类型
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// std::unique_ptr<rust_lib::cc::Value> cc_create_unique_ptr(rust::String value) noexcept;
+        /// std::unique_ptr<rust_lib::cc::Value> cc_create_unique_ptr(rust::string value) noexcept;
         /// ```
         fn cc_create_unique_ptr(value: String) -> UniquePtr<Value>;
 
         /// 定义函数, 将 `cxx::UniquePtr` 类型的引用作为参数
         ///
-        /// `cxx::UniquePtr` 实例无法进行复制, 故作为参数时, 只能进行引用传递
+        /// `cxx::UniquePtr<T>` 实例无法进行复制, 故作为参数时, 只能进行引用传递
         ///
         /// 该函数会映射为如下 C++ 函数
         ///
         /// ```c++
-        /// rust::String cc_get_value_from_unique_ptr(std::unique_ptr<rust_lib::cc::Value> const &ptr) noexcept;
+        /// rust::string cc_get_value_from_unique_ptr(std::unique_ptr<rust_lib::cc::Value> const &ptr) noexcept;
         /// ```
         fn cc_get_value_from_unique_ptr(ptr: &UniquePtr<Value>) -> String;
     }

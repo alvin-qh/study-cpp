@@ -90,14 +90,14 @@ mod ffi {
         /// 由于 `User` 结构体 "不透明", 故无法向 C++ 直接返回 `User` 结构体实例, 这里通过
         /// `Box` 类型对 `User` 结构体指针
         ///
-        /// C++ 中对应 `Box` 类型的为 `rust::Box` 类型
+        /// C++ 中对应 `Box` 类型的为 `rust::box` 类型
         ///
         /// 该函数在 C++ 中被映射为
         ///
         /// ```c++
         /// rust::Box<rust_lib::cc::User> cc_create_user(
-        ///     rust::String id,
-        ///     rust::String name,
+        ///     rust::string id,
+        ///     rust::string name,
         ///     std::int32_t age,
         ///     rust_lib::cc::Gender gender
         /// ) noexcept;

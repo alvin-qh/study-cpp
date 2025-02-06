@@ -9,7 +9,7 @@
 using namespace rust_lib::cc;
 
 TEST(TEST_SUITE_NAME, cc_create_user) {
-    rust::Box<User> user = cc_create_user("001", "Alvin", 42, Gender::Male);
+    rust::box<User> user = cc_create_user("001", "Alvin", 42, Gender::Male);
 
     std::string id = static_cast<std::string>(cc_get_user_id(*user));
     ASSERT_EQ(id, "001");
@@ -31,7 +31,7 @@ TEST(TEST_SUITE_NAME, cc_create_user) {
 }
 
 TEST(TEST_SUITE_NAME, cc_user_transfer) {
-    rust::Box<User> user = cc_create_user("002", "Emma", 38, Gender::Female);
+    rust::box<User> user = cc_create_user("002", "Emma", 38, Gender::Female);
 
     CUser c_user = cc_user_transfer(*user);
     ASSERT_EQ(c_user.id, "002");

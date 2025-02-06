@@ -58,7 +58,7 @@ mod ffi {
         /// 通过字符串值获取 `Gender` 枚举值
         ///
         /// 由于 `Gender` 枚举为 "非透明" 类型, 无法在 C++ 中创建和复制枚举实例,
-        /// 故需要通过 `cxx::Box` 类型进行包装后, 方能返回到 C++ 中
+        /// 故需要通过 `Box` 类型进行包装后, 方能返回到 C++ 中
         fn cc_get_gender(name: &str) -> Box<Gender>;
 
         /// 判断 `gender` 值是否为 `Male`
@@ -87,6 +87,8 @@ pub enum Gender {
     Female,
     Unknown,
 }
+
+// 实现 `ffi` 模块中定义的函数
 
 pub fn cc_get_gender(name: &str) -> Box<Gender> {
     match name.to_ascii_lowercase().as_str() {

@@ -59,6 +59,6 @@ TEST(TEST_SUITE_NAME, c_user_struct_ptr) {
     const char* name = c_get_user_name(ptr);
     ASSERT_STREQ(name, "Alvin");
 
-    // 释放
+    // 释放结构体内存
     c_free_user(ptr);
 }

@@ -9,7 +9,7 @@
 using namespace rust_lib::cc;
 
 TEST(TEST_SUITE_NAME, cc_get_gender) {
-    rust::Box<Gender> gender = cc_get_gender("Male");
+    rust::box<Gender> gender = cc_get_gender("Male");
     ASSERT_TRUE(cc_is_male_gender(*gender));
 
     gender = cc_get_gender("Female");

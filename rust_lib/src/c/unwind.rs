@@ -21,13 +21,17 @@ use core::slice;
 #[no_mangle]
 pub extern "C-unwind" fn c_unwind_fn(ptr: *const i32, size: usize) -> i32 {
     if ptr.is_null() {
+        // 当参数传入的指针为 `null` 时, 执行 Panic
         panic!("'ptr' argument cannot be null");
     } else {
         if size == 0 {
             return 0;
         }
 
+        // 从指针创建 Rust 切片对象
         let s = unsafe { slice::from_raw_parts(ptr, size) };
+
+        // 计算数组中最大元素值
         match s.iter().max() {
             Some(&max) => max,
             None => 0,

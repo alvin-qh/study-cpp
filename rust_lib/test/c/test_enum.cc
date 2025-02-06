@@ -8,12 +8,14 @@
 // 使用生成的命名空间
 using namespace rust_lib::c;
 
-/// @brief 测试调用 Rust 编写枚举类型
+/// @brief 测试调用 Rust 编写的枚举类型
 TEST(TEST_SUITE_NAME, c_gender_enum) {
+    // 使用枚举值
     CGender gender = CGender::Male;
     ASSERT_EQ(gender, CGender::Male);
     ASSERT_EQ(static_cast<int>(gender), 0);
 
+    // 修改枚举值
     gender = CGender::Female;
     ASSERT_EQ(gender, CGender::Female);
     ASSERT_EQ(static_cast<int>(gender), 1);

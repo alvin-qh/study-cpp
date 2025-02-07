@@ -100,7 +100,10 @@
     "codecvt": "cpp",
     "source_location": "cpp",
     "text_encoding": "cpp",
-    "expected": "cpp"
+    "expected": "cpp",
+    "pthread.h": "c",
+    "thread.h": "c",
+    "stdbool.h": "c"
   },
   "search.exclude": {
     ".history/**": true,
@@ -108,5 +111,6 @@
     "cmake": true,
     "build": true,
     "vendor": true
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

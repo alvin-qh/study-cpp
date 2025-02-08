@@ -1,7 +1,7 @@
 # Linux 系统
 
 # 设置子项目名称
-project(linux CXX)
+project(linux CXX C)
 
 # 设置项目源文件集合
 file(GLOB_RECURSE linux_src "src/*.c" "src/*.cc")
@@ -32,7 +32,7 @@ target_include_directories(linux_test
 # 链接库会自动在当前路径下的 lib 目录中查找, 无需文件前缀 lib 和后缀 .a 等, gtest => libgtest.a
 target_link_libraries(linux_test
     PRIVATE gtest  # 链接 `libgtest.so` 文件
-    PRIVATE gmock  # 链接 `libgmock.so` 文件
+    # PRIVATE gmock  # 链接 `libgmock.so` 文件
 )
 
 # 启用 sanitize

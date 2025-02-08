@@ -103,7 +103,8 @@
     "expected": "cpp",
     "pthread.h": "c",
     "thread.h": "c",
-    "stdbool.h": "c"
+    "stdbool.h": "c",
+    "stdlib.h": "c"
   },
   "search.exclude": {
     ".history/**": true,

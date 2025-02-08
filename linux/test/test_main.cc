@@ -8,6 +8,3 @@ int main(int argc, char* argv[]) {
     // 执行所有测试
     return RUN_ALL_TESTS();
 }
-
-namespace linux {
-} // namespace linux

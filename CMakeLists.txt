@@ -42,9 +42,9 @@ add_subdirectory(cplusplus)
 add_subdirectory(algorithm)
 add_subdirectory(convert)
 add_subdirectory(rust_lib)
-if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin")
+# if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin")
 add_subdirectory(linux)
-endif ()
+# endif ()
 
 # CPack 打包配置
 

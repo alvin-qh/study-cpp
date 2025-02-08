@@ -104,7 +104,9 @@
     "pthread.h": "c",
     "thread.h": "c",
     "stdbool.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "errno.h": "c",
+    "features.h": "c"
   },
   "search.exclude": {
     ".history/**": true,

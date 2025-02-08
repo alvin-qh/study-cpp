@@ -29,7 +29,7 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     message(NOTICE "Make release building ...")
 else()
     # cmake .. -DCMAKE_BUILD_TYPE=Debug
-    add_compile_options(-DDEBUG)
+    add_compile_options(-DDEBUG -O)
     message(NOTICE "Make debug building ...")
 endif()
 

@@ -5,6 +5,7 @@
     "cbindgen",
     "cdylib",
     "CMakeList",
+    "CPACK",
     "cplusplus",
     "ctest",
     "cxxbridge",

@@ -37,15 +37,16 @@ TEST(TEST_SUITE_NAME, execute_worker) {
 
     // 调用测试函数
     worker_t w = execute_worker(fork_main, &msg);
+    ASSERT_EQ(w.size, 1);
 
     // 确认子进程正常结束
-    ASSERT_TRUE(WIFEXITED(w.stat));
+    ASSERT_TRUE(WIFEXITED(w.stat[0]));
 
     // 确认子进程函数的返回值为 `0`
-    ASSERT_EQ(WEXITSTATUS(w.stat), 0);
+    ASSERT_EQ(WEXITSTATUS(w.stat[0]), 0);
 
     // 确认子进程的进程 ID
-    ASSERT_EQ(w.pid, msg.s_pid);
+    ASSERT_EQ(w.pid[0], msg.s_pid);
 
     // 确认子进程发送的消息内容
     ASSERT_STREQ(msg.header, "Hello Fork");

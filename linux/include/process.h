@@ -13,13 +13,13 @@ typedef int (*worker_func)(int pwfd);
 
 /// @brief `execute_worker` 函数返回值, 包含子进程 ID 以及子进程返回状态值
 typedef struct __worker_t {
-	pid_t pid;
-	int stat;
+	size_t size;   // 进程数量, 最大为 `16`
+	pid_t pid[16]; // 进程 ID 数组
+	int stat[16];  // 进程状态数组
 } worker_t;
 
 /// @brief 子进程发送到主进程的消息结构体
-typedef struct __fork_msg
-{
+typedef struct __fork_msg {
 	pid_t s_pid;	 // 子进程 ID
 	char header[16]; // 消息头
 	char body[1024]; // 消息体

@@ -72,8 +72,12 @@ worker_t execute_worker(worker_func worker, fork_msg* msg) {
 		}
 
 		// 主进程返回返回值
-		worker_t r = { pid, stat };
-		return r;
+		worker_t w = {
+			1,
+			{ pid },
+			{ stat },
+		};
+		return w;
 	}
 	else {
 		// 如果 `fork` 函数返回等于 `0` 的值, 表示代码在子进程中执行

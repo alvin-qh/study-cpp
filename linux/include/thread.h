@@ -9,7 +9,7 @@
 // `pthread.c` 实现函数
 
 /// @brief 定义素数计算结果结构体
-typedef struct
+typedef struct __prime_result
 {
 	uint32_t* data; // 质数计算结果集合
 	size_t count; 	// 质数计算结果数量

@@ -1,3 +1,5 @@
+#include "thread.h"
+
 #include <pthread.h>
 #include <unistd.h>
 #include <math.h>
@@ -5,7 +7,6 @@
 #include <memory.h>
 #include <errno.h>
 
-#include "thread.h"
 
 // 求最大值/最小值的宏
 #define _max(a, b) ((a) > (b) ? (a) : (b))

@@ -40,15 +40,23 @@ TEST(TEST_SUITE_NAME, execute_worker) {
     ASSERT_EQ(w.size, 1);
 
     // 确认子进程正常结束
-    ASSERT_TRUE(WIFEXITED(w.stat[0]));
+    ASSERT_TRUE(WIFEXITED(w.stats[0]));
 
     // 确认子进程函数的返回值为 `0`
-    ASSERT_EQ(WEXITSTATUS(w.stat[0]), 0);
+    ASSERT_EQ(WEXITSTATUS(w.stats[0]), 0);
 
     // 确认子进程的进程 ID
-    ASSERT_EQ(w.pid[0], msg.s_pid);
+    ASSERT_EQ(w.pids[0], msg.s_pid);
 
     // 确认子进程发送的消息内容
     ASSERT_STREQ(msg.header, "Hello Fork");
     ASSERT_STREQ(msg.body, "This is a fork test");
+}
+
+/// @brief 测试通过 `fork` 函数创建子进程, 并通过管道从子进程向主进程发送消息
+TEST(TEST_SUITE_NAME, worker_groups) {
+    fork_msg msgs[16];
+
+    // 调用测试函数
+    worker_t w = worker_groups(fork_main, 16, msgs);
 }

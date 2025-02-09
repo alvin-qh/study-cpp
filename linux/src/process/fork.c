@@ -32,7 +32,6 @@ worker_t execute_worker(worker_func worker, fork_msg* msg) {
 
 	if (pid > 0) {
 		// 如果 `fork` 函数返回大于 `0` 的值, 表示子进程创建成功, 且当前代码在父进程中执行
-
 		// 由于父进程只对管道进行 "读" 操作, 故可提前将 "写" 句柄关闭
 		close(pfds[WRITE]);
 
@@ -81,7 +80,6 @@ worker_t execute_worker(worker_func worker, fork_msg* msg) {
 	}
 	else {
 		// 如果 `fork` 函数返回等于 `0` 的值, 表示代码在子进程中执行
-
 		// 由于子进程只对管道进行 "写" 操作, 故可提前将 "读" 句柄关闭
 		close(pfds[READ]);
 
@@ -95,4 +93,50 @@ worker_t execute_worker(worker_func worker, fork_msg* msg) {
 		// `exit` 参数值可以通过 `waitpid` 函数的第二个参数返回, 并通过 `WEXITSTATUS` 宏获取该值
 		exit(retcode);
 	}
+}
+
+worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs) {
+	worker_t w = { 0 };
+
+	if (proc_n >= 16) {
+		return w;
+	}
+
+	w.size = proc_n;
+
+	// 定义管道句柄数组, 包含两个管道句柄, 下标 `0` 表示读句柄, 下标 `1` 表示写句柄
+	int pfds[2];
+
+	// 建立管道, 并返回一对管道句柄, 保存到 `pfds` 数组中
+	if (pipe(pfds) != 0) {
+		abort();
+	}
+
+	for (size_t i = 0; i < proc_n; i++) {
+		pid_t pid = fork();
+		if (pid < 0) {
+			// 如果 `fork` 函数返回负数, 表示子进程创建失败
+			abort();
+		}
+		else if (pid > 0) {
+			// 如果 `fork` 函数返回大于 `0` 的值, 表示子进程创建成功, 且当前代码在父进程中执行
+			// 记录子进程 pid
+			w.pids[i] = pid;
+
+			// 设置子进程分组
+			setpgid(pid, w.pids[0]);
+		}
+		else {
+			// 如果 `fork` 函数返回等于 `0` 的值, 表示代码在子进程中执行
+			if (i == 0) {
+				// 如果是第一个子进程, 则关闭管道 "读" 句柄
+				close(pfds[READ]);
+			}
+			// 执行子进程入口函数
+			int retcode = worker(pfds[WRITE]);
+			exit(retcode);
+		}
+	}
+
+	close(pfds[WRITE]);
 }

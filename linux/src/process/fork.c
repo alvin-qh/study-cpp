@@ -95,14 +95,12 @@ worker_t execute_worker(worker_func worker, fork_msg* msg) {
 	}
 }
 
-worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs) {
+worker_t multiple_process_worker(worker_func worker, size_t proc_n, fork_msg* msgs) {
 	worker_t w = { 0 };
 
 	if (proc_n > 16) {
 		return w;
 	}
-
-	w.size = proc_n;
 
 	// 定义管道句柄数组, 包含两个管道句柄, 下标 `0` 表示读句柄, 下标 `1` 表示写句柄
 	int pfds[2];
@@ -112,6 +110,7 @@ worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs) {
 		abort();
 	}
 
+	// 启动 `proc_n` 参数值个子进程
 	for (size_t i = 0; i < proc_n; i++) {
 		pid_t pid = fork();
 		if (pid < 0) {
@@ -134,21 +133,60 @@ worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs) {
 			// 执行子进程入口函数
 			int retcode = worker(pfds[WRITE]);
 
+			// 子进程函数执行完毕, 关闭管道 "写" 句柄
 			close(pfds[WRITE]);
+
+			// 通过 `exit` 函数和函数返回值结束子进程
+			// `exit` 参数值可以通过 `waitpid` 函数的第二个参数返回, 并通过 `WEXITSTATUS` 宏获取该值
 			exit(retcode);
 		}
 	}
 
+	// 在主进程中关闭管道 "写" 句柄
 	close(pfds[WRITE]);
 
+	// 遍历所有子进程 PID, 通过管道 "读" 句柄读取子进程发送的消息
 	for (size_t i = 0; i < proc_n; i++) {
-		ssize_t n = read(pfds[READ], &msgs[i], MSG_SIZE);
+		fork_msg msg;
 
-		if (waitpid(w.pids[i], &w.stats[i], 0) != w.pids[i]) {
+		// 通过管道 "读" 句柄读取子进程发送的消息
+		ssize_t n = read(pfds[READ], &msg, MSG_SIZE);
+		if (n != MSG_SIZE) {
 			abort();
+		}
+
+		int stat = 0;
+
+		// 等待指定 PID 的子进程结束, 即刚刚发送消息的子进程
+		// if (waitpid(msg.s_pid, &stat, 0) != msg.s_pid) {
+		// 	abort();
+		// }
+
+		// 等待进程组号为 `w.pids[0]` (即第一个子进程 PID) 的子进程组中任意进程结束
+		// 该函数返回等待成功的子进程 ID, 将会是进程组中的随机一个子进程
+		pid_t pid = waitpid(-1 * w.pids[0], &stat, 0);
+
+		// 如下循环中, 最终会将 `w.stats` 数组和 `msgs` 数组的所有元素填充完毕,
+		// 但由于 `waitpid` 函数并不是按子进程 PID 进行等待的, 所以每次获得的 `stat`
+		// 值和 `msg` 并不一定是同一个子进程相关的, 但循环结束后, 所有子进程的 `stat`
+		// 以及 `msg` 都会获取到
+		for (size_t j = 0; j < proc_n; j++) {
+			// 查找等待成功的子进程的创建顺序 (即第 `j` 个创建的子进程)
+			if (w.pids[j] == pid) {
+				w.stats[j] = stat;
+			}
+
+			// 查找发送消息的子进程的创建顺序 (即第 `j` 个创建的子进程)
+			if (w.pids[j] == msg.s_pid) {
+				memcpy(msgs + j, &msg, MSG_SIZE);
+			}
 		}
 	}
 
+	// 在主进程中关闭管道 "读" 句柄
 	close(pfds[READ]);
+
+	// 记录子进程总数
+	w.size = proc_n;
 	return w;
 }

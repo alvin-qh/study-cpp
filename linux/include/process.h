@@ -41,6 +41,8 @@ worker_t execute_worker(worker_func worker, fork_msg* msg);
 /// @param proc_n 要创建的子进程个数
 /// @param msgs 各子进程发送的消息内容
 /// @return `worker_t` 类型结构体实例, 表示函数执行结果
-worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs);
+worker_t multiple_process_worker(worker_func worker, size_t proc_n, fork_msg* msgs);
+
+worker_t worker_group(worker_func worker, size_t proc_n, fork_msg* msg);
 
 #endif // __LINUX__PROCESS_H

@@ -88,7 +88,7 @@ void _init_thread_arg(thread_param* param, size_t group_n, size_t max) {
 ///
 /// @param params 指向 `thread_param` 结构体数组的指针
 /// @param len `thread_param` 结构体数组的长度
-void _clear_threads(thread_param* params, size_t len) {
+inline static void _clear_threads(thread_param* params, size_t len) {
 	// 遍历结构体数组
 	for (size_t n = 0; n < len; n++) {
 		// 设置对应线程的结束标志, 令线程立即结束
@@ -109,7 +109,7 @@ void _clear_threads(thread_param* params, size_t len) {
 ///
 /// @param result 指向 `prime_result` 结构体实例的指针
 /// @param param 指向 `thread_param` 结构体实例的指针
-void _append_result(prime_result* result, thread_param* param) {
+inline static void _append_result(prime_result* result, thread_param* param) {
 	// 计算新的结果数组长度
 	size_t new_count = result->count + param->result_count;
 

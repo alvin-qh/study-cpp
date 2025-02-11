@@ -31,6 +31,11 @@ int fork_main(int pwfd) {
     return 0;
 }
 
+/// @brief 定义生成所期望的子进程发送消息宏
+///
+/// @param msg_h 生成期待的消息头字符串变量, 之后通过 `msg_h` 宏即可访问变量
+/// @param msg_b 生成期待的消息体字符串变量, 之后通过 `msg_b` 宏即可访问变量
+/// @param pid 子进程 PID 值
 #define MAKE_EXPECT_MESSAGE(msg_h, msg_b, pid)                    \
     char expect_h[64];                                            \
     char expect_b[128];                                           \
@@ -64,24 +69,15 @@ TEST(TEST_SUITE_NAME, execute_worker) {
     ASSERT_STREQ(msg.body, expect_b);
 }
 
-int _fork_msg_comp(const void* left, const void* right) {
-    const fork_msg* m1 = (const fork_msg*)left;
-    const fork_msg* m2 = (const fork_msg*)right;
-    return m1->s_pid - m2->s_pid;
-}
-
 /// @brief 测试通过 `fork` 函数创建子进程, 并通过管道从子进程向主进程发送消息
-TEST(TEST_SUITE_NAME, worker_groups) {
+TEST(TEST_SUITE_NAME, multiple_process_worker) {
     fork_msg msgs[16];
 
     // 调用测试函数
-    worker_t w = worker_groups(fork_main, 16, msgs);
+    worker_t w = multiple_process_worker(fork_main, 16, msgs);
     ASSERT_EQ(w.size, 16);
 
-    // 将收到的消息按 `pid` 由小到大依次排序
-    qsort(msgs, 16, sizeof(fork_msg), _fork_msg_comp);
-
-    // 确认
+    // 确认共产生了 16 个子进程, 并
     for (size_t i = 0; i < w.size; i++) {
         ASSERT_EQ(msgs[i].s_pid, w.pids[i]);
 

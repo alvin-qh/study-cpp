@@ -67,7 +67,7 @@ void* _calculate_primes_each_group(void* arg) {
 /// @param param 指向一个 `thread_param` 类型实例的指针
 /// @param group_n 当前 `thread_param` 表示的组索引
 /// @param max 要计算质数的上限值
-inline void _init_thread_arg(thread_param* param, size_t group_n, size_t max) {
+void _init_thread_arg(thread_param* param, size_t group_n, size_t max) {
 	// 计算当前分组的计算起始值
 	param->begin = _max(group_n * GROUP_SIZE, 2);
 

@@ -98,7 +98,7 @@ worker_t execute_worker(worker_func worker, fork_msg* msg) {
 worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs) {
 	worker_t w = { 0 };
 
-	if (proc_n >= 16) {
+	if (proc_n > 16) {
 		return w;
 	}
 
@@ -128,15 +128,27 @@ worker_t worker_groups(worker_func worker, size_t proc_n, fork_msg* msgs) {
 		}
 		else {
 			// 如果 `fork` 函数返回等于 `0` 的值, 表示代码在子进程中执行
-			if (i == 0) {
-				// 如果是第一个子进程, 则关闭管道 "读" 句柄
-				close(pfds[READ]);
-			}
+			// 则关闭管道 "读" 句柄
+			close(pfds[READ]);
+
 			// 执行子进程入口函数
 			int retcode = worker(pfds[WRITE]);
+
+			close(pfds[WRITE]);
 			exit(retcode);
 		}
 	}
 
 	close(pfds[WRITE]);
+
+	for (size_t i = 0; i < proc_n; i++) {
+		ssize_t n = read(pfds[READ], &msgs[i], MSG_SIZE);
+
+		if (waitpid(w.pids[i], &w.stats[i], 0) != w.pids[i]) {
+			abort();
+		}
+	}
+
+	close(pfds[READ]);
+	return w;
 }

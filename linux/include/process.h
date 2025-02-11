@@ -21,8 +21,8 @@ typedef struct __worker_t {
 /// @brief 子进程发送到主进程的消息结构体
 typedef struct __fork_msg {
 	pid_t s_pid;	 // 子进程 ID
-	char header[16]; // 消息头
-	char body[1024]; // 消息体
+	char header[64]; // 消息头
+	char body[128];  // 消息体
 } fork_msg;
 
 // 定义子进程发送消息的大小

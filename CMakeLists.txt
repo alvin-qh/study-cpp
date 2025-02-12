@@ -33,7 +33,7 @@ else()
     message(NOTICE "Make debug building ...")
 endif()
 
-include(cmake/sanitize.cmake)
+include(sanitize.cmake)
 
 # 添加子项目 (vendor 路径下是引入的三方项目)
 add_subdirectory(vendor/googletest)

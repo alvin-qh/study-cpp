@@ -43,6 +43,7 @@ worker_t execute_worker(worker_func worker, fork_msg* msg);
 /// @return `worker_t` 类型结构体实例, 表示函数执行结果
 worker_t multiple_process_worker(worker_func worker, size_t proc_n, fork_msg* msgs);
 
-worker_t worker_group(worker_func worker, size_t proc_n, fork_msg* msg);
+// `exec.c` 实现函数
+int forked_execl(const char* path, const char* arg, ...);
 
 #endif // __LINUX__PROCESS_H

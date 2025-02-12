@@ -24,6 +24,7 @@
     "Makefiles",
     "MSVC",
     "NUMSYS",
+    "perrorf",
     "pthread",
     "repr",
     "shiftdown",

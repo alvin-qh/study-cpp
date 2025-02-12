@@ -111,7 +111,8 @@
     "wait.h": "c",
     "stdint.h": "c",
     "stdint-gcc.h": "c",
-    "unistd.h": "c"
+    "unistd.h": "c",
+    "stdio.h": "c"
   },
   "search.exclude": {
     ".history/**": true,

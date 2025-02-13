@@ -44,6 +44,25 @@ worker_t execute_worker(worker_func worker, fork_msg* msg);
 worker_t multiple_process_worker(worker_func worker, size_t proc_n, fork_msg* msgs);
 
 // `exec.c` 实现函数
+
+/// @brief 通过命令行和命令行参数, 在子进程中执行可执行文件
+///
+/// 在 Linux 中, 可以通过 `execv` 函数执行可执行文件, 需要指定可执行文件的路径和命令行参数,
+/// 从而组成一个命令行调用
+///
+/// 当可执行文件成功执行后, 会接管当前进程, 当前进程的后续代码不再继续执行; 但如果可执行文件调用失败,
+/// 则回到当前进程继续执行
+///
+/// 为了避免当前进程被接管, 一般会在 `fork` 出的子进程中通过命令行调用可执行文件
+///
+/// ```c
+/// int execv(const char *path, char *const *argv);
+/// ```
+///
+/// @param path 可执行文件路径
+/// @param arg 命令行第一个参数
+/// @param ... 命令行的后续参数
+/// @return 命令行执行结果
 int forked_execl(const char* path, const char* arg, ...);
 
 #endif // __LINUX__PROCESS_H

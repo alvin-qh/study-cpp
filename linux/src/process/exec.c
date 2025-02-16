@@ -39,6 +39,7 @@ int _va_args(const char* out[], size_t len, const char* arg, va_list vl) {
 			perrorf(ENOMEM, "arguments length must be less than %ld", len - 1);
 			return -1;
 		}
+
 		out[i++] = arg;
 		arg = va_arg(vl, const char*);
 	}
@@ -53,8 +54,8 @@ int forked_execl(const char* path, const char* arg, ...) {
 	va_start(vl, arg);
 
 	// 将可变参数序列写入数组
-	const char* args[_MAX_VA_ARGS_LEN + 1] = { NULL };
-	if (_va_args(args, _MAX_VA_ARGS_LEN + 1, arg, vl) != 0) {
+	const char* args[_MAX_VA_ARGS_LEN + 2] = { path, NULL };
+	if (_va_args(args + 1, _MAX_VA_ARGS_LEN + 1, arg, vl) != 0) {
 		va_end(vl);
 		return -1;
 	}

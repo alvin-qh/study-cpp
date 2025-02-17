@@ -30,8 +30,8 @@
 /// @param out 输出参数数组
 /// @param len 参数数组的最大长度
 /// @param arg 第一个参数
-/// @param vl 可变参数列表
-/// @return 成功返回 0, 失败返回 -1
+/// @param vl 可变参指针
+/// @return 成功返回 `0`, 失败返回 `-1`
 int _va_args(const char* out[], size_t len, const char* arg, va_list vl) {
 	size_t i = 0;
 	while (arg) {

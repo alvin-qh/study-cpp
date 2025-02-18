@@ -65,4 +65,8 @@ worker_t multiple_process_worker(worker_func worker, size_t proc_n, fork_msg* ms
 /// @return 命令行执行结果
 int forked_execl(const char* path, const char* arg, ...);
 
+// `shared.c` 实现函数
+
+void shared_memory(int* result, size_t size);
+
 #endif // __LINUX__PROCESS_H

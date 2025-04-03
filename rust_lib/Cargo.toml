@@ -14,7 +14,7 @@ crate-type = ["cdylib"]
 # crate-type = ["staticlib"]
 
 [dependencies]
-cxx = "1.0.136"
+cxx = "1.0.153"
 
 [build-dependencies]
 # 用于生成 C/C++ 使用的头文件

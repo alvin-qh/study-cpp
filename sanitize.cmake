@@ -1,4 +1,3 @@
-
 # 定义函数, 用于启用 sanitize
 function(enable_sanitize target)
     message(STATUS "Enable sanitize for ${target}")

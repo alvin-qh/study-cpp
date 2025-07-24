@@ -1,0 +1,22 @@
+[package]
+name = "rust_lib"
+version = "0.1.0"
+edition = "2021"
+# 定义编译脚本文件 (默认即为此文件)
+build = "build.rs"
+
+[lib]
+# 定义代码入口文件 (默认即为此文件)
+path = "src/lib.rs"
+# 生成动态库
+crate-type = ["cdylib"]
+# 生成静态库
+# crate-type = ["staticlib"]
+
+[dependencies]
+cxx = "1.0.153"
+
+[build-dependencies]
+# 用于生成 C/C++ 使用的头文件
+cbindgen = { version = "0.28.0", features = ["unstable_ir"] }
+cxx-build = "1.0.137"

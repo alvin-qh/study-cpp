@@ -1,0 +1,6 @@
+* text eol=lf encoding=utf-8
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.a binary

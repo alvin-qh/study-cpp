@@ -1,7 +1,7 @@
 # 设置根项目配置
 
 # 设置支持的 CMake 最低版本
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
 
 # 设置默认的构建类型
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "")

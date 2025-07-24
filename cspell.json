@@ -11,6 +11,7 @@
     "cxxbridge",
     "CXXVER",
     "Drust",
+    "eigen",
     "execvpe",
     "fopenmp",
     "gmock",

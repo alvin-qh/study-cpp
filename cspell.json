@@ -40,7 +40,8 @@
     "uchar",
     "ulonglong",
     "uninit",
-    "usize"
+    "usize",
+    "xtensor"
   ],
   "flagWords": [],
   "enabled": true

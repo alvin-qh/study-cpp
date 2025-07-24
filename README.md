@@ -184,3 +184,26 @@ deb [arch=amd64 signed-by=/usr/share/keyrings/llvm.gpg] https://mirrors.tuna.tsi
 ```bash
 sudo apt install clang
 ```
+
+## 7. 安装高版本 CMake
+
+Ubuntu 系统自带的 CMake 版本较低, 可以通过其它源安装最新版本的 CMake, 参考 <https://apt.kitware.com/> 官方文档
+
+在 Ubuntu 22.04 中, 可以通过以下命令安装最新版本的 CMake:
+
+```bash
+# 卸载旧版本
+sudo apt purge cmake
+
+# 安装必要的软件包
+sudo apt install ca-certificates gpg wget
+
+# 添加 CMake 的 gpg 秘钥
+wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+
+# 添加 CMake 的源
+echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+
+# 更新软件包列表并安装 CMake
+sudo apt update && sudo apt install cmake
+```

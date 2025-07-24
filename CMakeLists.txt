@@ -1,7 +1,7 @@
 # 设置根项目配置
 
 # 设置支持的 CMake 最低版本
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.9)
 
 # 设置默认的构建类型
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -38,14 +38,17 @@ include(sanitize.cmake)
 # 添加子项目 (vendor 路径下是引入的三方项目)
 add_subdirectory(vendor/googletest)
 add_subdirectory(vendor/fmt)
+add_subdirectory(vendor/xtl)
+add_subdirectory(vendor/xtensor)
 add_subdirectory(cplusplus)
 add_subdirectory(algorithm)
 add_subdirectory(convert)
 add_subdirectory(rust_lib)
 # if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin")
 add_subdirectory(linux)
-add_subdirectory(numcpp)
 # endif ()
+add_subdirectory(xtensor)
+
 
 # CPack 打包配置
 

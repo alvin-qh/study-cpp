@@ -19,7 +19,7 @@ use std::ffi;
 /// 返回两个参数的和
 ///
 /// Rust 基本类型可以和 C/C++ 基本类型可一一对应
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_add(a: i32, b: i32) -> i32 {
     a + b
 }
@@ -34,7 +34,7 @@ pub extern "C" fn c_add(a: i32, b: i32) -> i32 {
 ///
 /// 通过 `std::ffi::CString::into_raw` 方法, 可以将 `std::ffi::CString`
 /// 类型中的字符串转为 `*const std::ffi::c_char` 类型 "裸指针", 即一个 C 字符串指针
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_hello_str() -> *const ffi::c_char {
     // 通过 Rust 的 `&str` 值产生一个 `std::ffi::CString` 类型实例
     let s = ffi::CString::new("Hello Rust FFI").unwrap();
@@ -48,7 +48,7 @@ pub extern "C" fn c_hello_str() -> *const ffi::c_char {
 /// 如果通过 `std::ffi::CString` 类型实例产生了 `*const std::ffi::c_char` 指针, 则需要在之后回收该指针,
 /// 需要通过 `*const ffi::c_char` 指针重新产生 `std::ffi::CString` 类型实例, 获取该指针的所有权,
 /// 并自动完成内存回收
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_free_str(ptr: *const ffi::c_char) {
     unsafe {
         // 通过 `*mut ffi::c_char` 类型裸指针构建 `std::ffi::CString` 类型实例, 令其自动进行内存回收
@@ -66,7 +66,7 @@ pub extern "C" fn c_free_str(ptr: *const ffi::c_char) {
 /// 以达到在 Rust 中回调 C/C++ 函数的目的
 ///
 /// 本函数返回一个 C 风格字符串指针, 需要通过 `c_free_str` 函数回收字符串内存
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_callback(
     cal: extern "C" fn(i32, i32) -> i32,
     a: i32,

@@ -1,7 +1,7 @@
 [package]
 name = "rust_lib"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 # 定义编译脚本文件 (默认即为此文件)
 build = "build.rs"
 
@@ -14,9 +14,9 @@ crate-type = ["cdylib"]
 # crate-type = ["staticlib"]
 
 [dependencies]
-cxx = "1.0.153"
+cxx = "1.0.187"
 
 [build-dependencies]
 # 用于生成 C/C++ 使用的头文件
-cbindgen = { version = "0.28.0", features = ["unstable_ir"] }
-cxx-build = "1.0.137"
+cbindgen = { version = "0.29.0", features = ["unstable_ir"] }
+cxx-build = "1.0.187"

@@ -19,7 +19,7 @@ use std::slice;
 /// 从而通过 "切片" 类型实例对 C 数组进行只读操作, 例如读取切片中的各个元素
 ///
 /// Rust 的切片类型实例在析构时不会释放对应的内存空间, 故不会对传递的 C/C++ 数组指针指向的内存进行释放动作
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_array_sum(arr: *const i32, len: usize) -> i32 {
     let slice = unsafe { slice::from_raw_parts(arr, len) };
     slice.iter().sum()
@@ -34,7 +34,7 @@ pub extern "C" fn c_array_sum(arr: *const i32, len: usize) -> i32 {
 /// 从而通过 "切片" 类型实例对 C 数组进行可读写操作, 例如修改切片中的指定元素
 ///
 /// Rust 的切片类型实例在析构时不会释放对应的内存空间, 故不会对传递的 C/C++ 数组指针指向的内存进行释放动作
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_remove_even_num(arr: *mut i32, len: usize) {
     let slice = unsafe { slice::from_raw_parts_mut(arr, len) };
 
@@ -56,7 +56,7 @@ pub extern "C" fn c_remove_even_num(arr: *mut i32, len: usize) {
 ///
 /// 由于 Rust 返回的是 `*mut i32` 类型 "裸指针", 对应 C/C++ 的 `int*` 指针,
 /// 故在 C/C++ 中可以通过该指针读取和修改对应元素值
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_create_array_by_vec(len: usize) -> *mut i32 {
     // 创建一个向量实例
     let mut arr = vec![0i32; len];
@@ -73,7 +73,7 @@ pub extern "C" fn c_create_array_by_vec(len: usize) -> *mut i32 {
 /// 释放通过 `Vec` 实例产生的 "裸指针"
 ///
 /// 通过 `Vec::from_raw_parts` 方法将 "裸指针" 还原为 `Vec` 实例, 并自动回收对应的内存
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_free_array_by_vec(arr: *mut i32, len: usize) {
     unsafe {
         let _ = Vec::from_raw_parts(arr, len, len);
@@ -92,9 +92,9 @@ pub extern "C" fn c_free_array_by_vec(arr: *mut i32, len: usize) {
 ///
 /// 由于 Rust 返回的是 `*mut i32` 类型 "裸指针", 对应 C/C++ 的 `int*` 指针,
 /// 故在 C/C++ 中可以通过该指针读取和修改对应元素值
-#[no_mangle]
-pub unsafe extern "C" fn c_create_array_by_box(len: usize) -> *mut i32 {
-    let mut b = Box::<[i32]>::new_uninit_slice(len).assume_init();
+#[unsafe(no_mangle)]
+pub extern "C" fn c_create_array_by_box(len: usize) -> *mut i32 {
+    let mut b = unsafe { Box::<[i32]>::new_uninit_slice(len).assume_init() };
 
     for (n, val) in (*b).iter_mut().enumerate() {
         *val = n as i32;
@@ -108,7 +108,7 @@ pub unsafe extern "C" fn c_create_array_by_box(len: usize) -> *mut i32 {
 /// 通过 `slice::from_raw_parts_mut` 方法将 "裸指针" 生成为切片实例,
 /// 并通过 `Box::from_raw` 方法将切片实例的指针生成 `Box` 实例,
 /// 并自动回收对应的内存
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_free_array_by_box(arr: *mut i32, len: usize) {
     unsafe {
         let _ = Box::from_raw(slice::from_raw_parts_mut(arr, len));

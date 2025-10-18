@@ -84,7 +84,7 @@ impl CUser {
     /// - 必须为公开函数, 即需修饰为 `pub`;
     /// - 必须添加 `#[no_mangle]` 属性标记;
     /// - 必须添加 `extern "C"` 导出标识;
-    #[no_mangle]
+    #[unsafe(no_mangle)]
     pub extern "C" fn c_get_user_gender(&self) -> CGender {
         self.gender
     }
@@ -92,7 +92,7 @@ impl CUser {
     /// 通过结构体裸指针, 设置 `CUser` 结构体的 `gender` 字段值
     ///
     /// 对于函数的 `&mut self` 参数, 导出为 C/C++ 函数后即为 `CUser*` 指针类型
-    #[no_mangle]
+    #[unsafe(no_mangle)]
     pub extern "C" fn c_set_user_gender(&mut self, gender: CGender) {
         self.gender = gender;
     }
@@ -104,7 +104,7 @@ impl CUser {
 /// 则表示返回结构体的副本
 ///
 /// 为了统一 Rust 和 C/C++ 语言在返回结构体实例的行为, 可以为结构体添加 `Clone` 和 `Copy` 特性
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_create_user(
     name: *const ffi::c_char,
     age: i32,
@@ -129,7 +129,7 @@ pub extern "C" fn c_create_user(
 /// 注意, 在 Rust 中分配的内存地址无法在 C/C++ 中回收, 因为两者对 "堆" 的定义不同, 故仍需要在 Rust 中提供内存回收的函数并导出
 ///
 /// 为了内存安全起见, 在 Rust 中推荐使用 `Box` 类型分配内存, 并同样通过 `Box` 类型回收内存
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_create_user_ptr(
     name: *const ffi::c_char,
     age: i32,
@@ -152,7 +152,7 @@ pub extern "C" fn c_create_user_ptr(
 /// 通过 `CUser` 结构体 "裸指针" 访问结构体 `name` 字段
 ///
 /// Rust 的 `*const CUser` 类型参数映射到 C/C++ 中会成为 `const CUser*` 类型指针
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_get_user_name(user: *const CUser) -> *const ffi::c_char {
     unsafe { (*user).name }
 }
@@ -161,7 +161,7 @@ pub extern "C" fn c_get_user_name(user: *const CUser) -> *const ffi::c_char {
 ///
 /// 如果在 Rust 中是通过在 "堆" 上分配空间的方式获取到 `CUser` 结构体指针, 则必须释放该内存空间,
 /// 通常是通过 "裸指针" 创建 `Box` 类型实例, 并等待 `Box` 类型实例自动释放内存即可 (前提是分配时也是通过 `Box` 类型)
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn c_free_user(user: *mut CUser) {
     unsafe {
         let _ = Box::from_raw(user);

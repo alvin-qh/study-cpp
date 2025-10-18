@@ -3,7 +3,7 @@
 #ifndef RUST_LIB__BINDINGS_H
 #define RUST_LIB__BINDINGS_H
 
-/* Generated with cbindgen:0.28.0 */
+/* Generated with cbindgen:0.29.0 */
 
 #include <cstdarg>
 #include <cstdint>

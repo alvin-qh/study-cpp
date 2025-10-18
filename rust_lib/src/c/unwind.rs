@@ -18,7 +18,7 @@ use core::slice;
 /// ```
 ///
 /// 要在 C++ 中捕获 Rust 异常, 需要通过 `pub extern "C-unwind"` 修饰函数
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C-unwind" fn c_unwind_fn(ptr: *const i32, size: usize) -> i32 {
     if ptr.is_null() {
         // 当参数传入的指针为 `null` 时, 执行 Panic

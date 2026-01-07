@@ -14,9 +14,9 @@ crate-type = ["cdylib"]
 # crate-type = ["staticlib"]
 
 [dependencies]
-cxx = "1.0.187"
+cxx = "1.0.192"
 
 [build-dependencies]
 # 用于生成 C/C++ 使用的头文件
 cbindgen = { version = "0.29.2", features = ["unstable_ir"] }
-cxx-build = "1.0.188"
+cxx-build = "1.0.192"

@@ -19,7 +19,7 @@
 #define __CPLUSPLUS_TEMPLATE__SPECIALIZATION_H
 
 #include <string>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace cxx::templated {
 	using namespace std;
@@ -35,7 +35,7 @@ namespace cxx::templated {
 		T2 _v2;
 	public:
 		/// @brief 参数构造器
-		GeneralBase(const T1& v1, const T2& v2) : _v1(v1), _v2(v2) { }
+		GeneralBase(const T1& v1, const T2& v2) : _v1(v1), _v2(v2) {}
 
 		/// @brief 析构函数
 		virtual ~GeneralBase() = default;
@@ -53,7 +53,7 @@ namespace cxx::templated {
 		typedef GeneralBase<T1, T2> _base;
 	public:
 		/// @brief 参数构造器
-		Special(const T1& v1, const T2& v2) : _base(v1, v2) { }
+		Special(const T1& v1, const T2& v2) : _base(v1, v2) {}
 
 		/// @brief 析构函数
 		virtual ~Special() = default;
@@ -77,7 +77,7 @@ namespace cxx::templated {
 		typedef GeneralBase<T, string> _base;
 	public:
 		/// @brief 参数构造器
-		Special(const T& v1, const string& v2) : _base(v1, v2) { }
+		Special(const T& v1, const string& v2) : _base(v1, v2) {}
 
 		/// @brief 析构函数
 		virtual ~Special() = default;
@@ -101,7 +101,7 @@ namespace cxx::templated {
 		typedef GeneralBase<T, T> _base;
 	public:
 		/// @brief 参数构造器
-		Special(const T& v1, const T& v2) : _base(v1, v2) { }
+		Special(const T& v1, const T& v2) : _base(v1, v2) {}
 
 		/// @brief 析构函数
 		virtual ~Special() = default;
@@ -128,7 +128,7 @@ namespace cxx::templated {
 		typedef GeneralBase<string, string> _base;
 	public:
 		/// @brief 参数构造器
-		Special(const string& v1, const string& v2) : _base(v1, v2) { }
+		Special(const string& v1, const string& v2) : _base(v1, v2) {}
 
 		/// @brief 析构函数
 		virtual ~Special() = default;
@@ -155,7 +155,7 @@ namespace cxx::templated {
 		typedef GeneralBase<T1*, T2*> _base;
 	public:
 		/// @brief 参数构造器
-		Special(T1* const& v1, T2* const& v2) : _base(v1, v2) { }
+		Special(T1* const& v1, T2* const& v2) : _base(v1, v2) {}
 
 		/// @brief 析构函数
 		virtual ~Special() = default;

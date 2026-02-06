@@ -1,19 +1,19 @@
 #include <cmath>
 #include <string>
-#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "oop/inherit.h"
 
 namespace cxx::oop {
     using namespace std;
 
-    BaseClass::BaseClass() : BaseClass(0) { }
+    BaseClass::BaseClass() : BaseClass(0) {}
 
     BaseClass::BaseClass(int a) :
         _a(a),
-        __destroy_count_ptr(nullptr) { }
+        __destroy_count_ptr(nullptr) {}
 
-    BaseClass::BaseClass(const BaseClass& o) : BaseClass(o._a) { }
+    BaseClass::BaseClass(const BaseClass& o) : BaseClass(o._a) {}
 
     BaseClass::~BaseClass() { __increment_destroy_count(); }
 
@@ -40,11 +40,11 @@ namespace cxx::oop {
         }
     }
 
-    ChildClass::ChildClass() : ChildClass(0, 0) { }
+    ChildClass::ChildClass() : ChildClass(0, 0) {}
 
-    ChildClass::ChildClass(int a, double b) : BaseClass(a), _b(b) { }
+    ChildClass::ChildClass(int a, double b) : BaseClass(a), _b(b) {}
 
-    ChildClass::ChildClass(const ChildClass& o) : BaseClass(o), _b(o._b) { }
+    ChildClass::ChildClass(const ChildClass& o) : BaseClass(o), _b(o._b) {}
 
     ChildClass::~ChildClass() { __increment_destroy_count(); }
 
